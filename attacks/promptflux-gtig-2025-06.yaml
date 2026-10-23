@@ -1,0 +1,70 @@
+id: promptflux-gtig-2025-06
+name: PROMPTFLUX Gemini API self-modifying VBScript dropper
+date_reported: 2025-11-05
+researcher: Google Threat Intelligence Group
+org: Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+magicsword_coverage: []
+borderline: true
+borderline_note: GTIG classifies as experimental/dev; incomplete features; no demonstrated ability
+  to compromise victims.
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: Experimental LLM-augmented malware (self-obfuscation via Gemini API)
+technique_summary: VBScript dropper with decoy installer; 'Thinking Robot' module POSTs to Gemini
+  API (gemini-1.5-flash-latest) with hard-coded key asking for VBScript AV-evasion rewrites; intends
+  Startup persistence and removable-drive spread. Self-update function commented out in analyzed
+  samples.
+initial_access: unknown
+ai_tooling_and_models:
+  - Google Gemini API
+  - gemini-1.5-flash-latest
+other_tooling:
+  - VBScript
+  - Startup folder persistence
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unattributed; financially motivated lure filenames suggested
+scale_and_metrics: Experimental; Google disabled associated assets
+prevention_angle: Monitor Gemini API keys embedded in scripts; block unexpected generative API from endpoints
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Initial delivery is not established
+      description: The analyzed VBScript includes a decoy installer, but the initial route is unknown.
+      kind: unknown
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    - id: step-2
+      title: Thinking Robot queries Gemini
+      description: A hard-coded key supports requests for VBScript evasion rewrites.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Dropper contains a rewrite workflow
+      description: The analyzed sample contains code for self-modification.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Self-update is commented out
+      description: Startup persistence and removable-drive spread are intended behavior; the analyzed
+        rewrite function was not active.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0102
+    rationale: A dropper requests generated VBScript rewrites; the analyzed self-update routine is
+      commented out.
+    source_urls: *a1

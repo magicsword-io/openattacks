@@ -1,0 +1,82 @@
+id: s1ngularity-nx-ai-cli-2025-08
+name: s1ngularity Nx npm supply chain abusing AI CLIs
+date_reported: 2025-08-27
+researcher: Wiz; Nx; Snyk; JFrog
+org: Wiz / Nx
+sources:
+  - url: https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+  - url: https://www.wiz.io/blog/s1ngularitys-aftermath
+  - url: https://nx.dev/blog/s1ngularity-postmortem
+  - url: https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Attackers stole Nx npm publish token via GitHub Actions injection and published
+  malicious Nx packages. Postinstall harvested env/GitHub/npm/SSH/crypto wallet data and invoked
+  local Claude, Gemini, and Amazon Q CLIs with dangerous flags to inventory sensitive files, then
+  pushed loot to public GitHub repos named s1ngularity-repository*. Phase 2 used stolen tokens to
+  make 5500+ private repos public.
+initial_access: Malicious npm postinstall on nx/@nx packages (versions around 20.9–21.8)
+ai_tooling_and_models:
+  - claude CLI
+  - gemini CLI
+  - Amazon Q CLI
+  - --dangerously-skip-permissions style flags
+other_tooling:
+  - GitHub CLI
+  - npm postinstall
+  - GitHub Actions webhook token theft
+victims_and_sectors: Nx ecosystem developers (~4M weekly downloads cited); 400+ users/orgs in phase 2
+regions:
+  - unknown
+attribution_or_cluster: s1ngularity / UNC6426 (industry)
+scale_and_metrics: "Malicious packages live ~4–5 hours; phase 2 >5500 private repos exposed; Wiz: AI
+  path succeeded in <25% of cases; <100 unique valid secrets across 20k files"
+prevention_angle: Pin npm provenance; gate AI CLIs; app control on unexpected gh/cli from node
+  postinstall; rotate tokens
+related_magicsword_projects:
+  - LOLSkills
+  - LOLBAS
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Publish token is stolen
+      description: GitHub Actions injection enables malicious Nx package releases.
+      kind: access
+      source_urls: &a1
+        - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+        - https://www.wiz.io/blog/s1ngularitys-aftermath
+        - https://nx.dev/blog/s1ngularity-postmortem
+        - https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/
+    - id: step-2
+      title: Package postinstall harvests secrets
+      description: Installation starts environment, developer-token and file collection.
+      kind: execution
+      source_urls: *a1
+    - id: step-3
+      title: Local AI CLIs inventory sensitive files
+      description: Claude, Gemini and Amazon Q are invoked with permissive flags.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Loot and private repositories become public
+      description: Collected data is pushed to public repositories; later token abuse exposes additional
+        private repositories.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0055
+    rationale: Postinstall malware harvests tokens and uses AI CLIs to locate sensitive files.
+    source_urls: *a1

@@ -1,0 +1,147 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TimelineChart from "../components/TimelineChart.astro";
+import ViewTabs from "../components/ViewTabs.astro";
+import RoleBadge from "../components/RoleBadge.astro";
+import CommunityBanner from "../components/CommunityBanner.astro";
+import { getAttacks, roles, href, formatDate } from "../lib/catalog";
+const attacks = await getAttacks();
+const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
+  .sort()
+  .reverse();
+---
+
+<Layout title="Attack Timeline — AI Attacks" active="timeline">
+  <div class="container">
+    <header class="page-heading">
+      <span class="eyebrow">A CHANGING ATTACK SURFACE</span>
+      <h1>The patterns take shape over time.</h1>
+      <p>
+        Follow the reported use of AI from branded lures to agent-driven
+        intrusions. Dates reflect publication of the source report, rather than
+        the start of an attack.
+      </p>
+    </header>
+    <ViewTabs active="timeline" />
+    <div class="view-content">
+      <TimelineChart attacks={attacks} large />
+      <div class="filters" style="margin-bottom:28px">
+        <select
+          class="filter-select"
+          id="timeline-year"
+          aria-label="Filter timeline by year"
+        >
+          <option value="">All years</option>
+          {years.map((year) => (
+            <option value={year}>{year}</option>
+          ))}
+        </select>
+        <select
+          class="filter-select"
+          id="timeline-role"
+          aria-label="Filter timeline by AI role"
+        >
+          <option value="">All AI roles</option>
+          {Object.entries(roles).map(([id, role]) => (
+            <option value={id}>{role.label}</option>
+          ))}
+        </select>
+        <span
+          class="muted"
+          style="font-size:11px;align-self:center"
+          id="timeline-count"
+          aria-live="polite"
+        >
+          {attacks.length} entries
+        </span>
+      </div>
+      {years.map((year) => (
+        <section class="timeline-year" data-timeline-year={year}>
+          <h2>
+            {year}
+            <span class="timeline-year-count">
+              {attacks.filter((a) => a.date_reported.startsWith(year)).length}{" "}
+              entries
+            </span>
+          </h2>
+          <div class="timeline-entries">
+            {attacks
+              .filter((a) => a.date_reported.startsWith(year))
+              .map((attack) => (
+                <a
+                  class="timeline-entry"
+                  href={href(`attacks/${attack.id}/`)}
+                  style={`--role-color:${roles[attack.ai_role].color}`}
+                  data-role={attack.ai_role}
+                >
+                  <div class="timeline-entry-head">
+                    <time class="table-date" datetime={attack.date_reported}>
+                      {formatDate(attack.date_reported)}
+                    </time>
+                    <RoleBadge role={attack.ai_role} />
+                    {attack.borderline && (
+                      <span class="research-marker">RESEARCH / BORDERLINE</span>
+                    )}
+                  </div>
+                  <h3>{attack.name}</h3>
+                  <p>{attack.technique_summary}</p>
+                </a>
+              ))}
+          </div>
+        </section>
+      ))}
+      <p id="timeline-empty" class="empty-state" hidden>
+        No entries match this year and AI role.
+      </p>
+      <CommunityBanner />
+    </div>
+  </div>
+</Layout>
+<script>
+  const yearSelect =
+    document.querySelector<HTMLSelectElement>("#timeline-year")!;
+  const roleSelect =
+    document.querySelector<HTMLSelectElement>("#timeline-role")!;
+  function filterTimeline(update = true) {
+    let total = 0;
+    document
+      .querySelectorAll<HTMLElement>("[data-timeline-year]")
+      .forEach((group) => {
+        let count = 0;
+        group
+          .querySelectorAll<HTMLElement>(".timeline-entry")
+          .forEach((entry) => {
+            entry.hidden = !!(
+              (yearSelect.value &&
+                group.dataset.timelineYear !== yearSelect.value) ||
+              (roleSelect.value && entry.dataset.role !== roleSelect.value)
+            );
+            if (!entry.hidden) count++;
+          });
+        group.hidden = count === 0;
+        group.querySelector(".timeline-year-count")!.textContent =
+          `${count} entries`;
+        total += count;
+      });
+    document.querySelector("#timeline-count")!.textContent =
+      `${total} ${total === 1 ? "entry" : "entries"}`;
+    document.querySelector<HTMLElement>("#timeline-empty")!.hidden = total > 0;
+    if (update) {
+      const url = new URL(location.href);
+      url.search = "";
+      if (yearSelect.value) url.searchParams.set("year", yearSelect.value);
+      if (roleSelect.value) url.searchParams.set("role", roleSelect.value);
+      history.replaceState(null, "", url);
+    }
+  }
+  function readTimelineURL() {
+    const params = new URLSearchParams(location.search);
+    yearSelect.value = params.get("year") || "";
+    roleSelect.value = params.get("role") || "";
+    filterTimeline(false);
+  }
+  yearSelect.addEventListener("change", () => filterTimeline());
+  roleSelect.addEventListener("change", () => filterTimeline());
+  window.addEventListener("popstate", readTimelineURL);
+  readTimelineURL();
+</script>

@@ -1,0 +1,72 @@
+---
+import AttackFlow from "./AttackFlow";
+import { attackFlow } from "../lib/attack-flow";
+import { href, type Attack } from "../lib/catalog";
+import Icon from "./Icon.astro";
+const { attack } = Astro.props as { attack: Attack };
+const flow = attackFlow(attack);
+---
+
+<section
+  class="attack-flow-section"
+  id="attack-flow"
+  aria-labelledby="attack-flow-title"
+>
+  <div class="flow-section-heading">
+    <div>
+      <span class="eyebrow accent">FOLLOW THE ATTACK PATH</span>
+      <h2 id="attack-flow-title">How it happened</h2>
+    </div>
+    <a class="text-link" href={href(`api/attacks/${attack.id}.json`)}>
+      Flow data <Icon name="code" size={14} />
+    </a>
+  </div>
+  <div class="flow-frame">
+    <AttackFlow flow={flow} name={attack.name} client:visible />
+    <div class="flow-caption">
+      <span>
+        Drag to explore · Use + / − to zoom · Fit view to see the full flow
+      </span>
+      <span
+        class:list={[
+          "flow-evidence-label",
+          { "is-research": attack.borderline },
+        ]}
+      >
+        {attack.borderline
+          ? "Research / qualified account"
+          : "Reported sequence"}
+      </span>
+    </div>
+  </div>
+  <details class="flow-text">
+    <summary>Read the flow as text & sources</summary>
+    <p>
+      {attack.attack_flow
+        ? "A catalog reconstruction of the supplied source account."
+        : "A summary diagram derived from the entry fields, not a verified detailed sequence."}{" "}
+      {attack.borderline_note ||
+        "Unknown steps remain explicit; an edge describes the reported relationship between steps."}
+    </p>
+    <ol>
+      {flow.nodes.map((node, index) => (
+        <li id={`flow-${node.id}`}>
+          <strong>
+            {String(index + 1).padStart(2, "0")} · {node.title}
+          </strong>
+          <p>{node.description}</p>
+          <a
+            href={node.source_urls[0]}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Source for step {index + 1} ↗
+          </a>
+        </li>
+      ))}
+    </ol>
+    {flow.edges.some((edge) => edge.loop) && (
+      <p>Dashed edges show a repeated decision loop.</p>
+    )}
+  </details>
+</section>

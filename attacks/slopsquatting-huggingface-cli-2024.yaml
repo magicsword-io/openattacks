@@ -1,0 +1,73 @@
+id: slopsquatting-huggingface-cli-2024
+name: "Slopsquatting: hallucinated huggingface-cli package downloads"
+date_reported: 2024-06-14
+researcher: Lasso Security / academic package-hallucination research
+org: Lasso Security / USENIX research lineage
+sources:
+  - url: https://www.lasso.security/blog/ai-package-hallucinations
+  - url: https://arxiv.org/abs/2406.10279
+  - url: https://www.aikido.dev/blog/slopsquatting-ai-package-hallucination-attacks
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "Attackers register package names that code-generating LLMs hallucinate.
+  Researchers registered hallucinated PyPI name huggingface-cli and observed tens of thousands of
+  downloads (including reported Alibaba adoption). Broader study: 5.2%/21.7% hallucination rates
+  commercial vs open-source models."
+initial_access: Developer installs LLM-suggested nonexistent package that attacker registered
+ai_tooling_and_models:
+  - Code-generating LLMs
+other_tooling:
+  - PyPI/npm typosquat registration
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: huggingface-cli >30,000 downloads cited; 205,474 unique fake names in study corpus
+prevention_angle: Pin packages; verify registry names against official docs; SCA on AI-suggested deps
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Code model hallucinates a package
+      description: An assistant recommends a package name that was not a legitimate dependency.
+      kind: ai
+      source_urls: &a1
+        - https://www.lasso.security/blog/ai-package-hallucinations
+        - https://arxiv.org/abs/2406.10279
+        - https://www.aikido.dev/blog/slopsquatting-ai-package-hallucination-attacks
+    - id: step-2
+      title: An adversary can register that name
+      description: The slopsquatting pattern makes the hallucinated name installable.
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: Developer installs the suggested package
+      description: The research registered huggingface-cli and measured downloads.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Downloads do not prove compromise
+      description: The experiment measures exposure; the registered research package does not establish a
+        malicious payload on every user.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0060
+    rationale: An installable entity is registered using a package name hallucinated by models.
+    source_urls: *a1
+  - id: AML.T0062
+    rationale: Research identifies package hallucinations that create the exposure.
+    source_urls: *a1

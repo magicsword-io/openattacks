@@ -1,0 +1,75 @@
+id: huntress-plus56-custom-gpt-clickfix-2026-09
+name: Plus 5.6 Custom GPT ClickFix RAT
+date_reported: 2026-09-28
+researcher: Mark O'Halloran, Jonathan Semon (et al.)
+org: Huntress
+sources:
+  - url: https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Attacker Custom GPT 'Plus 5.6' on chatgpt.com (Google Ads) directs users to
+  Google Sites ClickFix; paste runs PowerShell → MSI → DLL sideload via Canon COTFileReadApp.exe /
+  ceiinfolog.dll / rdCore.dll (later Stardock DeElevate64). Dual persistence Run key + scheduled
+  task. Multi-stage obfuscated RAT.
+initial_access: Custom GPT social engineering → ClickFix paste → MSI
+ai_tooling_and_models:
+  - ChatGPT Custom GPT 'Plus 5.6'
+other_tooling:
+  - Google Sites / gptverification.com
+  - PowerShell
+  - msiexec
+  - Canon CaptureOnTouch sideload
+  - Stardock DeElevate64 sideload
+  - GOMCam follow-on
+victims_and_sectors: 40+ Huntress incidents; 2 confirmed via Custom GPT; ongoing as of 2026-10-14
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: 40+ related incidents; OpenAI took down first GPT ~2026-09-25; replacement appeared 09-27
+prevention_angle: Prevent signed binaries from user folders; HijackLibs entries for
+  ceiinfolog/DeElevator64; hunt COTFileReadApp/DeElevate64 under %LOCALAPPDATA%\Programs\
+related_magicsword_projects:
+  - HijackLibs
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Custom GPT attracts a user
+      description: Ads promote an attacker-controlled Plus 5.6 GPT hosted on ChatGPT.
+      kind: access
+      source_urls: &a1
+        - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+    - id: step-2
+      title: Chat directs the user to ClickFix
+      description: The GPT points to a Google Sites page that requests a pasted command.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: PowerShell launches the payload chain
+      description: The command retrieves an MSI and triggers DLL sideloading.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: RAT establishes persistence
+      description: The chain adds Run-key and scheduled-task persistence.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0073
+    rationale: An AI-branded Custom GPT provides a social-engineering pretext.
+    source_urls: *a1
+  - id: AML.T0052
+    rationale: The GPT directs the user into a ClickFix delivery flow.
+    source_urls: *a1

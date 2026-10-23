@@ -1,0 +1,68 @@
+id: invariant-github-mcp-private-repo-2025-05
+name: GitHub MCP indirect prompt injection → private repo exfil
+date_reported: 2025-05-26
+researcher: Invariant Labs
+org: Invariant Labs
+sources:
+  - url: https://invariantlabs.ai/blog/mcp-github-vulnerability
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Malicious GitHub issue content can indirectly prompt-inject an agent using the
+  official GitHub MCP server. When a user asks the agent to inspect public issues, the agent can be
+  coerced to read private repositories and leak contents via public PR/issue. Architectural trust
+  issue (broad agent permissions + untrusted GitHub content), not a simple GitHub MCP code bug.
+initial_access: User asks agent with GitHub MCP to process attacker-controlled public issue
+ai_tooling_and_models:
+  - GitHub MCP server
+  - coding agents
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Scope MCP tokens per-repo; block cross-repo actions; treat issues as untrusted input
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Agent reads an attacker issue
+      description: A user asks an agent with GitHub MCP access to inspect public issues.
+      kind: access
+      source_urls: &a1
+        - https://invariantlabs.ai/blog/mcp-github-vulnerability
+    - id: step-2
+      title: Issue instructions override the task
+      description: Indirect prompt injection redirects the model through untrusted issue content.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Agent accesses private repositories
+      description: Broad tool permissions let the agent retrieve private data.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Private content becomes public
+      description: The demonstrated chain leaks content through a public pull request or issue.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Public GitHub issue content indirectly injects the agent.
+    source_urls: *a1
+  - id: AML.T0086
+    rationale: GitHub write tools publish private repository content.
+    source_urls: *a1

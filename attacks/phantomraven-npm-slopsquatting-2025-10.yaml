@@ -1,0 +1,71 @@
+id: phantomraven-npm-slopsquatting-2025-10
+name: PhantomRaven npm campaign with slopsquatting names
+date_reported: 2025-10-01
+researcher: Koi Security / Sonatype / BleepingComputer
+org: Koi Security
+sources:
+  - url: https://www.koi.ai/blog/phantomraven-npm-malware-hidden-in-invisible-dependencies
+  - url: https://www.sonatype.com/blog/phantomraven-npm-malware
+  - url: https://www.bleepingcomputer.com/news/security/phantomraven-attack-floods-npm-with-credential-stealing-packages/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Flood of malicious npm packages used remote dynamic HTTP dependencies invisible
+  to many scanners and included AI-hallucination-friendly names such as unused-imports. Delivered
+  credential stealers targeting npm/Git/CI tokens.
+initial_access: npm install of malicious/slopsquat packages
+ai_tooling_and_models: []
+other_tooling:
+  - Remote dynamic dependencies
+  - info-stealers
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: 126 packages cited in related reporting
+prevention_angle: Block remote HTTP deps; lockfiles; SCA; never trust AI-suggested package names blindly
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-3
+      title: Hallucinated names create an exposure path
+      description: AI package recommendations can direct developers to attacker-owned names; not every
+        install is established as AI-driven.
+      kind: ai
+      source_urls: &a1
+        - https://www.koi.ai/blog/phantomraven-npm-malware-hidden-in-invisible-dependencies
+        - https://www.sonatype.com/blog/phantomraven-npm-malware
+        - https://www.bleepingcomputer.com/news/security/phantomraven-attack-floods-npm-with-credential-stealing-packages/
+    - id: step-1
+      title: Developer installs a malicious package
+      description: The campaign includes names friendly to AI hallucination-based recommendations.
+      kind: access
+      source_urls: *a1
+    - id: step-2
+      title: Remote dependencies load code
+      description: Dynamic HTTP dependencies conceal additional behavior from some scanners.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Developer credentials are stolen
+      description: The delivered stealer targets npm, Git and CI tokens.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-3
+      target: step-1
+      label: Potential exposure path
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-4
+atlas_techniques:
+  - id: AML.T0060
+    rationale: The campaign includes names compatible with hallucinated package recommendations;
+      AI-driven installation is not established for every package.
+    source_urls: *a1

@@ -1,0 +1,37 @@
+name: Submit an attack
+description: Add a sourced AI-enabled attack or research finding to the catalog.
+title: 'New entry: '
+labels: [new-entry]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Attack or campaign name
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Source URLs and researcher credit
+      description: Prefer primary research. Every claim needs a source URL.
+    validations:
+      required: true
+  - type: textarea
+    id: ai-role
+    attributes:
+      label: What role did AI play?
+      description: Explain the evidence that AI mattered. Mark uncertainty and research demonstrations.
+    validations:
+      required: true
+  - type: textarea
+    id: entry
+    attributes:
+      label: Proposed entry or additional details
+      description: Use unknown rather than guessing. Include no live victim data or unredacted victim IP addresses.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy and sourcing
+      options:
+        - label: I included source URLs and no live victim data or unredacted victim IPs.
+          required: true

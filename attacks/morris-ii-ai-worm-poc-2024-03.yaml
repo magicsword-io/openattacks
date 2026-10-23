@@ -1,0 +1,72 @@
+id: morris-ii-ai-worm-poc-2024-03
+name: Morris II generative AI email worm (research PoC)
+date_reported: 2024-03-01
+researcher: Cohen, Bitton, Nassi et al.
+org: Academic / Cornell Tech et al.
+sources:
+  - url: https://arxiv.org/abs/2403.02817
+  - url: https://www.wired.com/story/here-come-the-ai-worms/
+magicsword_coverage: []
+borderline: true
+borderline_note: Controlled research PoC against GenAI-powered email assistants; not observed in the wild.
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Adversarial self-replicating prompts make GenAI email assistants propagate
+  malicious instructions to other agents (zero-click in lab), with potential spam/exfil side
+  effects. Tested against GPT-4, Gemini Pro, LLaVA in controlled setups.
+initial_access: unknown
+ai_tooling_and_models:
+  - ChatGPT-4
+  - Gemini Pro
+  - LLaVA
+  - RAG email assistants
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Treat retrieved email/content as untrusted; isolation between agent mailboxes
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Research payload enters an email assistant
+      description: The controlled experiment places adversarial content in assistant-readable email.
+      kind: access
+      source_urls: &a1
+        - https://arxiv.org/abs/2403.02817
+        - https://www.wired.com/story/here-come-the-ai-worms/
+    - id: step-2
+      title: Self-replicating instructions are processed
+      description: The model follows a prompt designed to reproduce itself.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Assistant propagates the payload
+      description: Generated email carries the adversarial instructions to another assistant.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Lab demonstrates propagation
+      description: Potential spam and data-exfiltration effects are research outcomes, not confirmed
+        real-world victims.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Email content injects instructions into assistants in a controlled experiment.
+    source_urls: *a1
+  - id: AML.T0061
+    rationale: The prompt is designed to replicate into assistant output.
+    source_urls: *a1

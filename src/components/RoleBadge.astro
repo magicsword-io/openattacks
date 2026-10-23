@@ -1,0 +1,11 @@
+---
+import { roles } from "../lib/catalog";
+import Icon from "./Icon.astro";
+const { role, short = false } = Astro.props;
+const item = roles[role] || roles.other;
+---
+
+<span class="role-badge" style={`--role-color:${item.color}`}>
+  <Icon name={item.icon} size={13} />
+  {short ? item.short : item.label}
+</span>

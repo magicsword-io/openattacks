@@ -1,0 +1,69 @@
+id: adception-claude-mac-2026-10
+name: Adception fake Claude Mac InstallFix
+date_reported: 2026-10-09
+researcher: Luke Jennings
+org: Push Security
+sources:
+  - url: https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Google ad for 'claude mac' lists bing.com, Bing click-tracking redirects through
+  compromised retailer to fake Claude download. Page shows real Anthropic install command; Copy
+  button swaps clipboard to decode lake-90.com URL and pipe into zsh (InstallFix). Dual cloaking on
+  referrer.
+initial_access: Malvertising + clipboard swap / paste into Terminal
+ai_tooling_and_models:
+  - Fake Claude download / InstallFix lure
+other_tooling:
+  - Google Ads
+  - Bing ck/a redirect
+  - zsh/curl pipe
+victims_and_sectors: macOS users searching for Claude
+regions:
+  - unknown
+attribution_or_cluster: Push AcSig ClickFix toolkit family
+scale_and_metrics: unknown
+prevention_angle: Check pasted commands; do not pipe remote scripts into shell
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Search ad redirects
+      description: An ad for Claude on Mac redirects through tracking and a compromised retailer to a fake
+        download page.
+      kind: access
+      source_urls: &a1
+        - https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results
+    - id: step-2
+      title: Claude branding earns trust
+      description: The page displays a real-looking Anthropic installation command.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Clipboard command is swapped
+      description: The Copy button substitutes a command that decodes a different download URL and pipes
+        content to zsh.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Victim runs attacker content
+      description: Pasting the copied command into Terminal runs attacker-supplied content.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0073
+    rationale: A fake Claude download impersonates a trusted AI vendor.
+    source_urls: *a1

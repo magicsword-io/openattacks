@@ -1,0 +1,73 @@
+id: promptsteal-lamehug-apt28-2025-07
+name: PROMPTSTEAL / LAMEHUG LLM command-generating data miner
+date_reported: 2025-07-17
+researcher: CERT-UA; Google GTIG; Cato CTRL
+org: CERT-UA / Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+  - url: https://www.catonetworks.com/blog/cato-ctrl-threat-research-analyzing-lamehug/
+  - url: https://csirt.csi.cip.gov.ua/en/posts/apt28-targets-security-and-defence-sector-with-ai-powered-software
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: "LLM-driven malware: queries remote LLM at runtime to generate OS commands (just-in-time)"
+technique_summary: "Python/PyInstaller data miner queries Hugging Face API
+  (Qwen2.5-Coder-32B-Instruct) to generate one-line Windows recon and document-collection commands,
+  executes them, exfiltrates. Masquerades as image-generation tool. GTIG: first observed malware
+  querying LLM in live ops."
+initial_access: Phishing emails with ZIP (Додаток.pdf.zip) impersonating ministry representative
+ai_tooling_and_models:
+  - Qwen2.5-Coder-32B-Instruct via Hugging Face API
+  - ~270 HF tokens per Cato analysis
+other_tooling:
+  - PyInstaller
+  - SFTP or HTTP POST exfil (variant-dependent)
+victims_and_sectors: Ukrainian government / security and defence sector
+regions:
+  - Ukraine
+attribution_or_cluster: APT28 / FROZENLAKE (GTIG); CERT-UA moderate confidence APT28
+scale_and_metrics: Observed in operations mid-2025; continued sample development with obfuscation/C2 changes
+prevention_angle: Block unexpected Hugging Face API from endpoints; detect PyInstaller 'image gen'
+  lures; app control on unexpected recon binaries
+related_magicsword_projects:
+  - LOLBAS
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Phishing delivers a ZIP attachment
+      description: The message impersonates a ministry representative.
+      kind: access
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+        - https://www.catonetworks.com/blog/cato-ctrl-threat-research-analyzing-lamehug/
+        - https://csirt.csi.cip.gov.ua/en/posts/apt28-targets-security-and-defence-sector-with-ai-powered-software
+    - id: step-2
+      title: Miner queries a hosted code model
+      description: The executable requests Windows reconnaissance and collection commands through Hugging Face.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Generated commands run on the host
+      description: The Python/PyInstaller malware executes the returned one-line commands.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Documents and information are exfiltrated
+      description: The report links the data-mining campaign to Ukrainian government targets.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0102
+    rationale: The miner generates collection commands using a hosted Qwen model.
+    source_urls: *a1

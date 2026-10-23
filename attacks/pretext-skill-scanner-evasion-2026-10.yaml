@@ -1,0 +1,73 @@
+id: pretext-skill-scanner-evasion-2026-10
+name: Pretext LLM attacker vs agent-skill scanners
+date_reported: 2026-10-05
+researcher: Tobias Kaisar, Aritra Dhar
+org: Huawei Research Zurich
+sources:
+  - url: https://arxiv.org/abs/2609.39607
+magicsword_coverage:
+  - https://x.com/_josehelps/status/2107213992989217128
+  - https://x.com/_josehelps/status/2107213992989217128
+borderline: true
+borderline_note: Academic research paper on evading skill scanners, not a real-world intrusion.
+ai_role: other
+ai_role_secondary: null
+ai_role_detail: "Research: LLM attacker crafts malicious agent skills that evade scanners"
+technique_summary: "LLM attacker wrote payloads as plain-language instructions, framed as skill
+  purpose, split across files. Evaded NVIDIA SkillSpector-style static+LLM-judge scanners up to 97%
+  vs fixed detector, 77% vs adaptive. Takeaway: scanning SKILL.md alone is insufficient; scan whole
+  bundle."
+initial_access: n/a (research)
+ai_tooling_and_models:
+  - LLM attacker
+  - agent skills / SKILL.md
+  - NVIDIA SkillSpector (evaluated)
+other_tooling: []
+victims_and_sectors: n/a (research against scanners)
+regions:
+  - Not applicable
+attribution_or_cluster: Academic (Pretext paper)
+scale_and_metrics: Up to 97% / 77% evasion rates in paper evaluation
+prevention_angle: Whole-bundle skill scanning (LOLSkills model)
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Researchers construct skill bundles
+      description: The experiment evaluates skill-scanner resistance rather than a victim intrusion.
+      kind: access
+      source_urls: &a1
+        - https://arxiv.org/abs/2609.39607
+    - id: step-2
+      title: LLM writes pretextual instructions
+      description: Payloads are framed as ordinary skill purpose and split across files.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Static and model-based scanners inspect them
+      description: Tests compare evasion against fixed and adaptive detectors.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Research measures scanner evasion
+      description: Reported evasion rates apply to the evaluated detectors and experimental settings.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: Controlled research against skill scanners, rather than a geographically located victim campaign.
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Skill-bundle text carries instructions targeting the model-based scanner.
+    source_urls: *a1
+  - id: AML.T0015
+    rationale: The research measures evasion of AI-based detectors.
+    source_urls: *a1

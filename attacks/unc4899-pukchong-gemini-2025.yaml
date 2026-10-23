@@ -1,0 +1,64 @@
+id: unc4899-pukchong-gemini-2025
+name: UNC4899 (PUKCHONG) Gemini for exploit and tooling R&D
+date_reported: 2025-11-05
+researcher: Google Threat Intelligence Group
+org: Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: DPRK UNC4899 (PUKCHONG), known for supply-chain compromise, used Gemini for code
+  development, exploit research, and tooling improvements targeting edge devices and modern
+  browsers.
+initial_access: unknown
+ai_tooling_and_models:
+  - Gemini
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: UNC4899 aka PUKCHONG; DPRK
+scale_and_metrics: unknown
+prevention_angle: Supply-chain integrity; browser/edge device patching
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Actor requests exploit research support
+      description: UNC4899 researches edge devices and modern browsers.
+      kind: access
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    - id: step-2
+      title: Gemini supports development
+      description: The model helps with code, exploit research and tooling improvements.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Existing offensive tooling is refined
+      description: The source describes development assistance to an actor known for supply-chain compromise.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Specific deployment is undisclosed
+      description: The seed does not connect each model interaction to a confirmed victim intrusion.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

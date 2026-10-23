@@ -1,0 +1,22 @@
+---
+import Layout from "./Layout.astro";
+const { frontmatter } = Astro.props;
+---
+
+<Layout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  active="patterns"
+  lastReviewed={frontmatter.last_reviewed}
+>
+  <div class="container">
+    <header class="page-heading">
+      <span class="eyebrow">CONNECTING THE DOTS</span>
+      <h1>Different attacks. Recurring patterns.</h1>
+      <p>What the evidence suggests, and what defenders can do with it.</p>
+    </header>
+    <article class="prose">
+      <slot />
+    </article>
+  </div>
+</Layout>

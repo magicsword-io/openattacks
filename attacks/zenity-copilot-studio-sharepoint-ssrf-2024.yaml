@@ -1,0 +1,62 @@
+id: zenity-copilot-studio-sharepoint-ssrf-2024
+name: Copilot Studio / Power Platform SharePoint connector SSRF (CVE-2024-38206)
+date_reported: 2024-12-01
+researcher: Zenity Labs
+org: Zenity
+sources:
+  - url: https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat
+  - url: https://nvd.nist.gov/vuln/detail/cve-2024-38206
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: SSRF in SharePoint connector used by Copilot Studio/Power Automate/Power
+  Apps/Copilot 365. Malicious agent List-folder action with attacker URL could harvest victim
+  SharePoint JWT when they connect/retry, enabling impersonation. Microsoft patched Dec 2024.
+initial_access: unknown
+ai_tooling_and_models:
+  - Microsoft Copilot Studio
+  - Power Platform SharePoint connector
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: CVE-2024-38206; multi-product impact
+prevention_angle: Patch; audit public Copilot Studio agents; least-privilege connectors
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Original victim-contact route is unspecified
+      description: The seed describes a malicious agent action and connector retry behavior.
+      kind: unknown
+      source_urls: &a1
+        - https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat
+        - https://nvd.nist.gov/vuln/detail/cve-2024-38206
+    - id: step-2
+      title: Connector uses an attacker URL
+      description: An agent List-folder action points to an attacker-controlled destination.
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: User connects or retries through the agent
+      description: The SharePoint connector follows the manipulated flow.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: SharePoint token is exposed
+      description: The reported SSRF chain can reveal a JWT that enables impersonation.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4

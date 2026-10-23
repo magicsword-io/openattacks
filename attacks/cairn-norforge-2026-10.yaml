@@ -1,0 +1,99 @@
+id: cairn-norforge-2026-10
+name: Cairn exposed panels / AIA0001–AIA0003
+date_reported: 2026-10-19
+researcher: Snorre Fagerland
+org: NorForge
+sources:
+  - url: https://norforge.com/blog/inside_cairn
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Operators run open-source Cairn harnesses that loop AI coding agents toward
+  intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose
+  binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did
+  not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal).
+initial_access: Unauthenticated web RCE / upload / deserialization / SQLi-to-RCE chains against
+  e-commerce and payment sites (task-driven); CVE-2026-75650 Magento lab tooling observed on workers
+ai_tooling_and_models:
+  - Cairn (open source AI harness)
+  - Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek
+  - Worker label claudecode_deepseek-v4.1-flash (AIA0001)
+  - pi_openrouter_deepseek (AIA0002)
+  - --dangerously-skip-permissions
+  - Agent skill .agents/skills/tsec-actions/SKILL.md (CTF leftover)
+other_tooling:
+  - Playwright
+  - PHPGGC
+  - Nmap
+  - ffuf
+  - Amass
+  - dnsrecon
+  - StyleSmuggler PoC
+  - Magento Open Source 2.4.9 lab
+  - Docker
+  - PHP
+  - Python
+  - OpenSSL
+victims_and_sectors: E-commerce / payment / merchant sites; AIA0001 mostly US, Japan, Australia;
+  AIA0002 merchant/gray-market/pharma and some African commerce; Reuters-reported one operator into
+  100+ sites
+regions:
+  - United States
+  - Japan
+  - Australia
+attribution_or_cluster: NorForge AIA0001 (Chinese language, CGI Global Limited / AS56594, high
+  confidence), AIA0002 (English, Vultr/AS20473, high), AIA0003 (AlexHost, low). Financially
+  motivated.
+scale_and_metrics: "20+ malicious exposed panels; AIA0001 1,100+ projects across 14 panels; ~10%
+  success; ~<$5/task estimate; <23h start-to-goal; TruffleHog hundreds of secrets (11% verified);
+  Censys: 24 stock Cairn panel hosts"
+prevention_angle: Default-deny / GTFOBins-style block of nmap, python, php, openssl on web servers
+  that do not need them; scan agent skills before load (LOLSkills); do not expose harness panels
+related_magicsword_projects:
+  - GTFOBins
+  - LOLSkills
+source_notes: Jose post credits Reuters for the 100+ sites figure; exact Reuters article URL not
+  captured in Typefully text.
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Operator assigns an intrusion goal
+      description: Cairn workers receive tasks against web, commerce and payment sites.
+      kind: access
+      source_urls: &a1
+        - https://norforge.com/blog/inside_cairn
+    - id: step-2
+      title: Coding agents plan and retry
+      description: The harness loops Claude Code or other agent backends toward the goal.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Existing exploitation tools run
+      description: Workers attempt web RCE, upload and related exploitation chains.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Some tasks obtain access
+      description: The research reports roughly 10% success; exposed harness panels also revealed operator
+        tasks and secrets.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: Reported target geography includes the United States, Japan and Australia. Canada
+  appeared in task text and African commerce was suggested by hints; those unconfirmed locations are
+  excluded from country counts.
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

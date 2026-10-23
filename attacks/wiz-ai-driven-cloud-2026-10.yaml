@@ -1,0 +1,77 @@
+id: wiz-ai-driven-cloud-2026-10
+name: Wiz CIRT AI-driven multi-cloud intrusions
+date_reported: 2026-10-19
+researcher: Eden Abergil, Zohar Kaplan, Kurt Giacchino
+org: Wiz CIRT
+sources:
+  - url: https://www.wiz.io/blog/anatomy-of-ai-driven-cloud-attacks
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "AI agent ran full cloud operations: initial access, credential theft, pivots
+  across GCP/AWS/K8s/CI-CD/IdP, debugging its own scripts. Loud (thousands of actions/hour),
+  pentest-named resources, numeric task IDs with -b/-c retries, commented generated scripts. Lived
+  off SSM, SA token minting, IdP admin creation, GitOps manifests, runner-log exfil."
+initial_access: Confirmed Java RCE in exposed Kafka UI among multiple probed doors; same source IP
+  scanned 600+ other Wiz customer environments
+ai_tooling_and_models:
+  - "Unnamed AI agent system (Wiz: agent ran the whole operation)"
+other_tooling:
+  - Kafka UI exploit
+  - SSM
+  - GCP SA token creation
+  - IdP admin APIs
+  - CI/CD pipelines
+  - GitOps/K8s manifests
+  - webhook.site
+  - IMDS credential harvest
+victims_and_sectors: Large multi-cloud organization (Wiz customer); opportunistic scanning across many other customers
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: Hundreds–thousands of actions per hour; 600+ environments scanned from same IP
+prevention_angle: Unify multi-platform logs; runtime visibility on runners/VMs/pods; restrict
+  cross-system trust; rotate credentials on compromise; correlate loud agent tells (pentest-
+  prefixes, task IDs)
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Exposed Kafka UI is exploited
+      description: The report confirms a Java RCE route among multiple probed entry points.
+      kind: access
+      source_urls: &a1
+        - https://www.wiz.io/blog/anatomy-of-ai-driven-cloud-attacks
+    - id: step-2
+      title: Agent executes and debugs cloud operations
+      description: The automation generates and retries scripts at high volume.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Credentials enable cross-service pivots
+      description: Reported paths span cloud accounts, Kubernetes, identity and CI/CD.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Data leaves through operational channels
+      description: The research describes runner-log exfiltration and abuse of legitimate cloud-management
+        capabilities.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

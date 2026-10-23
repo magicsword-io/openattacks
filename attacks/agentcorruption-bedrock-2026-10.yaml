@@ -1,0 +1,75 @@
+id: agentcorruption-bedrock-2026-10
+name: AgentCorruption (AWS Bedrock AgentCore IMDS)
+date_reported: 2026-10-08
+researcher: Tamir Ishay Sharbat, Lana Salameh, Dmitry Lozovoy
+org: Zenity Labs
+sources:
+  - url: https://labs.zenity.io/post/agentcorruption-how-a-single-prompt-collapsed-the-entire-cloud-security-model
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "Chat prompt to public AgentCore agent abused tools that could HTTP/shell to IMDS
+  169.254.169.254, stealing execution-role credentials. Default role was region-wide across
+  AgentCore: invoke other agents, read conversations/memories, pull images, Secrets Manager /
+  AgentCore Identity, plant persistent memory hijacks. AWS tightened IMDSv2 defaults and narrowed
+  default role."
+initial_access: Prompt injection / SSRF via agent tools against exposed AgentCore agent
+ai_tooling_and_models:
+  - AWS Bedrock AgentCore
+other_tooling:
+  - IMDS / IMDSv2
+  - AWS Secrets Manager
+  - ECR
+victims_and_sectors: Organizations deploying AgentCore agents (research disclosure; patched)
+regions:
+  - unknown
+attribution_or_cluster: Vulnerability research (Zenity at SecTor)
+scale_and_metrics: Single prompt to one agent → account/region AgentCore blast radius (pre-fix)
+prevention_angle: Least-privilege agent IAM; IMDSv2; agent's role is its blast radius
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Public agent receives a prompt
+      description: An exposed AWS AgentCore agent accepts attacker input.
+      kind: access
+      source_urls: &a1
+        - https://labs.zenity.io/post/agentcorruption-how-a-single-prompt-collapsed-the-entire-cloud-security-model
+    - id: step-2
+      title: Agent tools reach metadata
+      description: Prompt injection abuses HTTP or shell tools to query the instance metadata service.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Execution credentials are exposed
+      description: The response discloses the agent execution-role credentials.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Broader agent access
+      description: The role can reach other agents, memories and connected services; persistent memory
+        hijacks are described.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.000
+    rationale: A prompt sent directly to the public agent redirects its tool use.
+    source_urls: *a1
+  - id: AML.T0055
+    rationale: The metadata response exposes execution-role credentials.
+    source_urls: *a1
+  - id: AML.T0080.000
+    rationale: The source describes persistent memory hijacks.
+    source_urls: *a1

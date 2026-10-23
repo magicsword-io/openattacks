@@ -1,0 +1,105 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ViewTabs from "../components/ViewTabs.astro";
+import CommunityBanner from "../components/CommunityBanner.astro";
+import RegionMap from "../components/RegionMap.astro";
+import { getAttacks, href } from "../lib/catalog";
+import { regionMetadata } from "../lib/geography";
+const attacks = await getAttacks();
+const counts = new Map<string, number>();
+attacks.forEach((attack) =>
+  new Set(attack.regions).forEach((region) =>
+    counts.set(region, (counts.get(region) || 0) + 1),
+  ),
+);
+const known = [...counts]
+  .filter(([region]) => regionMetadata[region])
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const localized = attacks.filter((attack) =>
+  attack.regions.some((region) => regionMetadata[region]),
+).length;
+const unknown = counts.get("unknown") || 0;
+const multi = counts.get("Multiple regions") || 0;
+const na = counts.get("Not applicable") || 0;
+---
+
+<Layout title="Target Geography — AI Attacks" active="catalog">
+  <div class="container">
+    <header class="page-heading">
+      <span class="eyebrow">THE GEOGRAPHY OF REPORTED ATTACKS</span>
+      <h1>A global view. Grounded in evidence.</h1>
+      <p>
+        Target locations, normalized across the catalog. Actor origins, hosting
+        infrastructure and sandbox submissions do not become victim locations.
+      </p>
+    </header>
+    <ViewTabs active="regions" />
+    <div class="geography-stats">
+      <div>
+        <strong>{localized}</strong>
+        <span>Entries with named geography</span>
+      </div>
+      <a
+        href={`${href("catalog/")}?region=${encodeURIComponent("Multiple regions")}`}
+      >
+        <strong>{multi}</strong>
+        <span>Multiple regions, countries unspecified</span>
+      </a>
+      <a href={`${href("catalog/")}?region=unknown`}>
+        <strong>{unknown}</strong>
+        <span>Geography not disclosed</span>
+      </a>
+      <a
+        href={`${href("catalog/")}?region=${encodeURIComponent("Not applicable")}`}
+      >
+        <strong>{na}</strong>
+        <span>No geographical victim context</span>
+      </a>
+    </div>
+    <div class="region-map-layout">
+      <RegionMap attacks={attacks} />
+      <aside class="location-index">
+        <div class="section-title">
+          <h2>Reported locations</h2>
+          <span class="eyebrow">ENTRIES</span>
+        </div>
+        {known.map(([region, count]) => (
+          <a
+            class="location-row"
+            href={`${href("catalog/")}?region=${encodeURIComponent(region)}`}
+          >
+            <span>
+              <i></i>
+              {region}
+              {regionMetadata[region].kind === "region" && (
+                <small>Country unspecified</small>
+              )}
+            </span>
+            <strong class="mono">
+              {count}
+              <span>↗</span>
+            </strong>
+          </a>
+        ))}
+        <p>
+          One entry can name several locations. Counts describe reports, not
+          victim totals or regional risk.
+        </p>
+      </aside>
+    </div>
+    <aside class="geography-methodology">
+      <h2>Unknown stays unknown.</h2>
+      <p>
+        {unknown} of {attacks.length} entries do not disclose target geography.
+        Unspecified multi-country activity stays “Multiple regions.” For
+        example, a Chinese-speaking actor or a Hong Kong server does not
+        establish a victim in China or Hong Kong. Removed and uncertain labels
+        remain explained in each entry’s geography notes.
+      </p>
+      <a class="text-link accent" href={href("about/#methodology")}>
+        Read the methodology →
+      </a>
+    </aside>
+    <CommunityBanner />
+  </div>
+</Layout>

@@ -1,0 +1,51 @@
+id: fraudgpt-underground-2023
+name: FraudGPT underground malicious LLM offering
+date_reported: 2023-07-25
+researcher: Industry reporting (Wired et al.)
+org: Underground market
+sources:
+  - url: https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
+magicsword_coverage: []
+borderline: true
+borderline_note: Marketplace claim; authenticity doubted by some researchers (Check Point).
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Advertised as AI for undetectable malware, vuln discovery, phishing kits, and
+  scam content. Seller also promoted related 'dark' LLM brands.
+initial_access: unknown
+ai_tooling_and_models:
+  - FraudGPT (claimed)
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: underground marketplace
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Seller advertises an underground tool
+      description: Marketplace posts promote FraudGPT and related brands.
+      kind: access
+      source_urls: &a1
+        - https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
+    - id: step-2
+      title: Unrestricted AI capabilities are claimed
+      description: The seller markets phishing, malware and vulnerability-discovery assistance.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Authenticity and deployment are uncertain
+      description: The supplied record documents claims and researcher skepticism, not a verified victim chain.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3

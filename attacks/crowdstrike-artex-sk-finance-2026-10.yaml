@@ -1,0 +1,76 @@
+id: crowdstrike-artex-sk-finance-2026-10
+name: ARTEX + Claude Code vs South Korean finance
+date_reported: 2026-10-07
+researcher: CrowdStrike Intelligence
+org: CrowdStrike
+sources:
+  - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Likely Chinese-speaking financially motivated actor used open-source Chinese
+  agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories
+  held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via
+  xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX
+  later went closed-source.
+initial_access: "unknown (industry reports: loan inquiry service; employee mobile work-support system)"
+ai_tooling_and_models:
+  - ARTEX
+  - Claude Code
+  - DeepSeek v4.1-flash via xcai.pro
+  - GLM-5.3
+  - Grok 4.6
+other_tooling:
+  - Proxy IPs listed in CrowdStrike IOC table
+victims_and_sectors: South Korean financial organizations (multiple banks per industry reports)
+regions:
+  - South Korea
+attribution_or_cluster: Unnamed; likely Chinese speaker, financially motivated (moderate
+  confidence). Personal details YY / @YY520CN in resume prompt not confirmed.
+scale_and_metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
+prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Initial access is not established
+      description: The supplied entry does not confirm the initial intrusion route.
+      kind: unknown
+      source_urls: &a1
+        - https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+    - id: step-2
+      title: ARTEX and Claude Code assist operations
+      description: The actor uses an agentic pentest suite and coding-agent tooling.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Agents support financial-sector attacks
+      description: Open directories exposed sessions, configurations and model use tied to South Korean
+        financial targets.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Actor discusses selling breach data
+      description: Claude session material includes questions about selling Korean breach data; identities
+        remain unconfirmed.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: South Korea describes victim financial organizations. Chinese language concerns actor
+  attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

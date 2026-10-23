@@ -1,0 +1,72 @@
+id: unc1069-gemini-deepfake-crypto-2025
+name: UNC1069 (MASAN) Gemini misuse + deepfake Zoom lures
+date_reported: 2025-11-05
+researcher: Google Threat Intelligence Group
+org: Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: DPRK-linked UNC1069 used Gemini for crypto recon, wallet path research, Spanish
+  lure text, and credential-theft 'update' instructions. Separately used deepfake images/video of
+  crypto industry figures to push malicious 'Zoom SDK' links delivering BIGMACHO backdoor.
+initial_access: Social engineering / deepfake lures with malicious Zoom SDK download
+ai_tooling_and_models:
+  - Gemini
+  - deepfake image/video
+other_tooling:
+  - BIGMACHO backdoor
+  - fake Zoom SDK
+victims_and_sectors: Cryptocurrency users/industry
+regions:
+  - unknown
+attribution_or_cluster: UNC1069 aka MASAN; DPRK-associated
+scale_and_metrics: unknown
+prevention_angle: Verify Zoom/SDK downloads; deepfake skepticism; block unofficial SDKs
+related_magicsword_projects:
+  - LOLRMM
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Actor prepares cryptocurrency operations
+      description: The report describes two related capability areas without proving a single combined chain.
+      kind: access
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    - id: step-2
+      title: Gemini assists research and lure text
+      description: Requests cover cryptocurrency reconnaissance, wallet paths and Spanish-language messages.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Separate deepfake Zoom lure
+      description: Deepfake images or video impersonate cryptocurrency industry figures.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Malicious Zoom SDK delivers BIGMACHO
+      description: The separately reported social-engineering branch leads to a backdoor download.
+      kind: execution
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+      label: Model assistance
+    - source: step-1
+      target: step-3
+      label: Separate reported lure
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0088
+    rationale: A separately reported lure uses deepfake industry figures.
+    source_urls: *a1
+  - id: AML.T0016.002
+    rationale: Gemini supports cryptocurrency research and lure writing.
+    source_urls: *a1

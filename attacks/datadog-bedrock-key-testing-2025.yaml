@@ -1,0 +1,65 @@
+id: datadog-bedrock-key-testing-2025
+name: Exposed AWS keys mass-tested for Bedrock LLMjacking
+date_reported: 2025-06-01
+researcher: Datadog Security Labs
+org: Datadog
+sources:
+  - url: https://securitylabs.datadoghq.com/articles/beyond-valid-credentials-how-exposed-aws-keys-are-tested-for-amazon-bedrock-access/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Datadog documents automated testing of exposed AWS keys specifically for Amazon
+  Bedrock access (ListFoundationModels / Invoke / Converse patterns), showing LLMjacking
+  reconnaissance at internet scale beyond generic AWS abuse.
+initial_access: unknown
+ai_tooling_and_models:
+  - Amazon Bedrock
+other_tooling:
+  - Stolen AKIA keys
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Secret scanning; CloudTrail detections for Bedrock enum+invoke from unexpected keys
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Exposed AWS keys are collected
+      description: Attackers obtain credentials exposed outside the legitimate account boundary.
+      kind: access
+      source_urls: &a1
+        - https://securitylabs.datadoghq.com/articles/beyond-valid-credentials-how-exposed-aws-keys-are-tested-for-amazon-bedrock-access/
+    - id: step-2
+      title: Automated key tests run
+      description: Requests check model listing, invocation and conversation permissions.
+      kind: execution
+      source_urls: *a1
+    - id: step-3
+      title: Bedrock access is identified
+      description: Testing distinguishes keys that can use model inference services.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Per-key abuse is not quantified
+      description: The supplied entry establishes reconnaissance at scale, rather than a bill or victim
+        count for every key.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0012
+    rationale: Exposed AWS credentials are tested for model-service access.
+    source_urls: *a1
