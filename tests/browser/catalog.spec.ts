@@ -382,6 +382,17 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
     "DeviceProcessEvents",
   );
+  await page.locator(".hunt-code:not(.mcp-brief)").focus();
+  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toBeFocused();
+  for (const theme of ["dark", "light"]) {
+    if (theme === "light")
+      await page.getByRole("button", { name: "Switch to light mode" }).click();
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(result.violations, `${theme} native query`).toEqual([]);
+  }
+  await page.getByRole("button", { name: "Switch to dark mode" }).click();
   await page.getByRole("tab", { name: "SPL", exact: true }).click();
   await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
     "EventCode=1",
@@ -421,8 +432,12 @@ test("network stages expose scoped policy opportunities and all three hunt forma
 test("mobile stage navigation and unmapped evidence remain usable", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+  await page.setViewportSize({ width: 768, height: 1024 });
   await page.goto("/attacks/cairn-norforge-2026-10/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await expect(page.locator(".react-flow")).toHaveCount(0);
+  await expect(page.locator(".mobile-network-stages > li")).toHaveCount(4);
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
   await page
     .getByRole("button", {

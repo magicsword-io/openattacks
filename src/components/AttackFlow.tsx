@@ -182,7 +182,7 @@ export default function AttackFlow({
     null,
   );
   useEffect(() => {
-    const query = matchMedia("(max-width: 680px)");
+    const query = matchMedia("(max-width: 900px)");
     const sync = () => setMobile(query.matches);
     sync();
     query.addEventListener("change", sync);

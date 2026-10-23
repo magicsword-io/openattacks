@@ -280,7 +280,7 @@ export default function StageInspector({
                     text={guidance.queries[format]}
                     label={`Copy ${formats.find((f) => f.id === format)!.label}`}
                   />
-                  <pre className="hunt-code">
+                  <pre className="hunt-code" tabIndex={0}>
                     <code>{guidance.queries[format]}</code>
                   </pre>
                 </div>
@@ -309,7 +309,7 @@ export default function StageInspector({
                 text={guidance.mcp_prompt}
                 label="Copy MCP research brief"
               />
-              <pre className="hunt-code mcp-brief">
+              <pre className="hunt-code mcp-brief" tabIndex={0}>
                 <code>{guidance.mcp_prompt}</code>
               </pre>
             </details>
