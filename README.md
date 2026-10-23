@@ -2,6 +2,8 @@
 
 How attackers actually use AI, sourced and mapped to prevention. A community-maintained MagicSword catalog built with Astro, one YAML file per entry, and static JSON/CSV exports.
 
+**Live site:** [ai-attacks.vercel.app](https://ai-attacks.vercel.app/) · [LLM guide](https://ai-attacks.vercel.app/llms.txt) · [JSON catalog](https://ai-attacks.vercel.app/api/attacks.json)
+
 ## Run locally
 
 Requires Node **22.22.0 or newer**.
