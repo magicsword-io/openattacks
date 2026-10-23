@@ -3,36 +3,26 @@ import { href } from "../lib/catalog";
 import Icon from "./Icon.astro";
 ---
 
-<section class="agent-access" aria-labelledby="agent-access-title">
-  <div class="agent-access-intro">
-    <span class="eyebrow accent">
-      <Icon name="terminal" size={14} /> FOR AI ASSISTANTS
-    </span>
+<section
+  class="agent-access agent-access-compact"
+  aria-labelledby="agent-access-title"
+>
+  <div>
     <h2 id="agent-access-title">Give your AI the evidence.</h2>
     <p>
-      Start with one context file. Explore every attack, source, flow and ATLAS
-      mapping without scraping the site.
+      Complete source records, flows and draft hunts. Regenerated on every
+      build.
     </p>
   </div>
   <div class="agent-access-resources">
-    <a class="agent-file primary-agent-file" href={href("llms.txt")}>
-      <Icon name="code" size={19} />
-      <div>
-        <strong>llms.txt</strong>
-        <span>Start here · catalog guide & data links</span>
-      </div>
-      <Icon name="arrow" size={15} />
-    </a>
     <div class="agent-file-links">
-      <a href={href("llms-full.txt")}>
-        Full Markdown catalog <Icon name="arrow" size={12} />
+      <a href={href("llms.txt")}>
+        llms.txt <Icon name="arrow" size={12} />
       </a>
-      <a href={href("api/attacks.json")}>
-        JSON API <Icon name="arrow" size={12} />
-      </a>
-      <a href={href("api/schema.json")}>
-        Schema <Icon name="arrow" size={12} />
-      </a>
+      <a href={href("api/attacks.json")}>JSON</a>
+      <a href={href("api/attacks.csv")}>CSV</a>
+      <a href={href("llms-full.txt")}>Full context</a>
+      <a href={href("api/schema.json")}>Schema</a>
     </div>
     <button
       class="copy-context-button text-link"

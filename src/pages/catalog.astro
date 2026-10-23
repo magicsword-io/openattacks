@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Catalog from "../components/Catalog.astro";
-import CommunityBanner from "../components/CommunityBanner.astro";
 import { getAttacks } from "../lib/catalog";
 const attacks = await getAttacks();
 ---
@@ -9,14 +8,13 @@ const attacks = await getAttacks();
 <Layout title="Attack Catalog — AI Attacks">
   <div class="container">
     <header class="page-heading">
-      <span class="eyebrow">THE OPEN INTELLIGENCE INDEX</span>
-      <h1>The evidence, in one place.</h1>
+      <span class="eyebrow">THE ATTACK CATALOG</span>
+      <h1>Find the attack paths that matter to you.</h1>
       <p>
-        Explore how AI fits into real attack paths. Search the source-backed
-        catalog by technique, model, region, and the role AI played.
+        Start with your environment. Follow the evidence, then explore the
+        controls and hunts at each stage.
       </p>
     </header>
     <Catalog attacks={attacks} />
-    <CommunityBanner />
   </div>
 </Layout>

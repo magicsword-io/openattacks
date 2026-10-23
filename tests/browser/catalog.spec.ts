@@ -3,6 +3,10 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Attack } from "../../src/lib/catalog";
 
+const browse = JSON.parse(
+  readFileSync(new URL("../../dist/api/catalog.json", import.meta.url), "utf8"),
+);
+
 const attacks: Attack[] = JSON.parse(
   readFileSync(new URL("../../dist/api/attacks.json", import.meta.url), "utf8"),
 );
@@ -35,8 +39,9 @@ test("role and year filters survive reload and reset pagination", async ({
     `Showing 11–20 of ${attacks.length} entries`,
   );
   await page
-    .getByRole("combobox", { name: "Filter by AI role", exact: true })
+    .getByRole("combobox", { name: "Filter by attack pattern", exact: true })
     .selectOption("ai_tool_as_lure");
+  await page.getByRole("button", { name: "More filters" }).click();
   await page
     .getByRole("combobox", { name: "Filter by year", exact: true })
     .selectOption("2024");
@@ -56,40 +61,54 @@ test("role and year filters survive reload and reset pagination", async ({
   );
 });
 
-test("all advanced filters and region filters narrow the real data", async ({
+test("environment and evidence filters use the browse index and can be removed separately", async ({
   page,
 }) => {
-  const sample = attacks.find(
-    (a) => a.related_magicsword_projects.length && a.regions[0] !== "unknown",
-  )!;
-  await page.goto("/catalog/");
-  await page
-    .getByRole("combobox", { name: "Filter by region", exact: true })
-    .selectOption(sample.regions[0]);
-  await page.getByRole("button", { name: "More filters" }).click();
-  await page
-    .getByLabel("AI model or tool")
-    .selectOption(sample.ai_tooling_and_models[0]);
-  await page
-    .getByLabel("Victim / sector")
-    .selectOption(sample.victims_and_sectors);
-  await page
-    .getByLabel("Related project")
-    .selectOption(sample.related_magicsword_projects[0]);
-  await page
-    .getByRole("combobox", { name: "Filter by confidence", exact: true })
-    .selectOption("unassessed");
-  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(1);
-  await expect(page.locator("[data-attack-row]:visible")).toHaveAttribute(
-    "data-id",
-    sample.id,
+  await page.goto("/catalog/?environment=windows&evidence=campaign");
+  const expected = browse.entries.filter(
+    (a: { environments: string[]; evidence: string }) =>
+      a.environments.includes("windows") && a.evidence === "campaign",
   );
+  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
+    Math.min(10, expected.length),
+  );
+  const ids = await page
+    .locator("[data-attack-row]:visible")
+    .evaluateAll((rows) => rows.map((row) => row.getAttribute("data-id")));
+  expect(
+    ids.every((id) => expected.some((a: { id: string }) => a.id === id)),
+  ).toBe(true);
   await page
-    .getByRole("combobox", { name: "Filter by confidence", exact: true })
-    .selectOption("high");
+    .getByRole("button", { name: "Remove filter: Windows", exact: true })
+    .click();
   await expect(
-    page.getByRole("heading", { name: "No matching attacks" }),
-  ).toBeVisible();
+    page.getByRole("combobox", { name: "Filter by environment" }),
+  ).toHaveValue("");
+  await expect(
+    page.getByRole("combobox", { name: "Filter by evidence type" }),
+  ).toHaveValue("campaign");
+  await expect(page).toHaveURL(/evidence=campaign/);
+  await page.reload();
+  await expect(
+    page.getByRole("combobox", { name: "Filter by evidence type" }),
+  ).toHaveValue("campaign");
+  await page.getByRole("button", { name: "More filters" }).click();
+  await expect(
+    page.getByRole("combobox", { name: "Filter by confidence" }),
+  ).toHaveCount(0);
+  await expect(page.getByLabel("Related project")).toHaveCount(0);
+  expect(
+    await page
+      .getByLabel("Model / platform")
+      .locator("option")
+      .evaluateAll((options) =>
+        options.every(
+          (option) =>
+            !option.getAttribute("value") ||
+            option.getAttribute("value")!.startsWith("platform:"),
+        ),
+      ),
+  ).toBe(true);
 });
 
 test("date sort starts with the oldest entry and month precision is preserved", async ({
@@ -104,7 +123,9 @@ test("date sort starts with the oldest entry and month precision is preserved", 
   ).toHaveAttribute("data-id", "unit42-android-chatgpt-malware-2023");
   await page.goto("/attacks/cl-unk-1211-unit42-2026-10/");
   await expect(page.locator(".entry-meta time")).toHaveText("October 2026");
-  await expect(page.getByText("October 2026 (month only)")).toBeVisible();
+  await expect(
+    page.locator(".entry-meta").getByText(/October 2026 \(month only\)/),
+  ).toBeVisible();
 });
 
 test("timeline filters match the source records", async ({ page }) => {
@@ -125,7 +146,7 @@ test("platform and sector groups match descriptions across different source labe
   await page.goto("/catalog/");
   await page.getByRole("button", { name: "More filters" }).click();
   await page
-    .getByLabel("AI model or tool")
+    .getByLabel("Model / platform")
     .selectOption("platform:claude-code");
   const claudeCount = attacks.filter((a) =>
     /claude[ -]?code/i.test(a.ai_tooling_and_models.join(" ")),
@@ -133,8 +154,10 @@ test("platform and sector groups match descriptions across different source labe
   await expect(page.locator("[data-results-count]")).toHaveText(
     `Found ${claudeCount} entries of ${attacks.length}`,
   );
-  await page.getByLabel("AI model or tool").selectOption("");
-  await page.getByLabel("Victim / sector").selectOption("category:government");
+  await page.getByLabel("Model / platform").selectOption("");
+  await page
+    .getByRole("combobox", { name: /^Sector/ })
+    .selectOption("category:government");
   const governmentCount = attacks.filter((a) =>
     /government|state-affiliated|diplomat|public sector/i.test(
       a.victims_and_sectors,
@@ -143,10 +166,12 @@ test("platform and sector groups match descriptions across different source labe
   await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
     Math.min(10, governmentCount),
   );
-  await page.getByLabel("Victim / sector").selectOption("");
-  await page.getByLabel("Evidence type").selectOption("research");
+  await page.getByRole("combobox", { name: /^Sector/ }).selectOption("");
+  await page
+    .getByRole("combobox", { name: "Filter by evidence type" })
+    .selectOption("research");
   await expect(page.locator("[data-results-count]")).toHaveText(
-    `Found ${attacks.filter((attack) => attack.borderline).length} entries of ${attacks.length}`,
+    `Found ${browse.entries.filter((entry: { evidence: string }) => entry.evidence === "research").length} entries of ${attacks.length}`,
   );
 });
 
@@ -279,6 +304,8 @@ test("entry flows render with sources and controls; removed sections stay absent
     .getByText("Read the flow as text & sources", { exact: true })
     .click();
   await expect(page.locator(".flow-text li")).toHaveCount(4);
+  await expect(page.locator(".stage-inspector")).toHaveCount(0);
+  await page.locator(".technical-details > summary").click();
   await expect(
     page.getByRole("heading", { name: "MITRE ATLAS" }),
   ).toBeVisible();
@@ -328,6 +355,14 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     "data-stage-id",
     "step-3",
   );
+  await expect(
+    page.getByRole("tab", { name: "Evidence", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".stage-evidence a").first()).toHaveAttribute(
+    "href",
+    "#source-1",
+  );
+  await page.getByRole("tab", { name: "Prevent", exact: true }).click();
   await expect(page.locator(".stage-control")).toContainText(
     "PREVENT WITH MAGICSWORD",
   );
@@ -336,18 +371,26 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     "href",
     "https://www.magicsword.io/use-cases/application-control",
   );
+  await expect(page.locator(".policy-prerequisite")).toContainText(
+    "enforced Windows policy",
+  );
+  await page.getByRole("tab", { name: /Hunt/ }).click();
   await page
     .getByText("Explore Sigma, KQL & SPL starters", { exact: false })
     .click();
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("DeviceProcessEvents");
+  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+    "DeviceProcessEvents",
+  );
   await page.getByRole("tab", { name: "SPL", exact: true }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("EventCode=1");
+  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+    "EventCode=1",
+  );
   await page.getByRole("tab", { name: "SPL", exact: true }).press("ArrowRight");
   await expect(
     page.getByRole("tab", { name: "Sigma", exact: true }),
   ).toBeFocused();
-  await expect(page.getByRole("tabpanel")).toContainText(
+  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
     "status: experimental",
   );
   await page
@@ -357,9 +400,18 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     })
     .click();
   await expect(page.locator(".stage-control")).toHaveCount(0);
+  await page.getByRole("tab", { name: "Prevent", exact: true }).click();
   await expect(page.locator(".stage-no-control")).toContainText(
-    "No direct MagicSword prevention claim",
+    "No MagicSword execution-policy opportunity is mapped",
   );
+  await page.getByRole("button", { name: "Close stage details" }).click();
+  await expect(page.locator(".stage-inspector")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", {
+      name: "View stage 1: Custom GPT attracts a user",
+      exact: true,
+    }),
+  ).toBeFocused();
   const pack = await request.get(
     "/api/defenses/huntress-plus56-custom-gpt-clickfix-2026-09.json",
   );
@@ -382,6 +434,13 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
     "data-stage-id",
     "step-2",
   );
+  await expect(page.locator(".react-flow")).toHaveCount(0);
+  await expect(page.locator(".mobile-network-stages > li")).toHaveCount(4);
+  await expect(page.locator(".mobile-stage-connections button")).toHaveCount(
+    attacks.find((a) => a.id === "cairn-norforge-2026-10")!.attack_flow!.edges
+      .length,
+  );
+  await page.getByRole("tab", { name: /Hunt/ }).click();
   await expect(page.locator(".stage-hunt")).toContainText(
     "Provider / operator records",
   );
@@ -392,8 +451,97 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   ).toBe(true);
   await page.goto("/attacks/wormgpt-underground-2023/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await page.locator(".network-stage-picker button").first().click();
+  await page.getByRole("tab", { name: /Hunt/ }).click();
   await expect(page.locator(".stage-hunt")).toContainText(
     "No source-backed runtime hunt yet",
   );
   await expect(page.locator(".stage-query-details")).toHaveCount(0);
+  await page.goto("/attacks/c2agent-unit42-2026-10/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await expect(
+    page
+      .locator(".mobile-stage-connections button")
+      .filter({ hasText: "Repeats to" }),
+  ).toHaveCount(1);
+  await expect(page.locator(".mobile-stage-connections button")).toHaveCount(
+    attacks.find((a) => a.id === "c2agent-unit42-2026-10")!.attack_flow!.edges
+      .length,
+  );
+  await page.goto("/attacks/apex-accelerator-ref8801-2026-10/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await expect(page.locator(".mobile-stage-connections button")).toHaveCount(
+    attacks.find((a) => a.id === "apex-accelerator-ref8801-2026-10")!
+      .attack_flow!.edges.length,
+  );
+  await expect(page.locator(".mobile-policy-link").first()).toHaveAttribute(
+    "href",
+    "https://www.magicsword.io/use-cases/application-control",
+  );
+});
+
+test("landing page offers a short path to filtered entries while keeping the timeline", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(page.locator("[data-dot-chart]")).toBeVisible();
+  await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
+  await expect(page.locator("[data-catalog]")).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: `Browse ${attacks.length} attack paths` }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Windows", exact: true }).click();
+  await expect(
+    page.getByRole("combobox", { name: "Filter by environment" }),
+  ).toHaveValue("windows");
+  await expect(page.locator("[data-attack-row]:visible").first()).toContainText(
+    "Windows",
+  );
+});
+
+test("qualifications stay before the diagram and custom schema guidance stays explicit", async ({
+  page,
+}) => {
+  await page.goto("/attacks/ghostaction-ai-creds-2026-10/");
+  await expect(page.locator(".entry-qualification")).toBeVisible();
+  expect(
+    await page.evaluate(() => {
+      const qualification = document.querySelector(".entry-qualification")!;
+      const flow = document.querySelector("#attack-flow")!;
+      return !!(
+        qualification.compareDocumentPosition(flow) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      );
+    }),
+  ).toBe(true);
+  await expect(page.locator(".technical-details")).not.toHaveAttribute(
+    "open",
+    "",
+  );
+  await page.goto("/attacks/cairn-norforge-2026-10/");
+  await page
+    .getByRole("button", {
+      name: "View stage 2: Coding agents plan and retry",
+      exact: true,
+    })
+    .click();
+  await page.getByRole("tab", { name: /Hunt/ }).click();
+  await expect(page.locator(".stage-query-details > summary")).toContainText(
+    "custom schema",
+  );
+  await expect(page.locator(".stage-query-details > summary")).toContainText(
+    "Requires log collection and field mapping",
+  );
+  await page.locator(".stage-query-details > summary").click();
+  await page.getByRole("tab", { name: "KQL", exact: true }).click();
+  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+    "AI_AttacksAudit_CL",
+  );
+  for (const name of ["Evidence", "Prevent", "Hunt"]) {
+    await page.getByRole("tab", { name: new RegExp(`^${name}`) }).click();
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(result.violations, name).toEqual([]);
+  }
 });

@@ -16,6 +16,7 @@ export const GET: APIRoute = async ({ site, url }) => {
       "## Start here",
       `- [Complete Markdown context](${absolute("llms-full.txt")}): all entries, sources, flow nodes and edges, geography notes, and ATLAS annotations.`,
       `- [Complete JSON catalog](${absolute("api/attacks.json")}): a JSON array of the same public YAML records; load and filter locally.`,
+      `- [Normalized browse index](${absolute("api/catalog.json")}): concise editorial summaries, target environments, canonical platform groups, and qualified evidence classes; original records are preserved in the complete catalog.`,
       `- [Public JSON Schema](${absolute("api/schema.json")}): exact fields, types, enums and validation rules.`,
       `- [CSV catalog](${absolute("api/attacks.csv")}): spreadsheet-friendly export.`,
       `- [ATLAS technique index](${absolute("api/atlas.json")}): official technique names and links used by catalog annotations.`,

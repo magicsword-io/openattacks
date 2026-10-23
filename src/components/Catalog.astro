@@ -10,57 +10,38 @@ import {
   platformGroups,
   sectorGroups,
 } from "../lib/catalog";
+import { present, environments, evidenceTypes } from "../lib/presentation";
 import Icon from "./Icon.astro";
-import RoleBadge from "./RoleBadge.astro";
 import ViewTabs from "./ViewTabs.astro";
-const { attacks, home = false } = Astro.props as {
-  attacks: Attack[];
-  home?: boolean;
-};
-const years = [
-  ...new Set(attacks.map((attack) => attack.date_reported.slice(0, 4))),
-]
+const { attacks } = Astro.props as { attacks: Attack[] };
+const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
   .sort()
   .reverse();
-const options = (
-  field: "regions" | "ai_tooling_and_models" | "related_magicsword_projects",
-) =>
-  [...new Set(attacks.flatMap((attack) => attack[field]))].sort((a, b) =>
-    a.localeCompare(b),
-  );
-const sectors = [
-  ...new Set(attacks.map((attack) => attack.victims_and_sectors)),
-].sort();
-const toolLabel = (tool: string) =>
-  tool
-    .replace(/ \(.*$/, "")
-    .replace(/ CLI.*$/, "")
-    .replace(/ via .*$/, "")
-    .replace("Fake ", "");
+const regions = [...new Set(attacks.flatMap((a) => a.regions))].sort();
+const populatedEnvironments = new Set(
+  attacks.flatMap((a) => present(a).environments),
+);
+const populatedEvidence = new Set(attacks.map((a) => present(a).evidence));
+const hasConfidence = attacks.some((a) => a.confidence);
 ---
 
-<section id="catalog" class="catalog-section" data-catalog data-home={home}>
+<section id="catalog" class="catalog-section catalog-focused" data-catalog>
   <div class="catalog-heading">
-    <div>
-      <h2>
-        {home ? "Explore the catalog" : "Attack catalog"}{" "}
-        <span>{attacks.length}</span>
-      </h2>
-      <p>Real-world attacks. Primary sources. Actionable prevention.</p>
-    </div>
+    <p class="catalog-count">
+      {attacks.length} sourced entries · campaigns, vulnerabilities & research
+    </p>
     <details class="export-menu">
       <summary class="button">
-        <Icon name="download" size={14} />
-        Export data
-        <Icon name="down" size={12} />
+        <Icon name="download" size={14} /> Export <Icon name="down" size={12} />
       </summary>
       <div class="export-options">
         <a href={href("api/attacks.json")} download="ai-attacks.json">
-          Download JSON <Icon name="arrow" size={12} />
+          Complete JSON
         </a>
         <a href={href("api/attacks.csv")} download="ai-attacks.csv">
-          Download CSV <Icon name="arrow" size={12} />
+          CSV
         </a>
+        <a href={href("api/catalog.json")}>Browse index</a>
       </div>
     </details>
   </div>
@@ -73,134 +54,142 @@ const toolLabel = (tool: string) =>
         type="search"
         name="q"
         id="attack-search"
-        placeholder="Search attacks, tools, researchers…"
+        placeholder="Search attacks, tools, techniques…"
         autocomplete="off"
       />
       <span class="search-shortcut">/</span>
     </label>
-    <select class="filter-select" name="role" aria-label="Filter by AI role">
-      <option value="">All AI roles</option>
-      {Object.entries(roles).map(([key, role]) => (
-        <option value={key}>{role.label}</option>
+    <select
+      class="filter-select"
+      name="environment"
+      aria-label="Filter by environment"
+    >
+      <option value="">Any environment</option>
+      {Object.entries(environments)
+        .filter(([id]) => populatedEnvironments.has(id))
+        .map(([id, label]) => (
+          <option value={id}>{label}</option>
+        ))}
+    </select>
+    <select
+      class="filter-select"
+      name="role"
+      aria-label="Filter by attack pattern"
+    >
+      <option value="">Any attack pattern</option>
+      {Object.entries(roles).map(([id, role]) => (
+        <option value={id}>{role.short}</option>
       ))}
     </select>
-    <select class="filter-select" name="year" aria-label="Filter by year">
-      <option value="">All years</option>
-      {years.map((year) => (
-        <option value={year}>{year}</option>
-      ))}
-    </select>
-    <select class="filter-select" name="region" aria-label="Filter by region">
-      <option value="">All regions</option>
-      {options("regions").map((region) => (
-        <option value={region}>{region}</option>
-      ))}
+    <select
+      class="filter-select"
+      name="evidence"
+      aria-label="Filter by evidence type"
+    >
+      <option value="">Any evidence type</option>
+      {Object.entries(evidenceTypes)
+        .filter(([id]) => populatedEvidence.has(id))
+        .map(([id, label]) => (
+          <option value={id}>{label}</option>
+        ))}
     </select>
     <button
       class="button more-filters"
       aria-expanded="false"
       aria-controls="advanced-filters"
     >
-      <Icon name="filter" size={14} />
-      More filters
+      <Icon name="filter" size={14} /> More filters
     </button>
   </div>
   <div class="advanced-filters" id="advanced-filters" hidden>
     <label>
-      AI model or tool
+      Model / platform
       <select name="tool" class="filter-select">
-        <option value="">All models & tools</option>
-        <optgroup label="Common platforms">
-          {platforms
-            .filter((platform) =>
-              attacks.some((attack) =>
-                platformGroups(attack).includes(platform.id),
-              ),
-            )
-            .map((platform) => (
-              <option value={`platform:${platform.id}`}>
-                {platform.label}
-              </option>
-            ))}
-        </optgroup>
-        <optgroup label="As reported in source">
-          {options("ai_tooling_and_models").map((tool) => (
-            <option value={tool}>{tool}</option>
+        <option value="">Any model / platform</option>
+        {platforms
+          .filter((p) => attacks.some((a) => platformGroups(a).includes(p.id)))
+          .map((p) => (
+            <option value={`platform:${p.id}`}>{p.label}</option>
           ))}
-        </optgroup>
       </select>
     </label>
     <label>
-      Victim / sector
+      Sector
       <select name="sector" class="filter-select">
-        <option value="">All victims & sectors</option>
-        <optgroup label="Groups from reported descriptions">
-          {sectorOptions
-            .filter((sector) =>
-              attacks.some((attack) =>
-                sectorGroups(attack).includes(sector.id),
-              ),
-            )
-            .map((sector) => (
-              <option value={`category:${sector.id}`}>{sector.label}</option>
-            ))}
-        </optgroup>
-        <optgroup label="As reported in source">
-          {sectors.map((sector) => (
-            <option value={sector}>
-              {sector.length > 85 ? `${sector.slice(0, 85)}…` : sector}
-            </option>
+        <option value="">Any sector</option>
+        {sectorOptions
+          .filter(
+            (s) =>
+              s.id !== "unknown" &&
+              attacks.some((a) => sectorGroups(a).includes(s.id)),
+          )
+          .map((s) => (
+            <option value={`category:${s.id}`}>{s.label}</option>
           ))}
-        </optgroup>
       </select>
     </label>
     <label>
-      Related project
-      <select name="project" class="filter-select">
-        <option value="">All MagicSword projects</option>
-        {options("related_magicsword_projects").map((project) => (
-          <option value={project}>{project}</option>
+      Reported year
+      <select class="filter-select" name="year" aria-label="Filter by year">
+        <option value="">Any year</option>
+        {years.map((year) => (
+          <option value={year}>{year}</option>
         ))}
       </select>
     </label>
     <label>
-      Confidence
-      <select
-        name="confidence"
-        class="filter-select"
-        aria-label="Filter by confidence"
-      >
-        <option value="">All confidence levels</option>
-        <option value="high">High</option>
-        <option value="medium">Medium</option>
-        <option value="low">Low</option>
-        <option value="unassessed">Not assessed</option>
+      Geography
+      <select class="filter-select" name="region" aria-label="Filter by region">
+        <option value="">Any geography</option>
+        {regions.map((r) => (
+          <option value={r}>{r === "unknown" ? "Not reported" : r}</option>
+        ))}
       </select>
     </label>
-    <label>
-      Evidence type
-      <select name="evidence" class="filter-select">
-        <option value="">All entries</option>
-        <option value="observed">Reported attacks</option>
-        <option value="research">Research / borderline</option>
-      </select>
-    </label>
+    {hasConfidence && (
+      <label>
+        AI-role confidence
+        <select
+          name="confidence"
+          class="filter-select"
+          aria-label="Filter by confidence"
+        >
+          <option value="">Any assessment</option>
+          {["high", "medium", "low"]
+            .filter((v) => attacks.some((a) => a.confidence === v))
+            .map((v) => (
+              <option value={v}>{v}</option>
+            ))}
+          <option value="unassessed">Not assessed</option>
+        </select>
+      </label>
+    )}
+    <p class="advanced-filter-note">
+      Products and sectors use normalized groups. Original names, commands and
+      artifacts remain searchable and available in the source record.
+    </p>
   </div>
   <div class="results-meta">
     <span data-results-count aria-live="polite">
-      Showing {Math.min(10, attacks.length)} of {attacks.length} entries
+      Showing {attacks.length} entries
     </span>
+    <div
+      class="active-filter-chips"
+      role="group"
+      aria-label="Active filters"
+    ></div>
     <button class="reset-filters" hidden>
       Clear filters <Icon name="close" size={11} />
     </button>
   </div>
   <div class="table-wrap">
     <table class="catalog-table">
-      <caption class="sr-only">Documented AI-enabled attacks</caption>
+      <caption class="sr-only">Source-backed AI attack paths</caption>
       <thead>
         <tr>
-          <th scope="col">ATTACK / CAMPAIGN</th>
-          <th scope="col">AI ROLE</th>
+          <th scope="col">ATTACK PATH</th>
+          <th scope="col">EVIDENCE</th>
+          <th scope="col">ENVIRONMENT</th>
           <th scope="col" aria-sort="descending">
             <button
               class="sort-button"
@@ -209,153 +198,112 @@ const toolLabel = (tool: string) =>
               REPORTED <span data-sort-arrow>↓</span>
             </button>
           </th>
-          <th scope="col" class="tool-column">
-            AI TOOLING
-          </th>
-          <th scope="col" class="confidence-column">
-            CONFIDENCE
-          </th>
         </tr>
       </thead>
       <tbody>
-        {attacks.map((attack, i) => (
-          <tr
-            data-attack-row
-            data-id={attack.id}
-            data-date={dateKey(attack.date_reported)}
-            data-role={attack.ai_role}
-            data-year={attack.date_reported.slice(0, 4)}
-            data-regions={JSON.stringify(attack.regions)}
-            data-tools={JSON.stringify(attack.ai_tooling_and_models)}
-            data-platforms={JSON.stringify(platformGroups(attack))}
-            data-sector={attack.victims_and_sectors}
-            data-sector-groups={JSON.stringify(sectorGroups(attack))}
-            data-projects={JSON.stringify(attack.related_magicsword_projects)}
-            data-confidence={attack.confidence || "unassessed"}
-            data-evidence={attack.borderline ? "research" : "observed"}
-            data-search={[
-              attack.name,
-              attack.id,
-              attack.technique_summary,
-              attack.researcher,
-              attack.org,
-              attack.attribution_or_cluster,
-              ...attack.ai_tooling_and_models,
-              ...attack.other_tooling,
-              attack.victims_and_sectors,
-              ...attack.regions,
-              ...(attack.tags || []),
-            ]
-              .join(" ")
-              .toLowerCase()}
-            hidden={i >= 10}
-          >
-            <td>
-              <a class="incident-link" href={href(`attacks/${attack.id}/`)}>
-                {attack.name}
-              </a>
-              <p class="incident-summary">{attack.technique_summary}</p>
-              <div class="incident-org">
-                {attack.org}
-                {attack.borderline && (
-                  <span class="research-marker">RESEARCH / BORDERLINE</span>
-                )}
-              </div>
-            </td>
-            <td>
-              <RoleBadge role={attack.ai_role} short />
-            </td>
-            <td>
-              <time class="table-date" datetime={attack.date_reported}>
-                {formatDate(attack.date_reported)}
-              </time>
-            </td>
-            <td class="tool-column">
-              {attack.ai_tooling_and_models[0] ? (
-                <span
-                  class="tool-chip"
-                  title={attack.ai_tooling_and_models.join(" · ")}
-                >
-                  {toolLabel(attack.ai_tooling_and_models[0])}
+        {attacks.map((attack, i) => {
+          const display = present(attack);
+          return (
+            <tr
+              data-attack-row
+              data-id={attack.id}
+              data-date={dateKey(attack.date_reported)}
+              data-role={attack.ai_role}
+              data-year={attack.date_reported.slice(0, 4)}
+              data-environments={JSON.stringify(display.environments)}
+              data-regions={JSON.stringify(attack.regions)}
+              data-tools={JSON.stringify(attack.ai_tooling_and_models)}
+              data-platforms={JSON.stringify(platformGroups(attack))}
+              data-sector={attack.victims_and_sectors}
+              data-sector-groups={JSON.stringify(sectorGroups(attack))}
+              data-confidence={
+                hasConfidence ? attack.confidence || "unassessed" : undefined
+              }
+              data-evidence={display.evidence}
+              data-search={[
+                display.title,
+                display.summary,
+                attack.name,
+                attack.id,
+                attack.technique_summary,
+                attack.researcher,
+                attack.org,
+                attack.attribution_or_cluster,
+                ...attack.ai_tooling_and_models,
+                ...attack.other_tooling,
+                attack.victims_and_sectors,
+                ...attack.regions,
+                ...(attack.tags || []),
+              ]
+                .join(" ")
+                .toLowerCase()}
+              hidden={i >= 10}
+            >
+              <td>
+                <a class="incident-link" href={href(`attacks/${attack.id}/`)}>
+                  {display.title}
+                </a>
+                <p class="incident-summary">{display.summary}</p>
+                <span class="incident-pattern">
+                  {roles[attack.ai_role].short}
                 </span>
-              ) : (
-                <span class="muted">Unknown</span>
-              )}
-            </td>
-            <td class="confidence-column">
-              <span
-                class={`confidence confidence-${attack.confidence || "unassessed"}`}
-              >
-                {attack.confidence
-                  ? attack.confidence.charAt(0).toUpperCase() +
-                    attack.confidence.slice(1)
-                  : "Not assessed"}
-              </span>
-            </td>
-          </tr>
-        ))}
+              </td>
+              <td>
+                <span class={`evidence-badge evidence-${display.evidence}`}>
+                  {evidenceTypes[display.evidence]}
+                </span>
+              </td>
+              <td>
+                <span class="environment-label">
+                  {display.environments
+                    .filter((id) => id !== "unspecified")
+                    .map((id) => environments[id])
+                    .join(" · ") || "—"}
+                </span>
+              </td>
+              <td>
+                <time class="table-date" datetime={attack.date_reported}>
+                  {formatDate(attack.date_reported)}
+                </time>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   </div>
   <div class="empty-state" hidden>
     <Icon name="search" size={26} />
     <h3>No matching attacks</h3>
-    <p>Try another search or clear your filters to see all entries.</p>
+    <p>Try another search or clear your filters.</p>
     <button class="button" data-empty-reset>
       Clear all filters
     </button>
   </div>
   <div class="pagination">
-    <span data-page-status>Showing 1–10 of {attacks.length} entries</span>
-    {home ? (
-      <a class="text-link" href={href("catalog/")}>
-        View all {attacks.length} attacks <Icon name="right" size={14} />
-      </a>
-    ) : (
-      <nav class="pagination-actions" aria-label="Catalog pagination">
-        <button
-          class="page-button"
-          data-prev
-          aria-label="Previous page"
-          disabled
-        >
-          ←
-        </button>
-        <span class="page-number-buttons"></span>
-        <button class="page-button" data-next aria-label="Next page">
-          →
-        </button>
-      </nav>
-    )}
+    <span data-page-status>
+      Showing 1–{Math.min(10, attacks.length)} of {attacks.length} entries
+    </span>
+    <nav class="pagination-actions" aria-label="Catalog pagination">
+      <button class="page-button" data-prev aria-label="Previous page" disabled>
+        ←
+      </button>
+      <span class="page-number-buttons"></span>
+      <button class="page-button" data-next aria-label="Next page">
+        →
+      </button>
+    </nav>
   </div>
   <p class="catalog-note">
-    <Icon name="shield" size={12} />
-    Every entry links to its sources. Research demonstrations and uncertain
-    cases are marked. Confidence refers to AI’s role in the attack.
+    Evidence labels describe the source account. Research, advertised claims and
+    reported campaigns carry different qualifications.
   </p>
   <noscript>
     <p class="catalog-note">
-      Enable JavaScript to search, filter and paginate. All 68 entries remain
+      Search and pagination require JavaScript. All {attacks.length} entries are
       available in the <a href={href("api/attacks.json")}>JSON export</a> and{" "}
       <a href={href("timeline/")}>timeline</a>.
     </p>
   </noscript>
 </section>
-<style>
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  .page-number-buttons {
-    display: flex;
-    gap: 3px;
-  }
-</style>
 <script src="../lib/catalog-client.ts"></script>

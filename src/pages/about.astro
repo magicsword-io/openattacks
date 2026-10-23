@@ -18,9 +18,9 @@ import { href, repo, roles } from "../lib/catalog";
       <h2 id="methodology">How to read this catalog</h2>
       <p>
         Each entry describes what the source reports, how AI was involved, the
-        tools and victims that are publicly documented, and a prevention angle.
-        Researchers and organizations receive prominent credit, and every entry
-        links back to its sources.
+        tools and victims that are publicly documented, and stage-specific
+        defensive opportunities. Researchers and organizations receive prominent
+        credit, and every entry links back to its sources.
       </p>
       <p>
         The initial catalog contains 68 entries spanning 2023–2026. It includes
@@ -47,9 +47,19 @@ import { href, repo, roles } from "../lib/catalog";
         Confidence describes how strongly the evidence supports AI’s
         involvement, not the severity of an attack. High means direct evidence;
         medium means credible reporting with material limits; low means indirect
-        or disputed evidence. Unrated seed entries display “Not assessed.” We do
-        not infer a confidence rating from the name of a researcher or
-        publisher.
+        or disputed evidence. Unrated records retain a missing assessment in the
+        exports. The interface shows confidence only when an assessment is
+        supplied; we do not infer it from the researcher or publisher.
+      </p>
+      <p>
+        Browse titles, concise summaries, environments and evidence classes are
+        editorial annotations in the{" "}
+        <a href={href("api/catalog.json")}>browse index</a>. Evidence labels
+        distinguish campaigns, vulnerability reports, research, provider
+        reports, analysis and advertised claims; they describe the source
+        account and do not independently verify an incident. Evidence
+        qualifications appear before each diagram. Original names and full
+        descriptions remain in the technical record and complete exports.
       </p>
       <p>
         “Unknown” preserves an information gap. Report dates can have day or
@@ -79,8 +89,9 @@ import { href, repo, roles } from "../lib/catalog";
         and query guide, or load the{" "}
         <a href={href("llms-full.txt")}>complete Markdown context</a>.
         Individual records are available as JSON and Markdown under{" "}
-        <code>api/attacks/&#123;id&#125;.json</code> and <code>api/attacks/&#123;id&#125;.md</code>.
-        The <a href={href("api/schema.json")}>public schema</a> describes every
+        <code>api/attacks/&#123;id&#125;.json</code> and{" "}
+        <code>api/attacks/&#123;id&#125;.md</code>. The{" "}
+        <a href={href("api/schema.json")}>public schema</a> describes every
         field.
       </p>
       <p>

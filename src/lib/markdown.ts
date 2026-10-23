@@ -2,6 +2,7 @@ import type { Attack } from "./catalog";
 import { roles } from "./catalog";
 import { attackFlow } from "./attack-flow";
 import { stageGuidance } from "./stage-guidance";
+import { present, environments, evidenceTypes } from "./presentation";
 import atlas from "../data/atlas-techniques.json";
 
 // Treat catalog content as quoted data. Only explicit http(s) source URLs become Markdown links.
@@ -16,6 +17,7 @@ export function attackMarkdown(
       ? items.map((value) => `- ${plain(value)}`).join("\n")
       : "- unknown";
   const flow = attackFlow(attack);
+  const display = present(attack);
   const techniques = atlas.techniques as Record<
     string,
     { name: string; url: string }
@@ -33,6 +35,10 @@ export function attackMarkdown(
     `- Last reviewed: ${attack.last_reviewed || "not assessed"}`,
     `- Entry page: ${absolute(`attacks/${attack.id}/`)}`,
     `- Entry JSON: ${absolute(`api/attacks/${attack.id}.json`)}`,
+    `- Browse title: ${plain(display.title)}`,
+    `- Editorial summary: ${plain(display.summary)}`,
+    `- Evidence class (catalog annotation): ${evidenceTypes[display.evidence]}`,
+    `- Source-stated target environments: ${display.environments.map((id) => environments[id]).join("; ")}`,
     `- Stage hunts and conditional defenses: ${absolute(`api/defenses/${attack.id}.json`)}`,
     "",
     ...(attack.borderline_note

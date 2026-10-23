@@ -83,6 +83,74 @@ test("built JSON exactly matches public YAML content and excludes internal track
   assert.ok(!JSON.stringify(output).includes("typefully.com"));
   assert.ok(!JSON.stringify(output).includes('"not_yet_covered"'));
 });
+
+test("browse annotations preserve raw evidence and use valid, consistent categories", () => {
+  const annotations = JSON.parse(
+    readFileSync(
+      new URL("../src/data/presentation.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const index = JSON.parse(
+    readFileSync(new URL("../dist/api/catalog.json", import.meta.url), "utf8"),
+  );
+  assert.equal(index.entries.length, seeds.length);
+  assert.equal(
+    new Set(index.entries.map((entry) => entry.id)).size,
+    seeds.length,
+  );
+  for (const id of Object.keys(annotations))
+    assert.ok(
+      seeds.some((entry) => entry.id === id),
+      `Stale browse annotation: ${id}`,
+    );
+  for (const entry of seeds) {
+    const display = index.entries.find((item) => item.id === entry.id);
+    assert.ok(display, entry.id);
+    assert.equal(display.reported, entry.date_reported);
+    assert.equal(display.qualification, entry.borderline_note || null);
+    assert.deepEqual(
+      display.source_urls,
+      entry.sources.map((source) => source.url),
+    );
+    assert.ok(
+      index.evidence_types[display.evidence],
+      `${entry.id}: unknown evidence class`,
+    );
+    assert.ok(display.environments.length > 0);
+    assert.ok(display.environments.every((id) => index.environments[id]));
+    assert.equal(
+      new Set(display.environments).size,
+      display.environments.length,
+    );
+    if (display.environments.includes("unspecified"))
+      assert.deepEqual(display.environments, ["unspecified"]);
+    assert.ok(display.title.trim() && display.summary.trim());
+    assert.ok(display.summary.length <= 210);
+    if (annotations[entry.id]) {
+      for (const field of ["title", "summary", "environments", "evidence"])
+        assert.deepEqual(display[field], annotations[entry.id][field]);
+    } else {
+      assert.equal(display.title, entry.name);
+      assert.equal(
+        display.evidence,
+        entry.borderline ? "qualified" : "unclassified",
+      );
+      assert.deepEqual(display.environments, ["unspecified"]);
+    }
+  }
+  const get = (id) => index.entries.find((entry) => entry.id === id);
+  assert.equal(get("ghostaction-ai-creds-2026-10").evidence, "campaign");
+  assert.ok(get("ghostaction-ai-creds-2026-10").qualification);
+  assert.equal(get("cl-unk-1211-unit42-2026-10").evidence, "campaign");
+  assert.equal(get("morris-ii-ai-worm-poc-2024-03").evidence, "research");
+  assert.equal(get("wormgpt-underground-2023").evidence, "claim");
+  const guide = readFileSync(
+    new URL("../dist/llms.txt", import.meta.url),
+    "utf8",
+  );
+  assert.ok(guide.includes("/api/catalog.json"));
+});
 test("build includes one page per entry, CSV and sitemap", () => {
   assert.equal(
     readdirSync(new URL("../dist/attacks/", import.meta.url)).length,

@@ -38,7 +38,7 @@ const chartHeight = baseline + 49;
 >
   <div class="chart-header">
     <span class="eyebrow">
-      <span class="live-dot"></span> THE EVOLVING ATTACK SURFACE
+      <span class="live-dot"></span> REPORTED ENTRIES OVER TIME
     </span>
     <div class="chart-header-actions">
       <span class="chart-period mono">
@@ -63,7 +63,7 @@ const chartHeight = baseline + 49;
   >
     <title
       id={`${chartID}-title`}
-    >Reported attacks by year and AI role. {groups.map(g => `${g.year}: ${g.entries.length} entries`).join('. ')}. Each dot opens one catalog entry.</title>
+    >Catalog entries by report year and AI role. {groups.map(g => `${g.year}: ${g.entries.length} entries`).join('. ')}. Each dot opens one catalog entry.</title>
     <defs>
       <pattern
         id={`${chartID}-grid`}

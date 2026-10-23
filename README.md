@@ -43,9 +43,17 @@ Read the [sourcing and privacy rules](CONTRIBUTING.md) before submitting. Includ
 - `.github/workflows/`: PR checks and an optional, manually triggered GitHub Pages deployment.
 - `vercel.json`: production build checks, static hosting, and public data response headers.
 
-Filtering, date sorting, pagination, theme preference, and timeline filtering run in the browser with no backend. Catalog filters are shareable through URL parameters (`q`, `role`, `year`, `region`, `tool`, `sector`, `project`, `confidence`, `evidence`, `sort`, `page`). Press `/` to focus search. JSON is a public array of entries matching the YAML fields; CSV stores arrays and objects as JSON in quoted cells. Formula-like CSV cells receive an apostrophe prefix for spreadsheet safety.
+Filtering, date sorting, pagination, theme preference, and timeline filtering run in the browser with no backend. Catalog filters are shareable through URL parameters (`q`, `environment`, `role`, `evidence`, `tool`, `sector`, `year`, `region`, `sort`, `page`). Press `/` to focus search. JSON is a public array of entries matching the YAML fields; CSV stores arrays and objects as JSON in quoted cells. Formula-like CSV cells receive an apostrophe prefix for spreadsheet safety.
 
-Model/platform and sector groups match words explicitly present in the reported tooling or victim descriptions. The original labels remain available in the filters and exports; these groups do not add new claims to the YAML.
+Model/platform and sector groups match words explicitly present in the reported tooling or victim descriptions. Model/platform and sector dropdowns show the normalized groups. Original product versions, commands and artifacts remain searchable and are preserved in the technical record and exports.
+
+## Reading and browsing
+
+The landing page centers the animated dot timeline, a single browse action, environment shortcuts, six recent entries, and compact links for AI access. The catalog shows a short outcome-focused title and summary, source evidence class, target environment, and report date. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually.
+
+Entry pages lead with the takeaway and attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Full technical context, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
+
+`src/data/presentation.json` contains reviewed editorial titles, summaries, source-stated environments and evidence classes. These are browse annotations, not independent incident verification or changes to the original YAML. `api/catalog.json` publishes this index alongside its category definitions and links to the source evidence; `api/attacks.json` retains exact public YAML parity. New entries without editorial annotations still generate a page, index record and all exports automatically, using their source title/summary and explicit unclassified/unspecified labels instead of inferred certainty.
 
 ## Validation and tests
 
@@ -65,7 +73,7 @@ npm run test:browser
 
 The test suite checks all seed records, unknown-field rejection, dates, source URL validation, role enums, and exact build output parity with public YAML data. Build before running `npm test`.
 
-The seed has no confidence assessments, so entries display “Not assessed.” Sixteen entries are flagged as research or borderline. Seed review dates reflect the supplied October 20, 2026 research snapshot; they do not represent independent verification by the site builder. Internal publication status and Typefully draft/scheduled links were removed during import. Published social post URLs were retained where provided.
+The seed has no confidence assessments, so the empty confidence filter and labels are hidden. Sixteen entries carry research or other evidence qualifications, which remain visible before their diagrams. Seed review dates reflect the supplied October 20, 2026 research snapshot; they do not represent independent verification by the site builder. Internal publication status and Typefully draft/scheduled links were removed during import. Published social post URLs were retained where provided.
 
 ## Vercel
 
@@ -123,7 +131,7 @@ These are **Astro build routes, not manually maintained files**. A merged attack
 
 ## Flows, maps and mappings
 
-All 68 seed entries now contain source-linked attack-flow graphs. React Flow renders them on demand with zoom, pan and fit controls; a server-rendered text version remains available to readers and crawlers. New entries without a curated graph receive a factual summary diagram. Unknowns, PoCs, conceptual findings and separately reported branches retain their qualifications.
+All 68 seed entries now contain source-linked attack-flow graphs. React Flow renders desktop diagrams on demand with zoom, pan and fit controls; mobile uses a scrollable stage list with explicit graph connections; a server-rendered text version remains available to readers and crawlers. New entries without a curated graph receive a factual summary diagram. Unknowns, PoCs, conceptual findings and separately reported branches retain their qualifications.
 
 The flows use selectable icon nodes. Each stage can show its original evidence, a hunt hypothesis, required telemetry, investigation steps, query starters in Sigma / KQL / SPL, and a copyable research brief for [Security Detections MCP](https://github.com/MHaggis/Security-Detections-MCP). The site does not connect to that server or claim to have searched its rule index. Native process and Bedrock discovery starters identify their collectors; application / platform examples declare a custom audit schema and require field mapping. All are drafts, with no claimed validation against production telemetry.
 
