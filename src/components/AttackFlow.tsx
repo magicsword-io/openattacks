@@ -177,10 +177,23 @@ export default function AttackFlow({
 }) {
   const [activeId, setActiveId] = useState(flow.nodes[0].id);
   const [inspectorOpen, setInspectorOpen] = useState(false);
+  const [initialView, setInitialView] = useState("evidence");
   const [mobile, setMobile] = useState(false);
   const [instance, setInstance] = useState<ReactFlowInstance<StepNode> | null>(
     null,
   );
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const stage = params.get("stage");
+    if (stage && flow.nodes.some((node) => node.id === stage)) {
+      setActiveId(stage);
+      const view = params.get("view") || "evidence";
+      setInitialView(
+        ["evidence", "prevent", "hunt"].includes(view) ? view : "evidence",
+      );
+      setInspectorOpen(true);
+    }
+  }, [flow]);
   useEffect(() => {
     const query = matchMedia("(max-width: 900px)");
     const sync = () => setMobile(query.matches);
@@ -401,6 +414,7 @@ export default function AttackFlow({
           guidance={activeGuidance}
           dataURL={dataURL}
           sources={sources}
+          initialView={initialView}
           onClose={() => {
             setInspectorOpen(false);
             document

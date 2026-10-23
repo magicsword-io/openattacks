@@ -369,7 +369,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   await expect(page.locator(".stage-control")).toContainText("Windows");
   await expect(page.locator(".network-control-link")).toHaveAttribute(
     "href",
-    "https://www.magicsword.io/use-cases/application-control",
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
   );
   await expect(page.locator(".policy-prerequisite")).toContainText(
     "enforced Windows policy",
@@ -491,27 +491,26 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
   await expect(page.locator(".mobile-policy-link").first()).toHaveAttribute(
     "href",
-    "https://www.magicsword.io/use-cases/application-control",
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
   );
 });
 
-test("landing page offers a short path to filtered entries while keeping the timeline", async ({
+test("landing page keeps global context and leads to stack selection", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator("[data-dot-chart]")).toBeVisible();
   await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
   await expect(page.locator("[data-catalog]")).toHaveCount(0);
+  await page
+    .getByRole("link", { name: "See what applies to my stack" })
+    .click();
+  await expect(page).toHaveURL(/#your-stack$/);
   await expect(
-    page.getByRole("link", { name: `Browse ${attacks.length} attack paths` }),
+    page.getByRole("heading", { name: "Which paths matter to you?" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Windows", exact: true }).click();
-  await expect(
-    page.getByRole("combobox", { name: "Filter by environment" }),
-  ).toHaveValue("windows");
-  await expect(page.locator("[data-attack-row]:visible").first()).toContainText(
-    "Windows",
-  );
+  await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
+  await expect(page.locator("[data-stack-results]")).toBeVisible();
 });
 
 test("qualifications stay before the diagram and custom schema guidance stays explicit", async ({

@@ -6,6 +6,8 @@ import "../styles/global.css";
 import Icon from "../components/Icon.astro";
 import MagicSwordLogo from "../components/MagicSwordLogo.astro";
 import { href, repo, reviewed, formatDate } from "../lib/catalog";
+import { preventionURL } from "../lib/site-links";
+import { magicswordURL } from "../lib/magicsword-links.mjs";
 interface Props {
   title?: string;
   description?: string;
@@ -108,8 +110,20 @@ const imageAlt =
           >
             Patterns
           </a>
-          <a class:list={{ active: active === "about" }} href={href("about/")}>
+          <a
+            class="nav-about"
+            class:list={{ active: active === "about" }}
+            href={href("about/")}
+          >
             About
+          </a>
+          <a
+            class="nav-prevent"
+            href={preventionURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Prevent <Icon name="arrow" size={11} />
           </a>
         </nav>
         <div class="header-actions">
@@ -141,7 +155,7 @@ const imageAlt =
       <div class="footer-top">
         <a
           class="wordmark"
-          href="https://magicsword.io"
+          href={magicswordURL("https://magicsword.io/", "footer-logo")}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -195,5 +209,6 @@ const imageAlt =
         syncThemeLabel();
       });
     </script>
+    <script src="../lib/outbound-links.ts"></script>
   </body>
 </html>
