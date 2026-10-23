@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ site, url }) => {
       "",
       `> A sourced catalog of ${attacks.length} reported AI-enabled attacks and qualified security-research findings.`,
       "",
-      "This file and every linked catalog export are generated from attacks/*.yaml during the same static build. Merged attack PRs trigger the GitHub Pages build on main; no hand-maintained index is required.",
+      "This file and every linked catalog export are generated from attacks/*.yaml during the same static build. Merged attack PRs trigger a production rebuild on main; no hand-maintained index is required.",
       "",
       "## Start here",
       `- [Complete Markdown context](${absolute("llms-full.txt")}): all entries, sources, flow nodes and edges, geography notes, and ATLAS annotations.`,
