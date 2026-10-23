@@ -1,6 +1,7 @@
 import type { Attack } from "./catalog";
 import { roles } from "./catalog";
 import { attackFlow } from "./attack-flow";
+import { stageGuidance } from "./stage-guidance";
 import atlas from "../data/atlas-techniques.json";
 
 // Treat catalog content as quoted data. Only explicit http(s) source URLs become Markdown links.
@@ -32,6 +33,7 @@ export function attackMarkdown(
     `- Last reviewed: ${attack.last_reviewed || "not assessed"}`,
     `- Entry page: ${absolute(`attacks/${attack.id}/`)}`,
     `- Entry JSON: ${absolute(`api/attacks/${attack.id}.json`)}`,
+    `- Stage hunts and conditional defenses: ${absolute(`api/defenses/${attack.id}.json`)}`,
     "",
     ...(attack.borderline_note
       ? ["## Evidence qualification", plain(attack.borderline_note), ""]
@@ -76,6 +78,37 @@ export function attackMarkdown(
       (edge) =>
         `- ${edge.source} -> ${edge.target}${edge.label ? ` (${plain(edge.label)})` : ""}${edge.loop ? " [loop]" : ""}`,
     ),
+    "",
+    "## Stage defense and hunting recommendations",
+    "Editorial recommendations, not validated coverage. Query starters are drafts. Custom-schema examples require telemetry collection and field mapping; absence of a mapping means not assessed. MagicSword policy opportunities require managed Windows scope and enforcement. Upstream detection MCP searches are not run by this site.",
+    ...flow.nodes.flatMap((node) => {
+      const guidance = stageGuidance(attack, node);
+      return [
+        `### ${node.id}: ${plain(guidance.title)}`,
+        `- Visibility: ${plain(guidance.visibility)}`,
+        `- Hunt hypothesis: ${plain(guidance.hypothesis)}`,
+        `- Required telemetry: ${guidance.telemetry.map(plain).join("; ") || "not assessed"}`,
+        ...guidance.investigate.map((step) => `- Investigate: ${plain(step)}`),
+        `- Limitation: ${plain(guidance.limitation)}`,
+        ...(guidance.note ? [`- Qualification: ${plain(guidance.note)}`] : []),
+        ...(guidance.control
+          ? [
+              `- Conditional MagicSword policy: ${plain(guidance.control.action)}`,
+              `- Policy scope: ${plain(guidance.control.scope)}`,
+              `- Policy limitation: ${plain(guidance.control.limitation)}`,
+              `- Policy reference: ${guidance.control.url}`,
+            ]
+          : [
+              "- No direct MagicSword prevention claim is recorded for this stage.",
+            ]),
+        ...(guidance.resource
+          ? [
+              `- Community intelligence: ${guidance.resource.name} — ${guidance.resource.url}`,
+            ]
+          : []),
+        "",
+      ];
+    }),
     "",
     "## MITRE ATLAS",
     "Mappings are catalog annotations based on described behavior, not assignments or endorsements by MITRE.",

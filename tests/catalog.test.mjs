@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { parse } from "yaml";
 import { entryErrors } from "../src/lib/schema.mjs";
-import Ajv2020 from 'ajv/dist/2020.js';
-import addFormats from 'ajv-formats';
+import Ajv2020 from "ajv/dist/2020.js";
+import addFormats from "ajv-formats";
 
 const files = readdirSync(new URL("../attacks/", import.meta.url)).filter(
   (name) => name.endsWith(".yaml"),
@@ -150,7 +150,8 @@ test("AI discovery, full context and per-entry exports include every YAML record
   const externalValidator = new Ajv2020({ strict: true });
   addFormats(externalValidator);
   const validate = externalValidator.compile(publicSchema);
-  for (const entry of seeds) assert.ok(validate(entry), JSON.stringify(validate.errors));
+  for (const entry of seeds)
+    assert.ok(validate(entry), JSON.stringify(validate.errors));
 });
 
 test("flow validation rejects dangling edges, duplicate nodes and unlisted evidence", () => {
@@ -205,4 +206,144 @@ test("geography excludes actor and infrastructure labels; ATLAS mappings use off
   for (const entry of seeds)
     for (const mapping of entry.atlas_techniques || [])
       assert.ok(atlas.techniques[mapping.id], mapping.id);
+});
+
+test("stage defense annotations resolve to real attacks and nodes; exports preserve evidence and scope", () => {
+  const annotations = JSON.parse(
+    readFileSync(
+      new URL("../src/data/stage-guidance.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const packs = JSON.parse(
+    readFileSync(new URL("../dist/api/defenses.json", import.meta.url), "utf8"),
+  );
+  assert.equal(packs.entries.length, seeds.length);
+  for (const [id, stages] of Object.entries(annotations)) {
+    const attack = seeds.find((a) => a.id === id);
+    assert.ok(attack, `Stale attack annotation: ${id}`);
+    for (const nodeId of Object.keys(stages))
+      assert.ok(
+        attack.attack_flow.nodes.some((n) => n.id === nodeId),
+        `${id}: stale stage ${nodeId}`,
+      );
+  }
+  for (const attack of seeds) {
+    const pack = packs.entries.find((p) => p.attack_id === attack.id);
+    const single = JSON.parse(
+      readFileSync(
+        new URL(`../dist/api/defenses/${attack.id}.json`, import.meta.url),
+        "utf8",
+      ),
+    );
+    assert.deepEqual(single.stages, pack.stages);
+    if (attack.attack_flow)
+      assert.deepEqual(single.attack_flow, attack.attack_flow);
+    assert.ok(single.attack_flow.nodes.length > 0);
+    assert.deepEqual(
+      pack.stages.map((s) => s.node_id),
+      single.attack_flow.nodes.map((n) => n.id),
+    );
+    for (const stage of pack.stages) {
+      const node = single.attack_flow.nodes.find((n) => n.id === stage.node_id);
+      assert.deepEqual(stage.evidence, node.source_urls);
+      assert.ok(
+        stage.evidence.every((url) =>
+          attack.sources.some((source) => source.url === url),
+        ),
+      );
+      if (stage.validation === "not_assessed")
+        assert.equal(stage.reviewed, null);
+      assert.match(
+        stage.mcp_prompt,
+        /Sigma, Microsoft Defender \/ Sentinel KQL, and Splunk SPL/,
+      );
+      assert.match(stage.mcp_prompt, /Do not invent matches/);
+      if (stage.control) {
+        assert.match(stage.control.scope, /Windows/);
+        assert.match(stage.control.limitation, /not tested incident coverage/);
+        assert.match(stage.control.limitation, /enforcement/);
+        assert.equal(new URL(stage.control.url).hostname, "www.magicsword.io");
+      }
+      if (stage.queries) {
+        assert.equal(stage.validation, "draft");
+        const rule = parse(stage.queries.sigma);
+        assert.equal(rule.status, "experimental");
+        assert.ok(rule.logsource);
+        assert.ok(Object.keys(rule.detection.selection).length);
+        assert.equal(rule.detection.condition, "selection");
+        assert.ok(stage.queries.kql.length && stage.queries.spl.length);
+      } else
+        assert.ok(
+          ["not_assessed", "not_applicable"].includes(stage.validation),
+        );
+    }
+  }
+  const arup = packs.entries.find(
+    (p) => p.attack_id === "arup-deepfake-video-fraud-2024-01",
+  );
+  assert.ok(arup.stages.every((s) => !s.control));
+  const marketing = packs.entries.find(
+    (p) => p.attack_id === "wormgpt-underground-2023",
+  );
+  assert.ok(
+    marketing.stages.every(
+      (s) => !s.queries && s.validation === "not_applicable",
+    ),
+  );
+  const cairn = packs.entries.find(
+    (p) => p.attack_id === "cairn-norforge-2026-10",
+  );
+  assert.equal(cairn.stages[0].validation, "not_assessed");
+  assert.equal(cairn.stages[1].visibility, "Provider / operator records");
+  const full = readFileSync(
+    new URL("../dist/llms-full.txt", import.meta.url),
+    "utf8",
+  );
+  assert.match(full, /Stage defense and hunting recommendations/);
+});
+
+test("script execution starters match encoded execution and exclude unrelated benign processes", () => {
+  const packs = JSON.parse(
+    readFileSync(new URL("../dist/api/defenses.json", import.meta.url), "utf8"),
+  );
+  const stage = packs.entries
+    .find((p) => p.attack_id === "opencode-mcp-oauth-rce-2026-10")
+    .stages.find((s) => s.node_id === "step-3");
+  const { selection } = parse(stage.queries.sigma).detection;
+  const matches = (event) =>
+    Object.entries(selection).every(([field, values]) => {
+      const [key, op] = field.split("|");
+      return values.some((v) =>
+        op === "endswith"
+          ? (event[key] || "").toLowerCase().endsWith(v.toLowerCase())
+          : (event[key] || "").toLowerCase().includes(v.toLowerCase()),
+      );
+    });
+  assert.ok(
+    matches({
+      Image: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      CommandLine: "powershell.exe -EncodedCommand harmless-fixture",
+    }),
+  );
+  assert.ok(
+    !matches({
+      Image: "C:\\Windows\\System32\\notepad.exe",
+      CommandLine: "notepad readme.txt",
+    }),
+  );
+  assert.ok(
+    !matches({
+      Image: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      CommandLine: "powershell.exe Get-Date",
+    }),
+  );
+  const bedrock = packs.entries
+    .find((p) => p.attack_id === "datadog-bedrock-key-testing-2025")
+    .stages.find((s) => s.profile === "bedrock");
+  assert.deepEqual(parse(bedrock.queries.sigma).detection.selection.eventName, [
+    "ListFoundationModels",
+    "GetFoundationModel",
+  ]);
+  assert.match(bedrock.limitation, /Do not assume default CloudTrail/);
 });

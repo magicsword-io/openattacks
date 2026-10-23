@@ -207,6 +207,7 @@ test("main views meet automated WCAG AA checks in both themes", async ({
       "/patterns/",
       "/attacks/cairn-norforge-2026-10/",
       "/attacks/ghostaction-ai-creds-2026-10/",
+      "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/",
     ]) {
       await page.goto(path);
       const result = await new AxeBuilder({ page })
@@ -308,4 +309,91 @@ test("LLM entry points are discoverable on the landing page", async ({
   expect(guide).toContain(`/api/attacks/${attacks[0].id}.md`);
   const entry = await request.get(`/api/attacks/${attacks[0].id}.json`);
   expect((await entry.json()).id).toBe(attacks[0].id);
+});
+
+test("network stages expose scoped policy opportunities and all three hunt formats", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await expect(page.locator(".network-orb svg")).toHaveCount(4);
+  await page
+    .getByRole("button", {
+      name: "Inspect stage 3: PowerShell launches the payload chain",
+      exact: true,
+    })
+    .click();
+  await expect(page.locator(".stage-inspector")).toHaveAttribute(
+    "data-stage-id",
+    "step-3",
+  );
+  await expect(page.locator(".stage-control")).toContainText(
+    "PREVENT WITH MAGICSWORD",
+  );
+  await expect(page.locator(".stage-control")).toContainText("Windows");
+  await expect(page.locator(".network-control-link")).toHaveAttribute(
+    "href",
+    "https://www.magicsword.io/use-cases/application-control",
+  );
+  await page
+    .getByText("Explore Sigma, KQL & SPL starters", { exact: false })
+    .click();
+  await page.getByRole("tab", { name: "KQL", exact: true }).click();
+  await expect(page.getByRole("tabpanel")).toContainText("DeviceProcessEvents");
+  await page.getByRole("tab", { name: "SPL", exact: true }).click();
+  await expect(page.getByRole("tabpanel")).toContainText("EventCode=1");
+  await page.getByRole("tab", { name: "SPL", exact: true }).press("ArrowRight");
+  await expect(
+    page.getByRole("tab", { name: "Sigma", exact: true }),
+  ).toBeFocused();
+  await expect(page.getByRole("tabpanel")).toContainText(
+    "status: experimental",
+  );
+  await page
+    .getByRole("button", {
+      name: "View stage 1: Custom GPT attracts a user",
+      exact: true,
+    })
+    .click();
+  await expect(page.locator(".stage-control")).toHaveCount(0);
+  await expect(page.locator(".stage-no-control")).toContainText(
+    "No direct MagicSword prevention claim",
+  );
+  const pack = await request.get(
+    "/api/defenses/huntress-plus56-custom-gpt-clickfix-2026-09.json",
+  );
+  expect((await pack.json()).stages).toHaveLength(4);
+});
+
+test("mobile stage navigation and unmapped evidence remain usable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/attacks/cairn-norforge-2026-10/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await page
+    .getByRole("button", {
+      name: "View stage 2: Coding agents plan and retry",
+      exact: true,
+    })
+    .click();
+  await expect(page.locator(".stage-inspector")).toHaveAttribute(
+    "data-stage-id",
+    "step-2",
+  );
+  await expect(page.locator(".stage-hunt")).toContainText(
+    "Provider / operator records",
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.goto("/attacks/wormgpt-underground-2023/");
+  await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+  await expect(page.locator(".stage-hunt")).toContainText(
+    "No source-backed runtime hunt yet",
+  );
+  await expect(page.locator(".stage-query-details")).toHaveCount(0);
 });
