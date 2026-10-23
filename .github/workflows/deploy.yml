@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ vars.SITE_URL || 'https://magicsword-io.github.io' }}
+      BASE_PATH: ${{ vars.BASE_PATH || '/ai-attacks' }}
+      CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.2'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Add custom domain when configured
+        if: env.CUSTOM_DOMAIN != ''
+        run: printf '%s\n' "$CUSTOM_DOMAIN" > public/CNAME
+      - name: Generate site, llms.txt and all catalog exports
+        run: npm run build
+      - name: Verify every entry is present in generated data
+        run: npm test
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,66 @@
+id: llmjacking-deepseek-sysdig-2025-02
+name: LLMjacking expands to DeepSeek
+date_reported: 2025-02-07
+researcher: Sysdig Threat Research Team
+org: Sysdig
+sources:
+  - url: https://www.sysdig.com/blog/llmjacking-targets-deepseek
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Within days of DeepSeek virality, LLMjacking proxies added DeepSeek alongside
+  OpenAI, AWS, Azure. Sysdig observed dozen+ proxy servers on stolen credentials; notes Microsoft
+  lawsuit against actors abusing GenAI services (DALL-E abusive content).
+initial_access: unknown
+ai_tooling_and_models:
+  - DeepSeek
+  - OpenAI
+  - AWS
+  - Azure
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: Cloud LLM abuse costs can exceed hundreds of thousands USD monthly (Sysdig)
+prevention_angle: "Same as LLMjacking: key hygiene, Bedrock/OpenAI anomaly detection, proxy hunting"
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Original credential theft is undisclosed
+      description: The entry begins with already-stolen service credentials.
+      kind: unknown
+      source_urls: &a1
+        - https://www.sysdig.com/blog/llmjacking-targets-deepseek
+    - id: step-2
+      title: Proxy operators add service support
+      description: LLMjacking proxies add DeepSeek to other inference providers.
+      kind: execution
+      source_urls: *a1
+    - id: step-3
+      title: Stolen accounts provide inference access
+      description: Requests are routed through unauthorized service credentials.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: AI access is resold or abused
+      description: The report describes more than a dozen proxy servers using stolen credentials.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0012
+    rationale: Stolen service credentials provide unauthorized inference access.
+    source_urls: *a1

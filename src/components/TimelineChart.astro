@@ -1,0 +1,278 @@
+---
+import { roles, href, formatDate, type Attack } from "../lib/catalog";
+import Icon from "./Icon.astro";
+const { attacks, large = false } = Astro.props as {
+  attacks: Attack[];
+  large?: boolean;
+};
+const years = [
+  ...new Set(attacks.map((a) => a.date_reported.slice(0, 4))),
+].sort();
+const groups = years.map((year) => ({
+  year,
+  entries: attacks
+    .filter((a) => a.date_reported.startsWith(year))
+    .sort((a, b) => a.ai_role.localeCompare(b.ai_role)),
+}));
+const chartID = large ? "timeline-overview" : "home-overview";
+const columns = 4;
+const rowHeight = 19;
+const baseline = Math.max(
+  205,
+  Math.ceil(
+    Math.max(...groups.map((group) => group.entries.length)) / columns,
+  ) *
+    rowHeight +
+    42,
+);
+const chartHeight = baseline + 49;
+---
+
+<div
+  class:list={[
+    "timeline-chart",
+    "interactive-timeline",
+    { "timeline-chart-large": large },
+  ]}
+  data-dot-chart
+>
+  <div class="chart-header">
+    <span class="eyebrow">
+      <span class="live-dot"></span> THE EVOLVING ATTACK SURFACE
+    </span>
+    <div class="chart-header-actions">
+      <span class="chart-period mono">
+        {attacks.length} ENTRIES · {years[0]}—{years.at(-1)}
+      </span>
+      <button
+        class="chart-motion-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Pause timeline animation"
+      >
+        <Icon name="clock" size={13} />
+        <span>Pause</span>
+      </button>
+    </div>
+  </div>
+  <svg
+    class="dot-chart"
+    viewBox={`0 0 800 ${chartHeight}`}
+    role="group"
+    aria-labelledby={`${chartID}-title`}
+  >
+    <title
+      id={`${chartID}-title`}
+    >Reported attacks by year and AI role. {groups.map(g => `${g.year}: ${g.entries.length} entries`).join('. ')}. Each dot opens one catalog entry.</title>
+    <defs>
+      <pattern
+        id={`${chartID}-grid`}
+        width="16"
+        height="16"
+        patternUnits="userSpaceOnUse"
+      >
+        <circle cx="2" cy="2" r=".65" fill="currentColor" opacity=".16" />
+      </pattern>
+    </defs>
+    <rect
+      x="13"
+      y="10"
+      width="774"
+      height={baseline - 10}
+      fill={`url(#${chartID}-grid)`}
+    />
+    {groups.map((_, index) => (
+      <line
+        x1={index * (780 / years.length) + 10}
+        y1="10"
+        x2={index * (780 / years.length) + 10}
+        y2={baseline + 6}
+        stroke="currentColor"
+        opacity=".1"
+      />
+    ))}
+    <line
+      x1="13"
+      y1={baseline + 7}
+      x2="787"
+      y2={baseline + 7}
+      stroke="currentColor"
+      opacity=".2"
+    />
+    {groups.map((group, i) => {
+      const center = 10 + (i + 0.5) * (780 / years.length);
+      return (
+        <g>
+          {group.entries.map((entry, j) => (
+            <a
+              class="chart-entry"
+              href={href(`attacks/${entry.id}/`)}
+              aria-label={`${entry.name}, ${formatDate(entry.date_reported)}`}
+              data-role={entry.ai_role}
+              data-year={group.year}
+              data-name={entry.name}
+              data-date={formatDate(entry.date_reported)}
+              style={`--dot-delay:${i * 100 + j * 22}ms;--pulse-delay:${3 + ((j * 7 + i) % 17) / 3}s`}
+            >
+              <g class="dot-arrival">
+                <circle
+                  class="attack-dot"
+                  cx={center - 30 + (j % columns) * 20}
+                  cy={baseline - 12 - Math.floor(j / columns) * rowHeight}
+                  r="6"
+                  fill={roles[entry.ai_role].color}
+                >
+                  <title>{entry.name} · {roles[entry.ai_role].label}</title>
+                </circle>
+              </g>
+            </a>
+          ))}
+          <text
+            x={center}
+            y={baseline + 34}
+            fill="currentColor"
+            text-anchor="middle"
+            class="chart-year"
+          >
+            {group.year}
+          </text>
+          <text
+            x={center}
+            y={
+              baseline -
+              40 -
+              Math.floor((group.entries.length - 1) / columns) * rowHeight
+            }
+            fill="currentColor"
+            text-anchor="middle"
+            class="chart-count"
+            data-chart-year-count={group.year}
+          >
+            {String(group.entries.length).padStart(2, "0")}
+          </text>
+        </g>
+      );
+    })}
+  </svg>
+  <div class="chart-legend" aria-label="Highlight timeline by AI role">
+    <button
+      class="legend-button legend-all"
+      aria-pressed="true"
+      data-highlight=""
+    >
+      All roles <span>{attacks.length}</span>
+    </button>
+    {Object.entries(roles).map(([id, role]) => (
+      <button
+        class="legend-button"
+        style={`--role-color:${role.color}`}
+        data-highlight={id}
+        aria-pressed="false"
+      >
+        <i></i>
+        {role.short}
+        <span>{attacks.filter((attack) => attack.ai_role === id).length}</span>
+      </button>
+    ))}
+  </div>
+  <div class="chart-bottom">
+    <span class="chart-inspector" data-chart-inspector>
+      One dot. One documented entry. Select a dot to read the research.
+    </span>
+    <a href={href("timeline/")}>
+      Explore timeline <Icon name="right" size={14} />
+    </a>
+  </div>
+  <span class="sr-only" data-chart-status aria-live="polite"></span>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-dot-chart]")
+    .forEach((chart) => {
+      const entries = Array.from(
+        chart.querySelectorAll<SVGAElement>(".chart-entry"),
+      );
+      const legend = Array.from(
+        chart.querySelectorAll<HTMLButtonElement>("[data-highlight]"),
+      );
+      const inspector = chart.querySelector<HTMLElement>(
+        "[data-chart-inspector]",
+      )!;
+      let activeRole = "";
+      const defaultMessage = () =>
+        activeRole
+          ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
+          : "One dot. One documented entry. Select a dot to read the research.";
+      function highlight(role: string) {
+        activeRole = role;
+        entries.forEach(
+          (entry) =>
+            (entry.dataset.muted = String(
+              !!role && entry.dataset.role !== role,
+            )),
+        );
+        legend.forEach((button) =>
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.highlight === role),
+          ),
+        );
+        chart
+          .querySelectorAll<SVGTextElement>("[data-chart-year-count]")
+          .forEach((label) => {
+            label.textContent = String(
+              entries.filter(
+                (entry) =>
+                  entry.dataset.year === label.dataset.chartYearCount &&
+                  (!role || entry.dataset.role === role),
+              ).length,
+            ).padStart(2, "0");
+          });
+        inspector.textContent = defaultMessage();
+        chart.querySelector("[data-chart-status]")!.textContent =
+          defaultMessage();
+      }
+      legend.forEach((button) =>
+        button.addEventListener("click", () =>
+          highlight(
+            button.dataset.highlight === activeRole
+              ? ""
+              : button.dataset.highlight!,
+          ),
+        ),
+      );
+      entries.forEach((entry) => {
+        const show = () => {
+          inspector.textContent = `${entry.dataset.date} · ${entry.dataset.name}`;
+        };
+        entry.addEventListener("mouseenter", show);
+        entry.addEventListener("focus", show);
+        entry.addEventListener("mouseleave", () => {
+          inspector.textContent = defaultMessage();
+        });
+        entry.addEventListener("blur", () => {
+          inspector.textContent = defaultMessage();
+        });
+      });
+      const toggle = chart.querySelector<HTMLButtonElement>(
+        ".chart-motion-toggle",
+      )!;
+      const preference = matchMedia("(prefers-reduced-motion: reduce)");
+      function setPaused(paused: boolean) {
+        chart.dataset.paused = String(paused);
+        toggle.setAttribute("aria-pressed", String(paused));
+        toggle.setAttribute(
+          "aria-label",
+          `${paused ? "Play" : "Pause"} timeline animation`,
+        );
+        toggle.querySelector("span")!.textContent = paused ? "Play" : "Pause";
+      }
+      setPaused(preference.matches);
+      preference.addEventListener("change", (event) =>
+        setPaused(event.matches),
+      );
+      toggle.addEventListener("click", () =>
+        setPaused(chart.dataset.paused !== "true"),
+      );
+    });
+</script>

@@ -1,0 +1,64 @@
+id: storm-2139-fizzdogg-microsoft-llmjacking-2024-12
+name: Storm-2139 / FizzDogg Azure OpenAI LLMjacking (Microsoft DCU)
+date_reported: 2024-12-19
+researcher: Microsoft Digital Crimes Unit
+org: Microsoft
+sources:
+  - url: https://www.microsoft.com/en-us/corporate-responsibility/customer-security-trust/digital-crimes-unit/notice-of-pleadings/storm-2139/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Microsoft civil action against Storm-2139 (FizzDogg) network alleged theft of
+  Azure OpenAI credentials and custom tooling to bypass safety controls and generate harmful images
+  via DALL-E/GenAI services at victims' expense.
+initial_access: unknown
+ai_tooling_and_models:
+  - Azure OpenAI
+  - DALL-E
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: Storm-2139 / FizzDogg
+scale_and_metrics: unknown (litigation)
+prevention_angle: Protect Azure OpenAI keys; monitor anomalous image/model invocation
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Theft route is not detailed in the seed
+      description: Microsoft’s civil case alleges stolen Azure OpenAI credentials.
+      kind: unknown
+      source_urls: &a1
+        - https://www.microsoft.com/en-us/corporate-responsibility/customer-security-trust/digital-crimes-unit/notice-of-pleadings/storm-2139/
+    - id: step-2
+      title: Stolen keys access victim resources
+      description: The credentials provide unauthorized access to generative services.
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: Custom tooling bypasses safety controls
+      description: The alleged operation generates harmful content through DALL-E and related services.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Victim accounts bear the usage
+      description: The civil action describes unauthorized model use at account owners’ expense.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0012
+    rationale: The civil case alleges use of stolen Azure OpenAI credentials.
+    source_urls: *a1

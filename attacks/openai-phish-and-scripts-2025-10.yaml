@@ -1,0 +1,65 @@
+id: openai-phish-and-scripts-2025-10
+name: "OpenAI disruption: Phish and Scripts cyber cluster"
+date_reported: 2025-10-01
+researcher: OpenAI Threat Intelligence
+org: OpenAI
+sources:
+  - url: https://cdn.openai.com/threat-intelligence-reports/7d662b68-952f-4dfd-a2f2-fe55b041cc4a/disrupting-malicious-uses-of-ai-october-2025.pdf
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: October 2025 OpenAI report documents Chinese-language accounts using ChatGPT for
+  phishing and malware campaign help, including research into further automation via
+  DeepSeek—illustrating multi-model hopping.
+initial_access: unknown
+ai_tooling_and_models:
+  - ChatGPT
+  - DeepSeek (researched for automation)
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: Chinese-language cyber cluster (OpenAI)
+scale_and_metrics: unknown
+prevention_angle: Multi-model abuse monitoring; phishing defenses against AI-polished lures
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Operators request campaign assistance
+      description: Chinese-language accounts ask for phishing and malware support.
+      kind: access
+      source_urls: &a1
+        - https://cdn.openai.com/threat-intelligence-reports/7d662b68-952f-4dfd-a2f2-fe55b041cc4a/disrupting-malicious-uses-of-ai-october-2025.pdf
+    - id: step-2
+      title: ChatGPT assists the workflow
+      description: The report also describes investigation of further automation through DeepSeek.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Multi-model preparation continues
+      description: Model outputs support existing campaign preparation and scripting.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: OpenAI disrupts the accounts
+      description: The supplied record reports account disruption rather than a complete victim intrusion chain.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

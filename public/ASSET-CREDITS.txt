@@ -1,0 +1,5 @@
+MagicSword logos: official assets from https://www.magicsword.io/img/dark/logo-dark.svg and https://www.magicsword.io/img/light/logo-light.svg, retrieved 2026-10-22. MagicSword branding remains the property of MagicSword.
+
+Map geometry: Natural Earth public-domain data via world-atlas (https://github.com/topojson/world-atlas).
+
+MITRE ATLAS technique IDs and names: mitre-atlas/atlas-data v5.6.0, https://github.com/mitre-atlas/atlas-data. License included at src/data/ATLAS-LICENSE.txt. Catalog mappings are independent annotations, not MITRE endorsements.

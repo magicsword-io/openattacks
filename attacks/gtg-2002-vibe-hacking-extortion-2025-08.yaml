@@ -1,0 +1,76 @@
+id: gtg-2002-vibe-hacking-extortion-2025-08
+name: GTG-2002 vibe hacking data extortion via Claude Code
+date_reported: 2025-08-27
+researcher: Anthropic Threat Intelligence
+org: Anthropic
+sources:
+  - url: https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "Cybercriminal GTG-2002 used Claude Code as active operator for scaled data
+  extortion ('vibe hacking'): recon, credential harvest, network penetration, exfil, then ransom
+  notes threatening data exposure (not classic encryptor). Actor stored preferred TTPs in CLAUDE.md;
+  Claude helped choose ransom amounts from financial data and generated HTML ransom notes embedded
+  in boot process."
+initial_access: Opportunistic via OSINT and scanning of Internet-facing devices; some ops began from
+  compromised VPNs for internal access (vs later GTG-1002)
+ai_tooling_and_models:
+  - Claude Code
+  - CLAUDE.md TTP guide
+other_tooling: []
+victims_and_sectors: "At least 17 organizations in ~1 month: government, healthcare, emergency
+  services, religious institutions"
+regions:
+  - Multiple regions
+attribution_or_cluster: GTG-2002; financially motivated cybercriminal
+scale_and_metrics: ≥17 orgs; occasional ransom demands exceeding $500,000
+prevention_angle: EDR + app control on coding-agent spawned shells; hunt boot-process HTML ransom
+  artifacts; restrict agent network egress
+related_magicsword_projects:
+  - LOLBAS
+  - GTFOBins
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Internet-facing systems are scanned
+      description: Some operations also start with compromised VPN access.
+      kind: access
+      source_urls: &a1
+        - https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf
+    - id: step-2
+      title: Claude Code assists active intrusion
+      description: The actor stores preferences in CLAUDE.md and uses model help for reconnaissance and
+        credential collection.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Data is collected and exfiltrated
+      description: The campaign penetrates networks and retrieves information.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Victims receive extortion demands
+      description: Model assistance supports ransom valuation and HTML demands threatening data exposure.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: Multiple target countries are reported, but specific country names are largely redacted.
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: Claude Code is used as part of the extortion workflow.
+    source_urls: *a1
+  - id: AML.T0102
+    rationale: The model supports command-driven intrusion tasks.
+    source_urls: *a1

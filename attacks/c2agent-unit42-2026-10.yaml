@@ -1,0 +1,87 @@
+id: c2agent-unit42-2026-10
+name: C2Agent LLM-driven Windows implant
+date_reported: 2026-10-09
+researcher: Jingwen Shi, Gaurav C G, Mark Lim, Tyler Halfpop, Ashutosh Chitwadgi
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-09-C2Agent-malware.txt
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_infra_as_c2
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "Go Windows implant where an LLM on the C2 side drives the host: operator sends a
+  plain-language goal; implant builds a system prompt (tools, MCP, skills, memory), model returns
+  one JSON tool call, agent executes and feeds TOOL RESULT back, loop until done (default 40 steps).
+  Built-in MCP client defaults to Firecrawl public MCP; C2 can add MCP servers and markdown skill
+  playbooks; skill_save lets the LLM propose new skills. From v2.3 can hand tasks to AI coding CLIs
+  already on the host; v2.4 adds Cobalt Strike BOF loader and self-upgrade."
+initial_access: "unknown (two-stage: Go stager downloads PE from agent.x90.dev/data/copilot.txt)"
+ai_tooling_and_models:
+  - LLM tool loop via C2 (proxied /llm/.../v1/chat/completions)
+  - MCP client (default mcp.firecrawl.dev)
+  - Markdown skill playbooks from C2
+  - Host AI coding CLI handoff (v2.3+)
+  - aibox.x90.dev (v0 operator LLM endpoint only)
+other_tooling:
+  - LOLBin templates (cred dump, shadow copies, free-space wipe)
+  - Process injection
+  - Native AD recon
+  - Exfil
+  - TCP pivot
+  - Cobalt Strike BOFs (v2.4)
+  - Startup .lnk / Run key / onlogon task
+victims_and_sectors: unknown (no victim orgs named in Unit 42 timely intel note)
+regions:
+  - unknown
+attribution_or_cluster: unknown; 32 samples ~1 month active development
+scale_and_metrics: 32 samples 2026-09-10 to 2026-10-08 (25 agents, 8 major versions in 29 days; 7
+  stager v7); payload URL live serving v2.4 as of 2026-10-09
+prevention_angle: LOLSkills surface for skill/MCP abuse; hunt AI coding CLI handoff
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Stager downloads the implant
+      description: The reported two-stage chain fetches a Windows PE; the original delivery route is unknown.
+      kind: access
+      source_urls: &a1
+        - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-09-C2Agent-malware.txt
+    - id: step-2
+      title: LLM receives an operator goal
+      description: A system prompt describes available tools, MCP connections, skills and memory.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Implant executes a tool call
+      description: The model returns a JSON tool call for the implant to execute.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Tool results return to the model
+      description: Results feed the next decision in an iterative loop; later versions can delegate to
+        installed AI CLIs.
+      kind: ai
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+    - source: step-4
+      target: step-2
+      label: Next decision
+      loop: true
+atlas_techniques:
+  - id: AML.T0102
+    rationale: An LLM returns tool calls in response to intrusion goals.
+    source_urls: *a1
+  - id: AML.T0103
+    rationale: The implant runs an AI agent with MCP and host-side tools.
+    source_urls: *a1

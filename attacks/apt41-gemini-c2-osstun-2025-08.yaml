@@ -1,0 +1,65 @@
+id: apt41-gemini-c2-osstun-2025-08
+name: APT41 Gemini-assisted OSSTUN C2 development
+date_reported: 2025-11-05
+researcher: Google Threat Intelligence Group
+org: Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: PRC APT41 used Gemini in Aug 2025 for C++/Golang assistance on tools including a
+  C2 framework called OSSTUN and for help with public obfuscation libraries.
+initial_access: unknown
+ai_tooling_and_models:
+  - Gemini
+other_tooling:
+  - OSSTUN C2
+  - C++/Go obfuscation libraries
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: APT41; PRC-backed
+scale_and_metrics: unknown
+prevention_angle: Standard APT41 detections; AI assistance does not change post-exploitation signals
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Actor brings development tasks
+      description: APT41 seeks help with C++ and Go tooling.
+      kind: access
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    - id: step-2
+      title: Gemini provides code assistance
+      description: Requests cover OSSTUN command-and-control development and obfuscation libraries.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: C2 development is supported
+      description: Model outputs assist an existing offensive development workflow.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Specific deployments are undisclosed
+      description: The supplied entry does not identify victims of the assisted OSSTUN development.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

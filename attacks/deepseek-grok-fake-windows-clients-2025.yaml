@@ -1,0 +1,70 @@
+id: deepseek-grok-fake-windows-clients-2025
+name: Fake DeepSeek / Grok Windows clients deliver stealers and backdoors
+date_reported: 2025-02-01
+researcher: Kaspersky / Securelist; McAfee; Unit 42
+org: Kaspersky
+sources:
+  - url: https://securelist.com/backdoors-and-stealers-prey-on-deepseek-and-grok/115801/
+  - url: https://www.kaspersky.com/blog/trojans-disguised-as-deepseek-grok-clients/53116/
+  - url: https://www.mcafee.com/blogs/other-blogs/mcafee-labs/bogus-deepseek-ai-installers-are-infecting-devices-with-malware-research-finds/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: No official DeepSeek Windows desktop client; fake DeepSeek/Grok installers
+  delivered Python stealers, SSH backdoors, Vidar, BrowserVenom (browser traffic proxying), and
+  Chinese-language trojanized installers including Gh0stRAT variants.
+initial_access: Users download fake AI desktop clients from unofficial sites/ads
+ai_tooling_and_models:
+  - Fake DeepSeek / Grok branded installers
+other_tooling:
+  - Vidar
+  - BrowserVenom
+  - Gh0stRAT
+  - Python stealers
+victims_and_sectors: Users seeking DeepSeek/Grok desktop apps
+regions:
+  - Multiple regions
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Only official web apps; block unsigned AI installers; MagicSword prevent unexpected stealers
+related_magicsword_projects:
+  - LOLBAS
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: User finds an unofficial AI client
+      description: Fake DeepSeek or Grok desktop downloads are promoted through sites and ads.
+      kind: access
+      source_urls: &a1
+        - https://securelist.com/backdoors-and-stealers-prey-on-deepseek-and-grok/115801/
+        - https://www.kaspersky.com/blog/trojans-disguised-as-deepseek-grok-clients/53116/
+        - https://www.mcafee.com/blogs/other-blogs/mcafee-labs/bogus-deepseek-ai-installers-are-infecting-devices-with-malware-research-finds/
+    - id: step-2
+      title: AI product branding is impersonated
+      description: The installer presents itself as a trusted model client.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Trojanized installer runs
+      description: Reported branches deliver stealers, SSH backdoors or RAT variants.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Data theft or remote access
+      description: Payloads steal browser data, proxy traffic or establish attacker access.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: The source describes global distribution. Chinese-language installers do not establish
+  victims in China.

@@ -1,0 +1,67 @@
+id: anthropic-iot-camera-cred-scrape-2025-03
+name: Claude-assisted IoT security camera credential scraping toolkit
+date_reported: 2025-04-23
+researcher: Anthropic Threat Intelligence
+org: Anthropic
+sources:
+  - url: https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
+magicsword_coverage: []
+borderline: true
+borderline_note: Capability development assisted by Claude; Anthropic did not confirm successful
+  real-world deployment.
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Actor used Claude to rewrite scraping toolkit, scrape target URLs, process
+  stealer-log Telegram posts, and improve UI/backend for testing leaked IoT camera credentials
+  against internet-facing devices.
+initial_access: unknown
+ai_tooling_and_models:
+  - Claude
+other_tooling:
+  - commercial breach data platforms
+  - Telegram stealer log communities
+victims_and_sectors: Potential IoT/security camera owners (deployment unconfirmed)
+regions:
+  - unknown
+attribution_or_cluster: unknown sophisticated actor
+scale_and_metrics: unknown
+prevention_angle: Rotate default/IoT credentials; block internet exposure of cameras
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Leaked credentials and target URLs
+      description: The actor processes URLs and Telegram stealer-log posts.
+      kind: access
+      source_urls: &a1
+        - https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
+    - id: step-2
+      title: Claude rewrites the toolkit
+      description: Claude helps improve scraping, processing and the toolkit interface.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Credentials are tested
+      description: The toolkit tests leaked camera credentials against internet-facing devices.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Victim impact is undisclosed
+      description: The supplied report does not establish a confirmed set of compromised cameras.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

@@ -1,0 +1,50 @@
+{
+  "name": "ai-attacks-catalog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "start": "astro dev --host 0.0.0.0",
+    "validate": "node scripts/validate.mjs",
+    "check": "astro check",
+    "build": "npm run validate && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "test": "node --test tests/catalog.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.0",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/manrope": "^5.2.8",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@xyflow/react": "^12.12.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "astro": "^7.4.1",
+    "d3-geo": "^3.1.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.1",
+    "@types/d3-geo": "^3.1.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/topojson-client": "^3.1.5",
+    "@types/topojson-specification": "^1.0.5",
+    "lighthouse": "^13.0.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "typescript": "^5.9.3"
+  }
+}

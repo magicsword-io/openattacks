@@ -1,0 +1,106 @@
+---
+import { geoEqualEarth, geoPath, geoGraticule10 } from "d3-geo";
+import { worldFeatures, countryName, regionMetadata } from "../lib/geography";
+import { href, type Attack } from "../lib/catalog";
+const { attacks } = Astro.props as { attacks: Attack[] };
+const counts = new Map<string, number>();
+attacks.forEach((attack) =>
+  new Set(attack.regions).forEach((region) =>
+    counts.set(region, (counts.get(region) || 0) + 1),
+  ),
+);
+const mapped = [...counts]
+  .filter(([region]) => regionMetadata[region])
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const projection = geoEqualEarth().fitExtent(
+  [
+    [20, 15],
+    [940, 440],
+  ],
+  { type: "Sphere" },
+);
+const path = geoPath(projection);
+---
+
+<div class="region-map-card">
+  <div class="chart-header">
+    <span class="eyebrow">
+      <span class="live-dot"></span> REPORTED TARGET GEOGRAPHY
+    </span>
+    <span class="mono chart-period">{mapped.length} LOCATIONS</span>
+  </div>
+  <svg
+    class="world-map"
+    viewBox="0 0 960 460"
+    role="group"
+    aria-labelledby="region-map-title"
+  >
+    <title id="region-map-title">World map of reported target locations. {mapped.map(([region,count])=>`${region}: ${count} ${count===1?'entry':'entries'}`).join('. ')}. Unknown and unspecified countries are not mapped.</title>
+    <g aria-hidden="true">
+      <path class="map-graticule" d={path(geoGraticule10())!} />
+      {worldFeatures.features
+        .filter((country) => country.properties!.name !== "Antarctica")
+        .map((country) => (
+          <path
+            class:list={[
+              "map-country",
+              {
+                "has-entry": counts.has(countryName(country.properties!.name)),
+              },
+            ]}
+            d={path(country)!}
+          />
+        ))}
+    </g>
+    {mapped.map(([region, count]) => {
+      const [x, y] = projection(regionMetadata[region].coordinates)!;
+      const broad = regionMetadata[region].kind === "region";
+      return (
+        <a
+          href={`${href("catalog/")}?region=${encodeURIComponent(region)}`}
+          aria-label={`${region}, ${count} ${count === 1 ? "entry" : "entries"}. Filter catalog.`}
+          class:list={["map-marker", { "broad-region": broad }]}
+          data-map-region={region}
+          data-map-count={count}
+        >
+          <title>{region}: {count} {count===1?'entry':'entries'}{broad?' (country unspecified)':''}</title>
+          <circle class="map-marker-halo" cx={x} cy={y} r={broad ? 20 : 14} />
+          <circle class="map-marker-core" cx={x} cy={y} r={broad ? 7 : 5} />
+          <circle class="map-hit-area" cx={x} cy={y} r="14" />
+        </a>
+      );
+    })}
+  </svg>
+  <div class="map-legend">
+    <span>
+      <i class="map-key-country"></i>Named target country / territory
+    </span>
+    <span>
+      <i class="map-key-region"></i>Broader region only
+    </span>
+    <span>
+      <i class="map-key-empty"></i>No mapped entry
+    </span>
+  </div>
+  <div class="map-inspector" aria-live="polite">
+    Explore a marker to see its reported target location. Select it to filter
+    the catalog.
+  </div>
+  <p class="map-credit">
+    Country-level markers, not victim addresses. Geography: Natural Earth via
+    world-atlas.
+  </p>
+</div>
+<script>
+  const inspector = document.querySelector<HTMLElement>(".map-inspector");
+  document
+    .querySelectorAll<SVGAElement>("[data-map-region]")
+    .forEach((marker) => {
+      const show = () => {
+        if (inspector)
+          inspector.textContent = `${marker.dataset.mapRegion} · ${marker.dataset.mapCount} catalog ${marker.dataset.mapCount === "1" ? "entry" : "entries"} · Select to explore the evidence`;
+      };
+      marker.addEventListener("mouseenter", show);
+      marker.addEventListener("focus", show);
+    });
+</script>

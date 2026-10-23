@@ -1,0 +1,62 @@
+id: trailofbits-mcp-line-jumping-2025-04
+name: "MCP line jumping: attack before first tool use"
+date_reported: 2025-04-21
+researcher: Trail of Bits
+org: Trail of Bits
+sources:
+  - url: https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/
+  - url: https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Malicious MCP servers inject via tool descriptions before any tool is invoked
+  ('line jumping'), enabling code execution/exfil and approval bypass. Follow-up showed
+  conversation-history theft paths and ANSI escape deception in tool UX.
+initial_access: unknown
+ai_tooling_and_models:
+  - MCP servers/clients
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: TOFU pinning (mcp-context-protector); sanitize ANSI; never auto-trust tool metadata
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Connection route is unspecified
+      description: The supplied record starts with a malicious MCP server available to the agent.
+      kind: unknown
+      source_urls: &a1
+        - https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/
+        - https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/
+    - id: step-2
+      title: Tool descriptions enter model context
+      description: The attack content is ingested before the first tool use.
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: Injected instructions jump the approval boundary
+      description: The model can be redirected without an initial explicit tool invocation.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Demonstrated execution or exfiltration
+      description: The research describes approval bypass and conversation-history theft paths.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4

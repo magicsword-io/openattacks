@@ -1,0 +1,68 @@
+id: promptlock-gtig-eset-2025
+name: PROMPTLOCK LLM-generated Lua ransomware PoC
+date_reported: 2025-11-05
+researcher: Google GTIG; ESET
+org: Google GTIG / ESET
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+  - url: https://www.eset.com/blog/en/business-topics/threat-landscape/the-first-known-ai-written-ransomware/
+magicsword_coverage: []
+borderline: true
+borderline_note: Proof of concept / experimental; not reported as active campaign.
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: Experimental ransomware using local/remote LLM to generate Lua scripts at runtime
+technique_summary: Cross-platform Go ransomware PoC that uses an LLM to dynamically generate and
+  execute malicious Lua for filesystem recon, exfil, and encryption on Windows and Linux. ESET
+  described related research as first known AI-written ransomware using local gpt-oss:20b.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLM at runtime
+  - Lua script generation
+  - gpt-oss:20b (ESET write-up)
+other_tooling:
+  - Go
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Treat unexpected local LLM + script generation as high signal; ransomware fundamentals unchanged
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: PoC starts in a research setting
+      description: This entry is a ransomware proof of concept, not a confirmed victim campaign.
+      kind: unknown
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+        - https://www.eset.com/blog/en/business-topics/threat-landscape/the-first-known-ai-written-ransomware/
+    - id: step-2
+      title: LLM generates Lua at runtime
+      description: A Go program requests filesystem-related malicious scripts.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Generated Lua is executed
+      description: The research describes reconnaissance, exfiltration and encryption logic.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Research demonstrates ransomware behavior
+      description: The PoC demonstrates potential Windows and Linux impact.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0102
+    rationale: The ransomware proof of concept generates Lua scripts at runtime.
+    source_urls: *a1

@@ -1,0 +1,66 @@
+id: apt42-gemini-phishing-data-agent-2025
+name: APT42 Gemini phishing + Data Processing Agent attempt
+date_reported: 2025-11-05
+researcher: Google Threat Intelligence Group
+org: Google GTIG
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Iranian APT42 used Gemini for phishing lure drafting, translation, and
+  geopolitical research. Also attempted to build a 'Data Processing Agent' that turns natural
+  language into SQL over sensitive personal schemas (phone→owner, travel patterns).
+initial_access: unknown
+ai_tooling_and_models:
+  - Gemini
+  - planned NL-to-SQL data agent
+other_tooling: []
+victims_and_sectors: Think-tank and geopolitics-related phishing targets; Israeli defense research noted
+regions:
+  - unknown
+attribution_or_cluster: APT42; Iranian government-backed
+scale_and_metrics: unknown
+prevention_angle: Phishing awareness for AI-polished lures; monitor for novel NL-SQL agents on sensitive DBs
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Actor requests lure and research help
+      description: APT42 uses geopolitical research and translated phishing material.
+      kind: access
+      source_urls: &a1
+        - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    - id: step-2
+      title: Gemini supports content generation
+      description: The model drafts lures and assists a proposed natural-language data-processing agent.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Phishing and agent development
+      description: The reported activity includes phishing preparation and attempted
+        SQL-over-sensitive-schema tooling.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Agent deployment is unconfirmed
+      description: The data-processing agent is described as an attempt, not a confirmed deployed capability.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

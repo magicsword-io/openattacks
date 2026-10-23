@@ -1,0 +1,64 @@
+id: eset-rilide-vidar-fake-ai-2024
+name: Rilide/Vidar via fake Sora/Gemini/Midjourney AI tools
+date_reported: 2024-07-30
+researcher: ESET
+org: ESET
+sources:
+  - url: https://blog.eset.ie/2024/07/30/beware-of-fake-ai-tools-masking-very-real-malware-threats/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Fake Sora/Gemini ads and a Google Translate extension delivered Rilide stealer
+  targeting Facebook credentials; fake Midjourney installer delivered Vidar stealer (browsers,
+  wallets, keystrokes).
+initial_access: Malicious ads / fake AI installers / malicious extension
+ai_tooling_and_models:
+  - Fake Sora
+  - Gemini
+  - Midjourney branded lures
+other_tooling:
+  - Rilide
+  - Vidar
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Avoid ad-driven AI downloads; extension allowlists
+related_magicsword_projects:
+  - LOLBAS
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: AI ads or downloads attract users
+      description: Fake Sora, Gemini and Midjourney offers lead to an installer or extension.
+      kind: access
+      source_urls: &a1
+        - https://blog.eset.ie/2024/07/30/beware-of-fake-ai-tools-masking-very-real-malware-threats/
+    - id: step-2
+      title: AI branding disguises the lure
+      description: The advertised product provides the reason to install.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Rilide or Vidar is delivered
+      description: The report describes separate extension and installer payload branches.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Credentials and personal data are stolen
+      description: Targets include Facebook accounts, browser information and wallets.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4

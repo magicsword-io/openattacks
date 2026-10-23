@@ -1,0 +1,62 @@
+id: zenity-mcp-supply-chain-2026-draft
+name: Zenity MCP server supply-chain risk (conceptual)
+date_reported: 2026-10-14
+researcher: Rock Lambros / Zenity
+org: Zenity
+sources:
+  - url: https://zenity.io/blog/mcp-server-supply-chain-risk
+magicsword_coverage: []
+borderline: true
+borderline_note: Conceptual / product-research post about MCP trust edges, not a named intrusion.
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Argues fastest-growing agentic exposure is MCP servers agents trust. Poisoned
+  shared MCP can redirect a deployment agent while monitoring still looks clean; compromise lives in
+  trust edges between agents.
+initial_access: Compromised or malicious MCP server in agent tool graph
+ai_tooling_and_models:
+  - MCP servers
+  - multi-agent systems
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: n/a (conceptual)
+scale_and_metrics: unknown
+prevention_angle: Inventory MCP connections; pin/verify integrity; monitor instruction flows; extend
+  LOLSkills-style scanning to MCP manifests
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Trusted MCP supply chain is compromised
+      description: The entry presents a conceptual risk involving a shared agent tool.
+      kind: access
+      source_urls: &a1
+        - https://zenity.io/blog/mcp-server-supply-chain-risk
+    - id: step-2
+      title: Agent trusts the poisoned server
+      description: The tool sits on the trust boundary between connected agents.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Deployment work can be redirected
+      description: The conceptual scenario manipulates agent operations while monitoring appears normal.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: No standalone campaign is established
+      description: The source is a conceptual finding rather than a disclosed victim intrusion.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4

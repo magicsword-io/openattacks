@@ -1,0 +1,69 @@
+id: lolskills-ink5725-snapshot-config-reader-2026-10
+name: ink5725/snapshot-config-reader skill finding
+date_reported: 2026-10-06
+researcher: Jose Enrique Hernandez (LOLSkills feed)
+org: MagicSword / LOLSkills
+sources:
+  - url: https://lolskills.io/discover/56bd2dd3473fa5a15b30dd42a262ac410148e41679ebcc51c71b33279cdbfa6c
+magicsword_coverage:
+  - https://x.com/_josehelps/status/2107500883554812028
+  - https://x.com/_josehelps/status/2107500883554812028
+borderline: true
+borderline_note: Scanner finding on a skill bundle; Jose explicitly not calling it malicious.
+  Pattern of decode-from-image instructions.
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Agent skill SKILL.md instructs pulling 'config' from PNG trailer, EXIF, LSB.
+  ClamAV Img.Packed.PngContainsDownloadCmd (high) on two PNGs; Nova DetectHiddenInstructions (low).
+  0 downloads; scan incomplete.
+initial_access: n/a (skill install / agent load path)
+ai_tooling_and_models:
+  - Agent skill bundle
+other_tooling:
+  - PNG steganography / trailer / EXIF / LSB
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: 0 downloads at time of post
+prevention_angle: Whole-bundle skill scanning; treat decode-from-image steps as signals
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Skill bundle is scanned
+      description: The finding concerns an agent skill with no observed downloads.
+      kind: access
+      source_urls: &a1
+        - https://lolskills.io/discover/56bd2dd3473fa5a15b30dd42a262ac410148e41679ebcc51c71b33279cdbfa6c
+    - id: step-2
+      title: SKILL.md requests image extraction
+      description: Instructions tell the agent to obtain configuration from PNG trailers, metadata or low bits.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Scanners flag embedded instructions
+      description: The partial scan detects suspicious image content with differing confidence levels.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: No execution is established
+      description: The record does not confirm a victim, a completed scan or successful skill execution.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: The flagged skill instructs an agent to recover instructions from image artifacts; actual
+      execution is unconfirmed.
+    source_urls: *a1

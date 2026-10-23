@@ -1,0 +1,22 @@
+---
+import Icon from "./Icon.astro";
+import { repo } from "../lib/catalog";
+---
+
+<aside class="community-banner">
+  <div class="community-icon">
+    <Icon name="plus" size={23} />
+  </div>
+  <div>
+    <h3>Good intelligence gets better together.</h3>
+    <p>Found an attack we’re missing? Help the community connect the dots.</p>
+  </div>
+  <a
+    class="button"
+    href={`${repo}/issues/new?template=submit-attack.yml`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Submit an attack <Icon name="arrow" size={14} />
+  </a>
+</aside>

@@ -1,0 +1,74 @@
+id: hiddenlayer-mcp-param-abuse-2025
+name: HiddenLayer MCP tool parameter abuse / prompt leak
+date_reported: 2025-05-01
+researcher: HiddenLayer
+org: HiddenLayer
+sources:
+  - url: https://www.hiddenlayer.com/research/exploiting-mcp-tool-parameters
+  - url: https://hiddenlayer.com/innovation-hub/beyond-mcp-expanding-agentic-function-parameter-abuse
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Malicious MCP tool schemas use suggestive unused parameter names (system_prompt,
+  conversation_history, chain_of_thought, tools_list) so the model fills them with sensitive
+  context; tool then exfiltrates via HTTP. Also showed fake function schemas in user prompts leaking
+  system prompts/tools.
+initial_access: unknown
+ai_tooling_and_models:
+  - MCP tool schemas
+  - agent frameworks
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Schema allowlists; strip unexpected params; never send full system prompt to tools
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Connection prerequisite is unspecified
+      description: The supplied entry does not document the initial route to the malicious tool.
+      kind: unknown
+      source_urls: &a1
+        - https://www.hiddenlayer.com/research/exploiting-mcp-tool-parameters
+        - https://hiddenlayer.com/innovation-hub/beyond-mcp-expanding-agentic-function-parameter-abuse
+    - id: step-2
+      title: Tool schema requests sensitive context
+      description: Unused parameter names encourage the model to fill in prompts, history and tool information.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Model passes context as arguments
+      description: Sensitive values are included in the tool invocation.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Tool exfiltrates the arguments
+      description: The demonstrated tool sends the collected context through HTTP.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Attacker-supplied tool schemas induce sensitive-context disclosure.
+    source_urls: *a1
+  - id: AML.T0056
+    rationale: The demonstration includes system-prompt extraction.
+    source_urls: *a1
+  - id: AML.T0086
+    rationale: Sensitive content is transmitted through tool parameters.
+    source_urls: *a1

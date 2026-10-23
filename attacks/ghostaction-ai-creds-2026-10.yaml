@@ -1,0 +1,73 @@
+id: ghostaction-ai-creds-2026-10
+name: GhostAction Stage 2 stealer (AI credential theft)
+date_reported: 2026-10-16
+researcher: Thijs Xhaflaire (Jamf Threat Labs); OpenSourceMalware deep dive
+org: Jamf Threat Labs / OpenSourceMalware
+sources:
+  - url: https://opensourcemalware.com/blog/ghostaction-copycats-polinrider-by-hiding-a-stealer-in-a-fake-font-file
+magicsword_coverage: []
+borderline: true
+borderline_note: Primary attack is CI secret theft + VS Code folderOpen stealer; AI is a credential
+  target (Claude/Gemini keys), not the attack operator. Included because Jose's post calls out AI
+  tooling theft.
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: Steals AI client credentials (~/.claude/.credentials.json,
+  ~/.gemini/oauth_creds.json, sk-ant- grep) alongside cloud/git tokens
+technique_summary: "GhostAction pushes malicious GitHub Actions then Stage 2: .vscode/tasks.json
+  folderOpen runs node on fake fa-solid-400.woff2 JS stealer; cron */5 pulls C2. Targets
+  AWS/npm/git/kube/SSH plus Claude/Gemini creds. 94 repos / 66 owners. PolinRider copycat technique,
+  not DPRK per OSM."
+initial_access: Compromised GitHub account → malicious workflow + VS Code trusted workspace auto task
+ai_tooling_and_models:
+  - Targets Claude and Gemini credential stores
+other_tooling:
+  - GitHub Actions
+  - VS Code tasks.json
+  - node
+  - cron
+  - 193.32.204.199:8080
+victims_and_sectors: GitHub maintainers / developers (many dormant repos)
+regions:
+  - unknown
+attribution_or_cluster: GhostAction; PolinRider-technique copycat (no shared IOCs with DPRK per OSM)
+scale_and_metrics: 94 compromised repos; Stage 1 Oct 8, Stage 2 Oct 15 2026
+prevention_angle: "task.allowAutomaticTasks off; Restricted Mode; crontab -l for #ghc2; rotate
+  Claude/Gemini/cloud/git creds"
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Compromised account changes a repository
+      description: Malicious GitHub Actions and workspace tasks are introduced.
+      kind: access
+      source_urls: &a1
+        - https://opensourcemalware.com/blog/ghostaction-copycats-polinrider-by-hiding-a-stealer-in-a-fake-font-file
+    - id: step-2
+      title: Trusted workspace opens a task
+      description: VS Code executes Node content disguised as a font file.
+      kind: execution
+      source_urls: *a1
+    - id: step-3
+      title: AI credential stores are searched
+      description: The stealer targets Claude and Gemini tokens alongside cloud and developer credentials.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Secrets are stolen with persistence
+      description: The report describes periodic C2 retrieval through cron and a multi-repository campaign.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0055
+    rationale: The stealer searches local AI credential stores.
+    source_urls: *a1

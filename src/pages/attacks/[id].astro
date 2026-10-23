@@ -1,0 +1,303 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro";
+import RoleBadge from "../../components/RoleBadge.astro";
+import AttackFlowSection from "../../components/AttackFlowSection.astro";
+import atlas from "../../data/atlas-techniques.json";
+import {
+  getAttacks,
+  href,
+  repo,
+  formatDate,
+  roles,
+  type Attack,
+} from "../../lib/catalog";
+export async function getStaticPaths() {
+  return (await getAttacks()).map((attack) => ({
+    params: { id: attack.id },
+    props: { attack },
+  }));
+}
+const { attack } = Astro.props as { attack: Attack };
+const sourceTitle = (source: Attack["sources"][number]) =>
+  source.title || new URL(source.url).hostname.replace(/^www\./, "");
+const techniques = atlas.techniques as Record<
+  string,
+  { name: string; url: string }
+>;
+const atlasMappings = attack.atlas_techniques || [];
+---
+
+<Layout
+  title={`${attack.name} — AI Attacks`}
+  description={attack.technique_summary.slice(0, 190)}
+  lastReviewed={attack.last_reviewed}
+>
+  <article class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={href()}>Home</a>
+      <Icon name="chevron" size={11} />
+      <a href={href("catalog/")}>Catalog</a>
+      <Icon name="chevron" size={11} />
+      <span>Attack detail</span>
+    </nav>
+    <header class="entry-heading">
+      <div class="entry-heading-top">
+        <RoleBadge role={attack.ai_role} />
+        <a
+          class="button"
+          href={`${repo}/edit/main/attacks/${attack.id}.yaml`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="github" size={13} />
+          Edit on GitHub <Icon name="arrow" size={12} />
+        </a>
+      </div>
+      <h1>{attack.name}</h1>
+      <div class="entry-meta">
+        <span>
+          Reported{" "}
+          <time datetime={attack.date_reported}>
+            {formatDate(attack.date_reported, true)}
+          </time>
+        </span>
+        <span>
+          Research by <strong>{attack.researcher}</strong>
+        </span>
+        <span>
+          <strong>{attack.org}</strong>
+        </span>
+      </div>
+    </header>
+    <AttackFlowSection attack={attack} />
+    <div class="detail-layout">
+      <div class="detail-content">
+        {attack.borderline && (
+          <aside class="research-notice">
+            <strong>RESEARCH / BORDERLINE ENTRY</strong>
+            <p>
+              {attack.borderline_note ||
+                "The evidence for this entry requires qualification. Consult the linked source before treating this as an observed attack."}
+            </p>
+          </aside>
+        )}
+        <section id="technique">
+          <h2>The attack path</h2>
+          <p class="technique">{attack.technique_summary}</p>
+          {attack.ai_role_detail && <p>{attack.ai_role_detail}</p>}
+          {attack.aliases?.length && (
+            <p>Also known as: {attack.aliases.join(", ")}</p>
+          )}
+          <h3>Initial access</h3>
+          <p>{attack.initial_access}</p>
+        </section>
+        <section id="tooling">
+          <h2>AI tooling & models</h2>
+          <div class="tag-list">
+            {attack.ai_tooling_and_models.length ? (
+              attack.ai_tooling_and_models.map((tool) => (
+                <span class="tool-chip">{tool}</span>
+              ))
+            ) : (
+              <p>Unknown</p>
+            )}
+          </div>
+          {attack.other_tooling.length > 0 && (
+            <>
+              <h3>Other tooling</h3>
+              <div class="tag-list">
+                {attack.other_tooling.map((tool) => (
+                  <span class="tool-chip">{tool}</span>
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+        <section id="impact">
+          <h2>Victims & impact</h2>
+          <h3>Victims and sectors</h3>
+          <p>{attack.victims_and_sectors}</p>
+          <h3>Regions</h3>
+          <p>{attack.regions.join(" · ")}</p>
+          {attack.region_notes && (
+            <p class="region-context-note">{attack.region_notes}</p>
+          )}
+          <h3>Attribution / cluster</h3>
+          <p>{attack.attribution_or_cluster}</p>
+          <h3>Scale & metrics</h3>
+          <p>{attack.scale_and_metrics}</p>
+        </section>
+        {atlasMappings.length > 0 && (
+          <section id="atlas">
+            <div class="section-title">
+              <h2>MITRE ATLAS</h2>
+              <span class="eyebrow">CATALOG MAPPINGS</span>
+            </div>
+            <p class="atlas-note">
+              AI-specific techniques mapped from the reported behavior. These
+              are catalog annotations, not MITRE case-study assignments.
+            </p>
+            <div class="atlas-mappings">
+              {atlasMappings.map((mapping) => (
+                <div class="atlas-mapping">
+                  <a
+                    href={techniques[mapping.id].url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span class="mono">{mapping.id}</span>
+                    <strong>{techniques[mapping.id].name}</strong>
+                    <Icon name="arrow" size={13} />
+                  </a>
+                  <p>
+                    {mapping.rationale}{" "}
+                    <a
+                      class="accent"
+                      href={mapping.source_urls[0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Evidence ↗
+                    </a>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+        <section>
+          <details class="ioc-details">
+            <summary>
+              Indicators of compromise{" "}
+              {attack.iocs
+                ? `(${Object.values(attack.iocs).reduce((sum, list) => sum + list.length, 0)})`
+                : "— not provided"}
+            </summary>
+            {attack.iocs ? (
+              Object.entries(attack.iocs).map(([category, values]) => (
+                <div>
+                  <h3>{category}</h3>
+                  <ul>
+                    {values.map((value) => (
+                      <li>
+                        <code>{value}</code>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <p>
+                No indicators are included in this catalog entry. Consult the
+                original report.
+              </p>
+            )}
+          </details>
+        </section>
+        <section id="sources">
+          <h2>Sources & research credit</h2>
+          <p>
+            Research by <strong>{attack.researcher}</strong> · {attack.org}
+          </p>
+          <ol class="source-list">
+            {attack.sources.map((source) => (
+              <li>
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  {sourceTitle(source)} <Icon name="arrow" size={12} />
+                  <span style="display:block;font-size:9px;color:var(--muted)">
+                    {source.url}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+          {attack.source_notes && (
+            <p style="font-size:11px">
+              <strong>Source note:</strong> {attack.source_notes}
+            </p>
+          )}
+          {!!attack.magicsword_coverage?.length && (
+            <>
+              <h3>MagicSword coverage</h3>
+              <ul>
+                {attack.magicsword_coverage.map((url) => (
+                  <li>
+                    <a
+                      class="accent"
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read the published post ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
+      </div>
+      <aside class="entry-aside">
+        <h2>At a glance</h2>
+        <dl>
+          <dt>Primary AI role</dt>
+          <dd>{roles[attack.ai_role].label}</dd>
+          {attack.ai_role_secondary && (
+            <>
+              <dt>Secondary AI role</dt>
+              <dd>{roles[attack.ai_role_secondary].label}</dd>
+            </>
+          )}
+          <dt>AI confidence</dt>
+          <dd>
+            <span
+              class={`confidence confidence-${attack.confidence || "unassessed"}`}
+            >
+              {attack.confidence || "Not assessed"}
+            </span>
+          </dd>
+          <dt>Evidence type</dt>
+          <dd>
+            {attack.borderline ? "Research / borderline" : "Reported attack"}
+          </dd>
+          <dt>Report date</dt>
+          <dd>
+            {formatDate(attack.date_reported, true)}
+            {attack.date_reported.length === 7 && " (month only)"}
+          </dd>
+          <dt>Last reviewed</dt>
+          <dd>
+            {attack.last_reviewed
+              ? formatDate(attack.last_reviewed)
+              : "Not yet reviewed"}
+          </dd>
+          <dt>Entry ID</dt>
+          <dd class="mono" style="font-size:9px;overflow-wrap:anywhere">
+            {attack.id}
+          </dd>
+        </dl>
+        <hr />
+        <h2>Read this entry</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;color:var(--muted)">
+          <a href="#technique">The attack path</a>
+          <a href="#tooling">Tooling & models</a>
+          <a href="#impact">Victims & impact</a>
+          <a href="#attack-flow">Attack flow</a>
+          {atlasMappings.length > 0 && <a href="#atlas">MITRE ATLAS</a>}
+          <a href="#sources">Sources & credits</a>
+        </div>
+        <hr />
+        <a
+          class="button"
+          href={`${repo}/issues/new?template=correction.yml&title=${encodeURIComponent(`Correction: ${attack.name}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Suggest a correction <Icon name="arrow" size={12} />
+        </a>
+        <p>Have better evidence? Help keep the catalog accurate.</p>
+      </aside>
+    </div>
+  </article>
+</Layout>

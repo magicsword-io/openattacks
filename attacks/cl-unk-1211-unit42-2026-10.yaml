@@ -1,0 +1,73 @@
+id: cl-unk-1211-unit42-2026-10
+name: CL-UNK-1211 AI-assisted Linux government campaign
+date_reported: 2026-10
+researcher: Roey Porat, Tom Fakterman
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://unit42.paloaltonetworks.com/ai-campaign-targets-linux-infrastructure/
+magicsword_coverage: []
+borderline: true
+borderline_note: AI role is payload generation / LLM-style comments in scripts, not confirmed live
+  agent operator. Unit 42 says code consistent with LLM generation or automated AI agent.
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: LLM-assisted or AI-generated payloads (conversational reasoning comments, section
+  headers); not confirmed as interactive agent C2
+technique_summary: "Espionage-style ops on government Linux (Oct 2025–Apr 2026): web shells with PHP
+  auto_prepend_file persistence, sudo password alias in .bashrc, PwnKit/LinPEAS privesc, SysGoRAT,
+  GSocket/revsocks/pysoxy tunnels, mailbox/social-media targeting, fake red-team markers."
+initial_access: Web shell deployment on Linux servers (custom and GitHub open-source shells)
+ai_tooling_and_models:
+  - LLM-assisted script generation (inferred from code artifacts)
+other_tooling:
+  - SysGoRAT
+  - PwnKit CVE-2021-4034
+  - LinPEAS
+  - GSocket/gs-netcat
+  - revsocks
+  - pysoxy
+  - React2Shell scanner CVE-2025-55182
+  - transfer.sh / bashupload / filebin / catbox
+victims_and_sectors: Government entities and state-affiliated infrastructure
+regions:
+  - unknown
+attribution_or_cluster: CL-UNK-1211
+scale_and_metrics: Activity window Oct 2025–Apr 2026; multiple C2 IPs listed in report
+prevention_angle: "Detect auto_prepend_file changes, *.gsocket.io traffic, binaries from /dev/shm;
+  Jose take: AI made old Linux tradecraft cheaper"
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Web shells land on Linux servers
+      description: The campaign targets government and state-affiliated infrastructure.
+      kind: access
+      source_urls: &a1
+        - https://unit42.paloaltonetworks.com/ai-campaign-targets-linux-infrastructure/
+    - id: step-2
+      title: Persistence and privilege tooling
+      description: Reported steps include PHP persistence, sudo credential capture and
+        privilege-escalation tools.
+      kind: execution
+      source_urls: *a1
+    - id: step-3
+      title: Scripts show signs of AI assistance
+      description: Conversational code comments support an inference of AI-assisted generation, not
+        confirmed live agent control.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Remote access and collection
+      description: SysGoRAT and tunneling tools support espionage-style operations.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-4
+    - source: step-3
+      target: step-2
+      label: Code-artifact inference

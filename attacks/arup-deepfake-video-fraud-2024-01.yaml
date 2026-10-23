@@ -1,0 +1,70 @@
+id: arup-deepfake-video-fraud-2024-01
+name: Arup Hong Kong deepfake video-conference $25M fraud
+date_reported: 2024-05-16
+researcher: Arup / Hong Kong Police (press)
+org: Arup (victim disclosure via press)
+sources:
+  - url: https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk
+  - url: https://www.theguardian.com/technology/article/2024/may/17/uk-engineering-arup-deepfake-scam-hong-kong-ai-video
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: other
+ai_role_secondary: null
+ai_role_detail: Deepfake-enabled BEC/fraud (video call impersonation); internal systems not compromised
+technique_summary: "Jan 2024: Hong Kong finance employee joined video call with deepfake of UK CFO
+  and colleagues; authorized 15 transfers totaling ~HK$200M (~US$25.6M) to five local accounts. Arup
+  said internal IT systems were not compromised."
+initial_access: Social engineering via deepfake video conference
+ai_tooling_and_models:
+  - Deepfake video/audio of executives
+other_tooling: []
+victims_and_sectors: Arup (engineering consultancy) Hong Kong finance staff
+regions:
+  - Hong Kong
+attribution_or_cluster: unknown
+scale_and_metrics: ~US$25.6 million loss
+prevention_angle: Out-of-band payment verification; dual control; challenge deepfake meetings
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Finance employee joins a video call
+      description: The victim is approached through a meeting impersonating company executives.
+      kind: access
+      source_urls: &a1
+        - https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk
+        - https://www.theguardian.com/technology/article/2024/may/17/uk-engineering-arup-deepfake-scam-hong-kong-ai-video
+    - id: step-2
+      title: Deepfake executives appear on screen
+      description: Synthetic video and audio impersonate the UK CFO and colleagues.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Payment requests are authorized
+      description: The employee approves 15 transfers to five local accounts.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Approximately US$25.6M lost
+      description: Arup disclosed the loss and said its internal IT systems were not compromised.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: The affected finance staff were in Hong Kong. The United Kingdom refers to the parent
+  organization and executive impersonation, not a separately confirmed victim location.
+atlas_techniques:
+  - id: AML.T0088
+    rationale: Synthetic video and audio impersonate executives.
+    source_urls: *a1
+  - id: AML.T0073
+    rationale: The payment request relies on executive impersonation.
+    source_urls: *a1

@@ -1,0 +1,72 @@
+id: invariant-mcp-tool-poisoning-2025-04
+name: MCP Tool Poisoning Attacks (Invariant Labs)
+date_reported: 2025-04-01
+researcher: Luca Beurer-Kellner, Marc Fischer
+org: Invariant Labs
+sources:
+  - url: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Malicious MCP tool descriptions hide instructions only the model sees (e.g., read
+  ~/.ssh/id_rsa and mcp.json into sidenote params). Also demonstrated rug pulls (change description
+  after approval) and cross-server shadowing that redirects trusted send_email tools to attacker
+  addresses. Affects Cursor and other MCP clients.
+initial_access: User connects agent to malicious or rug-pulled MCP server
+ai_tooling_and_models:
+  - MCP tool descriptions
+  - Cursor and other MCP clients
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Show full tool descriptions; pin tool hashes; isolate MCP servers; least privilege
+related_magicsword_projects:
+  - LOLSkills
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: A malicious MCP server is connected
+      description: The user adds a server or trusts one that later changes.
+      kind: access
+      source_urls: &a1
+        - https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
+    - id: step-2
+      title: Tool descriptions carry hidden instructions
+      description: Instructions are visible to the model and may shadow another server’s tools.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Agent reads files or redirects a tool
+      description: The demonstrations induce sensitive-file reads and manipulate email destinations.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Sensitive data is sent to the attacker
+      description: Tool arguments or redirected operations carry information across the trust boundary.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Tool descriptions contain indirect model instructions.
+    source_urls: *a1
+  - id: AML.T0109
+    rationale: A trusted server can change its behavior after approval.
+    source_urls: *a1
+  - id: AML.T0086
+    rationale: The demonstrations exfiltrate through tool arguments or redirected tools.
+    source_urls: *a1

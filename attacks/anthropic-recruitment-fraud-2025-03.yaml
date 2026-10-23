@@ -1,0 +1,66 @@
+id: anthropic-recruitment-fraud-2025-03
+name: Claude-polished Eastern Europe recruitment fraud
+date_reported: 2025-04-23
+researcher: Anthropic Threat Intelligence
+org: Anthropic
+sources:
+  - url: https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
+magicsword_coverage: []
+borderline: true
+borderline_note: AI used for language sanitization of scam content; successful victim compromise not
+  confirmed by Anthropic.
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Recruitment fraud impersonating hiring managers used Claude for real-time
+  language refinement, native-English polishing, interview scripts, and more legitimate-looking
+  formatting.
+initial_access: unknown
+ai_tooling_and_models:
+  - Claude
+other_tooling: []
+victims_and_sectors: Job seekers primarily in Eastern European countries
+regions:
+  - Europe
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Verify recruiters outside chat channels; AI polish is not proof of legitimacy
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Recruiter identities are impersonated
+      description: The fraud targets job seekers with hiring-manager personas.
+      kind: access
+      source_urls: &a1
+        - https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
+    - id: step-2
+      title: Claude polishes the dialogue
+      description: Model assistance refines language, interview scripts and formatting.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Fraudulent recruitment messages
+      description: The actor uses more legitimate-looking recruitment communications.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Individual losses are undisclosed
+      description: The supplied record does not quantify successful fraud or victim losses.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: The source describes job seekers in Eastern Europe without naming individual countries.
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1

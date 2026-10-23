@@ -1,0 +1,25 @@
+---
+import { href, reviewed, formatDate } from "../lib/catalog";
+import Icon from "./Icon.astro";
+const { active = "catalog" } = Astro.props;
+---
+
+<div class="catalog-toolbar">
+  <nav class="view-tabs" aria-label="Catalog views">
+    <a class:list={{ active: active === "catalog" }} href={href("catalog/")}>
+      <Icon name="list" size={14} />
+      Catalog
+    </a>
+    <a class:list={{ active: active === "timeline" }} href={href("timeline/")}>
+      <Icon name="chart" size={14} />
+      Timeline
+    </a>
+    <a class:list={{ active: active === "regions" }} href={href("regions/")}>
+      <Icon name="globe" size={14} />
+      Regions
+    </a>
+  </nav>
+  <span class="update-label mono">
+    LAST UPDATED {formatDate(reviewed).toUpperCase()}
+  </span>
+</div>

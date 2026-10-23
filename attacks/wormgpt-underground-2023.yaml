@@ -1,0 +1,54 @@
+id: wormgpt-underground-2023
+name: WormGPT underground malicious LLM
+date_reported: 2023-07-13
+researcher: Check Point / Wired / industry
+org: Check Point Research / underground market reporting
+sources:
+  - url: https://research.checkpoint.com/2023/opwnai-cybercriminals-starting-to-use-chatgpt/
+  - url: https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
+magicsword_coverage: []
+borderline: true
+borderline_note: Underground tool offering; Check Point assessed WormGPT likely real but not clearly
+  superior to jailbroken mainstream models.
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: GPT-J-based unrestricted LLM marketed on dark-web forums for phishing and malware
+  assistance without ethical filters.
+initial_access: unknown
+ai_tooling_and_models:
+  - WormGPT (GPT-J based)
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: underground cybercrime marketplace
+scale_and_metrics: unknown
+prevention_angle: Classic phishing/malware controls; monitor for AI-polished lure language
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Underground seller markets WormGPT
+      description: A GPT-J-based tool is offered through cybercrime forums.
+      kind: access
+      source_urls: &a1
+        - https://research.checkpoint.com/2023/opwnai-cybercriminals-starting-to-use-chatgpt/
+        - https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
+    - id: step-2
+      title: Unrestricted assistance is advertised
+      description: The offering claims support for phishing and malware without safety filters.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Individual victim use is not established
+      description: The seed documents an offering and researcher assessment, not a confirmed exploit chain.
+      kind: unknown
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3

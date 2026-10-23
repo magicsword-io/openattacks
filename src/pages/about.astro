@@ -1,0 +1,121 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { href, repo, roles } from "../lib/catalog";
+---
+
+<Layout title="About & Methodology — AI Attacks" active="about">
+  <div class="container">
+    <header class="page-heading">
+      <span class="eyebrow">OPEN KNOWLEDGE. BETTER DEFENSE.</span>
+      <h1>Evidence before assumptions.</h1>
+      <p>
+        AI Attacks is a community-maintained catalog of reported attacks and
+        security research where AI is part of the attack path. A MagicSword
+        project, built for defenders.
+      </p>
+    </header>
+    <article class="prose">
+      <h2 id="methodology">How to read this catalog</h2>
+      <p>
+        Each entry describes what the source reports, how AI was involved, the
+        tools and victims that are publicly documented, and a prevention angle.
+        Researchers and organizations receive prominent credit, and every entry
+        links back to its sources.
+      </p>
+      <p>
+        The initial catalog contains 68 entries spanning 2023–2026. It includes
+        observed campaigns, research demonstrations, vulnerability reports, and
+        uncertain marketplace claims. Research and borderline entries are
+        labeled individually. This is a curated record of reports, rather than a
+        complete measurement of attack prevalence.
+      </p>
+      <h2>What counts as AI involvement?</h2>
+      <p>
+        AI can act as an operator, a lure, a target, infrastructure, a code
+        generator, or a source of credentials to steal. We classify the primary
+        role and record a secondary role when the evidence supports it.
+      </p>
+      <ul>
+        {Object.values(roles).map((role) => (
+          <li>
+            <strong>{role.label}.</strong> {role.description}
+          </li>
+        ))}
+      </ul>
+      <h2>Confidence and uncertainty</h2>
+      <p>
+        Confidence describes how strongly the evidence supports AI’s
+        involvement, not the severity of an attack. High means direct evidence;
+        medium means credible reporting with material limits; low means indirect
+        or disputed evidence. Unrated seed entries display “Not assessed.” We do
+        not infer a confidence rating from the name of a researcher or
+        publisher.
+      </p>
+      <p>
+        “Unknown” preserves an information gap. Report dates can have day or
+        month precision. Month-only dates remain month-only in the interface and
+        exports; sorting places them at the beginning of that month.
+      </p>
+      <h2>Sources and review dates</h2>
+      <p>
+        The seed collection was supplied as a research snapshot dated October
+        20, 2026. The seed review dates come from that snapshot and do not imply
+        that the site independently reverified every underlying claim.
+        Contributors should update <code>last_reviewed</code> only after
+        reviewing the source material.
+      </p>
+      <p>
+        Geography is normalized to reported targets. Parent organizations, actor
+        language, hosting infrastructure, and submission telemetry are not
+        counted as separate victim locations. Uncertain or excluded original
+        labels are explained in region notes. “Multiple regions” retains
+        multi-country scope without inventing specific countries. The{" "}
+        <a href={href("regions/")}>region breakdown</a> shows supported target
+        locations and keeps unknown or unspecified geography separate.
+      </p>
+      <h2 id="for-agents">Read with an AI assistant</h2>
+      <p>
+        Start with <a href={href("llms.txt")}>llms.txt</a> for an entry index
+        and query guide, or load the{" "}
+        <a href={href("llms-full.txt")}>complete Markdown context</a>.
+        Individual records are available as JSON and Markdown under{" "}
+        <code>api/attacks/&#123;id&#125;.json</code> and <code>api/attacks/&#123;id&#125;.md</code>.
+        The <a href={href("api/schema.json")}>public schema</a> describes every
+        field.
+      </p>
+      <p>
+        The site and all AI-readable files are generated from the same YAML
+        collection on every merged attack PR through the deployment workflow.
+        Counts and entry links update automatically. The API is static:
+        assistants download the JSON array and apply filters locally.
+      </p>
+      <h2>Use and contribute</h2>
+      <p>
+        The public <a href={href("api/attacks.json")}>JSON</a> and{" "}
+        <a href={href("api/attacks.csv")}>CSV</a> exports are generated from the
+        same validated YAML files as the site. Internal publishing schedules and
+        draft URLs are excluded. All claims remain attributable to their
+        original sources.
+      </p>
+      <p>
+        Add an entry or suggest a correction through{" "}
+        <a href={`${repo}/blob/main/CONTRIBUTING.md`}>the contribution guide</a>
+        . Every claim needs a source URL; uncertain details should say
+        “unknown.” Do not include live victim data or unredacted victim IP
+        addresses.
+      </p>
+      <h2>From knowledge to prevention</h2>
+      <p>
+        The prevention notes connect reported behavior to practical defensive
+        controls. Defensive notes remain in the JSON and Markdown exports. Entry
+        diagrams show source-linked activity and preserve unknowns. ATLAS
+        annotations map described behavior to MITRE’s AI-specific technique
+        catalog; they are independent catalog annotations.
+      </p>
+      <p>
+        Explore <a href="https://magicsword.io">free MagicSword.io</a> for
+        community resources to support your defensive work.
+      </p>
+    </article>
+  </div>
+</Layout>

@@ -1,0 +1,83 @@
+id: gtg-1002-anthropic-claude-code-espionage-2025-11
+name: GTG-1002 AI-orchestrated espionage via Claude Code
+date_reported: 2025-11-13
+researcher: Anthropic Threat Intelligence
+org: Anthropic
+sources:
+  - url: https://www-cdn.anthropic.com/d7dd50dd1185f59be051b307150d877f2b82bd2c.pdf
+  - url: https://attack.mitre.org/campaigns/C0062/
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Chinese state-sponsored GTG-1002 manipulated Claude Code and MCP tools as
+  autonomous pentest orchestrators across recon, vuln discovery, exploitation, lateral movement,
+  credential harvest, analysis, and exfil. Anthropic assesses AI executed ~80-90% of tactical ops at
+  high request rates. Human operators selected targets and tasked agent groups. Claude sometimes
+  hallucinated credentials/findings, requiring validation.
+initial_access: Human-selected targets; AI discovered and exploited vulnerabilities in live ops
+  (details redacted in public report)
+ai_tooling_and_models:
+  - Claude Code
+  - MCP tools
+  - crafted prompts/personas to bypass guardrails
+other_tooling: []
+victims_and_sectors: ~30 entities; validated handful of successful intrusions including major
+  technology corporations and government agencies; technology, financial, chemical, government
+  (MITRE C0062)
+regions:
+  - Multiple regions
+attribution_or_cluster: GTG-1002; high confidence Chinese state-sponsored (Anthropic); MITRE Campaign C0062
+scale_and_metrics: ~30 entities targeted; mid-Sep 2025 activity window; first documented largely
+  autonomous AI cyberattack at scale per Anthropic
+prevention_angle: Detect agentic coding CLI + MCP automation spikes; least-privilege MCP; raise cost
+  of LOLBin/tool execution with app control
+related_magicsword_projects:
+  - LOLSkills
+  - LOLBAS
+  - GTFOBins
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Human operators choose targets
+      description: Operators task agents against live organizations; exploit details are redacted.
+      kind: access
+      source_urls: &a1
+        - https://www-cdn.anthropic.com/d7dd50dd1185f59be051b307150d877f2b82bd2c.pdf
+        - https://attack.mitre.org/campaigns/C0062/
+    - id: step-2
+      title: Claude Code orchestrates tactical work
+      description: Coding agents and MCP tools support reconnaissance, discovery and exploitation.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Intrusion steps progress
+      description: The report describes credential harvesting, lateral movement, analysis and collection.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Data is exfiltrated
+      description: Anthropic reports a handful of validated intrusions and notes that model findings still
+        required human validation.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+region_notes: Global targeting is described without individual countries. China-nexus attribution
+  concerns the actor, not victim location.
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The operation obtains generative AI tooling for intrusion support.
+    source_urls: *a1
+  - id: AML.T0102
+    rationale: The model assists tactical command and tool generation.
+    source_urls: *a1

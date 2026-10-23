@@ -1,0 +1,64 @@
+id: unit42-llm-js-obfuscation-2024
+name: "Unit 42: LLMs obfuscating malicious JavaScript"
+date_reported: 2024-05-01
+researcher: Unit 42
+org: Palo Alto Networks Unit 42
+sources:
+  - url: https://unit42.paloaltonetworks.com/using-llms-obfuscate-malicious-javascript/
+magicsword_coverage: []
+borderline: true
+borderline_note: Research demonstration of LLM obfuscation efficacy; not a single named campaign.
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: LLM used to rewrite/obfuscate existing malware JS for evasion
+technique_summary: Showed LLMs can effectively rewrite and obfuscate existing malicious JavaScript
+  to evade detection, while finding fully AI-written malware from scratch less practical at the
+  time.
+initial_access: unknown
+ai_tooling_and_models:
+  - Commercial LLMs
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Behavioral JS detections over static signatures
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-10-20
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Researchers provide malicious JavaScript
+      description: The experiment starts with existing code rather than an observed delivery campaign.
+      kind: access
+      source_urls: &a1
+        - https://unit42.paloaltonetworks.com/using-llms-obfuscate-malicious-javascript/
+    - id: step-2
+      title: LLMs rewrite and obfuscate the code
+      description: Model output changes the script while retaining malicious behavior.
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Researchers test detection outcomes
+      description: The study compares detection before and after rewriting.
+      kind: execution
+      source_urls: *a1
+    - id: step-4
+      title: Demo measures evasion
+      description: The finding concerns obfuscation efficacy, not a separate confirmed victim intrusion.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+      activity; this mapping does not establish additional autonomy or victim impact.
+    source_urls: *a1
