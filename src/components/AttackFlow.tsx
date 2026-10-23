@@ -13,13 +13,36 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { AttackFlow as FlowData, AttackFlowNode } from "../lib/catalog";
+import type { StageGuidance } from "../lib/stage-guidance";
+import FlowIcon, { type FlowIconName } from "./FlowIcon";
+import StageInspector from "./StageInspector";
 
-const kindLabels: Record<string, string> = {
-  access: "Entry point",
-  ai: "AI involvement",
-  execution: "Action",
-  impact: "Outcome",
-  unknown: "Not established",
+const kinds: Record<
+  AttackFlowNode["kind"],
+  { label: string; icon: FlowIconName }
+> = {
+  access: { label: "Entry point", icon: "entry" },
+  ai: { label: "AI involvement", icon: "ai" },
+  execution: { label: "Action", icon: "terminal" },
+  impact: { label: "Outcome", icon: "target" },
+  unknown: { label: "Not established", icon: "unknown" },
+};
+const profileIcons: Record<string, FlowIconName> = {
+  web: "server",
+  "linux-webshell": "server",
+  cloud: "cloud",
+  bedrock: "cloud",
+  metadata: "cloud",
+  credentials: "key",
+  identity: "key",
+  extension: "browser",
+  repository: "server",
+  exfil: "upload",
+  phishing: "mail",
+  "agent-tools": "network",
+  provider: "ai",
+  "model-network": "ai",
+  "mcp-config": "network",
 };
 type StepNode = Node<
   AttackFlowNode &
@@ -28,35 +51,61 @@ type StepNode = Node<
       mobile: boolean;
       loopIn: boolean;
       loopOut: boolean;
+      active: boolean;
+      guidance: StageGuidance;
+      inspect: (id: string) => void;
     },
   "step"
 >;
+
 function Step({ data }: NodeProps<StepNode>) {
   return (
-    <div className={`attack-flow-node kind-${data.kind}`}>
+    <div
+      className={`attack-flow-node kind-${data.kind}${data.active ? " is-active" : ""}`}
+    >
       <Handle
         type="target"
         position={data.mobile ? Position.Top : Position.Left}
+        style={data.mobile ? undefined : { top: 37, left: 56 }}
         isConnectable={false}
       />
-      <div className="flow-node-kicker">
-        <span>{String(data.number).padStart(2, "0")}</span>
-        {kindLabels[data.kind]}
-      </div>
-      <strong>{data.title}</strong>
-      <p>{data.description}</p>
-      <a
-        className="nodrag nopan"
-        href={data.source_urls[0]}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Source for step ${data.number}: ${data.title}`}
+      <button
+        type="button"
+        className="network-stage nodrag nopan"
+        aria-label={`Inspect stage ${data.number}: ${data.title}`}
+        aria-pressed={data.active}
+        onClick={() => data.inspect(data.id)}
       >
-        Source ↗
-      </a>
+        <span className="network-orb">
+          <FlowIcon
+            name={profileIcons[data.guidance.profile] || kinds[data.kind].icon}
+            size={27}
+          />
+          <span className="network-stage-number">
+            {String(data.number).padStart(2, "0")}
+          </span>
+        </span>
+        <span className="flow-node-kicker">{kinds[data.kind].label}</span>
+        <strong>{data.title}</strong>
+        <span className="network-stage-summary">{data.description}</span>
+      </button>
+      {data.guidance.control && (
+        <a
+          className="network-control-link nodrag nopan"
+          href={data.guidance.control.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`${data.guidance.control.title}. ${data.guidance.control.scope}`}
+          aria-label={`MagicSword policy opportunity for stage ${data.number}. ${data.guidance.control.scope}`}
+        >
+          <FlowIcon name="shield" size={12} /> MagicSword{" "}
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
       <Handle
         type="source"
         position={data.mobile ? Position.Bottom : Position.Right}
+        style={data.mobile ? undefined : { top: 37, left: 126, right: "auto" }}
         isConnectable={false}
       />
       {data.loopOut && (
@@ -81,9 +130,9 @@ function Step({ data }: NodeProps<StepNode>) {
   );
 }
 const nodeTypes = { step: Step };
-function layout(flow: FlowData, mobile: boolean): StepNode[] {
+
+function positions(flow: FlowData, mobile: boolean) {
   const level = new Map(flow.nodes.map((node) => [node.id, 0]));
-  // Only non-loop edges participate in the left-to-right layout.
   for (let pass = 0; pass < flow.nodes.length; pass++)
     for (const edge of flow.edges.filter((edge) => !edge.loop))
       level.set(
@@ -100,56 +149,79 @@ function layout(flow: FlowData, mobile: boolean): StepNode[] {
     ),
   );
   const lanes = new Map<number, number>();
-  return flow.nodes.map((node, index) => {
+  return flow.nodes.map((node) => {
     const depth = level.get(node.id) || 0;
     const lane = lanes.get(depth) || 0;
     lanes.set(depth, lane + 1);
     const count = flow.nodes.filter(
       (item) => level.get(item.id) === depth,
     ).length;
-    const offset = (maxLane - count) * 118;
-    return {
-      id: node.id,
-      type: "step",
-      position: mobile
-        ? { x: lane * 285, y: depth * 250 }
-        : { x: depth * 300, y: lane * 235 + offset },
-      data: {
-        ...node,
-        number: index + 1,
-        mobile,
-        loopIn: flow.edges.some((edge) => edge.loop && edge.target === node.id),
-        loopOut: flow.edges.some(
-          (edge) => edge.loop && edge.source === node.id,
-        ),
-      },
-      width: 240,
-      height: 200,
-      draggable: false,
-      selectable: false,
-      focusable: false,
-    };
+    return mobile
+      ? { x: lane * 245, y: depth * 275 }
+      : { x: depth * 255, y: lane * 280 + (maxLane - count) * 140 };
   });
 }
+
 export default function AttackFlow({
   flow,
   name,
+  guidance,
+  dataURL,
+  sources,
 }: {
   flow: FlowData;
   name: string;
+  guidance: Record<string, StageGuidance>;
+  dataURL: string;
+  sources: string[];
 }) {
+  const [activeId, setActiveId] = useState(flow.nodes[0].id);
+  const [inspectorOpen, setInspectorOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [instance, setInstance] = useState<ReactFlowInstance<StepNode> | null>(
     null,
   );
   useEffect(() => {
-    const query = matchMedia("(max-width: 680px)");
+    const query = matchMedia("(max-width: 900px)");
     const sync = () => setMobile(query.matches);
     sync();
     query.addEventListener("change", sync);
     return () => query.removeEventListener("change", sync);
   }, []);
-  const nodes = useMemo(() => layout(flow, mobile), [flow, mobile]);
+  const coords = useMemo(() => positions(flow, mobile), [flow, mobile]);
+  const inspect = (id: string) => {
+    setActiveId(id);
+    setInspectorOpen(true);
+    if (mobile)
+      requestAnimationFrame(() =>
+        document.querySelector(".stage-inspector")?.scrollIntoView({
+          block: "nearest",
+          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "instant"
+            : "smooth",
+        }),
+      );
+  };
+  const nodes: StepNode[] = flow.nodes.map((node, index) => ({
+    id: node.id,
+    type: "step",
+    position: coords[index],
+    data: {
+      ...node,
+      number: index + 1,
+      mobile,
+      active: node.id === activeId,
+      guidance: guidance[node.id],
+      inspect,
+      loopIn: flow.edges.some((e) => e.loop && e.target === node.id),
+      loopOut: flow.edges.some((e) => e.loop && e.source === node.id),
+    },
+    width: 182,
+    height: 220,
+    draggable: false,
+    selectable: false,
+    focusable: false,
+  }));
   const edges = useMemo(
     () =>
       flow.edges.map((edge, index) => ({
@@ -160,9 +232,18 @@ export default function AttackFlow({
         targetHandle: edge.loop ? "loop-in" : undefined,
         label: edge.label,
         type: edge.loop ? "smoothstep" : "default",
-        markerEnd: { type: MarkerType.ArrowClosed, color: "#818895" },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color:
+            edge.source === activeId || edge.target === activeId
+              ? "#b5a08c"
+              : "#818895",
+        },
         style: {
-          stroke: "#818895",
+          stroke:
+            edge.source === activeId || edge.target === activeId
+              ? "#b5a08c"
+              : "#818895",
           strokeWidth: 1.5,
           ...(edge.loop ? { strokeDasharray: "5 5" } : {}),
         },
@@ -171,51 +252,166 @@ export default function AttackFlow({
         labelBgPadding: [6, 4] as [number, number],
         labelBgBorderRadius: 3,
       })),
-    [flow],
+    [flow, activeId],
   );
   useEffect(() => {
-    if (!instance) return;
+    if (!instance || mobile) return;
     const frame = requestAnimationFrame(() => {
-      if (mobile) instance.setViewport({ x: 30, y: 25, zoom: 1 });
-      else instance.fitView({ padding: 0.12, maxZoom: 1 });
+      instance.fitView({ padding: 0.18, maxZoom: 1.15 });
     });
     return () => cancelAnimationFrame(frame);
-  }, [instance, mobile, nodes]);
-  const branching =
-    !mobile && new Set(nodes.map((node) => node.position.y)).size > 1;
+  }, [instance, mobile, coords]);
+  const branching = !mobile && new Set(coords.map((p) => p.y)).size > 1;
+  const active = flow.nodes.find((n) => n.id === activeId)!;
+  const activeGuidance = guidance[activeId];
+  const number = flow.nodes.indexOf(active) + 1;
   return (
-    <div
-      className={`attack-flow-canvas${branching ? " has-branches" : ""}`}
-      role="group"
-      aria-label={`Interactive attack flow for ${name}`}
-    >
-      <ReactFlow<StepNode>
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        onInit={setInstance}
-        nodesDraggable={false}
-        nodesConnectable={false}
-        elementsSelectable={false}
-        edgesFocusable={false}
-        nodesFocusable={false}
-        deleteKeyCode={null}
-        minZoom={0.2}
-        maxZoom={1.7}
-        zoomOnScroll={false}
-        panOnScroll={false}
-        fitView={!mobile}
-        fitViewOptions={{ padding: 0.12, maxZoom: 1 }}
-        proOptions={{ hideAttribution: false }}
+    <div className="attack-network">
+      <div className="network-toolbar">
+        <span>
+          <FlowIcon name="network" size={14} /> Select a stage to explore its
+          defenses
+        </span>
+        {flow.nodes.some((node) => guidance[node.id]?.control) && (
+          <span className="network-policy-key">
+            <FlowIcon name="shield" size={12} /> MagicSword policy opportunity
+          </span>
+        )}
+      </div>
+      <div
+        className={`attack-flow-canvas${branching ? " has-branches" : ""}${mobile ? " mobile-flow-list" : ""}`}
+        role="group"
+        aria-label={`Interactive attack flow for ${name}`}
       >
-        <Background
-          color="var(--line)"
-          gap={20}
-          size={1}
-          variant={BackgroundVariant.Dots}
+        {mobile ? (
+          <ol className="mobile-network-stages">
+            {flow.nodes.map((node, i) => (
+              <li key={node.id}>
+                <button
+                  type="button"
+                  className={`mobile-network-stage kind-${node.kind}${activeId === node.id ? " is-active" : ""}`}
+                  aria-label={`Inspect stage ${i + 1}: ${node.title}`}
+                  aria-pressed={activeId === node.id && inspectorOpen}
+                  onClick={() => inspect(node.id)}
+                >
+                  <span className="mobile-stage-icon">
+                    <FlowIcon
+                      name={
+                        profileIcons[guidance[node.id]?.profile] ||
+                        kinds[node.kind].icon
+                      }
+                    />
+                  </span>
+                  <span>
+                    <small>
+                      {String(i + 1).padStart(2, "0")} ·{" "}
+                      {kinds[node.kind].label}
+                    </small>
+                    <strong>{node.title}</strong>
+                  </span>
+                  {guidance[node.id]?.control && (
+                    <FlowIcon name="shield" size={14} />
+                  )}
+                </button>
+                {guidance[node.id]?.control && (
+                  <a
+                    className="mobile-policy-link"
+                    href={guidance[node.id].control!.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FlowIcon name="shield" size={13} /> MagicSword policy
+                    opportunity ↗
+                  </a>
+                )}
+                <div className="mobile-stage-connections">
+                  {flow.edges
+                    .filter((e) => e.source === node.id)
+                    .map((edge, j) => (
+                      <button
+                        type="button"
+                        key={j}
+                        onClick={() => inspect(edge.target)}
+                      >
+                        {edge.loop ? "↶ Repeats to" : "→"}{" "}
+                        {String(
+                          flow.nodes.findIndex((n) => n.id === edge.target) + 1,
+                        ).padStart(2, "0")}
+                        {edge.label ? ` · ${edge.label}` : ""}
+                      </button>
+                    ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <ReactFlow<StepNode>
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={nodeTypes}
+            onInit={setInstance}
+            nodesDraggable={false}
+            nodesConnectable={false}
+            elementsSelectable={false}
+            edgesFocusable={false}
+            nodesFocusable={false}
+            deleteKeyCode={null}
+            minZoom={0.2}
+            maxZoom={1.7}
+            zoomOnScroll={false}
+            panOnScroll={false}
+            fitView={!mobile}
+            fitViewOptions={{ padding: 0.18, maxZoom: 1.15 }}
+            proOptions={{ hideAttribution: false }}
+          >
+            <Background
+              color="var(--line)"
+              gap={22}
+              size={1}
+              variant={BackgroundVariant.Dots}
+            />
+            <Controls showInteractive={false} />
+          </ReactFlow>
+        )}
+      </div>
+      <div
+        className="network-stage-picker"
+        role="group"
+        aria-label="Choose attack stage"
+      >
+        {flow.nodes.map((n, i) => (
+          <button
+            type="button"
+            key={n.id}
+            className={n.id === activeId ? "is-active" : ""}
+            aria-pressed={n.id === activeId}
+            aria-label={`View stage ${i + 1}: ${n.title}`}
+            onClick={() => inspect(n.id)}
+          >
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            <span>{kinds[n.kind].label}</span>
+            {guidance[n.id]?.control && <FlowIcon name="shield" size={11} />}
+          </button>
+        ))}
+      </div>
+      {inspectorOpen && (
+        <StageInspector
+          node={active}
+          number={number}
+          guidance={activeGuidance}
+          dataURL={dataURL}
+          sources={sources}
+          onClose={() => {
+            setInspectorOpen(false);
+            document
+              .querySelectorAll<HTMLButtonElement>(
+                ".network-stage-picker button",
+              )
+              .item(number - 1)
+              ?.focus();
+          }}
         />
-        <Controls showInteractive={false} />
-      </ReactFlow>
+      )}
     </div>
   );
 }

@@ -16,11 +16,10 @@ if (root) {
   let page = 1;
   let ascending = false;
   const size = 10;
-  const isHome = root.dataset.home === "true";
   const arrayFields: Record<string, string> = {
+    environment: "environments",
     region: "regions",
     tool: "tools",
-    project: "projects",
   };
 
   function updateURL() {
@@ -37,6 +36,32 @@ if (root) {
     const query = search.value.trim().toLowerCase();
     const tokens = query.split(/\s+/).filter(Boolean);
     const filters = selects.filter((select) => select.value);
+    const chips = root!.querySelector(".active-filter-chips");
+    if (chips) {
+      chips.replaceChildren();
+      const addChip = (label: string, clear: () => void) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "active-filter-chip";
+        button.textContent = `${label} ×`;
+        button.setAttribute("aria-label", `Remove filter: ${label}`);
+        button.addEventListener("click", () => {
+          clear();
+          page = 1;
+          render();
+        });
+        chips.append(button);
+      };
+      if (query)
+        addChip(search.value, () => {
+          search.value = "";
+        });
+      filters.forEach((select) =>
+        addChip(select.selectedOptions[0]?.textContent || select.value, () => {
+          select.value = "";
+        }),
+      );
+    }
     const matches = rows
       .filter(
         (row) =>
@@ -108,14 +133,6 @@ if (root) {
       }
     }
     if (update) updateURL();
-    if (isHome) {
-      const link = root!.querySelector<HTMLAnchorElement>(".pagination>a");
-      if (link) {
-        const url = new URL(link.href);
-        url.search = location.search;
-        link.href = url.href;
-      }
-    }
     const sortButton = root!.querySelector<HTMLButtonElement>(".sort-button")!;
     sortButton.setAttribute(
       "aria-label",

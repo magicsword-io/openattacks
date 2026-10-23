@@ -2,9 +2,13 @@
 import AttackFlow from "./AttackFlow";
 import { attackFlow } from "../lib/attack-flow";
 import { href, type Attack } from "../lib/catalog";
-import Icon from "./Icon.astro";
+import { stageGuidance } from "../lib/stage-guidance";
 const { attack } = Astro.props as { attack: Attack };
 const flow = attackFlow(attack);
+const guidance = Object.fromEntries(
+  flow.nodes.map((node) => [node.id, stageGuidance(attack, node)]),
+);
+const defenseURL = href(`api/defenses/${attack.id}.json`);
 ---
 
 <section
@@ -14,18 +18,25 @@ const flow = attackFlow(attack);
 >
   <div class="flow-section-heading">
     <div>
-      <span class="eyebrow accent">FOLLOW THE ATTACK PATH</span>
       <h2 id="attack-flow-title">How it happened</h2>
     </div>
-    <a class="text-link" href={href(`api/attacks/${attack.id}.json`)}>
-      Flow data <Icon name="code" size={14} />
-    </a>
   </div>
   <div class="flow-frame">
-    <AttackFlow flow={flow} name={attack.name} client:visible />
+    <AttackFlow
+      flow={flow}
+      name={attack.name}
+      guidance={guidance}
+      dataURL={defenseURL}
+      sources={attack.sources.map((source) => source.url)}
+      client:visible
+    />
     <div class="flow-caption">
-      <span>
-        Drag to explore · Use + / − to zoom · Fit view to see the full flow
+      <span class="flow-desktop-help">
+        Select a stage · Drag to explore · + / − to zoom · Dashed edges are
+        loops
+      </span>
+      <span class="flow-mobile-help">
+        Select a stage · Arrows show reported connections
       </span>
       <span
         class:list={[
@@ -55,6 +66,22 @@ const flow = attackFlow(attack);
             {String(index + 1).padStart(2, "0")} · {node.title}
           </strong>
           <p>{node.description}</p>
+          <p>
+            <strong>Hunt:</strong> {guidance[node.id].hypothesis}
+          </p>
+          <p>{guidance[node.id].limitation}</p>
+          {guidance[node.id].control && (
+            <p>
+              <a
+                href={guidance[node.id].control!.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                MagicSword policy opportunity ↗
+              </a>{" "}
+              · {guidance[node.id].control!.scope}
+            </p>
+          )}
           <a
             href={node.source_urls[0]}
             target="_blank"

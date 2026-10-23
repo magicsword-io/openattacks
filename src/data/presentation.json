@@ -1,0 +1,410 @@
+{
+  "adception-claude-mac-2026-10": {
+    "title": "Adception fake Claude for Mac InstallFix malvertising",
+    "summary": "A Google ad for 'claude mac' leads to a fake Claude download page whose Copy button swaps the real install command for one that pipes an attacker URL into zsh.",
+    "environments": ["macos"],
+    "evidence": "campaign"
+  },
+  "agentcorruption-bedrock-2026-10": {
+    "title": "AgentCorruption: AWS Bedrock AgentCore IMDS credential theft",
+    "summary": "Research disclosure: chat prompts to exposed AgentCore agents could reach IMDS and steal region-wide role credentials, exposing other agents, memories and secrets. AWS has tightened defaults.",
+    "environments": ["cloud", "agents"],
+    "evidence": "research"
+  },
+  "anthropic-influence-as-a-service-2025-03": {
+    "title": "Claude-orchestrated influence-as-a-service bot network",
+    "summary": "A provider report describes an operation using Claude to coordinate over 100 social bot accounts and generate responses. The source does not confirm state affiliation.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "anthropic-iot-camera-cred-scrape-2025-03": {
+    "title": "Claude-assisted IoT security camera credential scraping toolkit",
+    "summary": "An actor used Claude to build tooling that tests leaked IoT camera credentials against internet-facing devices. Anthropic did not confirm successful real-world deployment.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "anthropic-novice-malware-builder-2025-03": {
+    "title": "Novice actor uses Claude to build a GUI malware builder",
+    "summary": "A low-skill actor used Claude to advance from batch scripts to a malware builder focused on evasion and persistence. Anthropic did not confirm real-world deployment.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "anthropic-recruitment-fraud-2025-03": {
+    "title": "Claude-polished recruitment fraud targeting Eastern Europe",
+    "summary": "Recruitment scammers posing as hiring managers used Claude to polish their English and interview scripts. Anthropic did not confirm that any victims were successfully defrauded.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "anyrun-fake-ai-tools-2026-10": {
+    "title": "Fake AI tools campaign cluster (ANY.RUN)",
+    "summary": "1,258 sandbox runs tied to fake Claude, ChatGPT and other AI lures delivered stealers through paste-in commands, ClickFix, shared AI chats, trojanized installers and fake browser ads.",
+    "environments": ["windows"],
+    "evidence": "campaign"
+  },
+  "apex-accelerator-ref8801-2026-10": {
+    "title": "Apex Accelerator / REF8801 backdoored AI CLI and MCP packages",
+    "summary": "A fake Web3 accelerator's npm packages route AI traffic to an attacker proxy, register rogue MCP servers in AI IDEs, and drop stealers on Windows and macOS.",
+    "environments": ["development", "agents", "windows", "macos"],
+    "evidence": "campaign"
+  },
+  "apt41-gemini-c2-osstun-2025-08": {
+    "title": "APT41 uses Gemini to develop the OSSTUN C2 framework",
+    "summary": "PRC-linked APT41 used Gemini for C++ and Go coding help on tools, including the OSSTUN C2 framework, and for help with public obfuscation libraries.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "apt42-gemini-phishing-data-agent-2025": {
+    "title": "APT42 uses Gemini for phishing and a 'Data Processing Agent'",
+    "summary": "Iranian APT42 used Gemini to draft phishing lures and attempted to build an agent that turns natural language into SQL queries over sensitive personal data.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "arup-deepfake-video-fraud-2024-01": {
+    "title": "Arup Hong Kong deepfake video-call fraud (~US$25.6M)",
+    "summary": "A finance employee on a video call with deepfaked executives approved transfers of about US$25.6M. Arup said its internal IT systems were not compromised.",
+    "environments": ["business"],
+    "evidence": "campaign"
+  },
+  "c2agent-unit42-2026-10": {
+    "title": "C2Agent LLM-driven Windows implant",
+    "summary": "Analysis of a Go Windows implant run by a C2-side LLM that turns operator goals into tool calls. It supports MCP, skills, handoff to AI coding CLIs on the host, and Cobalt Strike BOFs.",
+    "environments": ["windows"],
+    "evidence": "analysis"
+  },
+  "cairn-norforge-2026-10": {
+    "title": "Cairn: coding agents automate web exploitation",
+    "summary": "Exposed operator panels revealed coding agents repeatedly attempting known web exploits against commerce and payment sites. Success was reported for roughly 10% of tasks.",
+    "environments": ["web"],
+    "evidence": "campaign"
+  },
+  "cl-unk-1211-unit42-2026-10": {
+    "title": "CL-UNK-1211 AI-assisted campaign on government Linux servers",
+    "summary": "Espionage-style intrusions on government Linux servers used web shells, privilege escalation, SysGoRAT and tunnels. The code looks LLM-generated, but a live AI operator is not confirmed.",
+    "environments": ["linux"],
+    "evidence": "campaign"
+  },
+  "claude-agent-sdk-cve-2026-96620": {
+    "title": "Claude Agent SDK session-ID MCP code execution (CVE-2026-96620)",
+    "summary": "Untrusted session IDs starting with '-' were parsed as CLI flags, letting attackers load an MCP server that runs outside SDK permission controls. CVSS 9.2.",
+    "environments": ["agents"],
+    "evidence": "vulnerability"
+  },
+  "copilot-autoapprove-cve-2025-53773": {
+    "title": "GitHub Copilot prompt injection enables auto-approve RCE (CVE-2025-53773)",
+    "summary": "Prompt injection could make Copilot turn on auto-approve in its settings and then run shell commands without confirmation on Windows, macOS and Linux. Patched in VS 2022 17.14.12.",
+    "environments": ["agents", "windows", "macos", "linux"],
+    "evidence": "vulnerability"
+  },
+  "crowdstrike-artex-sk-finance-2026-10": {
+    "title": "ARTEX and Claude Code used against South Korean financial firms",
+    "summary": "A likely Chinese-speaking actor used the ARTEX agentic pentest suite and Claude Code against South Korean financial organizations, and asked Claude where to sell the stolen data.",
+    "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "cursor-curxecute-cve-2025-54135": {
+    "title": "Cursor CurXecute code execution (CVE-2025-54135)",
+    "summary": "A Cursor IDE flaw in AI and MCP handling enabled code execution. It was fixed alongside MCPoison in the Cursor 1.3.x line.",
+    "environments": ["agents"],
+    "evidence": "vulnerability"
+  },
+  "cursor-mcpoison-cve-2025-54136": {
+    "title": "Cursor MCPoison persistent MCP trust bypass (CVE-2025-54136)",
+    "summary": "After a victim approved a benign MCP config, an attacker could swap in a reverse shell that ran on every project open without a new prompt. Fixed in Cursor 1.3.",
+    "environments": ["agents"],
+    "evidence": "vulnerability"
+  },
+  "cve-2025-10619-sequa-mcp": {
+    "title": "sequa-mcp OAuth URL command injection (CVE-2025-10619)",
+    "summary": "Another MCP client affected by the same flaw class, where opening an OAuth authorization URL allows Windows command injection.",
+    "environments": ["agents", "windows"],
+    "evidence": "vulnerability"
+  },
+  "cve-2025-58062-openmcp-client": {
+    "title": "openmcp-client OAuth URL command injection (CVE-2025-58062)",
+    "summary": "On Windows, openmcp-client mishandled the MCP OAuth authorization URL, allowing PowerShell command injection. This is the same flaw class as mcp-remote and opencode.",
+    "environments": ["agents", "windows"],
+    "evidence": "vulnerability"
+  },
+  "cve-2025-6514-mcp-remote-rce": {
+    "title": "mcp-remote OAuth authorization_endpoint RCE (CVE-2025-6514)",
+    "summary": "A malicious or intercepted MCP server could return a crafted OAuth URL that runs commands through PowerShell on Windows. CVSS 9.6; fixed in mcp-remote 0.1.16.",
+    "environments": ["agents", "windows"],
+    "evidence": "vulnerability"
+  },
+  "datadog-bedrock-key-testing-2025": {
+    "title": "Exposed AWS keys mass-tested for Bedrock LLMjacking",
+    "summary": "Datadog observed automated, internet-scale testing of exposed AWS keys specifically for Amazon Bedrock model access, a reconnaissance step toward LLMjacking.",
+    "environments": ["cloud"],
+    "evidence": "campaign"
+  },
+  "deepseek-grok-fake-windows-clients-2025": {
+    "title": "Fake DeepSeek and Grok Windows clients deliver stealers and backdoors",
+    "summary": "Fake DeepSeek and Grok desktop installers delivered stealers, SSH backdoors, Vidar, the BrowserVenom traffic proxy and Gh0stRAT variants.",
+    "environments": ["windows"],
+    "evidence": "campaign"
+  },
+  "eset-rilide-vidar-fake-ai-2024": {
+    "title": "Rilide and Vidar stealers spread via fake Sora, Gemini and Midjourney",
+    "summary": "Fake AI ads and a malicious extension delivered the Rilide stealer for Facebook credentials, and a fake Midjourney installer delivered Vidar to steal browser data, wallets and keystrokes.",
+    "environments": ["browser"],
+    "evidence": "campaign"
+  },
+  "evilai-trendmicro-fake-ai-apps-2025": {
+    "title": "EvilAI: fake AI apps steal browser data",
+    "summary": "Signed, working productivity apps hide browser-data theft and other malicious behavior. Researchers described the code as AI-generated-looking; that does not independently establish AI authorship.",
+    "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "fraudgpt-underground-2023": {
+    "title": "FraudGPT underground malicious LLM offering",
+    "summary": "A dark-web LLM advertised for malware, phishing kits and scam content. This is a marketplace claim, and some researchers doubt its authenticity.",
+    "environments": ["unspecified"],
+    "evidence": "claim"
+  },
+  "ghostaction-ai-creds-2026-10": {
+    "title": "GhostAction Stage 2 stealer targeting cloud and AI credentials",
+    "summary": "Malicious workflows and a VS Code auto-run task steal AWS, npm, SSH and Claude/Gemini credentials across 94 repos. AI is a credential target here, not the attack operator.",
+    "environments": ["development", "cloud"],
+    "evidence": "campaign"
+  },
+  "gtg-1002-anthropic-claude-code-espionage-2025-11": {
+    "title": "GTG-1002 AI-orchestrated espionage via Claude Code",
+    "summary": "Anthropic reports that a state-sponsored group used Claude Code to orchestrate intrusion tasks. Human operators selected targets, and model-generated findings required validation.",
+    "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "gtg-2002-vibe-hacking-extortion-2025-08": {
+    "title": "GTG-2002 'vibe hacking' data extortion via Claude Code",
+    "summary": "A criminal operator used Claude Code for reconnaissance, intrusion and data theft, then to help set ransom amounts and prepare extortion messages.",
+    "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "hiddenlayer-mcp-param-abuse-2025": {
+    "title": "HiddenLayer: MCP tool parameter abuse leaks prompts",
+    "summary": "Research showed malicious MCP tools with suggestive parameter names can trick models into filling in system prompts and chat history, which the tool then exfiltrates.",
+    "environments": ["agents"],
+    "evidence": "research"
+  },
+  "huntress-plus56-custom-gpt-clickfix-2026-09": {
+    "title": "Plus 5.6: fake ChatGPT assistant delivers a Windows RAT",
+    "summary": "A malicious Custom GPT directs users to a ClickFix page. The pasted command launches a Windows payload chain with DLL sideloading and persistence.",
+    "environments": ["windows"],
+    "evidence": "campaign"
+  },
+  "hyas-blackmamba-poc-2023-08": {
+    "title": "BlackMamba AI-generated polymorphic keylogger (PoC)",
+    "summary": "A research proof of concept asks an LLM for fresh in-memory keylogger code on each run and demonstrates exfiltration through Teams. The report describes a lab demo, not an observed campaign.",
+    "environments": ["unspecified"],
+    "evidence": "research"
+  },
+  "invariant-github-mcp-private-repo-2025-05": {
+    "title": "GitHub MCP prompt injection leaks private repositories",
+    "summary": "Research showed a malicious public GitHub issue can coerce an agent using GitHub MCP to leak private repo contents publicly. The root cause is an architectural trust issue, not a code bug.",
+    "environments": ["agents", "development"],
+    "evidence": "research"
+  },
+  "invariant-mcp-tool-poisoning-2025-04": {
+    "title": "MCP tool poisoning attacks (Invariant Labs)",
+    "summary": "Research showed hidden instructions in MCP tool descriptions can make agents leak SSH keys and configs. It also showed rug pulls and cross-server email redirection.",
+    "environments": ["agents"],
+    "evidence": "research"
+  },
+  "llmjacking-deepseek-sysdig-2025-02": {
+    "title": "LLMjacking expands to DeepSeek",
+    "summary": "Within days of DeepSeek going viral, LLMjacking proxies running on stolen credentials added DeepSeek alongside OpenAI, AWS and Azure access.",
+    "environments": ["cloud"],
+    "evidence": "campaign"
+  },
+  "llmjacking-sysdig-2024-05": {
+    "title": "LLMjacking via stolen cloud credentials (Sysdig)",
+    "summary": "Attackers used stolen cloud credentials to probe ten AI services and resell LLM access through proxies, leaving victims to pay the inference bills.",
+    "environments": ["cloud"],
+    "evidence": "campaign"
+  },
+  "lolskills-ink5725-snapshot-config-reader-2026-10": {
+    "title": "ink5725/snapshot-config-reader agent skill scanner finding",
+    "summary": "A skill that extracts config from PNG images triggered scanner flags. The snapshot showed zero downloads and an incomplete scan; the finding does not establish that the skill is malicious.",
+    "environments": ["agents"],
+    "evidence": "finding"
+  },
+  "malwarebytes-chrome-ai-extensions-2025-01": {
+    "title": "Chrome AI extensions deliver info-stealers",
+    "summary": "Compromised or malicious AI- and VPN-themed Chrome extensions pushed info-stealers through updates, reportedly affecting about 2.6 million users.",
+    "environments": ["browser"],
+    "evidence": "campaign"
+  },
+  "morris-ii-ai-worm-poc-2024-03": {
+    "title": "Morris II generative AI email worm (research PoC)",
+    "summary": "In controlled tests, self-replicating prompts spread between GenAI email assistants, demonstrating potential propagation and data-theft risks.",
+    "environments": ["agents"],
+    "evidence": "research"
+  },
+  "openai-phish-and-scripts-2025-10": {
+    "title": "OpenAI disruption: 'Phish and Scripts' cyber cluster",
+    "summary": "Chinese-language accounts used ChatGPT for phishing and malware help and researched further automation with DeepSeek, an example of switching between models.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "openai-russian-malware-tooling-2025-10": {
+    "title": "OpenAI disruption: Russian-speaking malware tooling development",
+    "summary": "Russian-speaking operators used ChatGPT to develop and debug malware tooling as part of their existing cyber workflows.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "openai-scopecreep-cyber-2025-06": {
+    "title": "OpenAI disruption: ScopeCreep cyber operation",
+    "summary": "OpenAI disrupted an operation that used ChatGPT to support intrusion and malware work. The AI was added to existing workflows rather than running attacks end to end.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "opencode-mcp-oauth-rce-2026-10": {
+    "title": "opencode remote MCP OAuth command execution",
+    "summary": "A malicious remote MCP server can return an OAuth URL that runs commands via PowerShell when opencode opens it on Windows or WSL. No prompt injection is needed.",
+    "environments": ["agents", "windows"],
+    "evidence": "vulnerability"
+  },
+  "ox-security-chrome-ext-chatgpt-deepseek-2025": {
+    "title": "Malicious Chrome extensions steal ChatGPT and DeepSeek chats",
+    "summary": "Chrome extensions posing as AITOPIA stole ChatGPT and DeepSeek conversations and browsing URLs. The related cluster reportedly affected over 900,000 users.",
+    "environments": ["browser"],
+    "evidence": "campaign"
+  },
+  "phantomraven-npm-slopsquatting-2025-10": {
+    "title": "PhantomRaven npm campaign using slopsquatted package names",
+    "summary": "Malicious npm packages with AI-hallucination-style names hid dependencies from scanners and stole npm, Git and CI tokens.",
+    "environments": ["development"],
+    "evidence": "campaign"
+  },
+  "pretext-skill-scanner-evasion-2026-10": {
+    "title": "Pretext: LLM attacker evades agent-skill scanners",
+    "summary": "Academic research: plain-language payloads split across skill files evaded skill scanners up to 97% of the time, showing whole bundles must be scanned. This is not a real intrusion.",
+    "environments": ["agents"],
+    "evidence": "research"
+  },
+  "promptflux-gtig-2025-06": {
+    "title": "PROMPTFLUX Gemini-powered self-modifying VBScript dropper",
+    "summary": "An experimental VBScript dropper queries Gemini for antivirus-evasion rewrites. The analyzed self-update function was commented out, so active self-rewriting is not established.",
+    "environments": ["unspecified"],
+    "evidence": "analysis"
+  },
+  "promptlock-gtig-eset-2025": {
+    "title": "PROMPTLOCK LLM-generated Lua ransomware (PoC)",
+    "summary": "A Go ransomware proof of concept uses an LLM to generate Lua scripts for recon, data theft and encryption on Windows and Linux. It has not been reported as an active campaign.",
+    "environments": ["windows", "linux"],
+    "evidence": "research"
+  },
+  "promptsteal-lamehug-apt28-2025-07": {
+    "title": "PROMPTSTEAL / LAMEHUG LLM-driven data miner (APT28)",
+    "summary": "Malware that asks a Hugging Face-hosted LLM for Windows recon and document-theft commands was used against Ukrainian government targets. GTIG calls it the first LLM-querying malware seen in live operations.",
+    "environments": ["windows"],
+    "evidence": "campaign"
+  },
+  "quietvault-gtig-2025": {
+    "title": "QUIETVAULT AI-assisted credential stealer",
+    "summary": "A JavaScript stealer takes GitHub and npm tokens and uses AI CLIs installed on the host to hunt for more secrets. Industry reports link it to s1ngularity-style npm attacks.",
+    "environments": ["development"],
+    "evidence": "analysis"
+  },
+  "s1ngularity-nx-ai-cli-2025-08": {
+    "title": "s1ngularity Nx npm supply-chain attack abusing AI CLIs",
+    "summary": "Malicious Nx packages stole developer secrets, using local Claude, Gemini and Amazon Q CLIs to find files. Stolen tokens later made 5,500+ private repos public.",
+    "environments": ["development"],
+    "evidence": "campaign"
+  },
+  "shareleak-copilot-studio-cve-2026-21520": {
+    "title": "ShareLeak: Copilot Studio SharePoint form prompt injection (CVE-2026-21520)",
+    "summary": "Content in SharePoint forms could prompt-inject Copilot Studio agents into leaking SharePoint data. Microsoft patched it on 2026-01-15.",
+    "environments": ["agents"],
+    "evidence": "vulnerability"
+  },
+  "slopsquatting-huggingface-cli-2024": {
+    "title": "Slopsquatting: hallucinated huggingface-cli package",
+    "summary": "Researchers registered huggingface-cli, a PyPI name LLMs often hallucinate, and saw tens of thousands of downloads. This shows how attackers could exploit AI-suggested fake packages.",
+    "environments": ["development"],
+    "evidence": "research"
+  },
+  "storm-2139-fizzdogg-microsoft-llmjacking-2024-12": {
+    "title": "Storm-2139 / FizzDogg Azure OpenAI LLMjacking (Microsoft DCU)",
+    "summary": "A Microsoft civil action alleges the group stole Azure OpenAI credentials and bypassed safety controls to generate harmful images at victims' expense.",
+    "environments": ["cloud"],
+    "evidence": "campaign"
+  },
+  "talos-a3-ai-analysis-evasion-2026-10": {
+    "title": "A3 malware that tells AI analysts to look away (Talos)",
+    "summary": "84 malware samples embed comments telling LLM analysts to ignore or refuse the file. In the best runs, the trick steered models toward a benign verdict about 35% of the time.",
+    "environments": ["unspecified"],
+    "evidence": "analysis"
+  },
+  "talos-yuri-agent-attacks-2026-10": {
+    "title": "Talos: today's AI agent attacks look like loud pentests",
+    "summary": "A framework post arguing public AI-agent attacks are noisy pentests for now, with real risk arriving once agents are prompted for stealth. It summarizes public cases, not one intrusion.",
+    "environments": ["unspecified"],
+    "evidence": "concept"
+  },
+  "temp-zagros-gemini-malware-dev-2025": {
+    "title": "TEMP.Zagros / MuddyWater use Gemini for custom malware",
+    "summary": "Iranian MuddyWater used 'student project' pretexts to get Gemini's help with web shells and C2. Pasting in a C2 domain and key exposed their infrastructure and aided disruption.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "trailofbits-mcp-line-jumping-2025-04": {
+    "title": "MCP line jumping: attacks before the first tool use",
+    "summary": "Research showed malicious MCP tool descriptions can inject instructions before any tool runs, enabling code execution, data theft and approval bypass.",
+    "environments": ["agents"],
+    "evidence": "research"
+  },
+  "unc1069-gemini-deepfake-crypto-2025": {
+    "title": "UNC1069 (MASAN) Gemini misuse and deepfake Zoom lures",
+    "summary": "DPRK-linked UNC1069 used Gemini for crypto research and lures, and used deepfakes of crypto figures to push a fake 'Zoom SDK' that delivers the BIGMACHO backdoor.",
+    "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "unc4899-pukchong-gemini-2025": {
+    "title": "UNC4899 (PUKCHONG) uses Gemini for exploit and tooling R&D",
+    "summary": "DPRK group UNC4899 used Gemini for code development, exploit research and tooling aimed at edge devices and modern browsers.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
+  "unit42-android-chatgpt-malware-2023": {
+    "title": "Android malware posing as ChatGPT apps",
+    "summary": "Fake ChatGPT Android apps delivered Meterpreter and SMS-fraud malware as ChatGPT-themed phishing and trojan sites grew.",
+    "environments": ["android"],
+    "evidence": "campaign"
+  },
+  "unit42-llm-js-obfuscation-2024": {
+    "title": "Unit 42: LLMs obfuscate malicious JavaScript",
+    "summary": "Research showed LLMs can effectively rewrite existing malicious JavaScript to evade detection, though writing full malware from scratch was less practical at the time.",
+    "environments": ["unspecified"],
+    "evidence": "research"
+  },
+  "vs-copilot-trailing-dot-rce-2026-10": {
+    "title": "Visual Studio / SSMS Copilot trailing-dot RCE (CVE-2026-103572)",
+    "summary": "Writing '.mcp.json.' slipped past Copilot's edit guard, and Windows strips the trailing dot, so attackers could rewrite the MCP config for code execution. Affects VS 2022/2026 and SSMS; patched.",
+    "environments": ["agents", "windows"],
+    "evidence": "vulnerability"
+  },
+  "wiz-ai-driven-cloud-2026-10": {
+    "title": "Wiz CIRT: AI-driven multi-cloud intrusions",
+    "summary": "An AI agent ran a noisy, full multi-cloud intrusion from initial access to data theft. The same source IP scanned 600+ other Wiz customer environments.",
+    "environments": ["cloud"],
+    "evidence": "campaign"
+  },
+  "wormgpt-underground-2023": {
+    "title": "WormGPT underground malicious LLM",
+    "summary": "An unrestricted LLM sold on dark-web forums for phishing and malware help. Check Point judged it likely real but no better than jailbroken mainstream models.",
+    "environments": ["unspecified"],
+    "evidence": "claim"
+  },
+  "zenity-copilot-studio-sharepoint-ssrf-2024": {
+    "title": "Copilot Studio SharePoint connector SSRF (CVE-2024-38206)",
+    "summary": "A malicious agent action could expose a victim's SharePoint token through a connector SSRF flaw, enabling impersonation across affected Microsoft services.",
+    "environments": ["agents"],
+    "evidence": "vulnerability"
+  },
+  "zenity-mcp-supply-chain-2026-draft": {
+    "title": "Zenity: MCP server supply-chain risk (conceptual)",
+    "summary": "A conceptual post arguing a poisoned shared MCP server could hijack a deployment agent while monitoring looks clean. It is not a named intrusion.",
+    "environments": ["agents"],
+    "evidence": "concept"
+  }
+}

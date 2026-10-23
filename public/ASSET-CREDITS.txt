@@ -2,4 +2,6 @@ MagicSword logos: official assets from https://www.magicsword.io/img/dark/logo-d
 
 Map geometry: Natural Earth public-domain data via world-atlas (https://github.com/topojson/world-atlas).
 
+AI Attacks social share cover (ai-attacks-share.png): generated with the built-in OpenAI image generation tool on 2026-10-23. The dot clusters are illustrative and contain no incident counts or quantitative labels.
+
 MITRE ATLAS technique IDs and names: mitre-atlas/atlas-data v5.6.0, https://github.com/mitre-atlas/atlas-data. License included at src/data/ATLAS-LICENSE.txt. Catalog mappings are independent annotations, not MITRE endorsements.
