@@ -217,13 +217,11 @@ test("public API is complete and every generated internal link resolves", async 
     expect((await request.get(path)).status(), path).toBe(200);
 });
 
-test("main views meet automated WCAG AA checks in both themes", async ({
-  page,
-}) => {
-  for (const theme of ["dark", "light"]) {
-    await page.goto("/");
-    if (theme === "light")
-      await page.getByRole("button", { name: "Switch to light mode" }).click();
+// Give every page/theme scan its own timeout and trace. Sixteen scans in one
+// test shared a 30-second budget and timed out on the slower CI runner.
+for (const theme of ["dark", "light"]) {
+  test.describe(`WCAG AA in ${theme} theme`, () => {
+    test.use({ reducedMotion: "reduce" });
     for (const path of [
       "/",
       "/catalog/",
@@ -234,17 +232,23 @@ test("main views meet automated WCAG AA checks in both themes", async ({
       "/attacks/ghostaction-ai-creds-2026-10/",
       "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/",
     ]) {
-      await page.goto(path);
-      const result = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-        .analyze();
-      expect(
-        result.violations,
-        `${theme} ${path}: ${JSON.stringify(result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })))}`,
-      ).toEqual([]);
+      test(path, async ({ page }) => {
+        await page.addInitScript((selectedTheme) => {
+          localStorage.setItem("ai-attacks-theme", selectedTheme);
+        }, theme);
+        await page.goto(path);
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+        const result = await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze();
+        expect(
+          result.violations,
+          `${theme} ${path}: ${JSON.stringify(result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })))}`,
+        ).toEqual([]);
+      });
     }
-  }
-});
+  });
+}
 
 test("dot timeline supports highlighting, pausing and reduced motion", async ({
   page,
