@@ -33,6 +33,7 @@ export default function StageInspector({
   guidance,
   dataURL,
   sources,
+  initialView = "evidence",
   onClose,
 }: {
   node: AttackFlowNode;
@@ -40,9 +41,10 @@ export default function StageInspector({
   guidance: StageGuidance;
   dataURL: string;
   sources: string[];
+  initialView?: string;
   onClose: () => void;
 }) {
-  const [view, setView] = useState("evidence");
+  const [view, setView] = useState(initialView);
   const [format, setFormat] = useState<QueryFormat>("sigma");
   const id = useId();
   const custom = !!guidance.queries?.kql.includes("AI_AttacksAudit_CL");

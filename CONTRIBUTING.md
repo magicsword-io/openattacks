@@ -90,4 +90,12 @@ Do not convert actor language, actor nationality, hosting infrastructure, a pare
 
 ## Automatic AI-readable publishing
 
-Every build generates `llms.txt`, `llms-full.txt`, `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection. Do not edit generated files. Merging a valid attack PR into `main` triggers the Pages workflow and rebuilds all outputs together; tests check each YAML ID against the generated guide, full context, page and individual exports.
+Every build generates `llms.txt`, `llms-full.txt`, `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. Do not edit generated files. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds all outputs together; tests check each YAML ID against the generated guide, full context, page and individual exports. GitHub Pages is an optional manual workflow.
+
+## Stack relevance
+
+Adding a YAML record is sufficient to publish it everywhere. The homepage's personalized matches use separate reviewed annotations in `src/data/applicability.json`; a new entry without an annotation is exported as `not_assessed` and does not receive guessed matches.
+
+For a reviewed mapping, use tool and OS IDs from `src/lib/stack-matching.mjs`. Each rule needs a source-supported victim-side product, workflow or OS scope, a relationship (`target`, `credential`, `workflow`, `lure` or `environment`), a concrete reason, conditions to check, and source URLs already present in the record. State affected-version and integration requirements for historical vulnerabilities. `mcp: true` means the rule requires an existing MCP connection, not merely that an attacker installs a new one. Never map attacker-side Claude/Gemini use to exposure of users of those products. Preserve research and evidence qualifications.
+
+Choose an existing flow-node ID for `stage_id` and provide one concrete first `action`. Use `attacker_tool_only` or `not_assessed` with no rules when appropriate. The matching UI is a starting point for review, not a scan, risk score or current-vulnerability assessment. Windows policy links remain subject to the stage control's enforcement and platform prerequisites.

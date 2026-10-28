@@ -217,13 +217,11 @@ test("public API is complete and every generated internal link resolves", async 
     expect((await request.get(path)).status(), path).toBe(200);
 });
 
-test("main views meet automated WCAG AA checks in both themes", async ({
-  page,
-}) => {
-  for (const theme of ["dark", "light"]) {
-    await page.goto("/");
-    if (theme === "light")
-      await page.getByRole("button", { name: "Switch to light mode" }).click();
+// Give every page/theme scan its own timeout and trace. Sixteen scans in one
+// test shared a 30-second budget and timed out on the slower CI runner.
+for (const theme of ["dark", "light"]) {
+  test.describe(`WCAG AA in ${theme} theme`, () => {
+    test.use({ reducedMotion: "reduce" });
     for (const path of [
       "/",
       "/catalog/",
@@ -234,17 +232,23 @@ test("main views meet automated WCAG AA checks in both themes", async ({
       "/attacks/ghostaction-ai-creds-2026-10/",
       "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/",
     ]) {
-      await page.goto(path);
-      const result = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-        .analyze();
-      expect(
-        result.violations,
-        `${theme} ${path}: ${JSON.stringify(result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })))}`,
-      ).toEqual([]);
+      test(path, async ({ page }) => {
+        await page.addInitScript((selectedTheme) => {
+          localStorage.setItem("ai-attacks-theme", selectedTheme);
+        }, theme);
+        await page.goto(path);
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+        const result = await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze();
+        expect(
+          result.violations,
+          `${theme} ${path}: ${JSON.stringify(result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })))}`,
+        ).toEqual([]);
+      });
     }
-  }
-});
+  });
+}
 
 test("dot timeline supports highlighting, pausing and reduced motion", async ({
   page,
@@ -369,7 +373,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   await expect(page.locator(".stage-control")).toContainText("Windows");
   await expect(page.locator(".network-control-link")).toHaveAttribute(
     "href",
-    "https://www.magicsword.io/use-cases/application-control",
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
   );
   await expect(page.locator(".policy-prerequisite")).toContainText(
     "enforced Windows policy",
@@ -491,27 +495,26 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
   await expect(page.locator(".mobile-policy-link").first()).toHaveAttribute(
     "href",
-    "https://www.magicsword.io/use-cases/application-control",
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
   );
 });
 
-test("landing page offers a short path to filtered entries while keeping the timeline", async ({
+test("landing page keeps global context and leads to stack selection", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator("[data-dot-chart]")).toBeVisible();
   await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
   await expect(page.locator("[data-catalog]")).toHaveCount(0);
+  await page
+    .getByRole("link", { name: "See what applies to my stack" })
+    .click();
+  await expect(page).toHaveURL(/#your-stack$/);
   await expect(
-    page.getByRole("link", { name: `Browse ${attacks.length} attack paths` }),
+    page.getByRole("heading", { name: "Which paths matter to you?" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Windows", exact: true }).click();
-  await expect(
-    page.getByRole("combobox", { name: "Filter by environment" }),
-  ).toHaveValue("windows");
-  await expect(page.locator("[data-attack-row]:visible").first()).toContainText(
-    "Windows",
-  );
+  await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
+  await expect(page.locator("[data-stack-results]")).toBeVisible();
 });
 
 test("qualifications stay before the diagram and custom schema guidance stays explicit", async ({

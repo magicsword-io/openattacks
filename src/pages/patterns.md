@@ -45,4 +45,4 @@ The [Arup deepfake fraud report](../attacks/arup-deepfake-video-fraud-2024-01/) 
 
 ---
 
-These patterns will evolve as the evidence changes. Contribute a correction or a new sourced entry through the project repository. Explore [free MagicSword.io](https://magicsword.io) for related community resources.
+These patterns will evolve as the evidence changes. Contribute a correction or a new sourced entry through the project repository. Explore [free MagicSword.io](https://magicsword.io/?utm_source=ai-attacks&utm_medium=referral&utm_content=patterns) for related community resources.

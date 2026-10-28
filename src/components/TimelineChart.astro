@@ -1,6 +1,7 @@
 ---
 import { roles, href, formatDate, type Attack } from "../lib/catalog";
 import Icon from "./Icon.astro";
+import { present } from "../lib/presentation";
 const { attacks, large = false } = Astro.props as {
   attacks: Attack[];
   large?: boolean;
@@ -106,11 +107,12 @@ const chartHeight = baseline + 49;
           {group.entries.map((entry, j) => (
             <a
               class="chart-entry"
+              data-attack-id={entry.id}
               href={href(`attacks/${entry.id}/`)}
-              aria-label={`${entry.name}, ${formatDate(entry.date_reported)}`}
+              aria-label={`${present(entry).title}, ${formatDate(entry.date_reported)}`}
               data-role={entry.ai_role}
               data-year={group.year}
-              data-name={entry.name}
+              data-name={present(entry).title}
               data-date={formatDate(entry.date_reported)}
               style={`--dot-delay:${i * 100 + j * 22}ms;--pulse-delay:${3 + ((j * 7 + i) % 17) / 3}s`}
             >
@@ -199,24 +201,42 @@ const chartHeight = baseline + 49;
         "[data-chart-inspector]",
       )!;
       let activeRole = "";
+      let stackIDs: Set<string> | null = null;
+      const inStack = (entry: SVGAElement) =>
+        !stackIDs || stackIDs.has(entry.dataset.attackId!);
+      const period = chart.querySelector<HTMLElement>(".chart-period")!;
+      const originalPeriod = period.textContent;
       const defaultMessage = () =>
-        activeRole
-          ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
-          : "One dot. One documented entry. Select a dot to read the research.";
+        stackIDs
+          ? `${entries.filter((entry) => inStack(entry) && (!activeRole || entry.dataset.role === activeRole)).length} highlighted${activeRole ? " in this role" : ""} · ${stackIDs.size} of ${entries.length} reports match your selections. Check their conditions below.`
+          : activeRole
+            ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
+            : "One dot. One documented entry. Select a dot to read the research.";
       function highlight(role: string) {
         activeRole = role;
         entries.forEach(
           (entry) =>
             (entry.dataset.muted = String(
-              !!role && entry.dataset.role !== role,
+              !inStack(entry) || (!!role && entry.dataset.role !== role),
             )),
         );
-        legend.forEach((button) =>
+        legend.forEach((button) => {
           button.setAttribute(
             "aria-pressed",
             String(button.dataset.highlight === role),
-          ),
-        );
+          );
+          button.querySelector("span")!.textContent = String(
+            entries.filter(
+              (entry) =>
+                inStack(entry) &&
+                (!button.dataset.highlight ||
+                  entry.dataset.role === button.dataset.highlight),
+            ).length,
+          );
+        });
+        period.textContent = stackIDs
+          ? `${stackIDs.size} OF ${entries.length} MATCHED · ${originalPeriod?.split("·").at(-1)?.trim()}`
+          : originalPeriod;
         chart
           .querySelectorAll<SVGTextElement>("[data-chart-year-count]")
           .forEach((label) => {
@@ -224,6 +244,7 @@ const chartHeight = baseline + 49;
               entries.filter(
                 (entry) =>
                   entry.dataset.year === label.dataset.chartYearCount &&
+                  inStack(entry) &&
                   (!role || entry.dataset.role === role),
               ).length,
             ).padStart(2, "0");
@@ -232,6 +253,21 @@ const chartHeight = baseline + 49;
         chart.querySelector("[data-chart-status]")!.textContent =
           defaultMessage();
       }
+      const applyStack = (detail: { active: boolean; ids: string[] }) => {
+        stackIDs = detail.active ? new Set(detail.ids) : null;
+        highlight(activeRole);
+      };
+      document.addEventListener("stack:change", ((
+        event: CustomEvent<{ active: boolean; ids: string[] }>,
+      ) => applyStack(event.detail)) as EventListener);
+      const stack = document.querySelector<HTMLElement>(
+        "[data-stack-explorer]",
+      );
+      if (stack?.dataset.matchedIds)
+        applyStack({
+          active: stack.dataset.stackActive === "true",
+          ids: JSON.parse(stack.dataset.matchedIds),
+        });
       legend.forEach((button) =>
         button.addEventListener("click", () =>
           highlight(

@@ -3,6 +3,7 @@ import { roles } from "./catalog";
 import { attackFlow } from "./attack-flow";
 import { stageGuidance } from "./stage-guidance";
 import { present, environments, evidenceTypes } from "./presentation";
+import { applicabilityFor } from "./stack-data";
 import atlas from "../data/atlas-techniques.json";
 
 // Treat catalog content as quoted data. Only explicit http(s) source URLs become Markdown links.
@@ -18,6 +19,7 @@ export function attackMarkdown(
       : "- unknown";
   const flow = attackFlow(attack);
   const display = present(attack);
+  const relevance = applicabilityFor(attack);
   const techniques = atlas.techniques as Record<
     string,
     { name: string; url: string }
@@ -46,6 +48,20 @@ export function attackMarkdown(
       : []),
     "## Technique",
     plain(attack.technique_summary),
+    "",
+    "## Stack relevance (editorial)",
+    `Assessment: ${plain(relevance.status)}. ${plain(relevance.review_basis)}`,
+    ...(relevance.action ? [`First action: ${plain(relevance.action)}`] : []),
+    ...(relevance.note ? [plain(relevance.note)] : []),
+    ...relevance.rules.flatMap((rule) => [
+      `- Relationship: ${plain(rule.relationship)}; tools: ${rule.tools.join(", ") || "no specific product"}; OS scope: ${rule.systems.join(", ") || "not OS-specific / not stated"}; requires existing MCP connections: ${rule.mcp}.`,
+      `  Relevance: ${plain(rule.reason)}`,
+      ...rule.conditions.map(
+        (condition) => `  Condition to check: ${plain(condition)}`,
+      ),
+      `  Evidence: ${rule.source_urls.join(" ; ")}`,
+    ]),
+    "A product mention alone is not a victim-side applicability mapping. Selection does not verify affected versions, permissions or compromise.",
     "",
     "## Initial access",
     plain(attack.initial_access),

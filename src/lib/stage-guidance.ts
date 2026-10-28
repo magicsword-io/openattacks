@@ -3,10 +3,14 @@ import { stringify } from "yaml";
 import annotations from "../data/stage-guidance.json";
 import type { Attack, AttackFlowNode } from "./catalog";
 import { attackFlow } from "./attack-flow";
+import { magicswordURL } from "./magicsword-links.mjs";
 
 export const detectionMcp =
   "https://github.com/MHaggis/Security-Detections-MCP";
-const productURL = "https://www.magicsword.io/use-cases/application-control";
+const productURL = magicswordURL(
+  "https://www.magicsword.io/use-cases/application-control",
+  "stage-control",
+);
 const reviewed = "2026-10-23";
 export type QueryFormat = "sigma" | "kql" | "spl";
 export interface StageGuidance {

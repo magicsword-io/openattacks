@@ -2,14 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import TimelineChart from "../components/TimelineChart.astro";
 import LatestEntries from "../components/LatestEntries.astro";
+import StackExplorer from "../components/StackExplorer.astro";
 import AgentAccess from "../components/AgentAccess.astro";
 import Icon from "../components/Icon.astro";
 import { getAttacks, href } from "../lib/catalog";
-import { environments, present } from "../lib/presentation";
 const attacks = await getAttacks();
-const shortcuts = ["windows", "agents", "cloud", "development"].filter((id) =>
-  attacks.some((a) => present(a).environments.includes(id)),
-);
 ---
 
 <Layout>
@@ -26,16 +23,15 @@ const shortcuts = ["windows", "agents", "cloud", "development"].filter((id) =>
         </div>
         <div class="hero-description">
           <p class="hero-copy">
-            Understand how AI fits into an attack. Follow the path, find where
-            to interrupt it, and explore ways to hunt for it.
+            Find the AI attack paths relevant to your team’s tools—and see what
+            to review, prevent, or hunt for.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href={href("catalog/")}>
-              Browse {attacks.length} attack paths{" "}
-              <Icon name="right" size={16} />
+            <a class="button button-primary" href="#your-stack">
+              See what applies to my stack <Icon name="right" size={16} />
             </a>
-            <a class="text-link" href={href("about/")}>
-              How we assess the evidence <Icon name="arrow" size={13} />
+            <a class="text-link" href={href("catalog/")}>
+              Browse the full catalog <Icon name="arrow" size={13} />
             </a>
           </div>
         </div>
@@ -47,20 +43,10 @@ const shortcuts = ["windows", "agents", "cloud", "development"].filter((id) =>
         prevalence.
       </p>
     </section>
-    <section
-      class="environment-shortcuts"
-      aria-label="Find attack paths by environment"
-    >
-      <span>Start with your environment</span>
-      <div>
-        {shortcuts.map((id) => (
-          <a href={`${href("catalog/")}?environment=${id}`}>
-            {environments[id]} <Icon name="right" size={12} />
-          </a>
-        ))}
-      </div>
-    </section>
-    <LatestEntries attacks={attacks.slice(0, 6)} total={attacks.length} />
+    <StackExplorer attacks={attacks} />
+    <div data-stack-default>
+      <LatestEntries attacks={attacks.slice(0, 6)} total={attacks.length} />
+    </div>
     <AgentAccess />
   </div>
 </Layout>

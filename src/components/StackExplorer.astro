@@ -1,0 +1,267 @@
+---
+import Icon from "./Icon.astro";
+import { href, formatDate, type Attack } from "../lib/catalog";
+import { evidenceTypes } from "../lib/presentation";
+import { stackIndex } from "../lib/stack-data";
+import { inventoryURL, mcpSetupURL } from "../lib/site-links";
+const { attacks } = Astro.props as { attacks: Attack[] };
+const index = stackIndex(attacks);
+const mapped = index.entries.filter(
+  (entry) => entry.relevance.status === "mapped",
+);
+---
+
+<section
+  class="stack-explorer"
+  id="your-stack"
+  data-stack-explorer
+  aria-labelledby="stack-title"
+>
+  <div class="stack-heading">
+    <div>
+      <span class="eyebrow accent">FROM THE LANDSCAPE TO YOUR TEAM</span>
+      <h2 id="stack-title">Which paths matter to you?</h2>
+      <p>
+        Choose the tools your team uses. See the reports to review, why they
+        match, and where to start.
+      </p>
+    </div>
+    <span class="stack-local-note">
+      <Icon name="filter" size={14} /> No account needed
+    </span>
+  </div>
+  <form class="stack-form" aria-label="Your AI stack">
+    <fieldset>
+      <legend>
+        Which AI tools do you use? <span>Select all that apply</span>
+      </legend>
+      <div class="stack-options stack-primary-tools">
+        {index.tools
+          .filter((tool) => tool.primary)
+          .map((tool) => (
+            <label class="stack-choice">
+              <input type="checkbox" name="tools" value={tool.id} />
+              <span>
+                {tool.label}
+                <Icon name="plus" size={13} />
+              </span>
+            </label>
+          ))}
+      </div>
+      <details class="stack-more-tools">
+        <summary>
+          More tools & workflows <Icon name="down" size={12} />
+        </summary>
+        <div class="stack-options">
+          {index.tools
+            .filter((tool) => !tool.primary)
+            .map((tool) => (
+              <label class="stack-choice">
+                <input type="checkbox" name="tools" value={tool.id} />
+                <span>
+                  {tool.label}
+                  <Icon name="plus" size={13} />
+                </span>
+              </label>
+            ))}
+        </div>
+      </details>
+    </fieldset>
+    <div class="stack-context-inputs">
+      <fieldset>
+        <legend>
+          Where do they run? <span>Optional</span>
+        </legend>
+        <div class="stack-options">
+          {index.systems.map((system) => (
+            <label class="stack-choice stack-choice-small">
+              <input type="checkbox" name="systems" value={system.id} />
+              <span>{system.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Do your AI tools connect to MCP servers?</legend>
+        <div class="stack-options stack-mcp-options">
+          {[
+            { id: "yes", label: "Yes" },
+            { id: "no", label: "No" },
+            { id: "unknown", label: "Not sure" },
+          ].map((option) => (
+            <label class="stack-choice stack-choice-small">
+              <input type="radio" name="mcp" value={option.id} />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+    <div class="stack-selection-bar">
+      <p data-stack-selection-summary>
+        Start with a tool, an operating system, or MCP connections.
+      </p>
+      <div>
+        <button type="button" class="text-link" data-stack-copy hidden>
+          <Icon name="link" size={13} /> Copy this view
+        </button>
+        <button type="reset" class="text-link" data-stack-reset hidden>
+          Clear selections <Icon name="close" size={12} />
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="stack-inventory" data-stack-inventory>
+    <div>
+      <span class="stack-inventory-symbol">
+        <Icon name="search" size={18} />
+      </span>
+      <div>
+        <h3>Not sure what your team uses?</h3>
+        <p>
+          Start with a software inventory. Review connected MCP servers and
+          their permissions in each AI client’s settings.
+        </p>
+      </div>
+    </div>
+    <div class="stack-inventory-actions">
+      <a
+        class="text-link"
+        href={inventoryURL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Explore MagicSword inventory <Icon name="arrow" size={13} />
+      </a>
+      <a
+        class="text-link"
+        href={mcpSetupURL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Connect MagicSword MCP <Icon name="arrow" size={13} />
+      </a>
+      <small>MagicSword MCP requires an Enterprise organization.</small>
+    </div>
+  </div>
+  <div class="stack-results" data-stack-results hidden>
+    <div class="stack-results-heading">
+      <div>
+        <span class="eyebrow">YOUR SLICE OF THE CATALOG</span>
+        <h3 data-stack-count aria-live="polite"></h3>
+      </div>
+      <a class="text-link" href={href("catalog/")}>
+        Explore the full catalog <Icon name="right" size={13} />
+      </a>
+    </div>
+    <p class="stack-results-context">
+      Matches are starting points for review. Check the configuration, version
+      and permissions described in each source.
+    </p>
+    <ol class="stack-result-list">
+      {mapped.map((entry) => (
+        <li data-stack-result={entry.id} hidden>
+          <article class="stack-result-card">
+            <div class="stack-result-meta">
+              <span class={`evidence-badge evidence-${entry.evidence}`}>
+                {evidenceTypes[entry.evidence]}
+              </span>
+              <span data-stack-relationship></span>
+              <time datetime={entry.reported}>
+                {formatDate(entry.reported)}
+              </time>
+            </div>
+            <h4>
+              <a href={entry.stage_url || entry.url}>
+                {entry.title} <Icon name="arrow" size={14} />
+              </a>
+            </h4>
+            {entry.evidence === "vulnerability" && (
+              <p class="stack-version-note">
+                Historical vulnerability report · confirm affected version
+              </p>
+            )}
+            <p class="stack-match-reason">
+              <strong>Why it matches</strong> <span data-stack-reason></span>
+            </p>
+            <p class="stack-next-action">
+              <strong>Start here</strong> {entry.action}
+            </p>
+            <details class="stack-conditions">
+              <summary>
+                Conditions & source evidence <Icon name="down" size={12} />
+              </summary>
+              <ul data-stack-conditions></ul>
+              {entry.qualification && (
+                <p class="stack-source-qualification">{entry.qualification}</p>
+              )}
+              <a
+                href={entry.source_urls[0]}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read the original source <Icon name="arrow" size={12} />
+              </a>
+            </details>
+            <div class="stack-result-actions">
+              <a href={entry.stage_url || entry.url}>
+                Explore attack path <Icon name="right" size={13} />
+              </a>
+              {entry.hunt_url && (
+                <a href={entry.hunt_url}>
+                  Explore draft hunt <Icon name="right" size={13} />
+                </a>
+              )}
+              {entry.policy && (
+                <a
+                  class="stack-policy-link"
+                  data-stack-policy
+                  href={entry.policy.stage_url}
+                >
+                  Windows policy opportunity <Icon name="arrow" size={12} />
+                </a>
+              )}
+            </div>
+          </article>
+        </li>
+      ))}
+    </ol>
+    <div class="stack-no-matches" data-stack-empty hidden>
+      <h4>No reviewed matches for this selection yet.</h4>
+      <p>
+        The catalog is incomplete, and missing matches do not establish safety.
+        Try another tool or review broader patterns in the full catalog.
+      </p>
+      <a href={href("catalog/")} class="text-link">
+        Browse all entries <Icon name="right" size={13} />
+      </a>
+    </div>
+    <button
+      type="button"
+      class="button stack-show-all"
+      data-stack-show-all
+      hidden
+    ></button>
+    <p class="stack-coverage">
+      Personalization uses reviewed mappings for {index.coverage.mapped} of{" "}
+      {index.coverage.total} entries. Attacker use of an AI product alone does
+      not make its users affected.{" "}
+      <a href={href("api/relevance.json")}>Read the mapping data ↗</a>
+    </p>
+  </div>
+  <p class="stack-copy-status" data-stack-copy-status role="status"></p>
+  <noscript>
+    <p class="stack-results-context">
+      Stack selection requires JavaScript. Explore the{" "}
+      <a href={href("catalog/")}>complete catalog</a> or read the{" "}
+      <a href={href("api/relevance.json")}>source-linked relevance data</a>.
+    </p>
+  </noscript>
+  <script
+    is:inline
+    type="application/json"
+    data-stack-data
+    set:html={JSON.stringify(index).replace(/</g, "\\u003c")}
+  />
+</section>
+<script src="../lib/stack-client.ts"></script>

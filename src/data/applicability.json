@@ -1,0 +1,1191 @@
+{
+  "adception-claude-mac-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Use official download channels and inspect pasted install commands before running them in Terminal.",
+    "rules": [
+      {
+        "tools": ["claude"],
+        "systems": ["macos"],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "The source describes a fake Claude-for-Mac download that swaps the copied install command.",
+        "conditions": [
+          "The user must follow the malicious advertisement / download path and run the substituted command."
+        ],
+        "source_urls": [
+          "https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results"
+        ]
+      }
+    ]
+  },
+  "agentcorruption-bedrock-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review AgentCore metadata access and least-privilege execution roles; check the current vendor guidance.",
+    "rules": [
+      {
+        "tools": ["bedrock"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "The research concerns AWS Bedrock AgentCore agents with tools that can reach instance metadata.",
+        "conditions": [
+          "Confirm use of AgentCore, exposure to untrusted prompts and HTTP / shell tool access to metadata.",
+          "Review the execution-role permissions and the defaults / mitigations described in the source."
+        ],
+        "source_urls": [
+          "https://labs.zenity.io/post/agentcorruption-how-a-single-prompt-collapsed-the-entire-cloud-security-model"
+        ]
+      }
+    ]
+  },
+  "anthropic-influence-as-a-service-2025-03": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "anthropic-iot-camera-cred-scrape-2025-03": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "anthropic-novice-malware-builder-2025-03": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "anthropic-recruitment-fraud-2025-03": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "anyrun-fake-ai-tools-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Verify download provenance and inspect copied commands; review suspicious script / installer execution.",
+    "rules": [
+      {
+        "tools": ["claude", "chatgpt", "github-copilot", "gemini"],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "The campaign uses impersonated AI brands and shared chats to persuade users to run commands or installers.",
+        "conditions": [
+          "The AI product is a lure; the reported execution path requires the user to follow the malicious content.",
+          "The sandbox sample count is not a count of confirmed victims."
+        ],
+        "source_urls": [
+          "https://any.run/cybersecurity-blog/fake-ai-tools-us-companies/"
+        ]
+      }
+    ]
+  },
+  "apex-accelerator-ref8801-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review newly added MCP servers, CLI bootstrap settings and the provenance of accelerator-supplied npm packages.",
+    "rules": [
+      {
+        "tools": ["cursor", "claude", "npm-pypi"],
+        "systems": ["windows", "macos"],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The campaign registers rogue MCP configurations in AI clients after an attacker-supplied npm bootstrap runs.",
+        "conditions": [
+          "Confirm installation of the accelerator-supplied packages or the rogue configuration; ordinary AI-client use is not the entry point."
+        ],
+        "source_urls": [
+          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages"
+        ]
+      },
+      {
+        "tools": [],
+        "systems": ["windows", "macos"],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "An untrusted npm bootstrap can add rogue MCP servers and alter agent approval settings.",
+        "conditions": [
+          "The source describes a specific accelerator / npm package lure; check whether those packages or configurations are present."
+        ],
+        "source_urls": [
+          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages"
+        ]
+      }
+    ]
+  },
+  "apt41-gemini-c2-osstun-2025-08": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "apt42-gemini-phishing-data-agent-2025": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "arup-deepfake-video-fraud-2024-01": {
+    "status": "not_assessed",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "No reviewed selection-to-victim-condition mapping is available for this entry.",
+    "rules": []
+  },
+  "c2agent-unit42-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Investigate unexpected implants, process trees, tool calls and outbound control traffic.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "environment",
+        "reason": "The analyzed implant runs on Windows; its LLM is an attacker-side component.",
+        "conditions": [
+          "The report does not establish how the implant initially reaches every victim host."
+        ],
+        "source_urls": [
+          "https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-09-C2Agent-malware.txt"
+        ]
+      }
+    ]
+  },
+  "cairn-norforge-2026-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "cl-unk-1211-unit42-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review exposed web applications, web-worker child processes, persistence and tunnels.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": ["linux"],
+        "mcp": false,
+        "relationship": "environment",
+        "reason": "The reported victim environment is Linux servers, including government targets.",
+        "conditions": [
+          "Source-specific initial access and host activity must be present.",
+          "The source supports AI-assisted code generation, not a confirmed live AI operator."
+        ],
+        "source_urls": [
+          "https://unit42.paloaltonetworks.com/ai-campaign-targets-linux-infrastructure/"
+        ]
+      }
+    ]
+  },
+  "claude-agent-sdk-cve-2026-96620": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Update the affected SDK and validate session identifiers before forwarding them to a CLI.",
+    "rules": [
+      {
+        "tools": ["claude-agent-sdk"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "The reported session-ID parsing flaw affects the Claude Agent SDK.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The application must pass attacker-influenced session IDs into the affected CLI invocation."
+        ],
+        "source_urls": ["https://github.com/advisories/GHSA-h4mw-j7qp-8mwm"]
+      }
+    ]
+  },
+  "copilot-autoapprove-cve-2025-53773": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and audit agent auto-approval settings and repository instructions.",
+    "rules": [
+      {
+        "tools": ["github-copilot"],
+        "systems": ["windows", "macos", "linux"],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "The report describes prompt injection changing Copilot approval settings before shell execution.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "Untrusted project content must reach the agent and the affected settings / command-execution workflow."
+        ],
+        "source_urls": [
+          "https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/",
+          "https://msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2025-53773"
+        ]
+      }
+    ]
+  },
+  "crowdstrike-artex-sk-finance-2026-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "cursor-curxecute-cve-2025-54135": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and review which project content and MCP configurations the IDE trusts.",
+    "rules": [
+      {
+        "tools": ["cursor"],
+        "systems": [],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "The report concerns code execution in Cursor AI / MCP handling.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "Review the source for the affected AI / MCP handling path; ordinary product use alone does not establish exposure."
+        ],
+        "source_urls": [
+          "https://www.tenable.com/blog/faq-cve-2025-54135-cve-2025-54136-vulnerabilities-in-cursor-curxecute-mcpoison"
+        ]
+      }
+    ]
+  },
+  "cursor-mcpoison-cve-2025-54136": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and review ownership and changes to shared Cursor MCP configurations.",
+    "rules": [
+      {
+        "tools": ["cursor"],
+        "systems": [],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "Cursor with a shared MCP configuration is the reported trust boundary.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The reported path requires an approved MCP configuration and attacker write access to the shared repository."
+        ],
+        "source_urls": [
+          "https://research.checkpoint.com/2025/cursor-vulnerability-mcpoison/",
+          "https://www.tenable.com/blog/faq-cve-2025-54135-cve-2025-54136-vulnerabilities-in-cursor-curxecute-mcpoison"
+        ]
+      }
+    ]
+  },
+  "cve-2025-10619-sequa-mcp": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and update the affected client; review remote MCP OAuth destinations.",
+    "rules": [
+      {
+        "tools": ["sequa-mcp"],
+        "systems": ["windows"],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "sequa-mcp is the affected MCP client in the source account.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The reported command-injection path depends on Windows OAuth URL handling and an untrusted remote MCP server."
+        ],
+        "source_urls": [
+          "https://www.pillar.security/blog/open-and-shut-remote-code-execution-in-opencode-via-mcp-oauth"
+        ]
+      }
+    ]
+  },
+  "cve-2025-58062-openmcp-client": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and update the affected client; review remote MCP OAuth destinations.",
+    "rules": [
+      {
+        "tools": ["openmcp-client"],
+        "systems": ["windows"],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "openmcp-client is the affected MCP client in the source account.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The reported command-injection path depends on Windows OAuth URL handling and an untrusted remote MCP server."
+        ],
+        "source_urls": [
+          "https://www.pillar.security/blog/open-and-shut-remote-code-execution-in-opencode-via-mcp-oauth"
+        ]
+      }
+    ]
+  },
+  "cve-2025-6514-mcp-remote-rce": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the vendor advisory and update the affected client; review remote MCP OAuth destinations.",
+    "rules": [
+      {
+        "tools": ["mcp-remote"],
+        "systems": ["windows"],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "mcp-remote is the affected MCP client in the source account.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The reported command-injection path depends on Windows OAuth URL handling and an untrusted remote MCP server."
+        ],
+        "source_urls": [
+          "https://jfrog.com/blog/2025-6514-critical-mcp-remote-rce-vulnerability/",
+          "https://github.com/advisories/GHSA-6xpm-ggf7-wc3p",
+          "https://nvd.nist.gov/vuln/detail/cve-2025-6514"
+        ]
+      }
+    ]
+  },
+  "datadog-bedrock-key-testing-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Inventory Bedrock-enabled keys, rotate exposed credentials and correlate discovery calls with actual model usage.",
+    "rules": [
+      {
+        "tools": ["bedrock", "ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "The campaign tests exposed AWS keys for Bedrock access.",
+        "conditions": [
+          "Confirm that the credentials belong to AWS and have Bedrock permissions; a product subscription alone is not the condition."
+        ],
+        "source_urls": [
+          "https://securitylabs.datadoghq.com/articles/beyond-valid-credentials-how-exposed-aws-keys-are-tested-for-amazon-bedrock-access/"
+        ]
+      }
+    ]
+  },
+  "deepseek-grok-fake-windows-clients-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Verify desktop installer provenance and investigate unapproved executables and persistence.",
+    "rules": [
+      {
+        "tools": ["deepseek", "grok"],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "Fake DeepSeek / Grok Windows installers deliver the payloads in this account.",
+        "conditions": [
+          "The reported path requires installation of a malicious desktop package."
+        ],
+        "source_urls": [
+          "https://securelist.com/backdoors-and-stealers-prey-on-deepseek-and-grok/115801/",
+          "https://www.kaspersky.com/blog/trojans-disguised-as-deepseek-grok-clients/53116/",
+          "https://www.mcafee.com/blogs/other-blogs/mcafee-labs/bogus-deepseek-ai-installers-are-infecting-devices-with-malware-research-finds/"
+        ]
+      }
+    ]
+  },
+  "eset-rilide-vidar-fake-ai-2024": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Verify installers and extension provenance through official vendor channels before approval.",
+    "rules": [
+      {
+        "tools": ["gemini", "ai-extensions"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "AI-branded advertising and a malicious extension are the lure and delivery path in this account.",
+        "conditions": [
+          "The source describes fake Sora / Gemini / Midjourney promotions and separate stealer deliveries.",
+          "A legitimate AI service account or browser installation does not establish infection."
+        ],
+        "source_urls": [
+          "https://blog.eset.ie/2024/07/30/beware-of-fake-ai-tools-masking-very-real-malware-threats/"
+        ]
+      }
+    ]
+  },
+  "evilai-trendmicro-fake-ai-apps-2025": {
+    "status": "not_assessed",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "No reviewed selection-to-victim-condition mapping is available for this entry.",
+    "rules": []
+  },
+  "fraudgpt-underground-2023": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "ghostaction-ai-creds-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review workflow and folder-open task changes, then rotate exposed development and AI credentials.",
+    "rules": [
+      {
+        "tools": ["claude-code", "claude", "gemini", "ai-api-keys", "npm-pypi"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "The reported stealer targets local development, cloud and Claude / Gemini credentials.",
+        "conditions": [
+          "The malicious workflow or VS Code folder-open task must run with access to locally stored credentials.",
+          "AI is a credential target in this account; the report does not establish an AI-operated intrusion."
+        ],
+        "source_urls": [
+          "https://opensourcemalware.com/blog/ghostaction-copycats-polinrider-by-hiding-a-stealer-in-a-fake-font-file"
+        ]
+      }
+    ]
+  },
+  "gtg-1002-anthropic-claude-code-espionage-2025-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "gtg-2002-vibe-hacking-extortion-2025-08": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "hiddenlayer-mcp-param-abuse-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review tool parameter descriptions and prevent secrets or conversation content being passed to untrusted tools.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": [],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "The research uses MCP tool parameter names to solicit sensitive model context.",
+        "conditions": [
+          "An untrusted tool definition must be exposed to the model; the requested context must be available."
+        ],
+        "source_urls": [
+          "https://www.hiddenlayer.com/research/exploiting-mcp-tool-parameters",
+          "https://hiddenlayer.com/innovation-hub/beyond-mcp-expanding-agentic-function-parameter-abuse"
+        ]
+      }
+    ]
+  },
+  "huntress-plus56-custom-gpt-clickfix-2026-09": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review Custom GPT links and pasted commands; investigate unusual script and installer process chains.",
+    "rules": [
+      {
+        "tools": ["chatgpt"],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "A malicious Custom GPT directs the user to a ClickFix page and a Windows payload chain.",
+        "conditions": [
+          "The user must encounter the malicious Custom GPT / page and execute the pasted command."
+        ],
+        "source_urls": [
+          "https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat"
+        ]
+      }
+    ]
+  },
+  "hyas-blackmamba-poc-2023-08": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "invariant-github-mcp-private-repo-2025-05": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Separate public issue content from private-repository access and restrict the GitHub MCP token.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": [],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "The demonstration combines untrusted GitHub issue text with an agent able to read private repositories.",
+        "conditions": [
+          "Confirm use of GitHub MCP, access to both public issues and private repository data, and a path to publish that data."
+        ],
+        "source_urls": [
+          "https://invariantlabs.ai/blog/mcp-github-vulnerability"
+        ]
+      }
+    ]
+  },
+  "invariant-mcp-tool-poisoning-2025-04": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Inspect complete tool descriptions, review changes after approval and isolate each server’s permissions.",
+    "rules": [
+      {
+        "tools": ["cursor"],
+        "systems": [],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "The research demonstrates tool poisoning against Cursor and other MCP clients.",
+        "conditions": [
+          "An agent must consume malicious or changed MCP tool descriptions and be able to access the relevant files or tools.",
+          "This entry describes research demonstrations, not a confirmed campaign against every MCP user."
+        ],
+        "source_urls": [
+          "https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks"
+        ]
+      },
+      {
+        "tools": [],
+        "systems": [],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "MCP tool descriptions are an untrusted input to the agent in this research.",
+        "conditions": [
+          "Review server provenance, tool-description changes and access to files, secrets or email tools.",
+          "The research demonstrates a failure mode; it does not identify every connected MCP server as malicious."
+        ],
+        "source_urls": [
+          "https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks"
+        ]
+      }
+    ]
+  },
+  "llmjacking-deepseek-sysdig-2025-02": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Inventory AI service keys, scope permissions, rotate exposed tokens and investigate anomalous usage.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "The reported path uses stolen AI-service or cloud credentials to resell model access.",
+        "conditions": [
+          "Confirm the affected service and credential type in the source; consumer chat use alone is not the reported condition."
+        ],
+        "source_urls": [
+          "https://www.sysdig.com/blog/llmjacking-targets-deepseek"
+        ]
+      }
+    ]
+  },
+  "llmjacking-sysdig-2024-05": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Inventory AI service keys, scope permissions, rotate exposed tokens and investigate anomalous usage.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "The reported path uses stolen AI-service or cloud credentials to resell model access.",
+        "conditions": [
+          "Confirm the affected service and credential type in the source; consumer chat use alone is not the reported condition."
+        ],
+        "source_urls": [
+          "https://www.sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack",
+          "https://www.sysdig.com/blog/growing-dangers-of-llmjacking"
+        ]
+      }
+    ]
+  },
+  "lolskills-ink5725-snapshot-config-reader-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review the full skill bundle and decoded-image instructions before approving its use.",
+    "rules": [
+      {
+        "tools": ["agent-skills"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The scanner finding concerns an agent skill that retrieves instructions from image content.",
+        "conditions": [
+          "Confirm whether this specific bundle or the described extraction pattern is present.",
+          "The scan was incomplete, the snapshot reported zero downloads and maliciousness was not established."
+        ],
+        "source_urls": [
+          "https://lolskills.io/discover/56bd2dd3473fa5a15b30dd42a262ac410148e41679ebcc51c71b33279cdbfa6c"
+        ]
+      }
+    ]
+  },
+  "malwarebytes-chrome-ai-extensions-2025-01": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Inventory browser extensions and audit unexpected updates, publisher changes and broad permissions.",
+    "rules": [
+      {
+        "tools": ["ai-extensions"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The reported delivery path uses malicious or compromised AI- and VPN-themed Chrome extensions.",
+        "conditions": [
+          "Confirm the affected extension IDs / versions and update history against the source."
+        ],
+        "source_urls": [
+          "https://www.malwarebytes.com/blog/news/2025/01/google-chrome-ai-extensions-deliver-info-stealing-malware-in-broad-attack"
+        ]
+      }
+    ]
+  },
+  "morris-ii-ai-worm-poc-2024-03": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Treat retrieved email content as untrusted and constrain autonomous forwarding and data access.",
+    "rules": [
+      {
+        "tools": ["ai-email"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The controlled PoC propagates instructions between GenAI email assistants.",
+        "conditions": [
+          "The assistant must ingest attacker-controlled email content and have the demonstrated forwarding / retrieval capabilities.",
+          "This is a controlled research proof of concept, not an observed in-the-wild worm campaign."
+        ],
+        "source_urls": [
+          "https://arxiv.org/abs/2403.02817",
+          "https://www.wired.com/story/here-come-the-ai-worms/"
+        ]
+      }
+    ]
+  },
+  "openai-phish-and-scripts-2025-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "openai-russian-malware-tooling-2025-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "openai-scopecreep-cyber-2025-06": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "opencode-mcp-oauth-rce-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the fixed version and review remote MCP endpoints before opening their OAuth authorization URLs.",
+    "rules": [
+      {
+        "tools": ["opencode"],
+        "systems": ["windows"],
+        "mcp": true,
+        "relationship": "target",
+        "reason": "opencode opens an untrusted MCP OAuth authorization URL through the reported Windows execution path.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The report describes Windows or WSL and a malicious or intercepted remote MCP OAuth server."
+        ],
+        "source_urls": [
+          "https://www.pillar.security/blog/open-and-shut-remote-code-execution-in-opencode-via-mcp-oauth"
+        ]
+      }
+    ]
+  },
+  "ox-security-chrome-ext-chatgpt-deepseek-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review extension IDs, publisher and conversation / browsing permissions, and remove confirmed malicious extensions.",
+    "rules": [
+      {
+        "tools": ["chatgpt", "deepseek", "ai-extensions"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The reported Chrome extension cluster steals ChatGPT / DeepSeek conversations and browsing data.",
+        "conditions": [
+          "Confirm an affected extension is installed and can access those conversations; use of the chat service alone is insufficient."
+        ],
+        "source_urls": [
+          "https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/"
+        ]
+      }
+    ]
+  },
+  "phantomraven-npm-slopsquatting-2025-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Verify dependency provenance and inspect hidden dependencies and token access before approving packages.",
+    "rules": [
+      {
+        "tools": ["npm-pypi"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The reported campaign uses malicious npm packages and AI-hallucination-style package names.",
+        "conditions": [
+          "Confirm installation of an affected package; receiving an AI code suggestion alone does not establish compromise."
+        ],
+        "source_urls": [
+          "https://www.koi.ai/blog/phantomraven-npm-malware-hidden-in-invisible-dependencies",
+          "https://www.sonatype.com/blog/phantomraven-npm-malware",
+          "https://www.bleepingcomputer.com/news/security/phantomraven-attack-floods-npm-with-credential-stealing-packages/"
+        ]
+      }
+    ]
+  },
+  "pretext-skill-scanner-evasion-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review the complete skill bundle and isolate skill permissions; inspect instructions spread across files.",
+    "rules": [
+      {
+        "tools": ["agent-skills"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The academic research splits instructions across skill files to evade scanners.",
+        "conditions": [
+          "An agent must load the skill bundle and process its instructions.",
+          "The reported evasion results come from academic research rather than a confirmed intrusion."
+        ],
+        "source_urls": ["https://arxiv.org/abs/2609.39607"]
+      }
+    ]
+  },
+  "promptflux-gtig-2025-06": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "promptlock-gtig-eset-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review interpreter execution and access to files that an untrusted program could encrypt.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": ["windows", "linux"],
+        "mcp": false,
+        "relationship": "environment",
+        "reason": "The PoC demonstrates LLM-generated Lua executing on Windows or Linux.",
+        "conditions": [
+          "This is experimental research, not a reported active ransomware campaign."
+        ],
+        "source_urls": [
+          "https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/",
+          "https://www.eset.com/blog/en/business-topics/threat-landscape/the-first-known-ai-written-ransomware/"
+        ]
+      }
+    ]
+  },
+  "promptsteal-lamehug-apt28-2025-07": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Investigate suspicious ZIP delivery, generated command execution and document exfiltration.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "environment",
+        "reason": "The reported data miner executes generated commands on Windows victim hosts.",
+        "conditions": [
+          "The actor uses an external LLM; being a user of that model service is not the victim condition."
+        ],
+        "source_urls": [
+          "https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/",
+          "https://www.catonetworks.com/blog/cato-ctrl-threat-research-analyzing-lamehug/",
+          "https://csirt.csi.cip.gov.ua/en/posts/apt28-targets-security-and-defence-sector-with-ai-powered-software"
+        ]
+      }
+    ]
+  },
+  "quietvault-gtig-2025": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review suspicious npm installs, token use and AI CLI process trees; rotate confirmed exposed secrets.",
+    "rules": [
+      {
+        "tools": ["npm-pypi"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The stealer reaches developer hosts through trojanized npm packages and can abuse installed AI CLIs.",
+        "conditions": [
+          "Confirm a trojanized package ran; the catalog does not identify a specific affected AI CLI product."
+        ],
+        "source_urls": [
+          "https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/",
+          "https://research.splunk.com/stories/quietvault/"
+        ]
+      }
+    ]
+  },
+  "s1ngularity-nx-ai-cli-2025-08": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review dependency and postinstall history, audit local CLI permissions and rotate credentials exposed by affected packages.",
+    "rules": [
+      {
+        "tools": ["claude-code", "gemini", "npm-pypi"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "Compromised Nx packages invoke installed AI CLIs to search for secrets.",
+        "conditions": [
+          "Confirm installation of an affected Nx package and execution of its malicious postinstall.",
+          "Local Claude / Gemini / Amazon Q CLI use is a step after package compromise, not evidence of a flaw in those AI services."
+        ],
+        "source_urls": [
+          "https://www.wiz.io/blog/s1ngularity-supply-chain-attack",
+          "https://www.wiz.io/blog/s1ngularitys-aftermath",
+          "https://nx.dev/blog/s1ngularity-postmortem",
+          "https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/"
+        ]
+      }
+    ]
+  },
+  "shareleak-copilot-studio-cve-2026-21520": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review the vendor fix and restrict the SharePoint data and connectors available to the agent.",
+    "rules": [
+      {
+        "tools": ["copilot-studio"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "Copilot Studio agents consuming SharePoint forms are the reported injection surface.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The agent must consume the attacker-influenced SharePoint form content with access to the data at issue."
+        ],
+        "source_urls": [
+          "https://www.capsulesecurity.io/blog-post/shareleak-taking-the-wheel-of-microsofts-copilot-studio-cve-2026-21520"
+        ]
+      }
+    ]
+  },
+  "slopsquatting-huggingface-cli-2024": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Verify the package exists in the official project documentation before installing AI-suggested dependencies.",
+    "rules": [
+      {
+        "tools": ["npm-pypi"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The research demonstrates downloads of a package name suggested incorrectly by code models.",
+        "conditions": [
+          "The workflow requires trusting an AI-suggested package name without checking its provenance.",
+          "The reported downloads demonstrate adoption of the name, not verified victim compromise."
+        ],
+        "source_urls": [
+          "https://www.lasso.security/blog/ai-package-hallucinations",
+          "https://arxiv.org/abs/2406.10279",
+          "https://www.aikido.dev/blog/slopsquatting-ai-package-hallucination-attacks"
+        ]
+      }
+    ]
+  },
+  "storm-2139-fizzdogg-microsoft-llmjacking-2024-12": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review Azure OpenAI key ownership, rotate exposed credentials and investigate unexpected usage.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "The civil-action account concerns stolen Azure OpenAI credentials and usage charged to victim resources.",
+        "conditions": [
+          "Confirm that you operate Azure OpenAI resources and store keys or tokens that could be exposed."
+        ],
+        "source_urls": [
+          "https://www.microsoft.com/en-us/corporate-responsibility/customer-security-trust/digital-crimes-unit/notice-of-pleadings/storm-2139/"
+        ]
+      }
+    ]
+  },
+  "talos-a3-ai-analysis-evasion-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Treat embedded sample text as evidence, isolate it from analyst instructions and validate model verdicts independently.",
+    "rules": [
+      {
+        "tools": ["ai-analysis"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "workflow",
+        "reason": "The malware samples contain instructions aimed at LLM-based analysis pipelines.",
+        "conditions": [
+          "Your workflow must submit attacker-controlled sample content to an LLM analyst.",
+          "The reported model-evasion measurements do not establish that your analysis tool will behave identically."
+        ],
+        "source_urls": [
+          "https://blog.talosintelligence.com/ignore-all-instructions-and-read-this-blog-the-state-of-ai-analysis-evasion-in-malware/"
+        ]
+      }
+    ]
+  },
+  "talos-yuri-agent-attacks-2026-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "temp-zagros-gemini-malware-dev-2025": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "trailofbits-mcp-line-jumping-2025-04": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Review server descriptions before connection and minimize tool and data access before approval.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": [],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "The research places malicious instructions in MCP descriptions before a tool is invoked.",
+        "conditions": [
+          "Review the connected server, model / client behavior and the permissions exercised by the demonstration."
+        ],
+        "source_urls": [
+          "https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/",
+          "https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/"
+        ]
+      }
+    ]
+  },
+  "unc1069-gemini-deepfake-crypto-2025": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "unc4899-pukchong-gemini-2025": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "unit42-android-chatgpt-malware-2023": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Review sideloaded APKs and their source, package identity and granted permissions.",
+    "rules": [
+      {
+        "tools": ["chatgpt"],
+        "systems": ["android"],
+        "mcp": false,
+        "relationship": "lure",
+        "reason": "The report concerns Android APKs impersonating ChatGPT.",
+        "conditions": [
+          "Confirm sideloading of an affected fake APK; legitimate ChatGPT use alone is not the condition."
+        ],
+        "source_urls": [
+          "https://unit42.paloaltonetworks.com/android-malware-poses-as-chatgpt/",
+          "https://unit42.paloaltonetworks.com/chatgpt-scam-attacks-increasing/"
+        ]
+      }
+    ]
+  },
+  "unit42-llm-js-obfuscation-2024": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "vs-copilot-trailing-dot-rce-2026-10": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the Visual Studio / SSMS advisory and review agent edits to MCP and executable-path settings.",
+    "rules": [
+      {
+        "tools": ["github-copilot"],
+        "systems": ["windows"],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "This report concerns Copilot in Visual Studio / SSMS on Windows, rather than every Copilot integration.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "Confirm use of the affected Visual Studio / SSMS integration; the trailing-dot path depends on Windows filename normalization."
+        ],
+        "source_urls": [
+          "https://embracethered.com/blog/posts/2026/visual-studio-copilot-remote-code-execution/"
+        ]
+      }
+    ]
+  },
+  "wiz-ai-driven-cloud-2026-10": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "wormgpt-underground-2023": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "rules": []
+  },
+  "zenity-copilot-studio-sharepoint-ssrf-2024": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-3",
+    "action": "Check the connector advisory and audit shared agent actions, connector permissions and destinations.",
+    "rules": [
+      {
+        "tools": ["copilot-studio"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "The source describes a SharePoint connector token-exposure path used by Copilot Studio.",
+        "conditions": [
+          "Confirm that the installed version is affected by the historical report; selecting a product does not establish its version or patch status.",
+          "The path depends on the affected SharePoint connector, a malicious agent action and the victim connecting or retrying."
+        ],
+        "source_urls": [
+          "https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat",
+          "https://nvd.nist.gov/vuln/detail/cve-2024-38206"
+        ]
+      }
+    ]
+  },
+  "zenity-mcp-supply-chain-2026-draft": {
+    "status": "mapped",
+    "reviewed": "2026-10-23",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Inventory MCP dependencies and review server changes, deployment permissions and trust boundaries.",
+    "rules": [
+      {
+        "tools": [],
+        "systems": [],
+        "mcp": true,
+        "relationship": "workflow",
+        "reason": "The conceptual account examines trust in shared MCP servers used by agents.",
+        "conditions": [
+          "This is a conceptual source account, not a named observed intrusion.",
+          "Confirm whether trusted servers can influence agent deployment actions or access sensitive tools."
+        ],
+        "source_urls": ["https://zenity.io/blog/mcp-server-supply-chain-risk"]
+      }
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { href, repo, roles } from "../lib/catalog";
+import { magicswordURL } from "../lib/magicsword-links.mjs";
 ---
 
 <Layout title="About & Methodology — AI Attacks" active="about">
@@ -74,6 +75,24 @@ import { href, repo, roles } from "../lib/catalog";
         Contributors should update <code>last_reviewed</code> only after
         reviewing the source material.
       </p>
+      <h2>What applies to your stack?</h2>
+      <p>
+        The homepage matches your selected tools and operating systems against
+        reviewed victim-side product and workflow conditions. An attacker using
+        an AI product does not establish exposure for users of that product.
+        Each match gives a reason, conditions to check, and a first action.
+        Historical vulnerability reports still require an affected-version
+        check. Research findings retain their evidence qualifications.
+      </p>
+      <p>
+        These are editorial mappings, not an inventory scan or a risk score.
+        Coverage is incomplete and missing matches do not establish safety.
+        Selections stay in the page URL for sharing; matching runs in your
+        browser. The <a href={href("api/relevance.json")}>relevance index</a>
+        publishes the same rules, source references and assessment status for
+        every record. New entries remain unassessed until their conditions are
+        reviewed.
+      </p>
       <p>
         Geography is normalized to reported targets. Parent organizations, actor
         language, hosting infrastructure, and submission telemetry are not
@@ -124,8 +143,11 @@ import { href, repo, roles } from "../lib/catalog";
         catalog; they are independent catalog annotations.
       </p>
       <p>
-        Explore <a href="https://magicsword.io">free MagicSword.io</a> for
-        community resources to support your defensive work.
+        Explore{" "}
+        <a href={magicswordURL("https://magicsword.io/", "about")}>
+          free MagicSword.io
+        </a>{" "}
+        for community resources to support your defensive work.
       </p>
     </article>
   </div>
