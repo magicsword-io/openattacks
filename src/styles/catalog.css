@@ -81,6 +81,23 @@
 .meta-separator {
   margin-inline: 9px;
 }
+.catalog-intro-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+.home-timeline {
+  margin-bottom: 28px;
+}
+.home-timeline .dot-chart {
+  max-height: 240px;
+}
+.home-timeline .chart-legend {
+  padding-block: 10px;
+}
+.home-timeline .timeline-context {
+  margin-top: 10px;
+}
 .catalog-controls {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);

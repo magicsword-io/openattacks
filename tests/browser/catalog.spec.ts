@@ -253,7 +253,7 @@ for (const theme of ["dark", "light"]) {
 test("dot timeline supports highlighting, pausing and reduced motion", async ({
   page,
 }) => {
-  await page.goto("/timeline/");
+  await page.goto("/");
   await expect(
     page.locator("header .magicsword-logo img:visible"),
   ).toHaveAttribute("src", "/magicsword-logo-dark.svg");
@@ -503,18 +503,22 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
 });
 
-test("homepage leads with searchable entries and offers optional stack matching", async ({
+test("homepage shows the dot timeline above the searchable catalog and offers optional stack matching", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator("[data-dot-chart]")).toHaveCount(0);
+  await expect(page.locator("[data-dot-chart]")).toBeVisible();
+  await expect(page.locator(".chart-entry")).toHaveCount(attacks.length);
   await expect(page.locator("[data-stack-explorer]")).toHaveCount(0);
   await expect(page.locator("[data-attack-row]:visible")).toHaveCount(10);
-  const firstEntry = await page
-    .locator("[data-attack-row]:visible")
-    .first()
-    .boundingBox();
-  expect(firstEntry!.y).toBeLessThan(600);
+  const timeline = await page.locator(".home-timeline").boundingBox();
+  const catalog = await page.locator("[data-catalog]").boundingBox();
+  expect(timeline!.y + timeline!.height).toBeLessThanOrEqual(catalog!.y);
+  await page
+    .getByRole("link", { name: "Browse the catalog", exact: true })
+    .click();
+  await expect(page).toHaveURL(/#catalog$/);
+  await expect(page.getByRole("searchbox")).toBeInViewport();
   await page
     .getByRole("link", { name: "Find attacks relevant to my stack" })
     .click();
