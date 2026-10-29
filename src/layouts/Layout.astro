@@ -128,13 +128,13 @@ const imageAlt =
         <div class="header-actions">
           <a
             class="github-link"
+            aria-label="View on GitHub"
             href={repo}
             target="_blank"
             rel="noopener noreferrer"
           >
             <Icon name="github" size={18} />
             <span>View on GitHub</span>
-            <Icon name="arrow" size={13} />
           </a>
           <span class="header-divider"></span>
           <button
@@ -172,12 +172,10 @@ const imageAlt =
             target="_blank"
             rel="noopener noreferrer"
           >
-            Contribute <Icon name="arrow" size={12} />
+            Contribute
           </a>
           <a href={href("llms.txt")}>llms.txt</a>
-          <a href={href("api/attacks.json")}>
-            JSON API <Icon name="arrow" size={12} />
-          </a>
+          <a href={href("api/attacks.json")}>JSON API</a>
         </div>
       </div>
       <div class="footer-bottom">

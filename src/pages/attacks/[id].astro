@@ -46,7 +46,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
   <article class="container entry-focused">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href={href("catalog/")}>Catalog</a>
-      <Icon name="chevron" size={11} />
+      <span aria-hidden="true">/</span>
       <span>{display.title}</span>
     </nav>
     <header class="entry-heading">
@@ -74,9 +74,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           </time>
           {attack.date_reported.length === 7 && " (month only)"}
         </span>
-        <a href="#sources">
-          Source: {attack.org} <Icon name="arrow" size={11} />
-        </a>
+        <a href="#sources">Source: {attack.org}</a>
       </div>
       {attack.borderline_note && (
         <aside class="entry-qualification">
@@ -90,7 +88,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
       <p>{attack.technique_summary}</p>
       {attack.ai_role_detail && <p>{attack.ai_role_detail}</p>}
       <a class="text-link" href="#sources">
-        Read the original sources <Icon name="down" size={13} />
+        Read the original sources
       </a>
     </section>
     <AttackFlowSection attack={attack} />
@@ -210,7 +208,6 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
                     >
                       <span class="mono">{mapping.id}</span>
                       <strong>{techniques[mapping.id].name}</strong>
-                      <Icon name="arrow" size={13} />
                     </a>
                     <p>
                       {mapping.rationale}{" "}
@@ -225,7 +222,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
                           ) + 1
                         }`}
                       >
-                        Source ↗
+                        Source
                       </a>
                     </p>
                   </div>
@@ -269,7 +266,6 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               <a href={source.url} target="_blank" rel="noopener noreferrer">
                 {source.title ||
                   new URL(source.url).hostname.replace(/^www\./, "")}{" "}
-                <Icon name="arrow" size={13} />
                 {source.title && (
                   <span class="source-host">
                     {new URL(source.url).hostname}
@@ -288,7 +284,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             {coverage.map((url, i) => (
               <a href={url} target="_blank" rel="noopener noreferrer">
                 MagicSword
-                {coverage.length > 1 ? ` ${i + 1}` : ""} ↗
+                {coverage.length > 1 ? ` ${i + 1}` : ""}
               </a>
             ))}
           </p>
@@ -331,14 +327,14 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             target="_blank"
             rel="noopener noreferrer"
           >
-            Edit on GitHub ↗
+            Edit on GitHub
           </a>
           <a
             href={`${repo}/issues/new?template=correction.yml&title=${encodeURIComponent(`Correction: ${attack.name}`)}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Suggest a correction ↗
+            Suggest a correction
           </a>
         </div>
       </details>

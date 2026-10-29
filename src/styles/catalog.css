@@ -1,6 +1,6 @@
 /* Shared MagicSword / LOLSkills palette lives in global.css. */
 .site-header {
-  height: 80px;
+  height: 96px;
 }
 .site-header .header-inner {
   display: flex;
@@ -12,7 +12,7 @@
 }
 .site-header .catalog-wordmark {
   display: inline;
-  font: 700 32px/1 var(--font);
+  font: 700 40px/1 var(--font);
   letter-spacing: -0.06em;
 }
 .catalog-wordmark > span {
@@ -28,8 +28,8 @@
   font-size: 11px;
 }
 .header-credit .magicsword-logo img {
-  width: 176px;
-  height: 56px;
+  width: 232px;
+  height: 72px;
   object-fit: cover;
 }
 .site-header .header-inner nav {
@@ -204,7 +204,7 @@
 }
 .catalog-entry {
   position: relative;
-  padding: 22px 42px 22px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line);
 }
 .catalog-entry:hover h3 a {
@@ -258,12 +258,6 @@
   font-size: 11px;
   padding: 2px 7px;
 }
-.catalog-entry-arrow {
-  position: absolute;
-  top: 45px;
-  right: 5px;
-  color: var(--muted);
-}
 .catalog-ledger .pagination,
 .catalog-ledger .catalog-note {
   font-size: 12px;
@@ -295,6 +289,9 @@
   font-size: 14px;
 }
 @media (max-width: 1100px) {
+  .site-header .github-link span {
+    display: none;
+  }
   .site-header .header-inner {
     gap: 18px;
   }
@@ -305,10 +302,12 @@
     grid-column: 1 / -1;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .header-credit {
     display: none;
   }
+}
+@media (max-width: 800px) {
   .site-header .header-inner nav {
     gap: 20px;
   }
@@ -318,16 +317,17 @@
 }
 @media (max-width: 580px) {
   .site-header {
-    height: 70px;
+    height: 80px;
   }
   .site-header .header-inner {
-    gap: 12px;
+    gap: 8px;
+    padding-inline: 16px;
   }
   .site-header .catalog-wordmark {
-    font-size: 28px;
+    font-size: 32px;
   }
   .site-header .header-inner nav {
-    gap: 16px;
+    gap: 12px;
   }
   .site-header .header-inner nav a {
     font-size: 12px;
@@ -421,7 +421,7 @@
     gap: 6px 12px;
   }
   .catalog-entry {
-    padding: 20px 22px 20px 0;
+    padding: 20px 0;
   }
   .catalog-ledger .catalog-entry .incident-link {
     font-size: 18px;
@@ -432,8 +432,19 @@
   .catalog-entry-meta {
     gap: 8px 12px;
   }
-  .catalog-entry-arrow {
-    right: 0;
-    width: 14px;
+}
+@media (max-width: 359px) {
+  .site-header .header-inner {
+    padding-inline: 12px;
+    gap: 6px;
+  }
+  .site-header .catalog-wordmark {
+    font-size: 29px;
+  }
+  .site-header .header-inner nav {
+    gap: 10px;
+  }
+  .site-header .header-inner nav a {
+    font-size: 11px;
   }
 }

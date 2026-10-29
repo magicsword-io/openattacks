@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Catalog from "./Catalog.astro";
-import Icon from "./Icon.astro";
 import TimelineChart from "./TimelineChart.astro";
 import { getAttacks, href, reviewed, formatDate } from "../lib/catalog";
 const { showTimeline = false } = Astro.props;
@@ -31,11 +30,11 @@ const attacks = await getAttacks();
         <div class="catalog-intro-links">
           {showTimeline && (
             <a class="text-link" href="#catalog">
-              Browse the catalog <Icon name="down" size={14} />
+              Browse the catalog
             </a>
           )}
           <a class="text-link" href={href("stack/")}>
-            Find attacks relevant to my stack <Icon name="right" size={14} />
+            Find attacks relevant to my stack
           </a>
         </div>
       </div>
