@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import AgentAccess from "../components/AgentAccess.astro";
 import { href, repo, roles } from "../lib/catalog";
 import { magicswordURL } from "../lib/magicsword-links.mjs";
 ---
@@ -77,12 +78,13 @@ import { magicswordURL } from "../lib/magicsword-links.mjs";
       </p>
       <h2>What applies to your stack?</h2>
       <p>
-        The homepage matches your selected tools and operating systems against
-        reviewed victim-side product and workflow conditions. An attacker using
-        an AI product does not establish exposure for users of that product.
-        Each match gives a reason, conditions to check, and a first action.
-        Historical vulnerability reports still require an affected-version
-        check. Research findings retain their evidence qualifications.
+        The <a href={href("stack/")}>stack explorer</a> matches your selected
+        tools and operating systems against reviewed victim-side product and
+        workflow conditions. An attacker using an AI product does not establish
+        exposure for users of that product. Each match gives a reason,
+        conditions to check, and a first action. Historical vulnerability
+        reports still require an affected-version check. Research findings
+        retain their evidence qualifications.
       </p>
       <p>
         These are editorial mappings, not an inventory scan or a risk score.
@@ -150,5 +152,6 @@ import { magicswordURL } from "../lib/magicsword-links.mjs";
         for community resources to support your defensive work.
       </p>
     </article>
+    <AgentAccess />
   </div>
 </Layout>

@@ -13,6 +13,10 @@ test("Prevent stays visible on desktop and mobile with MagicSword attribution", 
     const bounds = await prevent.boundingBox();
     expect(bounds!.x).toBeGreaterThanOrEqual(0);
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    const header = await page.locator(".site-header").boundingBox();
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(
+      header!.y + header!.height,
+    );
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,

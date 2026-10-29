@@ -9,10 +9,10 @@ const index = JSON.parse(
   ),
 );
 
-test("stack selection explains matches, deduplicates reports and highlights the same dots", async ({
+test("stack selection explains matches and deduplicates reports", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/stack/");
   await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
   await page.getByRole("radio", { name: "Yes", exact: true }).check();
   const expected = matchStack(index.entries, { tools: ["cursor"], mcp: "yes" });
@@ -21,9 +21,6 @@ test("stack selection explains matches, deduplicates reports and highlights the 
   );
   await expect(page.locator("[data-stack-result]:visible")).toHaveCount(4);
   await expect(page.locator("[data-stack-default]")).toBeHidden();
-  await expect(page.locator('.chart-entry[data-muted="false"]')).toHaveCount(
-    expected.length,
-  );
   const first = page.locator("[data-stack-result]:visible").first();
   await expect(first).toContainText("Why it matches");
   await expect(first).toContainText("Start here");
@@ -42,29 +39,6 @@ test("stack selection explains matches, deduplicates reports and highlights the 
     );
   expect(new Set(ids).size).toBe(expected.length);
   expect(ids).not.toContain("gtg-1002-anthropic-claude-code-espionage-2025-11");
-  await page.locator('[data-highlight="ai_agent_or_mcp_as_target"]').click();
-  const roleIds = expected
-    .filter(
-      (match) =>
-        index.entries.find(
-          (entry: { id: string }) => entry.id === match.entry.id,
-        )?.relevance.rules.length,
-    )
-    .map((match) => match.entry.id);
-  const visibleDots = await page
-    .locator('.chart-entry[data-muted="false"]')
-    .evaluateAll((dots) =>
-      dots.map((dot) => ({
-        id: dot.getAttribute("data-attack-id"),
-        role: dot.getAttribute("data-role"),
-      })),
-    );
-  expect(
-    visibleDots.every(
-      (dot) =>
-        dot.role === "ai_agent_or_mcp_as_target" && roleIds.includes(dot.id!),
-    ),
-  ).toBe(true);
   await page.getByRole("button", { name: "Clear selections" }).click();
   await expect(page.locator("[data-stack-default]")).toBeVisible();
   await expect(page.locator("[data-stack-results]")).toBeHidden();
@@ -72,7 +46,7 @@ test("stack selection explains matches, deduplicates reports and highlights the 
 test("MCP answers and operating systems enforce explicit applicability conditions", async ({
   page,
 }) => {
-  await page.goto("/?tools=cursor&mcp=no");
+  await page.goto("/stack/?tools=cursor&mcp=no");
   await expect(
     page.locator('[data-stack-result="cursor-mcpoison-cve-2025-54136"]'),
   ).toBeHidden();
@@ -83,7 +57,7 @@ test("MCP answers and operating systems enforce explicit applicability condition
   await expect(cursor).toBeVisible();
   await cursor.locator("summary").click();
   await expect(cursor).toContainText("you have not confirmed");
-  await page.goto("/?tools=claude&os=macos");
+  await page.goto("/stack/?tools=claude&os=macos");
   await expect(
     page.getByRole("checkbox", {
       name: "Claude / Claude Desktop",
@@ -94,7 +68,7 @@ test("MCP answers and operating systems enforce explicit applicability condition
     page.locator('[data-stack-result="adception-claude-mac-2026-10"]'),
   ).toBeVisible();
   await expect(page.locator("[data-stack-policy]:visible")).toHaveCount(0);
-  await page.goto("/?tools=grok&os=macos");
+  await page.goto("/stack/?tools=grok&os=macos");
   await expect(page.locator("[data-stack-empty]")).toBeVisible();
   await expect(page.locator("[data-stack-empty]")).toContainText(
     "missing matches do not establish safety",
@@ -106,7 +80,7 @@ test("share links preserve multi-select state, can be copied and ignore unknown 
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto(
-    "/?tools=claude-code,cursor,unknown&os=windows&mcp=yes#your-stack",
+    "/stack/?tools=claude-code,cursor,unknown&os=windows&mcp=yes#your-stack",
   );
   await expect(
     page.getByRole("checkbox", { name: "Cursor", exact: true }),
@@ -132,7 +106,7 @@ test("share links preserve multi-select state, can be copied and ignore unknown 
 test("uncertain visitors get distinct inventory and MagicSword MCP handoffs", async ({
   page,
 }) => {
-  await page.goto("/?mcp=unknown#your-stack");
+  await page.goto("/stack/?mcp=unknown#your-stack");
   await expect(page.locator("[data-stack-inventory]")).toHaveClass(
     /is-uncertain/,
   );
@@ -153,7 +127,7 @@ test("uncertain visitors get distinct inventory and MagicSword MCP handoffs", as
 test("personalized links open the relevant hunt or policy stage directly", async ({
   page,
 }) => {
-  await page.goto("/?tools=chatgpt&os=windows#your-stack");
+  await page.goto("/stack/?tools=chatgpt&os=windows#your-stack");
   const card = page.locator(
     '[data-stack-result="huntress-plus56-custom-gpt-clickfix-2026-09"]',
   );
@@ -171,7 +145,7 @@ test("personalized links open the relevant hunt or policy stage directly", async
     "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/?stage=invalid&view=hunt#attack-flow",
   );
   await expect(page.locator(".stage-inspector")).toHaveCount(0);
-  await page.goto("/?tools=chatgpt&os=windows#your-stack");
+  await page.goto("/stack/?tools=chatgpt&os=windows#your-stack");
   await page
     .locator(
       '[data-stack-result="huntress-plus56-custom-gpt-clickfix-2026-09"]',
@@ -189,7 +163,7 @@ test("personalization is keyboard operable and accessible on mobile in both them
   page,
 }) => {
   for (const theme of ["dark", "light"]) {
-    await page.goto("/?tools=cursor&mcp=yes#your-stack");
+    await page.goto("/stack/?tools=cursor&mcp=yes#your-stack");
     if (theme === "light")
       await page.getByRole("button", { name: "Switch to light mode" }).click();
     await page.locator(".stack-more-tools > summary").click();
@@ -216,20 +190,19 @@ test("personalization is keyboard operable and accessible on mobile in both them
   await cursor.press("Space");
   await expect(cursor).not.toBeChecked();
 });
-test("without JavaScript the landing page keeps its catalog and data entry points", async ({
+test("without JavaScript the stack page keeps its catalog and data entry points", async ({
   browser,
   baseURL,
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto(baseURL!);
+  await page.goto(`${baseURL}/stack/`);
   await expect(page.locator("noscript .stack-results-context")).toBeVisible();
   await expect(page.locator("noscript .stack-results-context")).toContainText(
     "Stack selection requires JavaScript.",
   );
-  await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
   await expect(
-    page.getByRole("link", { name: "Browse the full catalog", exact: true }),
+    page.getByRole("link", { name: "Browse all 68 entries", exact: true }),
   ).toBeVisible();
   await context.close();
 });

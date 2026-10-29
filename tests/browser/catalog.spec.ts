@@ -253,7 +253,7 @@ for (const theme of ["dark", "light"]) {
 test("dot timeline supports highlighting, pausing and reduced motion", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/timeline/");
   await expect(
     page.locator("header .magicsword-logo img:visible"),
   ).toHaveAttribute("src", "/magicsword-logo-dark.svg");
@@ -329,6 +329,10 @@ test("LLM entry points are discoverable on the landing page", async ({
   request,
 }) => {
   await page.goto("/");
+  await expect(
+    page.locator("footer").getByRole("link", { name: "llms.txt", exact: true }),
+  ).toBeVisible();
+  await page.goto("/about/");
   await expect(
     page.getByRole("heading", { name: "Give your AI the evidence." }),
   ).toBeVisible();
@@ -499,20 +503,22 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
 });
 
-test("landing page keeps global context and leads to stack selection", async ({
+test("homepage leads with searchable entries and offers optional stack matching", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator("[data-dot-chart]")).toBeVisible();
-  await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
-  await expect(page.locator("[data-catalog]")).toHaveCount(0);
+  await expect(page.locator("[data-dot-chart]")).toHaveCount(0);
+  await expect(page.locator("[data-stack-explorer]")).toHaveCount(0);
+  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(10);
+  const firstEntry = await page
+    .locator("[data-attack-row]:visible")
+    .first()
+    .boundingBox();
+  expect(firstEntry!.y).toBeLessThan(600);
   await page
-    .getByRole("link", { name: "See what applies to my stack" })
+    .getByRole("link", { name: "Find attacks relevant to my stack" })
     .click();
-  await expect(page).toHaveURL(/#your-stack$/);
-  await expect(
-    page.getByRole("heading", { name: "Which paths matter to you?" }),
-  ).toBeVisible();
+  await expect(page).toHaveURL(/\/stack\/$/);
   await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
   await expect(page.locator("[data-stack-results]")).toBeVisible();
 });

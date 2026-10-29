@@ -1,20 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Catalog from "../components/Catalog.astro";
-import { getAttacks } from "../lib/catalog";
-const attacks = await getAttacks();
+import CatalogPage from "../components/CatalogPage.astro";
 ---
 
-<Layout title="Attack Catalog — OpenAttacks">
-  <div class="container">
-    <header class="page-heading">
-      <span class="eyebrow">THE ATTACK CATALOG</span>
-      <h1>Find the attack paths that matter to you.</h1>
-      <p>
-        Start with your environment. Follow the evidence, then explore the
-        controls and hunts at each stage.
-      </p>
-    </header>
-    <Catalog attacks={attacks} />
-  </div>
-</Layout>
+<CatalogPage />

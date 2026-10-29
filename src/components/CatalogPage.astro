@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Catalog from "./Catalog.astro";
+import Icon from "./Icon.astro";
+import { getAttacks, href, reviewed, formatDate } from "../lib/catalog";
+const attacks = await getAttacks();
+---
+
+<Layout
+  title="OpenAttacks — The open catalog of AI attacks"
+  description="Explore sourced AI attack campaigns, vulnerabilities, and research. Follow the evidence to understand how attacks work and what to review."
+  canonicalPath={href()}
+>
+  <div class="container catalog-home">
+    <header class="catalog-intro">
+      <h1>The open catalog of AI attacks.</h1>
+      <p>
+        Explore sourced campaigns, vulnerabilities, and research. Understand how
+        attacks work and what to review.
+      </p>
+      <div class="catalog-intro-meta">
+        <span>
+          <strong>{attacks.length}</strong> sourced entries
+          <span class="meta-separator" aria-hidden="true">
+            ·
+          </span>
+          Updated <time datetime={reviewed}>{formatDate(reviewed)}</time>
+        </span>
+        <a class="text-link" href={href("stack/")}>
+          Find attacks relevant to my stack <Icon name="right" size={14} />
+        </a>
+      </div>
+    </header>
+    <Catalog attacks={attacks} />
+  </div>
+
+  <script is:inline define:vars={{ stackURL: href("stack/") }}>
+    // Preserve shared stack selections from before personalization moved off home.
+    const legacyStackURL = new URL(location.href);
+    if (
+      ["tools", "os", "mcp"].some((key) =>
+        legacyStackURL.searchParams.has(key),
+      ) ||
+      legacyStackURL.hash === "#your-stack"
+    ) {
+      legacyStackURL.pathname = stackURL;
+      location.replace(legacyStackURL.href);
+    }
+  </script>
+</Layout>

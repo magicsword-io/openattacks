@@ -1,8 +1,8 @@
 ---
-import "@fontsource-variable/manrope";
+import "@fontsource-variable/inter-tight";
 import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/instrument-serif/400-italic.css";
 import "../styles/global.css";
+import "../styles/catalog.css";
 import Icon from "../components/Icon.astro";
 import MagicSwordLogo from "../components/MagicSwordLogo.astro";
 import { href, repo, reviewed, formatDate } from "../lib/catalog";
@@ -13,14 +13,16 @@ interface Props {
   description?: string;
   active?: string;
   lastReviewed?: string;
+  canonicalPath?: string;
 }
 const {
-  title = "OpenAttacks — One technology. Many attack paths.",
+  title = "OpenAttacks — The open catalog of AI attacks",
   description = "How attackers actually use AI, sourced and mapped to prevention. Explore a community-maintained catalog of AI-enabled attacks from MagicSword.",
   active = "catalog",
   lastReviewed = reviewed,
+  canonicalPath = Astro.url.pathname,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
   href("openattacks-share.png"),
   Astro.site || Astro.url.origin,
@@ -34,7 +36,7 @@ const imageAlt =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101214" />
+    <meta name="theme-color" content="#08080a" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
     <title>{title}</title>
@@ -70,7 +72,9 @@ const imageAlt =
     <script is:inline>
       try {
         document.documentElement.dataset.theme =
-          localStorage.getItem("openattacks-theme") || "dark";
+          localStorage.getItem("openattacks-theme") ||
+          localStorage.getItem("ai-attacks-theme") ||
+          "dark";
       } catch {}
     </script>
   </head>
@@ -83,27 +87,22 @@ const imageAlt =
         <a
           class="wordmark header-wordmark"
           href={href()}
-          aria-label="MagicSword OpenAttacks The open intelligence catalog home"
+          aria-label="OpenAttacks home"
         >
-          <MagicSwordLogo />
-          <span class="brand-divider"></span>
           <span class="catalog-wordmark">
-            OPENATTACKS<span class="byline">The open intelligence catalog</span>
+            <span>Open</span>Attacks
           </span>
         </a>
+        <a
+          class="header-credit"
+          href={magicswordURL("https://magicsword.io/", "header-credit")}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>by</span>
+          <MagicSwordLogo />
+        </a>
         <nav aria-label="Main navigation">
-          <a
-            class:list={{ active: active === "catalog" }}
-            href={href("catalog/")}
-          >
-            Catalog
-          </a>
-          <a
-            class:list={{ active: active === "timeline" }}
-            href={href("timeline/")}
-          >
-            Timeline
-          </a>
           <a
             class:list={{ active: active === "patterns" }}
             href={href("patterns/")}
@@ -166,6 +165,7 @@ const imageAlt =
           attacks.
         </p>
         <div class="footer-links">
+          <a href={href("stack/")}>Find my stack</a>
           <a href={href("about/")}>About the project</a>
           <a
             href={`${repo}/blob/main/CONTRIBUTING.md`}

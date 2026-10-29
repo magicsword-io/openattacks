@@ -51,7 +51,11 @@ Model/platform and sector groups match words explicitly present in the reported 
 
 ## Reading and browsing
 
-The landing page keeps the global dot timeline and leads visitors to **See what applies to my stack**. Select multiple tools, optional operating systems, and whether they connect to MCP servers. Matching reports explain why they apply, the conditions to check, a first action, and direct links to the relevant diagram stage or draft hunt. The chart highlights the same entries; clearing the selection restores six recent entries. The catalog shows a short outcome-focused title and summary, source evidence class, target environment, and report date. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually.
+The homepage opens directly into the searchable catalog, with a short introduction and a chronological list grouped by report month. Each entry shows its report date, title, summary, evidence class, environment and AI role. Counts in month headings describe the current page of results, not attack prevalence. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually. `/catalog/` preserves existing links and filters, with the homepage as its canonical URL.
+
+**Find attacks relevant to my stack** opens `/stack/`, where visitors select multiple tools, optional operating systems, and whether they connect to MCP servers. Matching reports explain why they apply, the conditions to check, a first action, and direct links to the relevant diagram stage or draft hunt. Old homepage links with stack parameters or `#your-stack` forward to the new page, preserving the selection. The animated dot chart remains on `/timeline/`; geography remains on `/regions/`. AI-readable resources are available in the footer and About page.
+
+The shared visual theme follows LOLSkills and MagicSword: near-black surfaces, neutral borders, emerald accents and locally hosted Inter Tight typography. The light theme retains the same hierarchy with a darker green for contrast.
 
 Stack selections stay in shareable URL parameters (`tools=cursor,claude-code`, `os=windows`, `mcp=yes|no|unknown`). Matching runs locally without an account or an inventory upload. Tools are ORed; selected operating systems narrow rules with an explicit OS scope. MCP=no excludes rules requiring an existing MCP connection, while a reported attack that installs a new rogue server can still match. An unanswered or unknown MCP setting retains product-specific matches with an explicit condition to confirm. MCP=yes alone matches reviewed generic MCP workflows, without assuming a particular product. Ordering groups product/integration reports, credential exposure, workflows, lures and broader host patterns, then report date; it is not a risk ranking.
 
@@ -61,7 +65,7 @@ The inventory handoff links to MagicSword's software-inventory page; visitors re
 
 All outbound MagicSword navigation, inventory, MCP and policy links carry `utm_source=openattacks` and `utm_medium=referral`; `utm_content` identifies the placement. Query parameters and fragments such as `#connect` are preserved. Attribution does not add an analytics script or alter source-evidence URLs in raw catalog exports.
 
-Entry pages lead with the takeaway and attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Full technical context, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
+Entry pages lead with the takeaway and an expanded **What happened** account before the attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Tooling, impact, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
 
 `src/data/presentation.json` contains reviewed editorial titles, summaries, source-stated environments and evidence classes. These are browse annotations, not independent incident verification or changes to the original YAML. `api/catalog.json` publishes this index alongside its category definitions and links to the source evidence; `api/attacks.json` retains exact public YAML parity. New entries without editorial annotations still generate a page, index record and all exports automatically, using their source title/summary and explicit unclassified/unspecified labels instead of inferred certainty.
 
@@ -97,12 +101,12 @@ The production Vercel project is named `openattacks`. In its Domains settings, a
 
 The four domains were attached to Vercel on 2026-10-29. DNS is managed at Squarespace; Vercel's current configuration check requests these records in each domain's DNS zone:
 
-| Domain | Type | Host | Value |
-| --- | --- | --- | --- |
-| `openattacks.ai` | `A` | `@` | `76.76.21.21` |
-| `openattacks.ai` | `A` | `www` | `76.76.21.21` |
-| `openattacks.com` | `A` | `@` | `76.76.21.21` |
-| `openattacks.com` | `A` | `www` | `76.76.21.21` |
+| Domain            | Type | Host  | Value         |
+| ----------------- | ---- | ----- | ------------- |
+| `openattacks.ai`  | `A`  | `@`   | `76.76.21.21` |
+| `openattacks.ai`  | `A`  | `www` | `76.76.21.21` |
+| `openattacks.com` | `A`  | `@`   | `76.76.21.21` |
+| `openattacks.com` | `A`  | `www` | `76.76.21.21` |
 
 Recheck Vercel's Domains settings for the current recommended records when configuring DNS. Deploy this branch's changes to activate the host and legacy-image redirects.
 
@@ -124,11 +128,11 @@ The default deployment is `https://magicsword-io.github.io/openattacks/`. All in
 
 For a custom domain, set repository Actions variables:
 
-| Variable | Example |
-| --- | --- |
-| `SITE_URL` | `https://openattacks.ai` |
-| `BASE_PATH` | `/` |
-| `CUSTOM_DOMAIN` | `openattacks.ai` |
+| Variable        | Example                  |
+| --------------- | ------------------------ |
+| `SITE_URL`      | `https://openattacks.ai` |
+| `BASE_PATH`     | `/`                      |
+| `CUSTOM_DOMAIN` | `openattacks.ai`         |
 
 The workflow writes `public/CNAME` when `CUSTOM_DOMAIN` is set. Alternatively add `public/CNAME` yourself. Configure the domain’s DNS and GitHub Pages custom-domain settings separately.
 
@@ -146,7 +150,6 @@ Open `http://localhost:4321/openattacks/` for this project-path preview.
 ## API
 
 The static files are available under the deployment base path at `api/attacks.json` and `api/attacks.csv`. Vercel serves the API and LLM text files with `Access-Control-Allow-Origin: *` so browser clients on other origins can read them. Both formats are rebuilt from the validated YAML on every deployment.
-
 
 ## AI-readable catalog and automatic updates
 
