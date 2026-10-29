@@ -12,7 +12,7 @@
 }
 .site-header .catalog-wordmark {
   display: inline;
-  font: 700 27px/1 var(--font);
+  font: 700 32px/1 var(--font);
   letter-spacing: -0.06em;
 }
 .catalog-wordmark > span {
@@ -28,8 +28,9 @@
   font-size: 11px;
 }
 .header-credit .magicsword-logo img {
-  width: 120px;
-  height: 36px;
+  width: 176px;
+  height: 56px;
+  object-fit: cover;
 }
 .site-header .header-inner nav {
   margin-left: auto;
@@ -323,7 +324,7 @@
     gap: 12px;
   }
   .site-header .catalog-wordmark {
-    font-size: 24px;
+    font-size: 28px;
   }
   .site-header .header-inner nav {
     gap: 16px;
