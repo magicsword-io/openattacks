@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ site, url }) => {
     new URL(href(path), site || url.origin).href;
   return new Response(
     [
-      "# AI Attacks Catalog — MagicSword",
+      "# OpenAttacks Catalog — MagicSword",
       "",
       `> A sourced catalog of ${attacks.length} reported AI-enabled attacks and qualified security-research findings.`,
       "",

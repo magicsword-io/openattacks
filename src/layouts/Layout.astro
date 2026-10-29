@@ -15,18 +15,18 @@ interface Props {
   lastReviewed?: string;
 }
 const {
-  title = "AI Attacks — One technology. Many attack paths.",
+  title = "OpenAttacks — One technology. Many attack paths.",
   description = "How attackers actually use AI, sourced and mapped to prevention. Explore a community-maintained catalog of AI-enabled attacks from MagicSword.",
   active = "catalog",
   lastReviewed = reviewed,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
 const imageURL = new URL(
-  href("ai-attacks-share.png"),
+  href("openattacks-share.png"),
   Astro.site || Astro.url.origin,
 );
 const imageAlt =
-  "AI Attacks by MagicSword. One technology. Many attack paths. A colorful dot graph on a dark grid.";
+  "OpenAttacks by MagicSword. One technology. Many attack paths. A colorful dot graph on a dark grid.";
 ---
 
 <!doctype html>
@@ -70,7 +70,7 @@ const imageAlt =
     <script is:inline>
       try {
         document.documentElement.dataset.theme =
-          localStorage.getItem("ai-attacks-theme") || "dark";
+          localStorage.getItem("openattacks-theme") || "dark";
       } catch {}
     </script>
   </head>
@@ -83,12 +83,12 @@ const imageAlt =
         <a
           class="wordmark header-wordmark"
           href={href()}
-          aria-label="MagicSword AI Attacks The open intelligence catalog home"
+          aria-label="MagicSword OpenAttacks The open intelligence catalog home"
         >
           <MagicSwordLogo />
           <span class="brand-divider"></span>
           <span class="catalog-wordmark">
-            AI ATTACKS<span class="byline">The open intelligence catalog</span>
+            OPENATTACKS<span class="byline">The open intelligence catalog</span>
           </span>
         </a>
         <nav aria-label="Main navigation">
@@ -204,7 +204,7 @@ const imageAlt =
           document.documentElement.dataset.theme === "dark" ? "light" : "dark";
         document.documentElement.dataset.theme = theme;
         try {
-          localStorage.setItem("ai-attacks-theme", theme);
+          localStorage.setItem("openattacks-theme", theme);
         } catch {}
         syncThemeLabel();
       });

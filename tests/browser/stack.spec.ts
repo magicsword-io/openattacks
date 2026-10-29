@@ -141,11 +141,11 @@ test("uncertain visitors get distinct inventory and MagicSword MCP handoffs", as
     page.getByRole("link", { name: "Explore MagicSword inventory" }),
   ).toHaveAttribute(
     "href",
-    /https:\/\/www\.magicsword\.io\/use-cases\/endpoint-visibility\?utm_source=ai-attacks/,
+    /https:\/\/www\.magicsword\.io\/use-cases\/endpoint-visibility\?utm_source=openattacks/,
   );
   await expect(
     page.getByRole("link", { name: "Connect MagicSword MCP" }),
-  ).toHaveAttribute("href", /\/mcp\?.*utm_source=ai-attacks.*#connect$/);
+  ).toHaveAttribute("href", /\/mcp\?.*utm_source=openattacks.*#connect$/);
   await expect(page.locator("[data-stack-inventory]")).toContainText(
     "requires an Enterprise organization",
   );

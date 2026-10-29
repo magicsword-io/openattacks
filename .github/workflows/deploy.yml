@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITE_URL: ${{ vars.SITE_URL || 'https://magicsword-io.github.io' }}
-      BASE_PATH: ${{ vars.BASE_PATH || '/ai-attacks' }}
+      BASE_PATH: ${{ vars.BASE_PATH || '/openattacks' }}
       CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
     steps:
       - uses: actions/checkout@v4

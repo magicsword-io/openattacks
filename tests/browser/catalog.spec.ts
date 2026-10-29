@@ -234,7 +234,7 @@ for (const theme of ["dark", "light"]) {
     ]) {
       test(path, async ({ page }) => {
         await page.addInitScript((selectedTheme) => {
-          localStorage.setItem("ai-attacks-theme", selectedTheme);
+          localStorage.setItem("openattacks-theme", selectedTheme);
         }, theme);
         await page.goto(path);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -373,7 +373,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   await expect(page.locator(".stage-control")).toContainText("Windows");
   await expect(page.locator(".network-control-link")).toHaveAttribute(
     "href",
-    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=openattacks/,
   );
   await expect(page.locator(".policy-prerequisite")).toContainText(
     "enforced Windows policy",
@@ -495,7 +495,7 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
   await expect(page.locator(".mobile-policy-link").first()).toHaveAttribute(
     "href",
-    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=openattacks/,
   );
 });
 
@@ -553,7 +553,7 @@ test("qualifications stay before the diagram and custom schema guidance stays ex
   await page.locator(".stage-query-details > summary").click();
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
   await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
-    "AI_AttacksAudit_CL",
+    "OpenAttacksAudit_CL",
   );
   for (const name of ["Evidence", "Prevent", "Hunt"]) {
     await page.getByRole("tab", { name: new RegExp(`^${name}`) }).click();

@@ -116,7 +116,7 @@ export const projects: Record<string, string> = {
   HijackLibs: "https://hijacklibs.net",
   LOTTunnels: "https://lottunnels.github.io",
 };
-export const repo = "https://github.com/magicsword-io/ai-attacks";
+export const repo = "https://github.com/magicsword-io/openattacks";
 export const reviewed = "2026-10-20";
 // Search groups derive only from words present in the source descriptions; raw data is preserved.
 export const platforms = [

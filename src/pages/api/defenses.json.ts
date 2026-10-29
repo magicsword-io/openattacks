@@ -13,8 +13,8 @@ export const GET: APIRoute = async () =>
         integration:
           "Copyable MCP research briefs; no live MCP connection, credentials or rule search is performed by the site.",
         custom_audit_schema: {
-          table: "AI_AttacksAudit_CL",
-          splunk_sourcetype: "ai_attacks:audit",
+          table: "OpenAttacksAudit_CL",
+          splunk_sourcetype: "openattacks:audit",
           fields: {
             TimeGenerated: "datetime; _time in Splunk",
             EventType: "string; proposed normalized event name",

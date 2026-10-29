@@ -35,10 +35,10 @@ const hasConfidence = attacks.some((a) => a.confidence);
         <Icon name="download" size={14} /> Export <Icon name="down" size={12} />
       </summary>
       <div class="export-options">
-        <a href={href("api/attacks.json")} download="ai-attacks.json">
+        <a href={href("api/attacks.json")} download="openattacks.json">
           Complete JSON
         </a>
-        <a href={href("api/attacks.csv")} download="ai-attacks.csv">
+        <a href={href("api/attacks.csv")} download="openattacks.csv">
           CSV
         </a>
         <a href={href("api/catalog.json")}>Browse index</a>
