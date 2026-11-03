@@ -23,83 +23,113 @@ const populatedEnvironments = new Set(
 );
 const populatedEvidence = new Set(attacks.map((a) => present(a).evidence));
 const hasConfidence = attacks.some((a) => a.confidence);
+const monthLabel = (month: string) =>
+  new Intl.DateTimeFormat("en", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${month}-01T00:00:00Z`));
+const firstPageCounts = new Map<string, number>();
+attacks.slice(0, 10).forEach((attack) => {
+  const month = attack.date_reported.slice(0, 7);
+  firstPageCounts.set(month, (firstPageCounts.get(month) || 0) + 1);
+});
 ---
 
-<section id="catalog" class="catalog-section catalog-focused" data-catalog>
-  <div class="catalog-heading">
-    <p class="catalog-count">
-      {attacks.length} sourced entries · campaigns, vulnerabilities & research
-    </p>
-    <details class="export-menu">
-      <summary class="button">
-        <Icon name="download" size={14} /> Export <Icon name="down" size={12} />
-      </summary>
-      <div class="export-options">
-        <a href={href("api/attacks.json")} download="ai-attacks.json">
-          Complete JSON
-        </a>
-        <a href={href("api/attacks.csv")} download="ai-attacks.csv">
-          CSV
-        </a>
-        <a href={href("api/catalog.json")}>Browse index</a>
+<section
+  id="catalog"
+  class="catalog-section catalog-focused catalog-ledger"
+  data-catalog
+>
+  <div class="catalog-controls">
+    <div class="filters">
+      <label class="search-box">
+        <span class="sr-only">Search attacks</span>
+        <Icon name="search" size={16} />
+        <input
+          type="search"
+          name="q"
+          id="attack-search"
+          placeholder="Search attacks, tools, techniques…"
+          autocomplete="off"
+        />
+        <span class="search-shortcut">/</span>
+      </label>
+      <select
+        class="filter-select"
+        name="environment"
+        aria-label="Filter by environment"
+      >
+        <option value="">Any environment</option>
+        {Object.entries(environments)
+          .filter(([id]) => populatedEnvironments.has(id))
+          .map(([id, label]) => (
+            <option value={id}>{label}</option>
+          ))}
+      </select>
+      <select
+        class="filter-select"
+        name="role"
+        aria-label="Filter by attack pattern"
+      >
+        <option value="">Any pattern</option>
+        {Object.entries(roles).map(([id, role]) => (
+          <option value={id}>{role.short}</option>
+        ))}
+      </select>
+      <select
+        class="filter-select"
+        name="evidence"
+        aria-label="Filter by evidence type"
+      >
+        <option value="">Any evidence</option>
+        {Object.entries(evidenceTypes)
+          .filter(([id]) => populatedEvidence.has(id))
+          .map(([id, label]) => (
+            <option value={id}>{label}</option>
+          ))}
+      </select>
+      <button
+        class="button more-filters"
+        aria-expanded="false"
+        aria-controls="advanced-filters"
+      >
+        <Icon name="filter" size={14} /> More filters
+      </button>
+      <details class="export-menu">
+        <summary class="button">
+          <Icon name="download" size={14} /> Export{" "}
+          <Icon name="down" size={12} />
+        </summary>
+        <div class="export-options">
+          <a href={href("api/attacks.json")} download="openattacks.json">
+            Complete JSON
+          </a>
+          <a href={href("api/attacks.csv")} download="openattacks.csv">
+            CSV
+          </a>
+          <a href={href("api/catalog.json")}>Browse index</a>
+        </div>
+      </details>
+    </div>
+    <div class="catalog-list-toolbar">
+      <ViewTabs compact />
+      <div class="catalog-list-status">
+        <span data-results-count aria-live="polite">
+          Showing {attacks.length} entries
+        </span>
+        <button
+          class="sort-button"
+          aria-label="Sort by reported date, oldest first"
+          aria-pressed="false"
+        >
+          <span data-sort-label>Newest first</span>{" "}
+          <span data-sort-arrow aria-hidden="true">
+            ↓
+          </span>
+        </button>
       </div>
-    </details>
-  </div>
-  <ViewTabs />
-  <div class="filters">
-    <label class="search-box">
-      <span class="sr-only">Search attacks</span>
-      <Icon name="search" size={16} />
-      <input
-        type="search"
-        name="q"
-        id="attack-search"
-        placeholder="Search attacks, tools, techniques…"
-        autocomplete="off"
-      />
-      <span class="search-shortcut">/</span>
-    </label>
-    <select
-      class="filter-select"
-      name="environment"
-      aria-label="Filter by environment"
-    >
-      <option value="">Any environment</option>
-      {Object.entries(environments)
-        .filter(([id]) => populatedEnvironments.has(id))
-        .map(([id, label]) => (
-          <option value={id}>{label}</option>
-        ))}
-    </select>
-    <select
-      class="filter-select"
-      name="role"
-      aria-label="Filter by attack pattern"
-    >
-      <option value="">Any attack pattern</option>
-      {Object.entries(roles).map(([id, role]) => (
-        <option value={id}>{role.short}</option>
-      ))}
-    </select>
-    <select
-      class="filter-select"
-      name="evidence"
-      aria-label="Filter by evidence type"
-    >
-      <option value="">Any evidence type</option>
-      {Object.entries(evidenceTypes)
-        .filter(([id]) => populatedEvidence.has(id))
-        .map(([id, label]) => (
-          <option value={id}>{label}</option>
-        ))}
-    </select>
-    <button
-      class="button more-filters"
-      aria-expanded="false"
-      aria-controls="advanced-filters"
-    >
-      <Icon name="filter" size={14} /> More filters
-    </button>
+    </div>
   </div>
   <div class="advanced-filters" id="advanced-filters" hidden>
     <label>
@@ -169,10 +199,7 @@ const hasConfidence = attacks.some((a) => a.confidence);
       artifacts remain searchable and available in the source record.
     </p>
   </div>
-  <div class="results-meta">
-    <span data-results-count aria-live="polite">
-      Showing {attacks.length} entries
-    </span>
+  <div class="results-meta" hidden>
     <div
       class="active-filter-chips"
       role="group"
@@ -182,96 +209,91 @@ const hasConfidence = attacks.some((a) => a.confidence);
       Clear filters <Icon name="close" size={11} />
     </button>
   </div>
-  <div class="table-wrap">
-    <table class="catalog-table">
-      <caption class="sr-only">Source-backed AI attack paths</caption>
-      <thead>
-        <tr>
-          <th scope="col">ATTACK PATH</th>
-          <th scope="col">EVIDENCE</th>
-          <th scope="col">ENVIRONMENT</th>
-          <th scope="col" aria-sort="descending">
-            <button
-              class="sort-button"
-              aria-label="Sort by reported date, oldest first"
-            >
-              REPORTED <span data-sort-arrow>↓</span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {attacks.map((attack, i) => {
-          const display = present(attack);
-          return (
-            <tr
-              data-attack-row
-              data-id={attack.id}
-              data-date={dateKey(attack.date_reported)}
-              data-role={attack.ai_role}
-              data-year={attack.date_reported.slice(0, 4)}
-              data-environments={JSON.stringify(display.environments)}
-              data-regions={JSON.stringify(attack.regions)}
-              data-tools={JSON.stringify(attack.ai_tooling_and_models)}
-              data-platforms={JSON.stringify(platformGroups(attack))}
-              data-sector={attack.victims_and_sectors}
-              data-sector-groups={JSON.stringify(sectorGroups(attack))}
-              data-confidence={
-                hasConfidence ? attack.confidence || "unassessed" : undefined
-              }
-              data-evidence={display.evidence}
-              data-search={[
-                display.title,
-                display.summary,
-                attack.name,
-                attack.id,
-                attack.technique_summary,
-                attack.researcher,
-                attack.org,
-                attack.attribution_or_cluster,
-                ...attack.ai_tooling_and_models,
-                ...attack.other_tooling,
-                attack.victims_and_sectors,
-                ...attack.regions,
-                ...(attack.tags || []),
-              ]
-                .join(" ")
-                .toLowerCase()}
-              hidden={i >= 10}
-            >
-              <td>
+  <ol class="catalog-entry-list" aria-label="AI attack catalog" data-entry-list>
+    {attacks.map((attack, i) => {
+      const display = present(attack);
+      const month = attack.date_reported.slice(0, 7);
+      const count = firstPageCounts.get(month) || 0;
+      return (
+        <>
+          {i < 10 &&
+            (i === 0 || attacks[i - 1].date_reported.slice(0, 7) !== month) && (
+              <li class="catalog-month" data-month-heading>
+                <h2>
+                  Reported in {monthLabel(month)}{" "}
+                  <span>
+                    {count} {count === 1 ? "entry" : "entries"} on this page
+                  </span>
+                </h2>
+              </li>
+            )}
+          <li
+            data-attack-row
+            data-id={attack.id}
+            data-month={attack.date_reported.slice(0, 7)}
+            data-date={dateKey(attack.date_reported)}
+            data-role={attack.ai_role}
+            data-year={attack.date_reported.slice(0, 4)}
+            data-environments={JSON.stringify(display.environments)}
+            data-regions={JSON.stringify(attack.regions)}
+            data-tools={JSON.stringify(attack.ai_tooling_and_models)}
+            data-platforms={JSON.stringify(platformGroups(attack))}
+            data-sector={attack.victims_and_sectors}
+            data-sector-groups={JSON.stringify(sectorGroups(attack))}
+            data-confidence={
+              hasConfidence ? attack.confidence || "unassessed" : undefined
+            }
+            data-evidence={display.evidence}
+            data-search={[
+              display.title,
+              display.summary,
+              attack.name,
+              attack.id,
+              attack.technique_summary,
+              attack.researcher,
+              attack.org,
+              attack.attribution_or_cluster,
+              ...attack.ai_tooling_and_models,
+              ...attack.other_tooling,
+              attack.victims_and_sectors,
+              ...attack.regions,
+              ...(attack.tags || []),
+            ]
+              .join(" ")
+              .toLowerCase()}
+            hidden={i >= 10}
+          >
+            <article class="catalog-entry">
+              <time datetime={attack.date_reported}>
+                {formatDate(attack.date_reported)} · Reported
+              </time>
+              <h3>
                 <a class="incident-link" href={href(`attacks/${attack.id}/`)}>
                   {display.title}
                 </a>
-                <p class="incident-summary">{display.summary}</p>
-                <span class="incident-pattern">
-                  {roles[attack.ai_role].short}
-                </span>
-              </td>
-              <td>
+              </h3>
+              <p class="incident-summary">{display.summary}</p>
+              <div class="catalog-entry-meta">
                 <span class={`evidence-badge evidence-${display.evidence}`}>
                   {evidenceTypes[display.evidence]}
                 </span>
-              </td>
-              <td>
-                <span class="environment-label">
-                  {display.environments
-                    .filter((id) => id !== "unspecified")
-                    .map((id) => environments[id])
-                    .join(" · ") || "—"}
-                </span>
-              </td>
-              <td>
-                <time class="table-date" datetime={attack.date_reported}>
-                  {formatDate(attack.date_reported)}
-                </time>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  </div>
+                {display.environments.filter((id) => id !== "unspecified")
+                  .length > 0 && (
+                  <span>
+                    {display.environments
+                      .filter((id) => id !== "unspecified")
+                      .map((id) => environments[id])
+                      .join(" · ")}
+                  </span>
+                )}
+                <span>{roles[attack.ai_role].short}</span>
+              </div>
+            </article>
+          </li>
+        </>
+      );
+    })}
+  </ol>
   <div class="empty-state" hidden>
     <Icon name="search" size={26} />
     <h3>No matching attacks</h3>

@@ -98,8 +98,7 @@ function Step({ data }: NodeProps<StepNode>) {
           title={`${data.guidance.control.title}. ${data.guidance.control.scope}`}
           aria-label={`MagicSword policy opportunity for stage ${data.number}. ${data.guidance.control.scope}`}
         >
-          <FlowIcon name="shield" size={12} /> MagicSword{" "}
-          <span aria-hidden="true">↗</span>
+          <FlowIcon name="shield" size={12} /> MagicSword
         </a>
       )}
       <Handle
@@ -334,7 +333,7 @@ export default function AttackFlow({
                     rel="noopener noreferrer"
                   >
                     <FlowIcon name="shield" size={13} /> MagicSword policy
-                    opportunity ↗
+                    opportunity
                   </a>
                 )}
                 <div className="mobile-stage-connections">

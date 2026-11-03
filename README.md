@@ -1,8 +1,10 @@
-# AI Attacks
+# OpenAttacks
 
-How attackers actually use AI, sourced and mapped to prevention. A community-maintained MagicSword catalog built with Astro, one YAML file per entry, and static JSON/CSV exports.
+The open catalog of AI attacks. How attackers actually use AI, sourced and mapped to prevention. A community-maintained MagicSword catalog built with Astro, one YAML file per entry, and static JSON/CSV exports.
 
-**Live site:** [ai-attacks.vercel.app](https://ai-attacks.vercel.app/) · [LLM guide](https://ai-attacks.vercel.app/llms.txt) · [JSON catalog](https://ai-attacks.vercel.app/api/attacks.json)
+**Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [GitHub](https://github.com/magicsword-io/openattacks)
+
+`openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai` permanently redirect to `https://openattacks.ai`, preserving paths and query strings. The rules live in `vercel.json`; the domains must also be attached to the Vercel project and have valid DNS before they can serve or redirect traffic.
 
 ## Run locally
 
@@ -49,7 +51,11 @@ Model/platform and sector groups match words explicitly present in the reported 
 
 ## Reading and browsing
 
-The landing page keeps the global dot timeline and leads visitors to **See what applies to my stack**. Select multiple tools, optional operating systems, and whether they connect to MCP servers. Matching reports explain why they apply, the conditions to check, a first action, and direct links to the relevant diagram stage or draft hunt. The chart highlights the same entries; clearing the selection restores six recent entries. The catalog shows a short outcome-focused title and summary, source evidence class, target environment, and report date. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually.
+The homepage opens with a short introduction and the interactive dot timeline, followed by the searchable catalog grouped by report month. Each dot opens a sourced entry; role highlighting, pause controls and reduced-motion support remain available. The Browse the catalog link jumps directly to search and filters. Each entry shows its report date, title, summary, evidence class, environment and AI role. Counts in month headings describe the current page of results, not attack prevalence. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually. `/catalog/` preserves existing links and filters, with the homepage as its canonical URL.
+
+**Find attacks relevant to my stack** opens `/stack/`, where visitors select multiple tools, optional operating systems, and whether they connect to MCP servers. Matching reports explain why they apply, the conditions to check, a first action, and direct links to the relevant diagram stage or draft hunt. Old homepage links with stack parameters or `#your-stack` forward to the new page, preserving the selection. The full timeline view remains on `/timeline/`; `/catalog/` opens the list directly without the homepage chart, and geography remains on `/regions/`. AI-readable resources are available in the footer and About page.
+
+The shared visual theme follows LOLSkills and MagicSword: near-black surfaces, neutral borders, emerald accents and locally hosted Inter Tight typography. The light theme retains the same hierarchy with a darker green for contrast.
 
 Stack selections stay in shareable URL parameters (`tools=cursor,claude-code`, `os=windows`, `mcp=yes|no|unknown`). Matching runs locally without an account or an inventory upload. Tools are ORed; selected operating systems narrow rules with an explicit OS scope. MCP=no excludes rules requiring an existing MCP connection, while a reported attack that installs a new rogue server can still match. An unanswered or unknown MCP setting retains product-specific matches with an explicit condition to confirm. MCP=yes alone matches reviewed generic MCP workflows, without assuming a particular product. Ordering groups product/integration reports, credential exposure, workflows, lures and broader host patterns, then report date; it is not a risk ranking.
 
@@ -57,9 +63,9 @@ Stack selections stay in shareable URL parameters (`tools=cursor,claude-code`, `
 
 The inventory handoff links to MagicSword's software-inventory page; visitors review MCP connections and permissions in their AI client settings. The separate **Connect MagicSword MCP** link uses the supplied setup-page preview and states its Enterprise requirement. Set `MAGICSWORD_MCP_SETUP_URL` at build time when that page has its final URL; `MAGICSWORD_INVENTORY_URL` can also override the inventory destination. The current MCP default is `https://magic-portal-git-josehelps-mcp-server-m-a9b665-d1vious-projects.vercel.app/mcp#connect`.
 
-All outbound MagicSword navigation, inventory, MCP and policy links carry `utm_source=ai-attacks` and `utm_medium=referral`; `utm_content` identifies the placement. Query parameters and fragments such as `#connect` are preserved. Attribution does not add an analytics script or alter source-evidence URLs in raw catalog exports.
+All outbound MagicSword navigation, inventory, MCP and policy links carry `utm_source=openattacks` and `utm_medium=referral`; `utm_content` identifies the placement. Query parameters and fragments such as `#connect` are preserved. Attribution does not add an analytics script or alter source-evidence URLs in raw catalog exports.
 
-Entry pages lead with the takeaway and attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Full technical context, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
+Entry pages lead with the takeaway and an expanded **What happened** account before the attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Tooling, impact, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
 
 `src/data/presentation.json` contains reviewed editorial titles, summaries, source-stated environments and evidence classes. These are browse annotations, not independent incident verification or changes to the original YAML. `api/catalog.json` publishes this index alongside its category definitions and links to the source evidence; `api/attacks.json` retains exact public YAML parity. New entries without editorial annotations still generate a page, index record and all exports automatically, using their source title/summary and explicit unclassified/unspecified labels instead of inferred certainty.
 
@@ -85,11 +91,24 @@ The seed has no confidence assessments, so the empty confidence filter and label
 
 ## Vercel
 
-Import `magicsword-io/ai-attacks` into Vercel and select `main` as the production branch. The repository can remain private. Vercel reads the Astro framework, install command (`npm ci`), build command (`npm run check && npm run build && npm test`), and output directory (`dist`) from `vercel.json`.
+Import `magicsword-io/openattacks` into Vercel and select `main` as the production branch. The repository can remain private. Vercel reads the Astro framework, install command (`npm ci`), build command (`npm run check && npm run build && npm test`), and output directory (`dist`) from `vercel.json`.
 
 Every merge to `main` rebuilds and publishes the site, `llms.txt`, `llms-full.txt`, and all catalog exports together. Pull requests receive preview deployments. Failed validation or export tests stop publishing.
 
-Use the root base path (`/`, the default); remove any `BASE_PATH=/ai-attacks` override inherited from GitHub Pages. Canonical URLs, sitemaps, and LLM links use Vercel's production domain automatically. Set `SITE_URL=https://your-domain.example` in Vercel if you want to override that domain. Local commands remain unchanged and never publish anything.
+Use the root base path (`/`, the default). Canonical URLs, sitemaps, social metadata, and LLM links default to `https://openattacks.ai`, including in preview builds. Remove stale `SITE_URL` and `BASE_PATH` overrides from the Vercel project, or explicitly set `SITE_URL=https://openattacks.ai` and `BASE_PATH=/`. `SITE_URL` can still override the canonical domain for an alternate deployment. Local commands never publish anything.
+
+The production Vercel project is named `openattacks`. In its Domains settings, attach `openattacks.ai`, `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai`, then apply the DNS records Vercel specifies at the registrar. The `.ai` apex serves the site; `vercel.json` redirects the other three hosts with HTTP 308 responses. Existing `ai-attacks.vercel.app` links remain as a legacy alias of the same project. Legacy social-image paths also redirect to `openattacks-share.png`.
+
+The four domains were attached to Vercel on 2026-10-29. DNS is managed at Squarespace; Vercel's current configuration check requests these records in each domain's DNS zone:
+
+| Domain            | Type | Host  | Value         |
+| ----------------- | ---- | ----- | ------------- |
+| `openattacks.ai`  | `A`  | `@`   | `76.76.21.21` |
+| `openattacks.ai`  | `A`  | `www` | `76.76.21.21` |
+| `openattacks.com` | `A`  | `@`   | `76.76.21.21` |
+| `openattacks.com` | `A`  | `www` | `76.76.21.21` |
+
+Recheck Vercel's Domains settings for the current recommended records when configuring DNS. Deploy this branch's changes to activate the host and legacy-image redirects.
 
 To deploy from the CLI after linking the project:
 
@@ -105,31 +124,32 @@ vercel deploy --prod
 
 The GitHub Pages workflow is manual so an unavailable Pages plan does not fail every merge. To use it, first enable Pages with **GitHub Actions** as the build source in repository settings, then run **Deploy to GitHub Pages** from the Actions tab. Private repositories require a GitHub plan that supports Pages for private repositories.
 
-The default deployment is `https://magicsword-io.github.io/ai-attacks/`. All internal links, assets, canonical URLs, and sitemaps respect the configured base path.
+The default deployment is `https://magicsword-io.github.io/openattacks/`. All internal links, assets, canonical URLs, and sitemaps respect the configured base path.
 
 For a custom domain, set repository Actions variables:
 
-| Variable | Example |
-| --- | --- |
-| `SITE_URL` | `https://your-domain.example` |
-| `BASE_PATH` | `/` |
-| `CUSTOM_DOMAIN` | `your-domain.example` |
+| Variable        | Example                  |
+| --------------- | ------------------------ |
+| `SITE_URL`      | `https://openattacks.ai` |
+| `BASE_PATH`     | `/`                      |
+| `CUSTOM_DOMAIN` | `openattacks.ai`         |
 
 The workflow writes `public/CNAME` when `CUSTOM_DOMAIN` is set. Alternatively add `public/CNAME` yourself. Configure the domain’s DNS and GitHub Pages custom-domain settings separately.
+
+For the default project-path deployment, leave `CUSTOM_DOMAIN` unset, use `SITE_URL=https://magicsword-io.github.io` and `BASE_PATH=/openattacks`. Vercel's host redirects apply only to Vercel deployments.
 
 To test a project-path build locally:
 
 ```sh
-SITE_URL=https://magicsword-io.github.io BASE_PATH=/ai-attacks npm run build
-BASE_PATH=/ai-attacks npm run preview
+SITE_URL=https://magicsword-io.github.io BASE_PATH=/openattacks npm run build
+BASE_PATH=/openattacks npm run preview
 ```
 
-Open `http://localhost:4321/ai-attacks/` for this project-path preview.
+Open `http://localhost:4321/openattacks/` for this project-path preview.
 
 ## API
 
 The static files are available under the deployment base path at `api/attacks.json` and `api/attacks.csv`. Vercel serves the API and LLM text files with `Access-Control-Allow-Origin: *` so browser clients on other origins can read them. Both formats are rebuilt from the validated YAML on every deployment.
-
 
 ## AI-readable catalog and automatic updates
 
@@ -145,7 +165,7 @@ The flows use selectable icon nodes. Each stage can show its original evidence, 
 
 Stage annotations live in `src/data/stage-guidance.json`, keyed by attack ID and flow-node ID; reusable hypotheses, query templates and control definitions live in `src/lib/stage-guidance.ts`. Adding an entry automatically creates its `api/defenses/<id>.json` pack and an item in `api/defenses.json`. Stages without annotations explicitly display “not mapped”; unknown or unconfirmed runtime claims do not receive invented rules. CI checks annotation references and export parity.
 
-Green MagicSword links mark conditional **Windows execution-policy opportunities**, with the exact branch and prerequisites in the stage detail. They are editorial recommendations based on [MagicSword's documented application-control capabilities](https://www.magicsword.io/use-cases/application-control?utm_source=ai-attacks&utm_medium=referral&utm_content=readme-control), not verified incident prevention. Audit mode does not block; an enforced policy must cover the actual executable. Cloud-only, social, browser-extension, macOS and Linux activities are not presented as covered Windows execution paths. Community research links are context, not enforcement products. These annotations are also included in generated LLM Markdown.
+Green MagicSword links mark conditional **Windows execution-policy opportunities**, with the exact branch and prerequisites in the stage detail. They are editorial recommendations based on [MagicSword's documented application-control capabilities](https://www.magicsword.io/use-cases/application-control?utm_source=openattacks&utm_medium=referral&utm_content=readme-control), not verified incident prevention. Audit mode does not block; an enforced policy must cover the actual executable. Cloud-only, social, browser-extension, macOS and Linux activities are not presented as covered Windows execution paths. Community research links are context, not enforcement products. These annotations are also included in generated LLM Markdown.
 
 Target geography uses normalized names. The map excludes actor attribution, hosting and telemetry locations from victim counts; entry-level `region_notes` preserve those distinctions. Unknown and multi-country-unspecified records remain separate from mapped locations. Map geometry comes from public-domain Natural Earth data through world-atlas.
 

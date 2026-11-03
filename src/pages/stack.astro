@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import StackExplorer from "../components/StackExplorer.astro";
+import { getAttacks, href } from "../lib/catalog";
+const attacks = await getAttacks();
+---
+
+<Layout
+  title="Find attacks relevant to your stack — OpenAttacks"
+  active="stack"
+>
+  <div class="container stack-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={href()}>Back to the catalog</a>
+    </nav>
+    <StackExplorer attacks={attacks} />
+    <p class="stack-browse-default" data-stack-default>
+      Prefer to explore?{" "}
+      <a class="text-link" href={href()}>
+        Browse all {attacks.length} entries
+      </a>
+    </p>
+  </div>
+</Layout>

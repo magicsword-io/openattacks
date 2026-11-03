@@ -8,7 +8,7 @@ export const GET: APIRoute = async ({ site, url }) => {
     new URL(href(path), site || url.origin).href;
   return new Response(
     [
-      "# AI Attacks — Complete Catalog",
+      "# OpenAttacks — Complete Catalog",
       "",
       `${attacks.length} entries, generated from the same validated YAML as the site and JSON API.`,
       `Discovery guide: ${absolute("llms.txt")}`,

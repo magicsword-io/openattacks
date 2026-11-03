@@ -18,7 +18,7 @@ test("MagicSword attribution preserves destinations, queries and the MCP connect
     assert.equal(tracked.origin, original.origin);
     assert.equal(tracked.pathname, original.pathname);
     assert.equal(tracked.hash, original.hash);
-    assert.equal(tracked.searchParams.get("utm_source"), "ai-attacks");
+    assert.equal(tracked.searchParams.get("utm_source"), "openattacks");
     assert.equal(tracked.searchParams.get("utm_medium"), "referral");
     assert.equal(
       tracked.searchParams.get("plan"),
@@ -42,7 +42,7 @@ test("MagicSword attribution preserves destinations, queries and the MCP connect
 
 test("attribution leaves other destinations and relative links intact", () => {
   for (const destination of [
-    "https://github.com/magicsword-io/ai-attacks",
+    "https://github.com/magicsword-io/openattacks",
     "https://magicsword.io.example.com/",
     "https://notmagicsword.io/",
     "https://example.com/?next=https://magicsword.io/",
@@ -67,7 +67,7 @@ test("every built MagicSword anchor and exported stage control carries attributi
       if (!isMagicSwordURL(href)) continue;
       assert.equal(
         new URL(href).searchParams.get("utm_source"),
-        "ai-attacks",
+        "openattacks",
         `${path}: ${href}`,
       );
       checked++;
@@ -86,7 +86,7 @@ test("every built MagicSword anchor and exported stage control carries attributi
       if (!stage.control) continue;
       assert.equal(
         new URL(stage.control.url).searchParams.get("utm_source"),
-        "ai-attacks",
+        "openattacks",
       );
       controls++;
     }
