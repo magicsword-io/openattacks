@@ -18,5 +18,5 @@ jobs:
         with:
           node-version: '22.22.0'
       # The executable lab package needs Node only: no npm install lifecycle.
-      - run: node --test tests/simulations.test.mjs
+      - run: node --test tests/lab-checkout.test.mjs tests/simulations.test.mjs
       - run: npm run simulate -- list

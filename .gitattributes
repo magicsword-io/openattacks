@@ -1,0 +1,3 @@
+# Definitions and fixtures are byte-hashed; preserve identical bytes on Windows.
+simulations/** text eol=lf
+tests/simulations.test.mjs text eol=lf
