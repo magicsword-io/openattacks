@@ -3,7 +3,10 @@ import AttackFlow from "./AttackFlow";
 import { attackFlow } from "../lib/attack-flow";
 import { href, type Attack } from "../lib/catalog";
 import { stageGuidance } from "../lib/stage-guidance";
-const { attack } = Astro.props as { attack: Attack };
+const { attack, simulation } = Astro.props as {
+  attack: Attack;
+  simulation?: { stageIds: string[]; href: string };
+};
 const flow = attackFlow(attack);
 const guidance = Object.fromEntries(
   flow.nodes.map((node) => [node.id, stageGuidance(attack, node)]),
@@ -24,6 +27,7 @@ const defenseURL = href(`api/defenses/${attack.id}.json`);
   <div class="flow-frame">
     <AttackFlow
       flow={flow}
+      simulation={simulation}
       name={attack.name}
       guidance={guidance}
       dataURL={defenseURL}

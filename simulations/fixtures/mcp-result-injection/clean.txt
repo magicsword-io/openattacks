@@ -1,0 +1,2 @@
+Synthetic issue AA-42: documentation search is slow. Owner: demo-maintainer.
+This issue contains task data only. No additional action is requested.

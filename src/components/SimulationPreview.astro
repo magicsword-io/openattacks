@@ -1,0 +1,263 @@
+---
+import Icon from "./Icon.astro";
+import { href } from "../lib/catalog";
+const { simulations } = Astro.props;
+const recipeLabels: Record<string, string> = {
+  metadata: "MCP tool description",
+  "tool-result": "MCP tool result",
+  "retrieved-context": "Retrieved context",
+  "split-channel": "Tool description + result",
+  "project-instructions": "Project instruction file",
+  "skill-instructions": "Skill instruction file",
+  "config-change": "Mock MCP configuration",
+};
+const preparation = (sim: any) => {
+  const command = `npm run simulate -- prepare ${sim.id}`;
+  if (sim.recipe === "split-channel")
+    return ["clean", "schema-only", "result-only", "combined"]
+      .map((c) => `${command} --condition ${c}`)
+      .join("\n");
+  if (sim.recipe === "retrieved-context")
+    return ["error-report", "documentation"]
+      .flatMap((c) => [
+        `${command} --case ${c} --clean`,
+        `${command} --case ${c}`,
+      ])
+      .join("\n");
+  return `${command} --clean\n${command}`;
+};
+const verification = 'npm run simulate -- verify "/exact/run/record.json"';
+const cleanup = 'npm run simulate -- cleanup "/exact/run/record.json"';
+---
+
+<section
+  class="simulation-section"
+  id="simulation"
+  aria-labelledby="simulation-heading"
+>
+  <div class="simulation-section-heading">
+    <div>
+      <span class="eyebrow accent">UNDERSTAND → TEST → OBSERVE</span>
+      <h2 id="simulation-heading">Simulate this behavior</h2>
+    </div>
+    <a
+      class="simulation-download"
+      href={href("downloads/openattacks-labs.tar.gz")}
+      download
+    >
+      <Icon name="download" size={14} /> Download Node lab
+    </a>
+  </div>
+  {simulations.map((sim: any) => (
+    <div
+      class="simulation-card"
+      id={`simulation-${sim.id}`}
+      data-simulation={sim.id}
+    >
+      <div class="simulation-main">
+        <div
+          class="simulation-platforms"
+          aria-label="Runner platform verification"
+        >
+          {Object.entries(sim.platforms).map(([os, status]: [string, any]) => (
+            <span
+              class:list={{ "is-verified": status.status === "passed" }}
+              title={status.evidence || "Runner verification pending"}
+            >
+              {os === "macos" ? "macOS" : os === "linux" ? "Linux" : "Windows"}{" "}
+              ·{" "}
+              {status.status === "passed" ? "ARM64 runner checked" : "pending"}
+            </span>
+          ))}
+        </div>
+        <div class="simulation-tags">
+          <span>
+            <Icon name="terminal" size={13} />
+            {sim.mode === "replay" ? "Local comparison" : "Agent exercise"}
+          </span>
+          <span>
+            {sim.mapping.relationship === "source-match"
+              ? "Source-matched boundary"
+              : "Bounded analogue"}
+          </span>
+        </div>
+        <h3>{sim.question}</h3>
+        <p class="simulation-summary">{sim.summary}</p>
+        <div class="simulation-boundary">
+          <Icon name="layers" size={16} />
+          <span>
+            <strong>{recipeLabels[sim.recipe]}</strong>
+            <br />
+            Synthetic data · run-owned artifacts
+          </span>
+          <a
+            href={`?stage=${encodeURIComponent(sim.stage_ids[0])}&view=evidence#attack-flow`}
+          >
+            See mapped attack stage <Icon name="arrow" size={12} />
+          </a>
+        </div>
+        <details class="simulation-instructions">
+          <summary>
+            <span>
+              <Icon name="terminal" size={15} /> Open lab instructions
+            </span>
+            <Icon name="down" size={14} />
+          </summary>
+          <div class="simulation-instruction-body">
+            <p class="simulation-location">
+              <strong>
+                Use this OpenAttacks checkout or the downloaded lab.
+              </strong>{" "}
+              Node.js 22.22+ is the only runtime dependency; no website install
+              is required. Run commands from the folder containing
+              simulations/lab.mjs.
+            </p>
+            <h4>1. Prepare the clean comparison</h4>
+            <ul>
+              {sim.requirements.map((item: string) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <div class="simulation-copy-block">
+              <div>
+                <span>Terminal · OpenAttacks lab</span>
+                <button type="button" data-simulation-copy>
+                  Copy commands
+                </button>
+                <span role="status" data-copy-status></span>
+              </div>
+              <pre
+                tabindex="0"
+                role="region"
+                aria-label="Preparation commands"
+              ><code>{preparation(sim)}</code></pre>
+            </div>
+            <h4>
+              {sim.mode === "replay"
+                ? "2. Inspect the fixed comparison"
+                : "2. Give the isolated agent its task"}
+            </h4>
+            <p>
+              {sim.mode === "replay"
+                ? "This helper compares mock configuration records. It does not start an agent or activate an MCP command. Inspect the returned record before verifying and cleaning up."
+                : sim.recipe === "project-instructions" ||
+                    sim.recipe === "skill-instructions"
+                  ? "Open the returned disposable workspace in your separately confined target agent. The helper prints the exact legitimate task and active fixture. Restrict capabilities outside the model; do not use your normal project or expand permissions after a refusal."
+                  : "Preparation does not launch an agent. Use a fresh session per condition with only the returned lab MCP configuration and its tools enabled. Enable authorized provider traces first and inspect the actual tool inventory. Run the clean control before the changed condition; stop if tool isolation cannot be verified."}
+            </p>
+            {sim.mode !== "replay" && (
+              <>
+                <div class="simulation-copy-block">
+                  <div>
+                    <span>Agent prompt · both conditions</span>
+                    <button type="button" data-simulation-copy>
+                      Copy prompt
+                    </button>
+                    <span role="status" data-copy-status></span>
+                  </div>
+                  <pre
+                    class="simulation-prompt"
+                    tabindex="0"
+                    role="region"
+                    aria-label="Agent task"
+                  ><code>{sim.task}</code></pre>
+                </div>
+              </>
+            )}
+            <h4>3. Compare what happened</h4>
+            <p>
+              Close the target session and its server, replace the example path
+              with the exact returned recordPath, and repeat for each condition.
+              Compare helper observations with the independent provider trace. A
+              refusal or absent extra action is a valid result; detection stays
+              unknown without sensor observations.
+            </p>
+            <div class="simulation-copy-block">
+              <div>
+                <span>Terminal · replace example paths first</span>
+                <button type="button" data-simulation-copy>
+                  Copy verification
+                </button>
+                <span role="status" data-copy-status></span>
+              </div>
+              <pre
+                tabindex="0"
+                role="region"
+                aria-label="Verification command"
+              ><code>{verification}</code></pre>
+            </div>
+            <h4>4. Keep the evidence, clean up</h4>
+            <p>
+              Retain approved evidence outside the temporary run, then clean up
+              the exact inactive record. Unexpected files, changed artifacts or
+              an active server lock stop cleanup for inspection.
+            </p>
+            <div class="simulation-copy-block">
+              <div>
+                <span>Terminal · replace example paths first</span>
+                <button type="button" data-simulation-copy>
+                  Copy cleanup
+                </button>
+                <span role="status" data-copy-status></span>
+              </div>
+              <pre
+                tabindex="0"
+                role="region"
+                aria-label="Cleanup command"
+              ><code>{cleanup}</code></pre>
+            </div>
+          </div>
+        </details>
+      </div>
+      <aside
+        class="simulation-observations"
+        aria-label="Expected simulation observations"
+      >
+        <span class="eyebrow">WHAT CAN I OBSERVE?</span>
+        {sim.observations.map((item: any, i: number) => (
+          <div>
+            <span class="simulation-observation-number">0{i + 1}</span>
+            <div>
+              <h4>{item.label}</h4>
+              <p>{item.text}</p>
+            </div>
+          </div>
+        ))}
+        <small>Collection expectations, rather than a captured result.</small>
+      </aside>
+      <div class="simulation-footer">
+        <p>
+          {sim.mapping.rationale} {sim.limitations}
+        </p>
+        <div>
+          <a href={sim.research_url} target="_blank" rel="noopener noreferrer">
+            Research: {sim.research_credit} <Icon name="arrow" size={12} />
+          </a>
+        </div>
+      </div>
+    </div>
+  ))}
+</section>
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-simulation-copy]")
+    .forEach((button) =>
+      button.addEventListener("click", async () => {
+        const block = button.closest(".simulation-copy-block");
+        const code = block?.querySelector("code");
+        const status = block?.querySelector("[data-copy-status]");
+        if (!code || !status) return;
+        try {
+          await navigator.clipboard.writeText(code.textContent || "");
+          status.textContent = "Copied";
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const selection = window.getSelection();
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+          status.textContent = "Text selected — copy manually";
+        }
+      }),
+    );
+</script>

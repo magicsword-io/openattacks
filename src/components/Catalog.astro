@@ -12,6 +12,7 @@ import {
 } from "../lib/catalog";
 import { present, environments, evidenceTypes } from "../lib/presentation";
 import Icon from "./Icon.astro";
+import { simulationPreview } from "../lib/simulation-preview.mjs";
 import ViewTabs from "./ViewTabs.astro";
 const { attacks } = Astro.props as { attacks: Attack[] };
 const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
@@ -244,6 +245,14 @@ const hasConfidence = attacks.some((a) => a.confidence);
                   {display.title}
                 </a>
                 <p class="incident-summary">{display.summary}</p>
+                {simulationPreview(attack.id) && (
+                  <a
+                    class="simulation-available simulation-catalog-badge"
+                    href={href(`attacks/${attack.id}/#simulation`)}
+                  >
+                    <Icon name="terminal" size={11} /> Simulation available
+                  </a>
+                )}
                 <span class="incident-pattern">
                   {roles[attack.ai_role].short}
                 </span>

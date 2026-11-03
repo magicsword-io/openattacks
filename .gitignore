@@ -6,3 +6,5 @@ dist/
 playwright-report/
 test-results/
 .vercel/
+public/downloads/openattacks-labs.tar.gz
+public/downloads/openattacks-labs.manifest.json

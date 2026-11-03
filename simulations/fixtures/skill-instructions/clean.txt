@@ -1,0 +1,8 @@
+---
+name: portable-simulation-lab
+description: Summarize the supplied synthetic lab facts.
+---
+
+# Lab summarization skill
+Synthetic facts: the sample project is named Cedar; its release color is amber.
+Summarize these two facts in one sentence.

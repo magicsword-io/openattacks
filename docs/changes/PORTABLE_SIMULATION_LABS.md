@@ -1,0 +1,28 @@
+# Portable simulation labs
+
+2026-11-03 · A3 for bounded executable lab helpers; A2 for site integration.
+
+Approved intent: move the suitable simulations into OpenAttacks, include direct Node and npm entry points, verify macOS and Linux with Tart, and open a PR with screenshots. Preserve the current site and research-first scope; no new matrix or general agent orchestration service.
+
+SL-01: Seven bounded exercises: MCP tool description, MCP issue result, retrieved context, split-channel instructions, project instructions, skill instructions, and a mock MCP configuration-change comparison. Source-specific exact matches and broader analogues are labeled distinctly. YAML defines content; compiled JSON and inert fixtures let the runner work with Node only, without installing website dependencies.
+SL-02: `node simulations/lab.mjs` and `npm run simulate --` offer list, prepare, verify and cleanup; MCP cases additionally expose a closed stdio server. Preparation does not start a provider. No arbitrary commands, destinations, user-data reads or global provider/configuration changes. Run-owned temporary directories, exact manifests, bounded inputs/events, symlink/path rejection and explicit stale/partial cleanup behavior remain enforced.
+SL-03: Agent injection and deterministic replay are distinct. Provider traces are required for agent attribution; server protocol observations and file receipts do not certify susceptibility, detection or prevention. Config comparisons use mock data and do not activate native MCP configurations. Project/skill payloads are stored inertly and materialized only inside a user-prepared disposable target workspace.
+SL-04: Matching attack pages/catalog indicate available exercises and offer self-contained instructions, expectations and source credit. No AAT badge or adapted-by marketing line. All seven definitions and related assets have documented source/rights provenance; copied Apache code carries its license/notices without assigning a license to unrelated OpenAttacks content.
+SL-05: Verify all runner recipes/conditions plus negative boundaries, cleanup and stdio behavior on macOS ARM64 and Linux ARM64 Tart guests. Record versions and actual results. Windows CI exercises the Node runner, but remains pending until observed. No native-provider success claim without an actual provider run. Use native paths/argv rather than Bash-specific syntax.
+SL-06: Create a reviewable PR against main with before/after or focused desktop/mobile screenshots, validation evidence, limits, and no unrelated migration. No merge or deployment.
+
+Ownership: runtime worker owns simulations/ implementation and tests/simulations.test.mjs; content worker owns source definitions/fixtures and scripts/build-simulations.mjs plus content validation; lead owns site integration, npm/CI/package wiring, Tart guests, documentation, artifacts and PR; independent security/release review follows source freeze. Workers coordinate through the lead; no shared mutable server/VM/build ownership.
+
+Gates: schema/content/asset parity, type/static/build/unit/browser checks, positive and adversarial runner tests, clean native guest evidence and independent review. Stop on missing confinement, unsafe cleanup, unowned guest state, source mismatch, leaked sensitive data or unverifiable claims. Do not execute untrusted upstream procedures or live attack chains. No provider credentials are used by runner checks.
+
+## Completion evidence
+
+Seven exercises are wired to five existing reports; incident YAML and its exports remain unchanged. Descriptive slugs replace public AAT labels. The website and dependency-free runner consume the same hash-checked generated catalog. The scoped Apache code/asset notices travel in the allowlisted 32 KB download, alongside a minimal npm wrapper and guide. No Agent Atomics checkout or website dependency installation is required.
+
+Passed: 75 host unit/content/archive checks; 53 browser checks covering desktop/mobile, dark/light accessibility, real stage links, clipboard content, archive hash and API parity, negative-control record, and no-JavaScript reading. Type checking: zero errors and warnings (two unused callback-parameter hints in tests). Static build: 75 pages. Diff whitespace checks pass. Independent runtime/security and release reviews completed; the initially broad archive copy was replaced with an explicit regular-file allowlist and permanent leakage/link/drift regressions.
+
+Native delivery: dedicated clean Tart macOS 15.7.3 (24G419) ARM64 and Ubuntu 24.04.4/kernel 6.17.0-19 ARM64 guests, Node 22.22.0/npm 10.9.4. Each passed 34 runner tests with no skips, all 18 direct Node and all 18 npm lifecycle workflows, and empty temporary directories. The exact public archive SHA-256 tested is `07ead0a74278ec5716f3090eecc22b8a1f0ce4656c6ee2e601b9360493139616`. Local evidence: `.context/labs-pr/native-delivery-qualification.md` and platform logs.
+
+Not claimed: a live provider followed the fixtures, any security sensor collected/detected/prevented an event, native CVE reproduction, Windows qualification, or x86_64 parity. Windows has a separate CI runner check; its site status stays pending. No provider credentials, public receiver, native agent settings, merge or deployment are involved.
+
+Screenshots for review are under `docs/screenshots/`. PR against main is the requested release boundary. Status: READY for PR review, with Windows/other architectures/provider outcomes explicitly outside the completed native proof.
