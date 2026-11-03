@@ -9,8 +9,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseStrictJson } from './lib/strict-json.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SCRIPT = fileURLToPath(import.meta.url);
+// Canonicalize the entry path before comparing it: Windows TEMP may use an 8.3 alias.
+const SCRIPT = await realpath(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(path.dirname(SCRIPT), '..');
 const PREFIX = 'openattacks-lab-';
 const NOFOLLOW = constants.O_NOFOLLOW ?? 0;
 const MAX_FILE = 256 * 1024;
