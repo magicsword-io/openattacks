@@ -1,5 +1,5 @@
 {
-  "name": "ai-attacks-catalog",
+  "name": "openattacks",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -23,9 +23,8 @@
   "dependencies": {
     "@astrojs/react": "^7.1.0",
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource-variable/manrope": "^5.2.8",
+    "@fontsource-variable/inter-tight": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.2.7",
-    "@fontsource/instrument-serif": "^5.3.0",
     "@xyflow/react": "^12.12.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

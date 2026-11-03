@@ -131,7 +131,7 @@ const mapped = index.entries.filter(
         target="_blank"
         rel="noopener noreferrer"
       >
-        Explore MagicSword inventory <Icon name="arrow" size={13} />
+        Explore MagicSword inventory
       </a>
       <a
         class="text-link"
@@ -139,7 +139,7 @@ const mapped = index.entries.filter(
         target="_blank"
         rel="noopener noreferrer"
       >
-        Connect MagicSword MCP <Icon name="arrow" size={13} />
+        Connect MagicSword MCP
       </a>
       <small>MagicSword MCP requires an Enterprise organization.</small>
     </div>
@@ -151,7 +151,7 @@ const mapped = index.entries.filter(
         <h3 data-stack-count aria-live="polite"></h3>
       </div>
       <a class="text-link" href={href("catalog/")}>
-        Explore the full catalog <Icon name="right" size={13} />
+        Explore the full catalog
       </a>
     </div>
     <p class="stack-results-context">
@@ -172,9 +172,7 @@ const mapped = index.entries.filter(
               </time>
             </div>
             <h4>
-              <a href={entry.stage_url || entry.url}>
-                {entry.title} <Icon name="arrow" size={14} />
-              </a>
+              <a href={entry.stage_url || entry.url}>{entry.title}</a>
             </h4>
             {entry.evidence === "vulnerability" && (
               <p class="stack-version-note">
@@ -200,17 +198,13 @@ const mapped = index.entries.filter(
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Read the original source <Icon name="arrow" size={12} />
+                Read the original source
               </a>
             </details>
             <div class="stack-result-actions">
-              <a href={entry.stage_url || entry.url}>
-                Explore attack path <Icon name="right" size={13} />
-              </a>
+              <a href={entry.stage_url || entry.url}>Explore attack path</a>
               {entry.hunt_url && (
-                <a href={entry.hunt_url}>
-                  Explore draft hunt <Icon name="right" size={13} />
-                </a>
+                <a href={entry.hunt_url}>Explore draft hunt</a>
               )}
               {entry.policy && (
                 <a
@@ -218,7 +212,7 @@ const mapped = index.entries.filter(
                   data-stack-policy
                   href={entry.policy.stage_url}
                 >
-                  Windows policy opportunity <Icon name="arrow" size={12} />
+                  Windows policy opportunity
                 </a>
               )}
             </div>
@@ -233,7 +227,7 @@ const mapped = index.entries.filter(
         Try another tool or review broader patterns in the full catalog.
       </p>
       <a href={href("catalog/")} class="text-link">
-        Browse all entries <Icon name="right" size={13} />
+        Browse all entries
       </a>
     </div>
     <button
@@ -246,7 +240,7 @@ const mapped = index.entries.filter(
       Personalization uses reviewed mappings for {index.coverage.mapped} of{" "}
       {index.coverage.total} entries. Attacker use of an AI product alone does
       not make its users affected.{" "}
-      <a href={href("api/relevance.json")}>Read the mapping data ↗</a>
+      <a href={href("api/relevance.json")}>Read the mapping data</a>
     </p>
   </div>
   <p class="stack-copy-status" data-stack-copy-status role="status"></p>

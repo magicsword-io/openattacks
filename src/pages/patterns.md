@@ -1,6 +1,6 @@
 ---
 layout: ../layouts/MarkdownLayout.astro
-title: Patterns — AI Attacks
+title: Patterns — OpenAttacks
 description: Recurring patterns in reported AI-enabled attacks, with source-backed examples and practical prevention questions.
 last_reviewed: '2026-10-20'
 ---
@@ -45,4 +45,4 @@ The [Arup deepfake fraud report](../attacks/arup-deepfake-video-fraud-2024-01/) 
 
 ---
 
-These patterns will evolve as the evidence changes. Contribute a correction or a new sourced entry through the project repository. Explore [free MagicSword.io](https://magicsword.io/?utm_source=ai-attacks&utm_medium=referral&utm_content=patterns) for related community resources.
+These patterns will evolve as the evidence changes. Contribute a correction or a new sourced entry through the project repository. Explore [free MagicSword.io](https://magicsword.io/?utm_source=openattacks&utm_medium=referral&utm_content=patterns) for related community resources.

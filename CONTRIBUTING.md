@@ -1,6 +1,6 @@
 # Contributing
 
-The catalog is maintained as one YAML file per entry in `attacks/`. You can also [submit an issue](https://github.com/magicsword-io/ai-attacks/issues/new?template=submit-attack.yml).
+The catalog is maintained as one YAML file per entry in `attacks/`. You can also [submit an issue](https://github.com/magicsword-io/openattacks/issues/new?template=submit-attack.yml).
 
 1. Copy the template below into `attacks/<id>.yaml`. Use a unique lowercase, hyphenated ID that matches the filename.
 2. Read the original research. Attribute the researcher and organization, link the source of every claim, and explain what role AI played.

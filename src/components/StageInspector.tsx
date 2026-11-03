@@ -47,7 +47,7 @@ export default function StageInspector({
   const [view, setView] = useState(initialView);
   const [format, setFormat] = useState<QueryFormat>("sigma");
   const id = useId();
-  const custom = !!guidance.queries?.kql.includes("AI_AttacksAudit_CL");
+  const custom = !!guidance.queries?.kql.includes("OpenAttacksAudit_CL");
   const views = [
     { id: "evidence", label: "Evidence" },
     { id: "prevent", label: "Prevent" },
@@ -153,7 +153,7 @@ export default function StageInspector({
                   Source [{Math.max(0, sources.indexOf(url)) + 1}]
                 </a>
               ))}
-              <a href={dataURL}>Full stage data ↗</a>
+              <a href={dataURL}>Full stage data</a>
             </div>
           </div>
         )}
@@ -179,7 +179,7 @@ export default function StageInspector({
                   rel="noopener noreferrer"
                   className="stage-control-cta"
                 >
-                  Explore the policy control <FlowIcon name="arrow" size={13} />
+                  Explore the policy control
                 </a>
                 <details className="policy-requirements">
                   <summary>Scope and limitations</summary>
@@ -205,7 +205,6 @@ export default function StageInspector({
                   <strong>{guidance.resource.name}</strong>
                   <small>Community intelligence for this stage</small>
                 </span>
-                <FlowIcon name="arrow" size={13} />
               </a>
             )}
           </div>
@@ -302,7 +301,7 @@ export default function StageInspector({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Security Detections MCP ↗
+                  Security Detections MCP
                 </a>
                 . It requests existing rules and coverage gaps in Sigma, KQL and
                 SPL. This site does not search the rule index.

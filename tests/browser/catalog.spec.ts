@@ -234,7 +234,7 @@ for (const theme of ["dark", "light"]) {
     ]) {
       test(path, async ({ page }) => {
         await page.addInitScript((selectedTheme) => {
-          localStorage.setItem("ai-attacks-theme", selectedTheme);
+          localStorage.setItem("openattacks-theme", selectedTheme);
         }, theme);
         await page.goto(path);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -330,6 +330,10 @@ test("LLM entry points are discoverable on the landing page", async ({
 }) => {
   await page.goto("/");
   await expect(
+    page.locator("footer").getByRole("link", { name: "llms.txt", exact: true }),
+  ).toBeVisible();
+  await page.goto("/about/");
+  await expect(
     page.getByRole("heading", { name: "Give your AI the evidence." }),
   ).toBeVisible();
   const response = await request.get("/llms.txt");
@@ -373,7 +377,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   await expect(page.locator(".stage-control")).toContainText("Windows");
   await expect(page.locator(".network-control-link")).toHaveAttribute(
     "href",
-    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=openattacks/,
   );
   await expect(page.locator(".policy-prerequisite")).toContainText(
     "enforced Windows policy",
@@ -495,24 +499,30 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   );
   await expect(page.locator(".mobile-policy-link").first()).toHaveAttribute(
     "href",
-    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=ai-attacks/,
+    /https:\/\/www\.magicsword\.io\/use-cases\/application-control\?utm_source=openattacks/,
   );
 });
 
-test("landing page keeps global context and leads to stack selection", async ({
+test("homepage shows the dot timeline above the searchable catalog and offers optional stack matching", async ({
   page,
 }) => {
   await page.goto("/");
   await expect(page.locator("[data-dot-chart]")).toBeVisible();
-  await expect(page.locator("[data-latest-entry]")).toHaveCount(6);
-  await expect(page.locator("[data-catalog]")).toHaveCount(0);
+  await expect(page.locator(".chart-entry")).toHaveCount(attacks.length);
+  await expect(page.locator("[data-stack-explorer]")).toHaveCount(0);
+  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(10);
+  const timeline = await page.locator(".home-timeline").boundingBox();
+  const catalog = await page.locator("[data-catalog]").boundingBox();
+  expect(timeline!.y + timeline!.height).toBeLessThanOrEqual(catalog!.y);
   await page
-    .getByRole("link", { name: "See what applies to my stack" })
+    .getByRole("link", { name: "Browse the catalog", exact: true })
     .click();
-  await expect(page).toHaveURL(/#your-stack$/);
-  await expect(
-    page.getByRole("heading", { name: "Which paths matter to you?" }),
-  ).toBeVisible();
+  await expect(page).toHaveURL(/#catalog$/);
+  await expect(page.getByRole("searchbox")).toBeInViewport();
+  await page
+    .getByRole("link", { name: "Find attacks relevant to my stack" })
+    .click();
+  await expect(page).toHaveURL(/\/stack\/$/);
   await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
   await expect(page.locator("[data-stack-results]")).toBeVisible();
 });
@@ -553,7 +563,7 @@ test("qualifications stay before the diagram and custom schema guidance stays ex
   await page.locator(".stage-query-details > summary").click();
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
   await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
-    "AI_AttacksAudit_CL",
+    "OpenAttacksAudit_CL",
   );
   for (const name of ["Evidence", "Prevent", "Hunt"]) {
     await page.getByRole("tab", { name: new RegExp(`^${name}`) }).click();

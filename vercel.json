@@ -4,6 +4,36 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run check && npm run build && npm test",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "openattacks.com" }],
+      "destination": "https://openattacks.ai/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.openattacks.com" }],
+      "destination": "https://openattacks.ai/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.openattacks.ai" }],
+      "destination": "https://openattacks.ai/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/ai-attacks-share.png",
+      "destination": "/openattacks-share.png",
+      "permanent": true
+    },
+    {
+      "source": "/og.png",
+      "destination": "/openattacks-share.png",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/api/:path*",

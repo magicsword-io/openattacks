@@ -1,9 +1,9 @@
 const root = document.querySelector<HTMLElement>("[data-catalog]");
 if (root) {
   const rows = Array.from(
-    root.querySelectorAll<HTMLTableRowElement>("[data-attack-row]"),
+    root.querySelectorAll<HTMLElement>("[data-attack-row]"),
   );
-  const tbody = root.querySelector("tbody")!;
+  const list = root.querySelector<HTMLOListElement>("[data-entry-list]")!;
   const search = root.querySelector<HTMLInputElement>("input[name=q]")!;
   const selects = Array.from(
     root.querySelectorAll<HTMLSelectElement>("select"),
@@ -98,10 +98,38 @@ if (root) {
     rows.forEach((row) => {
       row.hidden = true;
     });
-    matches.forEach((row, index) => {
-      row.hidden = index < (page - 1) * size || index >= page * size;
-      tbody.append(row);
+    const visible = matches.slice((page - 1) * size, page * size);
+    const fragment = document.createDocumentFragment();
+    let previousMonth = "";
+    visible.forEach((row) => {
+      const month = row.dataset.month!;
+      if (month !== previousMonth) {
+        const group = document.createElement("li");
+        group.className = "catalog-month";
+        group.dataset.monthHeading = "";
+        const heading = document.createElement("h2");
+        const label = new Intl.DateTimeFormat("en", {
+          month: "long",
+          year: "numeric",
+          timeZone: "UTC",
+        }).format(new Date(`${month}-01T00:00:00Z`));
+        heading.append(`Reported in ${label} `);
+        const count = visible.filter(
+          (entry) => entry.dataset.month === month,
+        ).length;
+        const total = document.createElement("span");
+        total.textContent = `${count} ${count === 1 ? "entry" : "entries"} on this page`;
+        heading.append(total);
+        group.append(heading);
+        fragment.append(group);
+        previousMonth = month;
+      }
+      row.hidden = false;
+      fragment.append(row);
     });
+    // Keep every source row available for subsequent filters without stale headings.
+    rows.filter((row) => row.hidden).forEach((row) => fragment.append(row));
+    list.replaceChildren(fragment);
     const start = matches.length ? (page - 1) * size + 1 : 0;
     const end = Math.min(page * size, matches.length);
     root!.querySelector("[data-results-count]")!.textContent =
@@ -109,10 +137,11 @@ if (root) {
     root!.querySelector("[data-page-status]")!.textContent =
       `Showing ${start}–${end} of ${matches.length} entries`;
     clearButton.hidden = !query && !filters.length;
+    root!.querySelector<HTMLElement>(".results-meta")!.hidden =
+      !query && !filters.length;
     root!.querySelector<HTMLElement>(".empty-state")!.hidden =
       matches.length > 0;
-    root!.querySelector<HTMLElement>(".table-wrap")!.hidden =
-      matches.length === 0;
+    list.hidden = matches.length === 0;
     if (prev) prev.disabled = page === 1;
     if (next) next.disabled = page >= pageCount;
     const pageButtons = root!.querySelector(".page-number-buttons");
@@ -138,9 +167,10 @@ if (root) {
       "aria-label",
       `Sort by reported date, ${ascending ? "newest" : "oldest"} first`,
     );
-    sortButton
-      .closest("th")!
-      .setAttribute("aria-sort", ascending ? "ascending" : "descending");
+    sortButton.setAttribute("aria-pressed", String(ascending));
+    root!.querySelector("[data-sort-label]")!.textContent = ascending
+      ? "Oldest first"
+      : "Newest first";
     root!.querySelector("[data-sort-arrow]")!.textContent = ascending
       ? "↑"
       : "↓";
@@ -151,7 +181,10 @@ if (root) {
     for (const select of selects) {
       select.value = params.get(select.name) || "";
     }
-    page = Math.max(1, Number(params.get("page")) || 1);
+    const requestedPage = Number(params.get("page"));
+    page = Number.isFinite(requestedPage)
+      ? Math.max(1, Math.floor(requestedPage))
+      : 1;
     ascending = params.get("sort") === "oldest";
     const hasAdvanced = selects.some(
       (select) => advanced.contains(select) && select.value,

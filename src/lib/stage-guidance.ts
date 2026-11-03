@@ -670,6 +670,7 @@ const quoted = (items: string[]) =>
 
 function queries(id: string, p: Profile): Record<QueryFormat, string> | null {
   if (id === "unobserved" || id === "unassessed") return null;
+  // Keep the original hash namespace so published Sigma rule IDs survive the rebrand.
   const hash = createHash("sha256")
     .update(`ai-attacks:hunt:${id}`)
     .digest("hex");
@@ -679,7 +680,7 @@ function queries(id: string, p: Profile): Record<QueryFormat, string> | null {
     id: ruleId,
     status: "experimental",
     description: p.hypothesis,
-    author: "MagicSword AI Attacks catalog",
+    author: "MagicSword OpenAttacks catalog",
     date: reviewed,
     references: [detectionMcp],
     falsepositives: [
@@ -742,7 +743,7 @@ function queries(id: string, p: Profile): Record<QueryFormat, string> | null {
       spl: [
         spec.product === "windows"
           ? 'sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1'
-          : 'sourcetype="ai_attacks:process"',
+          : 'sourcetype="openattacks:process"',
         ...spl,
         "| table _time host User Image CommandLine ParentImage ParentCommandLine",
         "| sort - _time",
@@ -784,7 +785,7 @@ function queries(id: string, p: Profile): Record<QueryFormat, string> | null {
       ...base,
       logsource: {
         category: "application",
-        product: "ai_attacks_audit",
+        product: "openattacks_audit",
         definition:
           "Custom normalized audit schema; map EventType, Actor, Asset, Action, Target and CorrelationId from the required source logs first.",
       },
@@ -792,16 +793,16 @@ function queries(id: string, p: Profile): Record<QueryFormat, string> | null {
     }),
     kql: [
       "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.",
-      "// AI_AttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).",
+      "// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).",
       "// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.",
-      "AI_AttacksAudit_CL",
+      "OpenAttacksAudit_CL",
       "| where TimeGenerated > ago(7d)",
       `| where EventType in (${quoted(p.events)})`,
       "| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId",
       "| order by TimeGenerated desc",
     ].join("\n"),
     spl: [
-      'sourcetype="ai_attacks:audit"',
+      'sourcetype="openattacks:audit"',
       `EventType IN (${quoted(p.events)})`,
       "| table _time EventType Actor Asset Action Target CorrelationId",
       "| sort - _time",
@@ -857,11 +858,11 @@ export function stageGuidance(
     query_scope: p.process
       ? p.process.product === "windows"
         ? "Windows process candidates. Sigma uses normalized process_creation fields; KQL requires Defender for Endpoint; SPL requires the Sysmon XML sourcetype. Tune collectors, fields and baselines before use."
-        : `${p.process.product} process candidates. Sigma needs normalized process events; KQL needs Defender coverage for that OS; SPL uses a custom ai_attacks:process sourcetype with Sysmon-style Image / ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.`
+        : `${p.process.product} process candidates. Sigma needs normalized process events; KQL needs Defender coverage for that OS; SPL uses a custom openattacks:process sourcetype with Sysmon-style Image / ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.`
       : id === "bedrock"
         ? "AWS discovery candidates: Sigma CloudTrail, Sentinel AWSCloudTrail, and Splunk aws:cloudtrail. Invocation logging is a separate prerequisite."
         : querySet
-          ? "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom AI_AttacksAudit_CL table; SPL uses ai_attacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built."
+          ? "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built."
           : id === "unassessed"
             ? "No query has been reviewed for this stage yet."
             : "No runtime query: the available evidence does not establish one.",

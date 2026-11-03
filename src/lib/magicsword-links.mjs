@@ -16,7 +16,7 @@ export function isMagicSwordURL(value) {
 export function magicswordURL(value, placement) {
   if (!isMagicSwordURL(value)) return value;
   const url = new URL(value);
-  url.searchParams.set("utm_source", "ai-attacks");
+  url.searchParams.set("utm_source", "openattacks");
   url.searchParams.set("utm_medium", "referral");
   url.searchParams.set(
     "utm_content",

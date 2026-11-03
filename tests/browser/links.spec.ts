@@ -13,6 +13,10 @@ test("Prevent stays visible on desktop and mobile with MagicSword attribution", 
     const bounds = await prevent.boundingBox();
     expect(bounds!.x).toBeGreaterThanOrEqual(0);
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    const header = await page.locator(".site-header").boundingBox();
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(
+      header!.y + header!.height,
+    );
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -21,7 +25,7 @@ test("Prevent stays visible on desktop and mobile with MagicSword attribution", 
   }
   const url = new URL((await prevent.getAttribute("href"))!);
   expect(url.hostname).toBe("www.magicsword.io");
-  expect(url.searchParams.get("utm_source")).toBe("ai-attacks");
+  expect(url.searchParams.get("utm_source")).toBe("openattacks");
   expect(url.searchParams.get("utm_content")).toBe("nav-prevent");
 });
 
@@ -38,7 +42,7 @@ test("client-rendered MagicSword links are attributed before opening or copying"
   const link = page.getByRole("link", { name: "Dynamic MagicSword link" });
   await link.dispatchEvent("contextmenu");
   let url = new URL((await link.getAttribute("href"))!);
-  expect(url.searchParams.get("utm_source")).toBe("ai-attacks");
+  expect(url.searchParams.get("utm_source")).toBe("openattacks");
   expect(url.searchParams.get("tab")).toBe("setup");
   expect(url.hash).toBe("#connect");
   await link.evaluate((element) => {
@@ -50,6 +54,6 @@ test("client-rendered MagicSword links are attributed before opening or copying"
   });
   await link.click();
   url = new URL((await link.getAttribute("href"))!);
-  expect(url.searchParams.get("utm_source")).toBe("ai-attacks");
+  expect(url.searchParams.get("utm_source")).toBe("openattacks");
   expect(url.hash).toBe("#policy");
 });
