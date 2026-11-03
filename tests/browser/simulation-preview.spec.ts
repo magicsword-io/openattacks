@@ -104,10 +104,16 @@ test("lab download and exports match the seven checked definitions", async ({
   expect(manifest.definition_count).toBe(7);
   const api = await (await request.get("/api/simulations.json")).json();
   expect(api).toEqual(catalog);
-  await page.goto("/catalog/?q=invariant-mcp-tool-poisoning-2025-04");
-  await expect(page.locator(".simulation-catalog-badge:visible")).toHaveCount(
-    1,
-  );
+  for (const path of ["/", "/catalog/"]) {
+    await page.goto(`${path}?q=invariant-mcp-tool-poisoning-2025-04`);
+    const badge = page.locator(".simulation-catalog-badge:visible");
+    await expect(badge).toHaveCount(1);
+    await badge.click();
+    await expect(page).toHaveURL(
+      /\/attacks\/invariant-mcp-tool-poisoning-2025-04\/#simulation$/,
+    );
+    await expect(page.locator("#simulation-heading")).toBeVisible();
+  }
   await page.goto("/attacks/cairn-norforge-2026-10/");
   await expect(page.locator("[data-simulation]")).toHaveCount(0);
   await expect(page.locator(".simulation-available")).toHaveCount(0);

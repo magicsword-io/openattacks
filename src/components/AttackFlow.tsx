@@ -108,7 +108,7 @@ function Step({ data }: NodeProps<StepNode>) {
           className="network-simulation-link nodrag nopan"
           href={data.simulation.href}
         >
-          <FlowIcon name="terminal" size={12} /> Test this stage ↗
+          <FlowIcon name="terminal" size={12} /> Test this stage
         </a>
       )}
       <Handle
@@ -263,14 +263,14 @@ export default function AttackFlow({
           type: MarkerType.ArrowClosed,
           color:
             edge.source === activeId || edge.target === activeId
-              ? "#b5a08c"
-              : "#818895",
+              ? "var(--accent)"
+              : "var(--subtle)",
         },
         style: {
           stroke:
             edge.source === activeId || edge.target === activeId
-              ? "#b5a08c"
-              : "#818895",
+              ? "var(--accent)"
+              : "var(--subtle)",
           strokeWidth: 1.5,
           ...(edge.loop ? { strokeDasharray: "5 5" } : {}),
         },
@@ -353,7 +353,7 @@ export default function AttackFlow({
                 )}
                 {simulation?.stageIds.includes(node.id) && (
                   <a className="mobile-simulation-link" href={simulation.href}>
-                    <FlowIcon name="terminal" size={13} /> Test this stage ↗
+                    <FlowIcon name="terminal" size={13} /> Test this stage
                   </a>
                 )}
                 <div className="mobile-stage-connections">
