@@ -1,0 +1,89 @@
+id: kaspersky-cyberstrikeai-schools-2026
+name: CyberStrikeAI attacks against schools in Africa and Latin America
+date_reported: 2026-11-04
+researcher: Kirill Antonov, Vladislav Vlasov, Dmitry Chizhmak
+org: Kaspersky
+sources:
+  - url: https://securelist.com/cyberstrikeai-attacks/121715/
+    title: CyberStrikeAI attacks
+    publisher: Kaspersky (Securelist)
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Financially motivated attacks against schools in Africa and Latin America using open-source CyberStrikeAI implant. Initial access via compromised SQL Server. C2-side LLM using MCP tools autonomously selected attack commands and achieved domain admin privileges in 3-4 days. Techniques include SystemUpdate scheduled task, certutil downloads, comsvcs.dll LSASS memory dump, DCSync, and Golden Ticket generation. C2 infrastructure at fastcdn.bar and 185.186.245.144. CyberStrikeAI available at https://github.com/CyberStrikeAI/CyberStrikeAI.
+initial_access: Compromised SQL Server
+ai_tooling_and_models:
+  - CyberStrikeAI (https://github.com/CyberStrikeAI/CyberStrikeAI)
+  - LLM-driven C2 with MCP tools
+other_tooling:
+  - SystemUpdate scheduled task
+  - certutil (LOLBAS)
+  - comsvcs.dll LSASS dump (LOLBAS)
+  - DCSync
+  - Golden Ticket
+  - Compromised SQL Server
+victims_and_sectors: Schools in Africa and Latin America
+regions:
+  - Africa
+  - South America
+attribution_or_cluster: Financially motivated; attribution otherwise unknown
+scale_and_metrics: Domain admin achieved in 3-4 days; multiple schools targeted
+prevention_angle: Harden SQL Server; monitor for CyberStrikeAI indicators; detect SystemUpdate scheduled task creation; alert on certutil downloads; monitor comsvcs.dll LSASS dumps; detect DCSync activity; hunt for Golden Ticket use; block C2 infrastructure; review LOLBAS execution (certutil, comsvcs)
+related_magicsword_projects:
+  - LOLBAS
+source_notes: null
+iocs:
+  domains:
+    - fastcdn.bar
+  ips:
+    - 185.186.245.144
+  hashes: []
+  urls: []
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: Africa and South America reflect targeted school systems in these regions
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: C2-side LLM with MCP tools autonomously executed attack operations
+    source_urls:
+      - https://securelist.com/cyberstrikeai-attacks/121715/
+attack_flow:
+  nodes:
+    - id: initial-access
+      title: SQL Server compromised
+      description: Attacker gained initial access through compromised SQL Server
+      kind: access
+      source_urls: &a1
+        - https://securelist.com/cyberstrikeai-attacks/121715/
+    - id: implant
+      title: CyberStrikeAI implant deployed
+      description: Open-source CyberStrikeAI implant installed with C2 connection to fastcdn.bar and 185.186.245.144
+      kind: ai
+      source_urls: *a1
+    - id: llm-decision
+      title: LLM selects attack commands
+      description: C2-side LLM using MCP tools autonomously chooses and executes attack techniques
+      kind: ai
+      source_urls: *a1
+    - id: privilege-escalation
+      title: SystemUpdate task and credential dumping
+      description: SystemUpdate scheduled task created; certutil used for downloads; comsvcs.dll dumps LSASS memory
+      kind: execution
+      source_urls: *a1
+    - id: domain-admin
+      title: Domain admin achieved via DCSync and Golden Ticket
+      description: DCSync extracts domain credentials; Golden Ticket generated for persistence; domain admin achieved in 3-4 days
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: initial-access
+      target: implant
+    - source: implant
+      target: llm-decision
+    - source: llm-decision
+      target: privilege-escalation
+    - source: privilege-escalation
+      target: domain-admin

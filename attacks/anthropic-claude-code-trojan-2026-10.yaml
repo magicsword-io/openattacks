@@ -1,0 +1,99 @@
+id: anthropic-claude-code-trojan-2026-10
+name: Trojanized anthropic.claude-code Cursor extension
+date_reported: 2026-10-30
+date_activity_start: 2026-10-29
+date_activity_end: 2026-10-29
+researcher: Microsoft Threat Intelligence, Netskope (Gianpietro Cutolo)
+org: Microsoft, Netskope, Cursor
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/
+    title: Inside the malicious Claude Code-branded Cursor extension with persistent SSH backdoor
+    publisher: Microsoft
+  - url: https://cursor.com/blog/claude-code-extension-security-notice
+    title: Security notice regarding Claude Code extension
+    publisher: Cursor
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Tampered anthropic.claude-code extension versions 2.1.312 and 2.1.313 served via Cursor marketplace install and auto-update on Oct 29 2026 from ~5:27 AM to 4:35 PM ET. Loader in extension.js collected hostname, username, environment variables matching secret patterns, added SSH key svc-telemetry to authorized_keys, established reverse SSH tunnel to tunnel@134.209.82.225, beaconed to :8099/beacon. Persistence via com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows). GitHub repo https://github.com/anthropics/anthropic-quickstarts compromised.
+initial_access: Supply-chain compromise of official Cursor marketplace extension via compromised GitHub repository
+ai_tooling_and_models:
+  - Cursor IDE
+  - anthropic.claude-code extension
+other_tooling:
+  - Reverse SSH tunnel
+  - LaunchAgent persistence (macOS)
+  - Cron persistence (Linux)
+  - Scheduled task persistence (Windows)
+victims_and_sectors: Cursor IDE users who installed or auto-updated anthropic.claude-code extension during compromise window
+regions:
+  - Multiple regions
+attribution_or_cluster: unknown
+scale_and_metrics: Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown
+prevention_angle: Monitor extension integrity; review SSH authorized_keys; detect outbound SSH tunnels to suspicious IPs; scan for LaunchAgent/cron/@reboot persistence; review scheduled tasks; monitor environment variable access patterns
+related_magicsword_projects: []
+source_notes: null
+iocs:
+  domains: []
+  ips:
+    - 134.209.82.225
+  hashes: []
+  urls: []
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: Multiple regions reflects global Cursor user base; specific affected geography unknown
+atlas_techniques:
+  - id: AML.T0010.001
+    rationale: Attacker compromised an AI coding assistant extension in the official marketplace
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/
+      - https://cursor.com/blog/claude-code-extension-security-notice
+  - id: AML.T0011
+    rationale: Extension established persistence through platform-specific mechanisms
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/
+  - id: AML.T0055
+    rationale: Malicious extension collected environment variables matching secret patterns
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/
+attack_flow:
+  nodes:
+    - id: supply-chain
+      title: GitHub repository compromised
+      description: Attacker gained access to anthropics/anthropic-quickstarts GitHub repository and pushed malicious extension versions 2.1.312 and 2.1.313
+      kind: access
+      source_urls: &a1
+        - https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/
+        - https://cursor.com/blog/claude-code-extension-security-notice
+    - id: distribution
+      title: Malicious versions served via marketplace
+      description: Cursor marketplace distributed compromised extension via install and auto-update from Oct 29 5:27 AM to 4:35 PM ET
+      kind: ai
+      source_urls: *a1
+    - id: collection
+      title: Extension collects host information and secrets
+      description: Loader in extension.js collected hostname, username, environment variable names matching secret patterns
+      kind: execution
+      source_urls: *a1
+    - id: backdoor
+      title: SSH backdoor established
+      description: Added svc-telemetry SSH key to authorized_keys and established reverse SSH tunnel to tunnel@134.209.82.225 with beacon to :8099/beacon
+      kind: impact
+      source_urls: *a1
+    - id: persistence
+      title: Platform-specific persistence installed
+      description: com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows)
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: supply-chain
+      target: distribution
+    - source: distribution
+      target: collection
+    - source: collection
+      target: backdoor
+    - source: backdoor
+      target: persistence

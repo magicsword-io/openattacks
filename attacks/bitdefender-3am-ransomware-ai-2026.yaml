@@ -1,0 +1,90 @@
+id: bitdefender-3am-ransomware-ai-2026
+name: 3AM ransomware affiliate using AI loop against UK schools
+date_reported: 2026-11-04
+researcher: Marius Baciu, Adrian Schipor, Martin Zugec
+org: Bitdefender
+sources:
+  - url: https://www.bitdefender.com/en-us/blog/businessinsights/3am-ransomware-hybrid-ai-attack
+    title: 3AM Ransomware Hybrid AI Attack
+    publisher: Bitdefender
+  - url: https://github.com/bitdefender/threat-intel
+    title: Bitdefender Threat Intelligence repository (IOCs)
+    publisher: Bitdefender
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: 3AM ransomware affiliate used AI loop against UK schools showing model-style command errors including Bash escape sequences in Windows commands and malformed for /f syntax passing K" to comsvcs. Numbered retry scripts (av_remove2, av_remove3) indicate automated iteration. Probe files da_proof.txt and psexec-ok suggest autonomous validation. Backdoor admins library and svc_bkpmon created. Staging registry path HKLM\SOFTWARE\FIN001. Attack demonstrates AI-driven operations with observable execution errors and iteration patterns.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI-driven command loop (model unspecified)
+other_tooling:
+  - 3AM ransomware
+  - Numbered retry scripts (av_remove2, av_remove3)
+  - Probe files (da_proof.txt, psexec-ok)
+  - Backdoor accounts (library, svc_bkpmon)
+  - Registry staging (HKLM\SOFTWARE\FIN001)
+  - PsExec
+  - comsvcs.dll
+victims_and_sectors: UK schools
+regions:
+  - United Kingdom
+attribution_or_cluster: 3AM ransomware affiliate
+scale_and_metrics: Multiple UK schools targeted; exact count unknown
+prevention_angle: Detect model-style command syntax errors; monitor for numbered retry scripts; alert on probe files in unusual locations; review backdoor account creation; monitor registry key HKLM\SOFTWARE\FIN001; detect PsExec lateral movement; hunt for comsvcs.dll credential dumping; review Bitdefender IOCs on GitHub
+related_magicsword_projects:
+  - LOLBAS
+source_notes: IOCs available in Bitdefender threat-intel GitHub repository
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls:
+    - https://github.com/bitdefender/threat-intel
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: United Kingdom reflects targeted school systems
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: AI loop autonomously executed attack commands with observable model errors and iteration patterns
+    source_urls:
+      - https://www.bitdefender.com/en-us/blog/businessinsights/3am-ransomware-hybrid-ai-attack
+attack_flow:
+  nodes:
+    - id: initial-access
+      title: Initial access to UK schools
+      description: Initial access vector not disclosed in source
+      kind: unknown
+      source_urls: &a1
+        - https://www.bitdefender.com/en-us/blog/businessinsights/3am-ransomware-hybrid-ai-attack
+    - id: ai-commands
+      title: AI loop generates attack commands
+      description: Model generates commands with observable errors including Bash escapes in Windows commands and broken for /f syntax
+      kind: ai
+      source_urls: *a1
+    - id: iteration
+      title: Automated retry with numbered scripts
+      description: Numbered scripts av_remove2, av_remove3 show iteration; probe files da_proof.txt, psexec-ok validate steps
+      kind: ai
+      source_urls: *a1
+    - id: persistence
+      title: Backdoor accounts and registry staging
+      description: Backdoor admins library and svc_bkpmon created; staging in HKLM\SOFTWARE\FIN001
+      kind: execution
+      source_urls: *a1
+    - id: ransomware
+      title: 3AM ransomware deployed
+      description: 3AM ransomware payload deployed after preparation
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: initial-access
+      target: ai-commands
+    - source: ai-commands
+      target: iteration
+    - source: iteration
+      target: persistence
+    - source: persistence
+      target: ransomware
