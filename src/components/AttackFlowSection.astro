@@ -70,10 +70,12 @@ const defenseURL = href(`api/defenses/${attack.id}.json`);
             {String(index + 1).padStart(2, "0")} · {node.title}
           </strong>
           <p>{node.description}</p>
-          <p>
-            <strong>Hunt:</strong> {guidance[node.id].hypothesis}
-          </p>
-          <p>{guidance[node.id].limitation}</p>
+          {guidance[node.id].queries && (
+            <>
+              <p><strong>Hunt:</strong> {guidance[node.id].hypothesis}</p>
+              <p>{guidance[node.id].limitation}</p>
+            </>
+          )}
           {guidance[node.id].control && (
             <p>
               <a

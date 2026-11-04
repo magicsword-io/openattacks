@@ -118,9 +118,6 @@
   font: 9px var(--mono);
   white-space: nowrap;
 }
-.detection-status.is-gap {
-  color: var(--muted);
-}
 .detection-stage summary > svg {
   flex-shrink: 0;
   color: var(--muted);

@@ -103,13 +103,14 @@ function Step({ data }: NodeProps<StepNode>) {
           <FlowIcon name="shield" size={12} /> MagicSword
         </a>
       )}
-      <a
-        className="network-detection-link nodrag nopan"
-        href={`#detection-${data.id}`}
-      >
-        <FlowIcon name="search" size={12} />{" "}
-        {data.guidance.queries ? "Detect this stage" : "Detection gap"}
-      </a>
+      {data.guidance.queries && (
+        <a
+          className="network-detection-link nodrag nopan"
+          href={`#detection-${data.id}`}
+        >
+          <FlowIcon name="search" size={12} /> Detect this stage
+        </a>
+      )}
       {data.simulation && (
         <a
           className="network-simulation-link nodrag nopan"
@@ -358,15 +359,14 @@ export default function AttackFlow({
                     opportunity
                   </a>
                 )}
-                <a
-                  className="mobile-detection-link"
-                  href={`#detection-${node.id}`}
-                >
-                  <FlowIcon name="search" size={13} />{" "}
-                  {guidance[node.id]?.queries
-                    ? "Detect this stage"
-                    : "Detection gap"}
-                </a>
+                {guidance[node.id]?.queries && (
+                  <a
+                    className="mobile-detection-link"
+                    href={`#detection-${node.id}`}
+                  >
+                    <FlowIcon name="search" size={13} /> Detect this stage
+                  </a>
+                )}
                 {simulation?.stageIds.includes(node.id) && (
                   <a className="mobile-simulation-link" href={simulation.href}>
                     <FlowIcon name="terminal" size={13} /> Test this stage

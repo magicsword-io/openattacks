@@ -87,17 +87,70 @@ for (const width of [1440, 390]) {
   });
 }
 
-test("gap stages expose research and requirements without invented queries", async ({
+for (const width of [1440, 390]) {
+  test(`phases without queries have no detection indicator or card at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto(
+      "/attacks/apt41-gemini-c2-osstun-2025-08/?stage=step-3&view=hunt#attack-flow",
+    );
+    const links = page.locator(
+      width < 900 ? ".mobile-detection-link" : ".network-detection-link",
+    );
+    await expect(links).toHaveCount(3);
+    await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await page.locator(".network-stage-picker button").nth(3).click();
+    await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveCount(0);
+    await expect(
+      page.getByRole("tab", { name: "Evidence", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator('a[href="#detection-step-4"]')).toHaveCount(0);
+    await expect(page.locator("#detection-step-4")).toHaveCount(0);
+    await expect(
+      page.getByText(
+        /Detection gap|Evidence gap|Hunt not mapped|What is missing/i,
+      ),
+    ).toHaveCount(0);
+    await expect(page.locator("[data-detection-stage]")).toHaveCount(3);
+
+    await page.goto(
+      "/attacks/wormgpt-underground-2023/?stage=step-1&view=hunt#attack-flow",
+    );
+    await expect(page.locator(".stage-inspector")).toBeVisible();
+    await expect(
+      page.getByRole("tab", { name: "Evidence", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveCount(0);
+    await expect(links).toHaveCount(0);
+    await expect(
+      page.locator(
+        "#detections, .detection-available, .inspector-detection-link",
+      ),
+    ).toHaveCount(0);
+  });
+}
+
+test("filtered detection cards retain their original phase numbers", async ({
   page,
 }) => {
-  await page.goto("/attacks/apt41-gemini-c2-osstun-2025-08/#detection-step-4");
-  const stage = page.locator("#detection-step-4");
-  await expect(stage).toHaveAttribute("open", "");
-  await expect(stage).toContainText("Evidence gap · no runtime query");
-  await expect(stage.locator(".detection-query-format")).toHaveCount(0);
-  await stage.locator(".detection-research > summary").click();
-  await expect(stage.locator("code")).toContainText(
-    "report the gap instead of fabricating",
+  await page.goto("/attacks/cairn-norforge-2026-10/#detections");
+  await expect(page.locator(".detection-stage-nav a").first()).toHaveText(
+    "Stage 02",
+  );
+  await expect(page.locator(".detection-stage").first()).toHaveAttribute(
+    "id",
+    "detection-step-2",
+  );
+  await expect(page.locator(".detection-stage").first()).toHaveAttribute(
+    "open",
+    "",
+  );
+  await expect(page.locator(".detection-stage-number").first()).toHaveText(
+    "02",
   );
 });
 

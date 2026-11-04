@@ -15,7 +15,7 @@ Every attack phase has an explicit entry in `stages.json`, keyed by attack ID an
 3. Run `npm run detections:build` to regenerate `catalog.json`. Do not edit the generated catalog by hand.
 4. Run `npm run validate`, `npm run check`, `npm run build`, `npm test` and the browser checks. Validation rejects missing phases, stale references, unknown profiles, duplicate YAML keys, invented gap queries and catalog drift.
 
-The site, defense APIs and raw query downloads all consume the generated catalog. Each attack page has a server-rendered detection section, phase anchors, query downloads and a JSON stage pack. Content remains readable without JavaScript. The existing `?stage=...&view=hunt#attack-flow` inspector links remain supported.
+The site, defense APIs and raw query downloads all consume the generated catalog. Attack pages with query starters have a server-rendered detection section, phase anchors, query downloads and a JSON stage pack. Only phases with queries appear in that section and receive detection links or a Hunt tab; other phases have no detection placeholder. Pages without queries omit the section and header link. Stage numbering follows the source flow. Content remains readable without JavaScript. Existing `?stage=...&view=hunt#attack-flow` links open the Hunt tab when queries exist and otherwise show the stage evidence.
 
 Raw downloads are available at `api/detections/<profile>.sigma.yml`, `.kql` and `.spl`. Complete stage context, evidence, origin, validation status and download URLs are included in `api/defenses.json` and `api/defenses/<attack-id>.json`.
 

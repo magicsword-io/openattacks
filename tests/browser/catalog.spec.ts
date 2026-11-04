@@ -475,10 +475,7 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   await page.goto("/attacks/wormgpt-underground-2023/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
   await page.locator(".network-stage-picker button").first().click();
-  await page.getByRole("tab", { name: /Hunt/ }).click();
-  await expect(page.locator(".stage-hunt")).toContainText(
-    "No source-backed runtime hunt yet",
-  );
+  await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveCount(0);
   await expect(page.locator(".stage-query-details")).toHaveCount(0);
   await page.goto("/attacks/c2agent-unit42-2026-10/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
