@@ -1,0 +1,12 @@
+id: apt41
+name: APT41
+aliases: []
+country: China
+motivation: nation-state
+description: Chinese state-sponsored advanced persistent threat group known for cyber espionage and financially-motivated operations. Active since at least 2012, targeting multiple sectors globally. Observed using Gemini for C++/Golang development assistance on tools including the OSSTUN C2 framework and obfuscation libraries.
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    title: How Threat Actors Are Using AI Tools
+    publisher: Google GTIG
+linked_attacks:
+  - apt41-gemini-c2-osstun-2025-08

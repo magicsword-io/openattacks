@@ -1,0 +1,128 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { getAttacks, href, repo } from "../../lib/catalog";
+
+export async function getStaticPaths() {
+  const actors = await getCollection("actors");
+  return actors.map((actor) => ({
+    params: { id: actor.id },
+    props: { actor: actor.data },
+  }));
+}
+
+const { actor } = Astro.props;
+const attacks = (await getAttacks()).filter((attack) =>
+  actor.linked_attacks?.includes(attack.id),
+);
+---
+
+<Layout title={`${actor.name} — OpenAttacks Actors`} description={actor.description}>
+  <article class="container entry-focused">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={href("actors/")}>Actors</a>
+      <span aria-hidden="true">/</span>
+      <span>{actor.name}</span>
+    </nav>
+    <header class="entry-heading">
+      <h1>{actor.name}</h1>
+      {actor.aliases && actor.aliases.length > 0 && (
+        <p class="actor-aliases">
+          Also known as: {actor.aliases.join(", ")}
+        </p>
+      )}
+    </header>
+    <section class="entry-story">
+      <h2>Overview</h2>
+      <p>{actor.description}</p>
+      <dl class="technical-facts">
+        {actor.country && (
+          <>
+            <dt>Country</dt>
+            <dd>{actor.country}</dd>
+          </>
+        )}
+        {actor.motivation && (
+          <>
+            <dt>Motivation</dt>
+            <dd>{actor.motivation}</dd>
+          </>
+        )}
+      </dl>
+    </section>
+    {attacks.length > 0 && (
+      <section>
+        <h2>Linked attacks</h2>
+        <ul class="attack-list">
+          {attacks.map((attack) => (
+            <li>
+              <a href={href(`attacks/${attack.id}/`)}>{attack.name}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    <section id="sources" class="entry-sources">
+      <div class="section-title">
+        <h2>Sources</h2>
+        <span>
+          {actor.sources.length}{" "}
+          {actor.sources.length === 1 ? "source" : "sources"}
+        </span>
+      </div>
+      <ol class="source-list">
+        {actor.sources.map((source: any, i: number) => (
+          <li id={`source-${i + 1}`}>
+            <a href={source.url} target="_blank" rel="noopener noreferrer">
+              {source.title ||
+                new URL(source.url).hostname.replace(/^www\./, "")}{" "}
+              {source.title && (
+                <span class="source-host">
+                  {new URL(source.url).hostname}
+                </span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+    <details class="entry-record">
+      <summary>Record & downloads</summary>
+      <dl class="technical-facts">
+        <dt>Entry ID</dt>
+        <dd class="mono">{actor.id}</dd>
+      </dl>
+      <div class="record-links">
+        <a
+          href={`${repo}/edit/main/actors/${actor.id}.yaml`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Edit on GitHub
+        </a>
+      </div>
+    </details>
+  </article>
+</Layout>
+
+<style>
+  .actor-aliases {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+  }
+  .attack-list {
+    list-style: none;
+    padding: 0;
+  }
+  .attack-list li {
+    margin-bottom: 0.5rem;
+  }
+  .attack-list a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .attack-list a:hover {
+    text-decoration: underline;
+  }
+</style>

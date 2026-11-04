@@ -67,6 +67,9 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+linked_actors:
+  - apt28
+linked_tools: []
 atlas_techniques:
   - id: AML.T0102
     rationale: The miner generates collection commands using a hosted Qwen model.

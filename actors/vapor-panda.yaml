@@ -1,0 +1,13 @@
+id: vapor-panda
+name: VAPOR PANDA
+aliases:
+  - Temp.Zagros
+country: Iran
+motivation: nation-state
+description: Iranian state-sponsored threat actor also tracked as Temp.Zagros. Observed using Gemini and other AI tools for malware development assistance, targeting government and critical infrastructure sectors.
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    title: How Threat Actors Are Using AI Tools
+    publisher: Google GTIG
+linked_attacks:
+  - temp-zagros-gemini-malware-dev-2025

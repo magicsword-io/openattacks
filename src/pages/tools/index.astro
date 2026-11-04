@@ -1,0 +1,99 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { href } from "../../lib/catalog";
+
+const tools = (await getCollection("tools")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
+---
+
+<Layout title="AI Attack Tools — OpenAttacks" description="AI-powered attack tools documented in the OpenAttacks catalog">
+  <div class="container">
+    <header class="page-header">
+      <h1>AI Attack Tools</h1>
+      <p>
+        AI-powered offensive security tools and frameworks documented in the OpenAttacks catalog.
+        {tools.length} {tools.length === 1 ? "tool" : "tools"} tracked.
+      </p>
+    </header>
+    <div class="tools-grid">
+      {tools.map((tool) => (
+        <article class="tool-card">
+          <h2>
+            <a href={href(`tools/${tool.id}/`)}>{tool.data.name}</a>
+          </h2>
+          <p class="tool-type">{tool.data.type}</p>
+          <p class="tool-description">{tool.data.description.slice(0, 200)}...</p>
+          {(tool.data.github_url || tool.data.project_url) && (
+            <div class="tool-links">
+              {tool.data.github_url && (
+                <a href={tool.data.github_url} target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              )}
+              {tool.data.project_url && (
+                <a href={tool.data.project_url} target="_blank" rel="noopener noreferrer">
+                  Project
+                </a>
+              )}
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .tool-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: var(--surface);
+  }
+  .tool-card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+  .tool-card h2 a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .tool-card h2 a:hover {
+    text-decoration: underline;
+  }
+  .tool-type {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: capitalize;
+    margin: 0 0 1rem 0;
+  }
+  .tool-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+  }
+  .tool-links {
+    display: flex;
+    gap: 1rem;
+  }
+  .tool-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  .tool-links a:hover {
+    text-decoration: underline;
+  }
+</style>

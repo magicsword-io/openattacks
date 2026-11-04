@@ -5,6 +5,7 @@ import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
 import atlas from "../../data/atlas-techniques.json";
+import { getCollection } from "astro:content";
 import {
   getAttacks,
   href,
@@ -26,6 +27,22 @@ export async function getStaticPaths() {
   }));
 }
 const { attack } = Astro.props as { attack: Attack };
+const linkedActors = attack.linked_actors
+  ? await Promise.all(
+      attack.linked_actors.map(async (id) => {
+        const allActors = await getCollection("actors");
+        return allActors.find((a) => a.id === id);
+      }),
+    ).then((actors) => actors.filter(Boolean))
+  : [];
+const linkedTools = attack.linked_tools
+  ? await Promise.all(
+      attack.linked_tools.map(async (id) => {
+        const allTools = await getCollection("tools");
+        return allTools.find((t) => t.id === id);
+      }),
+    ).then((tools) => tools.filter(Boolean))
+  : [];
 const display = present(attack);
 const simulations = simulationsFor(attack.id);
 const techniques = atlas.techniques as Record<
@@ -205,6 +222,32 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             <section>
               <h2>Reported attribution</h2>
               <p>{attack.attribution_or_cluster}</p>
+            </section>
+          )}
+          {linkedActors.length > 0 && (
+            <section id="linked-actors">
+              <h2>Linked threat actors</h2>
+              <ul class="linked-list">
+                {linkedActors.map((actor) => actor && (
+                  <li>
+                    <a href={href(`actors/${actor.id}/`)}>{actor.data.name}</a>
+                    {actor.data.country && ` — ${actor.data.country}`}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {linkedTools.length > 0 && (
+            <section id="linked-tools">
+              <h2>Linked tools</h2>
+              <ul class="linked-list">
+                {linkedTools.map((tool) => tool && (
+                  <li>
+                    <a href={href(`tools/${tool.id}/`)}>{tool.data.name}</a>
+                    {` — ${tool.data.type}`}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
           {meaningful(attack.prevention_angle) && (

@@ -1,0 +1,13 @@
+id: storm-2139
+name: Storm-2139
+aliases:
+  - FizzDogg
+country: null
+motivation: cybercrime
+description: Cybercriminal operation targeted by Microsoft Digital Crimes Unit civil action. Alleged to have stolen Azure OpenAI credentials and developed custom tooling to bypass safety controls, generating harmful images via DALL-E and other generative AI services at victims' expense.
+sources:
+  - url: https://www.microsoft.com/en-us/corporate-responsibility/customer-security-trust/digital-crimes-unit/notice-of-pleadings/storm-2139/
+    title: Notice of Pleadings - Storm-2139
+    publisher: Microsoft Digital Crimes Unit
+linked_attacks:
+  - storm-2139-fizzdogg-microsoft-llmjacking-2024-12
