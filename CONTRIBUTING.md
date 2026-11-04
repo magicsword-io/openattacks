@@ -33,6 +33,12 @@ last_reviewed: '2026-10-20'
 
 `schema.yaml` is the source of truth. Unknown fields fail validation. Optional fields include `aliases`, `ai_role_secondary`, `ai_role_detail`, `date_activity_start`, `date_activity_end`, `atlas_techniques`, `source_notes`, `iocs`, `tags`, `confidence`, `borderline_note`, and `magicsword_coverage`.
 
+## Tool project links
+
+Keep reported tool names and versions as plain strings in the YAML. Attack pages and Markdown downloads link recognized names using the reviewed registry in `src/data/tool-projects.json`. Add a project there to link it everywhere it is reported, including both AI artifacts and other tooling.
+
+Verify the project identity and destination against its maintainer's repository or website. Prefer an official GitHub repository; use the official project or model page when no suitable repository is available. Record aliases as literal product names, update `reviewed_on` when researching links, and add `source_urls` for identity checks or unusual destinations. Label community forks and upstream-only references with a visible `note`. Do not substitute an unrelated project with the same name, guess repositories for unidentified artifacts, or link attacker infrastructure and indicators.
+
 ## Sourcing rules
 
 - Every factual claim needs a source URL. Prefer primary reports, original researchers, vendor advisories, or court records. Add source notes when evidence has limitations.

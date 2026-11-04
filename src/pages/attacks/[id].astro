@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import SimulationPreview from "../../components/SimulationPreview.astro";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
+import ToolingList from "../../components/ToolingList.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
 import atlas from "../../data/atlas-techniques.json";
 import {
@@ -151,21 +152,13 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               {attack.ai_tooling_and_models.length > 0 && (
                 <>
                   <h3>AI products, models and artifacts</h3>
-                  <ul class="technical-tool-list">
-                    {attack.ai_tooling_and_models.map((tool) => (
-                      <li>{tool}</li>
-                    ))}
-                  </ul>
+                  <ToolingList tools={attack.ai_tooling_and_models} />
                 </>
               )}
               {attack.other_tooling.length > 0 && (
                 <>
                   <h3>Other tooling</h3>
-                  <ul class="technical-tool-list">
-                    {attack.other_tooling.map((tool) => (
-                      <li>{tool}</li>
-                    ))}
-                  </ul>
+                  <ToolingList tools={attack.other_tooling} />
                 </>
               )}
             </section>

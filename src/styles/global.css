@@ -4160,6 +4160,21 @@ p {
   padding-left: 18px;
   margin: 0;
 }
+.tool-project-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 3px;
+}
+.tool-project-link:hover {
+  text-decoration-color: currentColor;
+}
+.tool-project-note {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
 .entry-sources {
   margin-bottom: 25px;
 }

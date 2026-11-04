@@ -1,5 +1,47 @@
 import { test, expect } from "@playwright/test";
 
+test("reported tools link to their projects while preserving labels and fork qualifications", async ({
+  page,
+}) => {
+  await page.goto("/attacks/cairn-norforge-2026-10/#tooling");
+  const tooling = page.locator("#tooling");
+  for (const [name, url] of [
+    ["Cairn", "https://github.com/oritera/Cairn"],
+    ["Amass", "https://github.com/owasp-amass/amass"],
+    ["dnsrecon", "https://github.com/darkoperator/dnsrecon"],
+    ["Playwright", "https://github.com/microsoft/playwright"],
+  ]) {
+    const link = tooling.getByRole("link", { name, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", url);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  }
+  await expect(
+    tooling
+      .locator(".tool-reported-label")
+      .filter({
+        hasText: "Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek",
+      }),
+  ).toHaveText("Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek");
+  const artifact = tooling
+    .locator("li")
+    .filter({ hasText: "StyleSmuggler PoC" });
+  await expect(artifact).toBeVisible();
+  await expect(artifact.locator("a")).toHaveCount(0);
+  await page.goto("/attacks/crowdstrike-artex-sk-finance-2026-10/#tooling");
+  await expect(
+    page.locator("#tooling").getByRole("link", { name: "ARTEX", exact: true }),
+  ).toHaveAttribute("href", "https://github.com/RuoJi6/ARTEX");
+  await expect(
+    page
+      .locator("#tooling")
+      .getByText(
+        "Community-maintained fork; the original repository is unavailable.",
+      ),
+  ).toBeVisible();
+});
+
 test("Prevent stays visible on desktop and mobile with MagicSword attribution", async ({
   page,
 }) => {
