@@ -202,7 +202,10 @@ test("without JavaScript the stack page keeps its catalog and data entry points"
     "Stack selection requires JavaScript.",
   );
   await expect(
-    page.getByRole("link", { name: "Browse all 68 entries", exact: true }),
+    page.getByRole("link", {
+      name: `Browse all ${index.entries.length} entries`,
+      exact: true,
+    }),
   ).toBeVisible();
   await context.close();
 });

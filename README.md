@@ -73,6 +73,8 @@ Entry pages lead with the takeaway and an expanded **What happened** account bef
 
 ```sh
 npm run validate
+npm run test:validation
+npm run check:links -- --all
 npm run check
 npm run build
 npm test
@@ -86,6 +88,8 @@ npm run test:browser
 ```
 
 The test suite checks all seed records, unknown-field rejection, dates, source URL validation, role enums, and exact build output parity with public YAML data. Build before running `npm test`.
+
+PRs also check live source/coverage links in added or modified records; a weekly audit checks the full catalog. Confirmed HTTP 404/410 responses fail; bot blocking, rate limits and temporary network failures are reported for review. See [CI and merge checks](docs/CI.md) for required checks and merge queue configuration.
 
 The seed has no confidence assessments, so the empty confidence filter and labels are hidden. Sixteen entries carry research or other evidence qualifications, which remain visible before their diagrams. Seed review dates reflect the supplied October 20, 2026 research snapshot; they do not represent independent verification by the site builder. Internal publication status and Typefully draft/scheduled links were removed during import. Published social post URLs were retained where provided.
 

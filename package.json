@@ -10,6 +10,8 @@
     "dev": "astro dev --host 0.0.0.0",
     "start": "astro dev --host 0.0.0.0",
     "validate": "node scripts/validate.mjs && node scripts/build-simulations.mjs --check",
+    "check:links": "node scripts/check-source-links.mjs",
+    "test:validation": "node --test tests/validation.test.mjs tests/source-links.test.mjs",
     "check": "astro check",
     "build": "npm run validate && npm run simulations:check && npm run labs:bundle && astro build",
     "preview": "astro preview --host 0.0.0.0",

@@ -120,11 +120,12 @@ test("lab download and exports match the seven checked definitions", async ({
 });
 test("lab instructions are available without JavaScript", async ({
   browser,
+  baseURL,
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(
-    "http://127.0.0.1:14323/attacks/invariant-mcp-tool-poisoning-2025-04/",
+    `${baseURL}/attacks/invariant-mcp-tool-poisoning-2025-04/`,
   );
   await page.locator('[data-simulation="mcp-tool-poisoning"] summary').click();
   await expect(

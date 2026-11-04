@@ -21,6 +21,11 @@ required:
   - related_magicsword_projects
   - borderline
 additionalProperties: false
+$defs:
+  http-url:
+    type: string
+    format: uri
+    pattern: ^https?://
 properties:
   id:
     type: string
@@ -64,8 +69,7 @@ properties:
       additionalProperties: false
       properties:
         url:
-          type: string
-          format: uri
+          $ref: '#/$defs/http-url'
         title:
           type: string
         publisher:
@@ -114,8 +118,7 @@ properties:
   magicsword_coverage:
     type: array
     items:
-      type: string
-      format: uri
+      $ref: '#/$defs/http-url'
   ai_role:
     type: string
     enum:
@@ -600,8 +603,7 @@ properties:
           minItems: 1
           uniqueItems: true
           items:
-            type: string
-            format: uri
+            $ref: '#/$defs/http-url'
   attack_flow:
     type: object
     additionalProperties: false
@@ -646,8 +648,7 @@ properties:
               minItems: 1
               uniqueItems: true
               items:
-                type: string
-                format: uri
+                $ref: '#/$defs/http-url'
       edges:
         type: array
         minItems: 1
