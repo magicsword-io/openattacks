@@ -1,0 +1,100 @@
+id: symantec-skynet-llmjacking-2026-10
+name: Skynet autonomous agent hunts exposed LLM/MCP endpoints for 100K steps
+date_reported: 2026-10-21
+researcher: Symantec Threat Hunter Team
+org: Broadcom (Symantec)
+sources:
+  - url: https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+    title: "Autonomous LLMjacking: 'Skynet' Agent Hijacks Exposed AI Models"
+  - url: https://www.security.com/threat-intelligence/ai-llmjacking-skynet
+    title: Symantec Skynet LLMjacking autonomous agent
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: ai_infra_as_c2
+ai_role_detail: "Autonomous offensive agent hunts internet for exposed LLM/MCP endpoints, hijacks them to scan, exploit web frameworks, steal credentials/databases, deploy miners for up to 100K steps unattended"
+technique_summary: "Autonomous offensive agent hunts exposed LLM endpoints (OpenAI-compatible APIs, self-hosted models, AI gateways, MCP servers) without authentication or with stolen keys. Wraps jailbreak around ~74 offensive tools, instructs model to ignore safety controls and treat credential theft as routine development. 'Skynet mode' authorizes 100,000 unattended steps without human approval. Scans for targets (VS Code servers, Django, Jupyter, Laravel, Supabase, Prisma Studio), exploits web frameworks, steals databases/credentials, quietly deploys XMRig miners (github.com/xmrig/xmrig) under /tmp/.x and go2rtc camera paths. Symantec AI honeypot captured full working prompt summer 2026; 127,000+ external requests from tens of thousands of addresses, dominated by endpoint reconnaissance, API key spraying, exposed config probing."
+initial_access: "Exposed LLM endpoints without authentication: OpenAI-compatible APIs, self-hosted model servers, AI gateways, MCP servers; stolen API keys"
+ai_tooling_and_models:
+  - Exposed LLM endpoints (OpenAI-compatible)
+  - Self-hosted model servers
+  - AI gateways
+  - Model Context Protocol (MCP) servers
+other_tooling:
+  - ~74 offensive tools (wrapped in jailbreak prompt)
+  - XMRig cryptocurrency miner
+  - go2rtc camera directory paths
+  - VS Code servers
+  - Django
+  - Jupyter
+  - Laravel
+  - Supabase
+  - Prisma Studio
+victims_and_sectors: "Organizations with exposed AI/LLM endpoints; Symantec honeypot recorded 127,000+ requests from tens of thousands of addresses"
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: "Symantec honeypot summer 2026 captured full working prompt; 127,000+ external requests from tens of thousands of addresses; authorized up to 100,000 unattended steps per session; deploys XMRig miners"
+prevention_angle: "Never expose LLM APIs/MCP endpoints without authentication; require auth on all paths including health checks; place behind gateway; rotate AI API keys; scope keys narrowly; monitor unusual inference volume/spend; restrict outbound network from AI tools; IMDSv2 with hop limit 1; least privilege for agents; human approval for sensitive actions; keep exploited software patched; block mining pools and known miner hashes"
+related_magicsword_projects: []
+source_notes: "Symantec AI honeypot captured full working prompt; operators sent tool's entire prompt expecting real model on other end; honeypot impersonates unprotected internet-facing AI service. Detection guidance: monitor exposed endpoints, API key anomalies, XMRig processes, mining pool connections, web framework exploitation from AI infrastructure."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - mine.c3pool.com
+    - auto.c3pool.org
+    - auto.skypool.xyz
+    - xmrpool.eu
+  ips:
+    - 86.216.147.228
+    - 13.140.161.91
+    - 207.180.232.206
+  hashes:
+    - fcde1323acceb46fd88f2276c010bb98839dccce03dc512c56d9529428ceec68
+    - b720a5e7c3a5b1760d15a8833a782f4fe7fc5c62b967fe57f607e72745ec0ccf
+  urls: []
+atlas_techniques:
+  - id: AML.T0034
+    rationale: "Exploitation of exposed LLM/MCP endpoints for infrastructure hijacking"
+    source_urls:
+      - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+  - id: AML.T0012
+    rationale: "LLMjacking - hijacking exposed AI models to power autonomous cybercrime operations"
+    source_urls:
+      - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+attack_flow:
+  nodes:
+    - id: hunt-endpoints
+      title: Hunt exposed LLM/MCP endpoints
+      description: "Scans internet for exposed LLM endpoints without authentication (OpenAI-compatible APIs, self-hosted models, AI gateways, MCP servers); Symantec honeypot recorded 127,000+ requests from tens of thousands of addresses"
+      kind: access
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+    - id: jailbreak
+      title: Jailbreak with offensive tools
+      description: "Wraps ~74 offensive tools in jailbreak prompt; tells model to ignore safety controls, treat credential theft as routine development; 'Skynet mode' authorizes 100,000 unattended steps without human approval"
+      kind: ai
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+    - id: exploit-frameworks
+      title: Exploit web frameworks
+      description: "Scans for and exploits VS Code servers, Django, Jupyter, Laravel, Supabase, Prisma Studio; steals databases and credentials"
+      kind: execution
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+    - id: deploy-miner
+      title: Deploy XMRig miners
+      description: "Quietly installs XMRig cryptocurrency miners under /tmp/.x and go2rtc camera paths; verifies miners running; victim pays for hijacked LLM compute while servers stripped of data"
+      kind: impact
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks
+  edges:
+    - source: hunt-endpoints
+      target: jailbreak
+    - source: jailbreak
+      target: exploit-frameworks
+    - source: exploit-frameworks
+      target: deploy-miner
+    - source: deploy-miner
+      target: hunt-endpoints
+      loop: true
