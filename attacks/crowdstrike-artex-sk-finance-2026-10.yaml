@@ -69,7 +69,8 @@ attack_flow:
       target: step-4
 region_notes: South Korea describes victim financial organizations. Chinese language concerns actor
   attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
-linked_actors: []
+linked_actors:
+  - vapor-panda
 linked_tools:
   - artex
 atlas_techniques:

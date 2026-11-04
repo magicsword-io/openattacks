@@ -1,13 +1,14 @@
 id: vapor-panda
 name: VAPOR PANDA
 aliases:
-  - Temp.Zagros
-country: Iran
+  - VexatiousTemper
+  - Earth Estries
+country: China
 motivation: nation-state
-description: Iranian state-sponsored threat actor also tracked as Temp.Zagros. Observed using Gemini and other AI tools for malware development assistance, targeting government and critical infrastructure sectors.
+description: China-nexus state-sponsored advanced persistent threat group conducting targeted espionage campaigns. In October 2026, used AI-driven ARTEX framework with DeepSeek LLM to conduct parallel intrusions against over 200 organizations worldwide, including foreign ministries, defense contractors, and telecommunications providers. Campaign demonstrated escalation in China-nexus use of AI agents from single intrusions to multiple simultaneous engagements. Deploys BLOODALCHEMY backdoor and incorporates endpoint sensor evasion into agentic workflows.
 sources:
-  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
-    title: How Threat Actors Are Using AI Tools
-    publisher: Google GTIG
+  - url: https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
+    title: VAPOR PANDA Uses AI-Driven ARTEX to Scale a Global Espionage Campaign
+    publisher: CrowdStrike
 linked_attacks:
-  - temp-zagros-gemini-malware-dev-2025
+  - crowdstrike-artex-sk-finance-2026-10
