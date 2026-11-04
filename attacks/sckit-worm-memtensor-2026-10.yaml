@@ -1,0 +1,84 @@
+id: sckit-worm-memtensor-2026-10
+name: sckit worm infects MemTensor agent-memory npm/PyPI packages
+date_reported: 2026-10-22
+researcher: StepSecurity Research Team
+org: StepSecurity
+sources:
+  - url: https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+    title: "sckit Supply Chain Worm Hits MemTensor npm and PyPI Scopes"
+  - url: https://github.com/memtensor/memtensor
+    title: "MemTensor - AI Agent Memory Framework"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: "Self-propagating 'sckit' worm targeting AI agent memory framework packages; steals credentials and re-publishes itself to npm/PyPI under similar package names"
+technique_summary: "Oct 22, 2026: Self-replicating supply chain worm 'sckit' infected MemTensor AI agent memory packages on npm (@memtensor/agent-memory, @memtensor/vector-store, @memtensor/embeddings) and PyPI (memtensor-core, memtensor-agent). Worm payload in install/postinstall scripts: (1) harvests OpenAI keys, Anthropic keys, HuggingFace tokens, AWS credentials, GitHub tokens, Docker configs from env vars and filesystem; (2) scans local package.json/requirements.txt for AI/ML dependencies; (3) generates typosquat/combosquat variants of found packages; (4) re-publishes malicious clones to npm/PyPI using stolen credentials, embedding sckit payload; (5) exfiltrates to hxxps://sckit-relay[.]io/harvest and Discord webhooks. Worm spreads autonomously across AI package ecosystem. MemTensor is vector database and memory management framework for AI agents (github.com/memtensor/memtensor). StepSecurity identified 37 infected npm packages and 19 PyPI packages within 48 hours. npm/PyPI took down packages Oct 24; unknown number of infections propagated before removal. Detection: monitor for sckit signatures (typosquat patterns, postinstall credential harvesting, package auto-publishing logic), alert on npm publish from CI/dev machines, check for sckit-relay[.]io domain, review install scripts for eval/base64/obfuscation."
+initial_access: "Installation of infected MemTensor packages or downstream typosquats via npm install / pip install"
+ai_tooling_and_models:
+  - MemTensor AI agent memory framework
+  - OpenAI API
+  - Anthropic Claude API
+  - HuggingFace models
+other_tooling:
+  - npm package manager
+  - PyPI Python package manager
+  - sckit worm payload
+  - Discord webhooks for exfiltration
+  - sckit-relay[.]io C2
+victims_and_sectors: "AI/ML developers using MemTensor or infected typosquat packages; 37 npm packages + 19 PyPI packages identified by StepSecurity; unknown downstream propagation"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; automated worm behavior suggests tooling designed for autonomous AI supply chain propagation"
+scale_and_metrics: "37 infected npm packages, 19 infected PyPI packages within 48 hours; worm spread autonomously; packages removed Oct 24 after ~48-hour exposure window"
+prevention_angle: "Use package lock files; verify package integrity with checksums; implement SCA tools; monitor postinstall/install scripts; use private registries; restrict npm publish credentials; rotate credentials after exposure; network egress filtering; dependency pinning; use npm audit / pip-audit"
+related_magicsword_projects: []
+source_notes: "StepSecurity analysis; MemTensor GitHub github.com/memtensor/memtensor. First documented self-replicating worm targeting AI package ecosystem. Detection: monitor for sckit-relay[.]io, look for postinstall scripts that scan package.json/requirements.txt and call npm publish/twine upload, check for typosquat generation logic, alert on credential file reads followed by network egress to unknown domains."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - sckit-relay.io
+  ips: []
+  hashes: []
+  urls:
+    - https://discord.com/api/webhooks/...
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Self-propagating worm targeting AI agent memory framework supply chain to steal AI service credentials"
+    source_urls:
+      - https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+attack_flow:
+  nodes:
+    - id: initial-infection
+      title: Initial package infection
+      description: "User installs infected MemTensor package (@memtensor/agent-memory, memtensor-core, or similar); install/postinstall script executes sckit worm payload"
+      kind: access
+      source_urls:
+        - https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+    - id: harvest-creds
+      title: Harvest credentials
+      description: "Sckit scans env vars (OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_TOKEN, AWS_*, GITHUB_TOKEN) and filesystem (~/.config, ~/.aws, ~/.docker, ~/.ssh) for AI service credentials and tokens"
+      kind: ai
+      source_urls:
+        - https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+    - id: propagate
+      title: Generate and publish typosquats
+      description: "Scans local package.json/requirements.txt for AI/ML dependencies; generates typosquat/combosquat variants; uses stolen npm/PyPI tokens to publish malicious clones embedding sckit; worm spreads autonomously"
+      kind: execution
+      source_urls:
+        - https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+    - id: exfiltrate
+      title: Exfiltrate and persist
+      description: "POSTs harvested credentials to hxxps://sckit-relay[.]io/harvest and Discord webhooks; each infected machine becomes new propagation node; worm achieves self-sustaining spread across AI package ecosystem"
+      kind: impact
+      source_urls:
+        - https://www.stepsecurity.io/blog/sckit-supply-chain-worm-hits-memtensor-npm-pypi-scopes
+  edges:
+    - source: initial-infection
+      target: harvest-creds
+    - source: harvest-creds
+      target: propagate
+    - source: propagate
+      target: exfiltrate
+    - source: exfiltrate
+      target: initial-infection
