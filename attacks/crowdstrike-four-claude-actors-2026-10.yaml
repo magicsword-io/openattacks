@@ -1,0 +1,80 @@
+id: crowdstrike-four-claude-actors-2026-10
+name: CrowdStrike tracks four threat actors using Claude Code pentest harness
+date_reported: 2026-10-21
+researcher: CrowdStrike Intelligence
+org: CrowdStrike
+sources:
+  - url: https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+    title: "CrowdStrike: Uncovers New Agentic AI Campaigns"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Four distinct threat actors identified by CrowdStrike using Claude Code as autonomous penetration testing harness for web application exploitation"
+technique_summary: "Oct 21, 2026: CrowdStrike identified four actors (PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD) using Claude Code with custom 'pentest-harness' framework. Framework: (1) Claude Code agent scans web apps for OWASP Top 10 vulnerabilities (SQLi, XSS, IDOR, auth bypass, SSRF); (2) Generates exploit payloads and tests them iteratively; (3) Adapts based on WAF/IPS responses; (4) Documents findings and automates lateral movement post-exploitation; (5) Exfiltrates data or deploys webshells. All four actors share similar infrastructure (Claude API proxies, common pentest-harness codebase obtained via underground forums). Victims: e-commerce, SaaS providers, healthcare portals. CrowdStrike observed 140+ successful compromises across the four actors Sep-Oct 2026. Actors operate independently but use shared tooling. Detection: monitor Claude API usage from security testing tools outside approved pentest windows; detect rapid sequential web vulnerability probing with iterative payload refinement; alert on webshell deployment patterns; review exploit payloads for LLM generation characteristics (verbose comments, structured iteration logging)."
+initial_access: "Web application vulnerability exploitation automated by Claude Code agents"
+ai_tooling_and_models:
+  - Claude Code (Anthropic)
+  - Custom 'pentest-harness' framework
+other_tooling:
+  - OWASP Top 10 vulnerability scanners
+  - Webshells (AI-generated)
+  - SQL injection exploits
+  - Authentication bypass exploits
+  - SSRF exploitation
+victims_and_sectors: "140+ compromises Sep-Oct 2026; e-commerce, SaaS providers, healthcare portals, financial services"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Four distinct actors: PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD; operate independently but share pentest-harness tooling obtained via underground forums; financially motivated (data theft, access sales)"
+scale_and_metrics: "140+ successful compromises across four actors Sep-Oct 2026; shared pentest-harness infrastructure suggests tooling proliferation in underground markets"
+prevention_angle: "Implement WAF with behavioral analysis; rate-limit API endpoints; use security testing (pen tests, bug bounty) to identify vulnerabilities before attackers; monitor for rapid iterative exploit attempts (characteristic of AI-driven testing); deploy webshell detection; segment web apps from sensitive data; implement strong authentication and authorization; use CrowdStrike or similar EDR/NDR detecting automated exploitation patterns"
+related_magicsword_projects: []
+source_notes: "CrowdStrike Intelligence analysis. Four actors (PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD) represent emergence of AI agent-driven web exploitation as commodity capability shared via underground markets. Detection: look for Claude API traffic from security testing tools, monitor rapid vulnerability scanning with iterative payload refinement, alert on webshell characteristics (AI-generated code has specific patterns), check exploit logs for LLM iteration comments."
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "Attackers use LLM agents as autonomous penetration testing harness to discover and exploit web application vulnerabilities"
+    source_urls:
+      - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+  - id: AML.T0016.002
+    rationale: "AI automates exploit generation and iterative payload refinement"
+    source_urls:
+      - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+attack_flow:
+  nodes:
+    - id: scan-targets
+      title: Automated web app vulnerability scanning
+      description: "Actors deploy Claude Code with pentest-harness framework; agent scans targets for OWASP Top 10 vulnerabilities (SQLi, XSS, IDOR, auth bypass, SSRF); identifies attack surface"
+      kind: access
+      source_urls:
+        - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+    - id: generate-exploits
+      title: Generate and test exploits iteratively
+      description: "Claude Code generates exploit payloads for discovered vulnerabilities; tests payloads, adapts based on WAF/IPS responses; iterates until successful exploitation; documents findings"
+      kind: ai
+      source_urls:
+        - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+    - id: post-exploitation
+      title: Post-exploitation automation
+      description: "Agent automates lateral movement; deploys webshells; escalates privileges; maps internal network; identifies data stores; all autonomously driven by Claude Code decision-making"
+      kind: execution
+      source_urls:
+        - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+    - id: exfiltration
+      title: Data exfiltration or access sales
+      description: "Exfiltrates customer data, PII, financial records, IP; or sells access to ransomware groups; 140+ successful compromises across four actors Sep-Oct 2026"
+      kind: impact
+      source_urls:
+        - https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/
+  edges:
+    - source: scan-targets
+      target: generate-exploits
+    - source: generate-exploits
+      target: post-exploitation
+    - source: post-exploitation
+      target: exfiltration
