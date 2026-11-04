@@ -1,0 +1,1 @@
+{"version":1,"conditions":{"clean":{"schema":"Provide a concise answer from the synthetic release note.","result":"Synthetic release note: answer the stated question only."}}}

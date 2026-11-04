@@ -170,3 +170,20 @@ Green MagicSword links mark conditional **Windows execution-policy opportunities
 Target geography uses normalized names. The map excludes actor attribution, hosting and telemetry locations from victim counts; entry-level `region_notes` preserve those distinctions. Unknown and multi-country-unspecified records remain separate from mapped locations. Map geometry comes from public-domain Natural Earth data through world-atlas.
 
 MITRE ATLAS annotations reference the official atlas-data v5.6.0 IDs and names, with rationale and original source URLs. The imported metadata includes MITRE’s license; annotations are this catalog’s interpretation, not MITRE endorsement. The official MagicSword logos are bundled locally for both themes.
+
+## Run a simulation
+
+Selected attack pages include synthetic exercises linked to their applicable stages. The Node lab is included in this repository and as a small downloadable archive; it does not require the website's dependencies or `npm ci`.
+
+```sh
+npm run simulate -- list
+npm run simulate -- prepare mcp-tool-poisoning --clean
+npm run simulate -- prepare mcp-tool-poisoning
+# After ending the target session, replace this with its exact recordPath:
+npm run simulate -- verify "/exact/run/record.json"
+npm run simulate -- cleanup "/exact/run/record.json"
+```
+
+`node simulations/lab.mjs` is the equivalent direct entry point. Agent exercises require your separately isolated target session and provider trace; preparation does not start a model. The configuration comparison uses mock data without native activation. See [the lab guide](docs/SIMULATIONS.md), [recorded platform verification](docs/SIMULATION_VERIFICATION.md) and the scoped [lab license](simulations/LICENSE).
+
+Source definitions live in `simulations/definitions/*.yaml`; reviewed inert assets live in `simulations/fixtures/`. `npm run simulations:build` generates the shared runtime/site catalog, and `npm run simulations:check` rejects source/asset drift. Builds generate the same public download and `api/simulations.json`. macOS and Linux ARM64 runner mechanics were tested in dedicated Tart guests; Windows status is a separately observed CI result, not an inferred guarantee.

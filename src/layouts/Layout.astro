@@ -191,12 +191,21 @@ const imageAlt =
     <script>
       const themeButton =
         document.querySelector<HTMLButtonElement>(".theme-toggle");
-      const syncThemeLabel = () =>
+      const syncTheme = () => {
         themeButton?.setAttribute(
           "aria-label",
           `Switch to ${document.documentElement.dataset.theme === "dark" ? "light" : "dark"} mode`,
         );
-      syncThemeLabel();
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute(
+            "content",
+            getComputedStyle(document.documentElement)
+              .getPropertyValue("--bg")
+              .trim(),
+          );
+      };
+      syncTheme();
       themeButton?.addEventListener("click", () => {
         const theme =
           document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -204,7 +213,7 @@ const imageAlt =
         try {
           localStorage.setItem("openattacks-theme", theme);
         } catch {}
-        syncThemeLabel();
+        syncTheme();
       });
     </script>
     <script src="../lib/outbound-links.ts"></script>

@@ -1,0 +1,67 @@
+id: mcp-config-change
+recipe: config-change
+mode: replay
+title: Mock MCP configuration change
+question: Does approval remain valid after a mock configuration changes?
+summary: Compare fixed mock configurations under name-only and content-bound approval rules.
+attack_mappings:
+  - attack_id: cursor-mcpoison-cve-2025-54136
+    stage_ids:
+      - step-1
+      - step-2
+      - step-3
+    relationship: analogue
+    rationale: Shared configuration-change trust boundary only. A deterministic mock comparison
+      activates no MCP command and does not test Cursor or Kiro.
+requirements:
+  - Node.js 22.22 or newer.
+  - Use only synthetic data in the prepared disposable lab.
+task: Inspect the mock comparison and explain why changing a configuration should invalidate its
+  prior approval.
+observations:
+  - label: Local comparison
+    text: Compare the fixed baseline, changed configuration and managed-control disposition. This is
+      mock data; no native MCP server or provider is activated.
+  - label: Endpoint sensor
+    text: Observe the helper reading its owned configuration fixture and producing the local comparison
+      record. The command strings are data and are never executed.
+  - label: Network
+    text: No exercise sockets, external destinations or model requests are used by this fixed comparison.
+limitations: "Mock data only: no provider, native configuration, reload, command execution, or
+  vulnerability reproduction."
+research_credit: Agent Atomics maintainers
+research_url: https://github.com/magicsword-io/solid-fortnight/blob/main/docs/PRODUCT_CONTRACT.md
+sources:
+  - url: https://github.com/magicsword-io/solid-fortnight/blob/main/docs/PRODUCT_CONTRACT.md
+    title: Agent Atomics product contract
+  - url: https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/
+    title: Remote Code Execution Kiro
+  - url: https://research.checkpoint.com/2025/cursor-vulnerability-mcpoison/
+    title: Cursor MCPoison persistent MCP trust bypass (CVE-2025-54136)
+  - url: https://www.tenable.com/blog/faq-cve-2025-54135-cve-2025-54136-vulnerabilities-in-cursor-curxecute-mcpoison
+    title: Cursor MCPoison persistent MCP trust bypass (CVE-2025-54136)
+fixtures:
+  - id: clean
+    path: mcp-config-change/clean.txt
+    sha256: aa63c390ebebdf259b78d2c7c3aa1470c3803896e92e4fa3273e5dbfd5eb0ab2
+  - id: poisoned
+    path: mcp-config-change/poisoned.txt
+    sha256: 4006edc994f3fa2d3e0a39cc16f0818aec46690ac8905abf12143678608ab03c
+platforms:
+  macos:
+    status: passed
+    evidence: macOS 15.7.3 ARM64, Node 22.22.0, Tart native runner suite; 34 tests passed.
+  linux:
+    status: passed
+    evidence: Ubuntu 24.04.4 ARM64, Node 22.22.0, Tart native runner suite; 34 tests passed.
+  windows:
+    status: pending
+provenance:
+  repository: https://github.com/magicsword-io/solid-fortnight
+  revision: unreleased working-tree snapshot
+  entry: catalog/entries/AAB-0028.yaml
+  license: Apache-2.0
+  notice: NOTICE.txt
+  modifications: New fixed mock JSON based on the upstream bounded replay design.
+  source_sha256: ec15e215d20980103dfa576e1b308d2d252b20024502c98603eec1c7d9b66025
+  original_fixtures: []

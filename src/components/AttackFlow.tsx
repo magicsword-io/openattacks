@@ -44,6 +44,7 @@ const profileIcons: Record<string, FlowIconName> = {
   "model-network": "ai",
   "mcp-config": "network",
 };
+type SimulationLink = { stageIds: string[]; href: string };
 type StepNode = Node<
   AttackFlowNode &
     Record<string, unknown> & {
@@ -53,6 +54,7 @@ type StepNode = Node<
       loopOut: boolean;
       active: boolean;
       guidance: StageGuidance;
+      simulation?: SimulationLink;
       inspect: (id: string) => void;
     },
   "step"
@@ -99,6 +101,14 @@ function Step({ data }: NodeProps<StepNode>) {
           aria-label={`MagicSword policy opportunity for stage ${data.number}. ${data.guidance.control.scope}`}
         >
           <FlowIcon name="shield" size={12} /> MagicSword
+        </a>
+      )}
+      {data.simulation && (
+        <a
+          className="network-simulation-link nodrag nopan"
+          href={data.simulation.href}
+        >
+          <FlowIcon name="terminal" size={12} /> Test this stage
         </a>
       )}
       <Handle
@@ -167,12 +177,14 @@ export default function AttackFlow({
   guidance,
   dataURL,
   sources,
+  simulation,
 }: {
   flow: FlowData;
   name: string;
   guidance: Record<string, StageGuidance>;
   dataURL: string;
   sources: string[];
+  simulation?: SimulationLink;
 }) {
   const [activeId, setActiveId] = useState(flow.nodes[0].id);
   const [inspectorOpen, setInspectorOpen] = useState(false);
@@ -224,6 +236,9 @@ export default function AttackFlow({
       mobile,
       active: node.id === activeId,
       guidance: guidance[node.id],
+      simulation: simulation?.stageIds.includes(node.id)
+        ? simulation
+        : undefined,
       inspect,
       loopIn: flow.edges.some((e) => e.loop && e.target === node.id),
       loopOut: flow.edges.some((e) => e.loop && e.source === node.id),
@@ -248,14 +263,14 @@ export default function AttackFlow({
           type: MarkerType.ArrowClosed,
           color:
             edge.source === activeId || edge.target === activeId
-              ? "#b5a08c"
-              : "#818895",
+              ? "var(--accent)"
+              : "var(--subtle)",
         },
         style: {
           stroke:
             edge.source === activeId || edge.target === activeId
-              ? "#b5a08c"
-              : "#818895",
+              ? "var(--accent)"
+              : "var(--subtle)",
           strokeWidth: 1.5,
           ...(edge.loop ? { strokeDasharray: "5 5" } : {}),
         },
@@ -334,6 +349,11 @@ export default function AttackFlow({
                   >
                     <FlowIcon name="shield" size={13} /> MagicSword policy
                     opportunity
+                  </a>
+                )}
+                {simulation?.stageIds.includes(node.id) && (
+                  <a className="mobile-simulation-link" href={simulation.href}>
+                    <FlowIcon name="terminal" size={13} /> Test this stage
                   </a>
                 )}
                 <div className="mobile-stage-connections">

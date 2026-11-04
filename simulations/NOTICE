@@ -1,0 +1,7 @@
+OpenAttacks portable simulation helpers
+
+Derived from Agent Atomics by MagicSword, https://github.com/magicsword-io/agent-atomics
+Source: simulations/mcp-lab.mjs and integrations/hooks/core.mjs.
+Licensed under Apache License 2.0 (see LICENSE).
+Modified 2026-11-03: standalone catalog, portable recipes, bounded workspace and mock comparisons, regression checks.
+This notice applies to the derived helper code, not unrelated OpenAttacks content.

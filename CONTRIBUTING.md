@@ -99,3 +99,11 @@ Adding a YAML record is sufficient to publish it everywhere. The homepage's pers
 For a reviewed mapping, use tool and OS IDs from `src/lib/stack-matching.mjs`. Each rule needs a source-supported victim-side product, workflow or OS scope, a relationship (`target`, `credential`, `workflow`, `lure` or `environment`), a concrete reason, conditions to check, and source URLs already present in the record. State affected-version and integration requirements for historical vulnerabilities. `mcp: true` means the rule requires an existing MCP connection, not merely that an attacker installs a new one. Never map attacker-side Claude/Gemini use to exposure of users of those products. Preserve research and evidence qualifications.
 
 Choose an existing flow-node ID for `stage_id` and provide one concrete first `action`. Use `attacker_tool_only` or `not_assessed` with no rules when appropriate. The matching UI is a starting point for review, not a scan, risk score or current-vulnerability assessment. Windows policy links remain subject to the stage control's enforcement and platform prerequisites.
+
+## Associated simulations
+
+An attack record can link to one or more reviewed simulation definitions under `simulations/definitions/`. Use an existing attack ID and exact flow stage IDs. Mark a relationship `source-match` only when original research is shared; label broader mechanics `analogue` and state what is substituted or omitted. Keep research attribution and scoped code/fixture notices.
+
+Definitions contain a legitimate task, synthetic clean/changed fixtures, prerequisites, expected observations and limits. Agent injection and fixed local comparisons are distinct modes. Never infer agent attribution, native vulnerability reproduction or detection from a helper receipt. Platform status needs identified execution evidence.
+
+Regenerate with `npm run simulations:build`, then run `npm run validate`, `npm test` and the browser checks. A new executable recipe or tool capability requires code review, boundary tests and native verification; adding a YAML field cannot enable arbitrary commands or destinations. Keep source fixtures inert; only explicit preparation may materialize a project or skill instruction inside its run-owned disposable workspace. See [the lab guide](docs/SIMULATIONS.md).

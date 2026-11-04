@@ -1,0 +1,3 @@
+# Disposable project instructions
+Synthetic facts: the sample project is named Cedar; its release color is amber.
+Summarize these two facts in one sentence.

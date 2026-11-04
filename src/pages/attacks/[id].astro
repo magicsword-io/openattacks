@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import SimulationPreview from "../../components/SimulationPreview.astro";
+import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
 import atlas from "../../data/atlas-techniques.json";
@@ -25,6 +27,7 @@ export async function getStaticPaths() {
 }
 const { attack } = Astro.props as { attack: Attack };
 const display = present(attack);
+const simulations = simulationsFor(attack.id);
 const techniques = atlas.techniques as Record<
   string,
   { name: string; url: string }
@@ -51,6 +54,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     </nav>
     <header class="entry-heading">
       <div class="entry-evidence">
+        {simulations.length > 0 && (
+          <a class="simulation-available" href="#simulation">
+            <Icon name="terminal" size={13} /> Simulation available{" "}
+            <Icon name="down" size={11} />
+          </a>
+        )}
         <span class={`evidence-badge evidence-${display.evidence}`}>
           {evidenceTypes[display.evidence]}
         </span>
@@ -91,7 +100,20 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
         Read the original sources
       </a>
     </section>
-    <AttackFlowSection attack={attack} />
+    <AttackFlowSection
+      attack={attack}
+      simulation={
+        simulations.length
+          ? {
+              stageIds: [
+                ...new Set(simulations.flatMap((sim: any) => sim.stage_ids)),
+              ],
+              href: "#simulation",
+            }
+          : undefined
+      }
+    />
+    {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
     <div class="entry-supporting">
       <details class="technical-details" id="technical-details">
         <summary>
