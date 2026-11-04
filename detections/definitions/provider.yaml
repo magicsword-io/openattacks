@@ -1,0 +1,78 @@
+id: provider
+title: Provider-side abuse investigation
+visibility: Provider / operator records
+hypothesis:
+  A model-provider investigation correlates related accounts, repeated offensive requests
+  and shared infrastructure or exposed operator sessions.
+telemetry:
+  - Provider-owned account / request audit
+  - Abuse-review findings and linked-account context
+  - Lawfully available exposed operator-session evidence
+investigate:
+  - Correlate accounts, request rates, infrastructure and source-described behavior in
+    provider-owned records.
+  - For victim-side defense, pivot to the reported execution or access stage rather than trying to
+    detect attacker-side prompts.
+limitation:
+  Attacker-side planning is generally absent from victim SIEM logs. These templates
+  require provider-owned audit data and do not identify AI use from a victim process alone.
+search:
+  - '"AI" AND "abuse"'
+  - '"agentic"'
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Provider-side abuse investigation
+    id: c8c1edc0-c79a-4644-a876-2c1a6cb9a438
+    status: experimental
+    description: A model-provider investigation correlates related accounts,
+      repeated offensive requests and shared infrastructure or exposed operator
+      sessions.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - model.request
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("model.request")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("model.request")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

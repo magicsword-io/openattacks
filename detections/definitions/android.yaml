@@ -1,0 +1,77 @@
+id: android
+title: Unapproved Android package / sensitive access
+hypothesis:
+  A sideloaded AI-branded APK obtains sensitive capabilities and performs unexpected SMS,
+  credential or remote-access actions.
+telemetry:
+  - Android enterprise / mobile threat-defense package inventory
+  - Install source, signer and permission changes
+  - SMS, accessibility and network telemetry where available
+investigate:
+  - Compare package ID and signing certificate with the approved source.
+  - Correlate new permissions and outbound or SMS behavior; apply mobile platform controls rather
+    than Windows policies.
+limitation:
+  Standard Windows EDR tables do not provide Android app events. Device-management and
+  mobile telemetry are required.
+search:
+  - '"android" AND "malware"'
+  - '"SMS" AND "fraud"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Unapproved Android package / sensitive access
+    id: 4bedc57c-a921-4078-ae94-213465e0b46b
+    status: experimental
+    description: A sideloaded AI-branded APK obtains sensitive capabilities and
+      performs unexpected SMS, credential or remote-access actions.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - android.package.install
+          - android.permission.change
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("android.package.install", "android.permission.change")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("android.package.install", "android.permission.change")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

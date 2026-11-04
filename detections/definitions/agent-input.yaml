@@ -1,0 +1,79 @@
+id: agent-input
+title: Untrusted content enters an agent session
+hypothesis:
+  An agent ingests external content or an untrusted session identifier before a tool
+  action or configuration change outside the approved task.
+visibility: Application / agent audit records
+telemetry:
+  - Input provenance, source type and request/session identifier
+  - Captured tool responses or retrieved content where collection is approved
+  - Subsequent tool calls, configuration changes and approval decisions
+investigate:
+  - Join the ingested input to later actions by session or request ID; preserve the original content
+    as evidence.
+  - Compare the resulting action with the approved task and baseline. Receiving suspicious text
+    alone is not successful injection.
+limitation:
+  Requires application instrumentation and a custom field mapping. Input exposure does not
+  prove that the model followed instructions, executed a tool or bypassed approval. Avoid collecting
+  sensitive prompt bodies unless authorized.
+search:
+  - '"prompt injection"'
+  - '"MCP" AND "tool"'
+  - '"agent" AND "session"'
+reviewed: 2026-11-04
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidate for input exposure only. Map agent.input.ingest and
+  agent.session.resume to your application request and session logs. CorrelationId must link
+  subsequent actions. EventType values are proposed normalization names, not native vendor events.
+queries:
+  sigma: |
+    title: Hunt - Untrusted content enters an agent session
+    id: 2d89d7ae-9d44-4dc6-a95b-f9c8de7b8352
+    status: experimental
+    description: An agent ingests external content or an untrusted session
+      identifier before a tool action or configuration change outside the approved
+      task.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-04
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - agent.input.ingest
+          - agent.session.resume
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("agent.input.ingest", "agent.session.resume")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("agent.input.ingest", "agent.session.resume")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

@@ -1,0 +1,79 @@
+id: exfil
+title: Sensitive data → unusual destination
+hypothesis:
+  Sensitive reads are followed by outbound transfer, a public artifact, or a tool call to
+  a destination outside the approved workflow.
+telemetry:
+  - Sensitive resource access / DLP records
+  - Proxy, egress and cloud upload events
+  - Agent / SaaS audit with correlation IDs
+investigate:
+  - Join the resource read and outbound action by session, identity or process, preserving a bounded
+    time window.
+  - Inspect destination ownership, payload classification and the user's intended action; baseline
+    sanctioned sharing.
+limitation:
+  An outbound connection or high byte count alone is not exfiltration. Encrypted traffic
+  may hide content, and bulk legitimate exports are common.
+search:
+  - '"exfiltration"'
+  - '"webhook"'
+  - '"sensitive" AND "upload"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Sensitive data → unusual destination
+    id: 04b60968-3179-4b1f-ae13-6f57c2446077
+    status: experimental
+    description: Sensitive reads are followed by outbound transfer, a public
+      artifact, or a tool call to a destination outside the approved workflow.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - data.export
+          - agent.external.send
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("data.export", "agent.external.send")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("data.export", "agent.external.send")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

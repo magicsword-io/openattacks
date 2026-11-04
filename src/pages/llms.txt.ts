@@ -22,6 +22,7 @@ export const GET: APIRoute = async ({ site, url }) => {
       `- [CSV catalog](${absolute("api/attacks.csv")}): spreadsheet-friendly export.`,
       `- [ATLAS technique index](${absolute("api/atlas.json")}): official technique names and links used by catalog annotations.`,
       `- [Stage defenses and hunt starters](${absolute("api/defenses.json")}): editorial hypotheses, telemetry, draft Sigma/KQL/SPL queries, conditional Windows policy opportunities, and copyable Detection MCP briefs. Single-entry packs: api/defenses/{id}.json.`,
+      "- Every attack page exposes detection content at #detections and individual phases at #detection-{node_id}, including explicit gaps. Defense packs include query origin, native/custom-schema/gap classification and raw query download URLs. Canonical definitions live under detections/ in the repository.",
       `- [Methodology](${absolute("about/")}): sourcing, confidence, geography and evidence qualifications.`,
       "",
       "## Querying",

@@ -216,6 +216,15 @@ export default function StageInspector({
               <span>{guidance.visibility}</span>
             </div>
             <p>{guidance.hypothesis}</p>
+            <a
+              className="inspector-detection-link"
+              href={`#detection-${node.id}`}
+            >
+              <FlowIcon name="search" size={14} />{" "}
+              {guidance.queries
+                ? "Open detection queries & downloads"
+                : "Review the detection gap"}
+            </a>
             {guidance.telemetry.length > 0 && (
               <div className="hunt-log-requirements">
                 <strong>Required logs</strong>

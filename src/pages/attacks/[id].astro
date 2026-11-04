@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import SimulationPreview from "../../components/SimulationPreview.astro";
+import DetectionSection from "../../components/DetectionSection.astro";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
@@ -54,6 +55,10 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     </nav>
     <header class="entry-heading">
       <div class="entry-evidence">
+        <a class="detection-available" href="#detections">
+          <Icon name="search" size={13} /> Detection queries{" "}
+          <Icon name="down" size={11} />
+        </a>
         {simulations.length > 0 && (
           <a class="simulation-available" href="#simulation">
             <Icon name="terminal" size={13} /> Simulation available{" "}
@@ -111,6 +116,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               href: "#simulation",
             }
           : undefined
+      }
+    />
+    <DetectionSection
+      attack={attack}
+      simulationStages={
+        [...new Set(simulations.flatMap((sim: any) => sim.stage_ids))] as string[]
       }
     />
     {simulations.length > 0 && <SimulationPreview simulations={simulations} />}

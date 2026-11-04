@@ -1,0 +1,17 @@
+id: unobserved
+title: No source-backed runtime hunt yet
+visibility: Not established
+hypothesis: The supplied account does not establish a deployed victim-side behavior for this stage.
+telemetry: []
+investigate:
+  - Obtain a source-backed procedure and identify which party could observe it before drafting a
+    detection.
+limitation:
+  Marketing claims, unknown steps and unconfirmed deployments are not detection coverage.
+  No rule is generated for this stage.
+search: []
+reviewed: null
+origin: catalog_authored
+query_kind: gap
+query_scope: 'No runtime query: the available evidence does not establish one.'
+queries: null

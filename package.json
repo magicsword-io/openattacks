@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "start": "astro dev --host 0.0.0.0",
-    "validate": "node scripts/validate.mjs && node scripts/build-simulations.mjs --check",
+    "validate": "node scripts/validate.mjs && node scripts/build-simulations.mjs --check && node scripts/build-detections.mjs --check",
     "check": "astro check",
     "build": "npm run validate && npm run simulations:check && npm run labs:bundle && astro build",
     "preview": "astro preview --host 0.0.0.0",
@@ -18,6 +18,8 @@
     "simulate": "node simulations/lab.mjs",
     "simulations:build": "node scripts/build-simulations.mjs",
     "simulations:check": "node scripts/build-simulations.mjs --check",
+    "detections:build": "node scripts/build-detections.mjs",
+    "detections:check": "node scripts/build-detections.mjs --check",
     "labs:bundle": "node scripts/build-lab-bundle.mjs"
   },
   "dependencies": {

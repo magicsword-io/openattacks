@@ -1,0 +1,77 @@
+id: impact
+title: Collection / encryption behavior
+hypothesis:
+  A process rapidly enumerates or modifies sensitive files and is followed by encryption,
+  export or a ransom-related artifact.
+telemetry:
+  - File-operation rates and process attribution
+  - Ransomware / DLP behavior alerts
+  - Canary files and recovery / backup audit
+investigate:
+  - Correlate file bursts, extension changes and outbound transfer to the same process and identity.
+  - Validate against bulk backup / archiving activity and preserve the research-only qualification
+    of a PoC.
+limitation:
+  A file-write burst is not proof of ransomware; in-process interpreters may not spawn a
+  separate executable.
+search:
+  - '"ransomware" AND "file"'
+  - '"mass" AND "file modification"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Collection / encryption behavior
+    id: 0b1098da-0957-4f77-a2a4-e89a5a2e1a36
+    status: experimental
+    description: A process rapidly enumerates or modifies sensitive files and is
+      followed by encryption, export or a ransom-related artifact.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - file.bulk.modify
+          - data.export
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("file.bulk.modify", "data.export")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("file.bulk.modify", "data.export")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

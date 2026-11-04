@@ -103,6 +103,13 @@ function Step({ data }: NodeProps<StepNode>) {
           <FlowIcon name="shield" size={12} /> MagicSword
         </a>
       )}
+      <a
+        className="network-detection-link nodrag nopan"
+        href={`#detection-${data.id}`}
+      >
+        <FlowIcon name="search" size={12} />{" "}
+        {data.guidance.queries ? "Detect this stage" : "Detection gap"}
+      </a>
       {data.simulation && (
         <a
           className="network-simulation-link nodrag nopan"
@@ -167,7 +174,7 @@ function positions(flow: FlowData, mobile: boolean) {
     ).length;
     return mobile
       ? { x: lane * 245, y: depth * 275 }
-      : { x: depth * 255, y: lane * 280 + (maxLane - count) * 140 };
+      : { x: depth * 255, y: lane * 320 + (maxLane - count) * 160 };
   });
 }
 
@@ -244,7 +251,7 @@ export default function AttackFlow({
       loopOut: flow.edges.some((e) => e.loop && e.source === node.id),
     },
     width: 182,
-    height: 220,
+    height: 255,
     draggable: false,
     selectable: false,
     focusable: false,
@@ -351,6 +358,15 @@ export default function AttackFlow({
                     opportunity
                   </a>
                 )}
+                <a
+                  className="mobile-detection-link"
+                  href={`#detection-${node.id}`}
+                >
+                  <FlowIcon name="search" size={13} />{" "}
+                  {guidance[node.id]?.queries
+                    ? "Detect this stage"
+                    : "Detection gap"}
+                </a>
                 {simulation?.stageIds.includes(node.id) && (
                   <a className="mobile-simulation-link" href={simulation.href}>
                     <FlowIcon name="terminal" size={13} /> Test this stage

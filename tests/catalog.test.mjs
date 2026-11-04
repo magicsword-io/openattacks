@@ -279,7 +279,7 @@ test("geography excludes actor and infrastructure labels; ATLAS mappings use off
 test("stage defense annotations resolve to real attacks and nodes; exports preserve evidence and scope", () => {
   const annotations = JSON.parse(
     readFileSync(
-      new URL("../src/data/stage-guidance.json", import.meta.url),
+      new URL("../detections/stages.json", import.meta.url),
       "utf8",
     ),
   );

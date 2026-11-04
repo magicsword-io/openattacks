@@ -1,0 +1,78 @@
+id: model-network
+title: Unexpected process → model service
+hypothesis:
+  An unexpected script, implant or local model client communicates with a model service
+  near command execution, collection or file modification.
+telemetry:
+  - Per-process network / DNS records
+  - AI-service request logs where available
+  - Process and file behavior on the calling host
+investigate:
+  - Join the network connection to the process tree and the actions before and after the response.
+  - Compare with approved AI integrations; inspect local model listeners for PoCs that do not use a
+    hosted API.
+limitation:
+  Connecting to a legitimate model domain does not establish malicious use or reveal
+  returned code. Local / in-process models can evade network-only hunts.
+search:
+  - '"Gemini" AND "malware"'
+  - '"Hugging Face"'
+  - '"LLM" AND "command"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Unexpected process → model service
+    id: 8560daf7-ecd1-4f2b-ad09-b794bb56a394
+    status: experimental
+    description: An unexpected script, implant or local model client communicates
+      with a model service near command execution, collection or file modification.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - model.connection
+          - model.invoke
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("model.connection", "model.invoke")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("model.connection", "model.invoke")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

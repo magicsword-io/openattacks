@@ -1,0 +1,71 @@
+id: windows-install
+title: Unapproved Windows program execution
+hypothesis:
+  A newly downloaded or staged executable runs from a user-writable location and exhibits
+  the reported follow-on behavior.
+telemetry:
+  - Windows process creation
+  - Download provenance and file hashes
+  - File certificate information and application-control audit / block events
+investigate:
+  - Verify publisher, hash, origin, prevalence and local approval rather than trusting a product
+    name or signature.
+  - Trace child processes and related credential, network or persistence events.
+limitation:
+  Many approved installers run from user-writable folders. These events are hunt
+  candidates, not proof of malware or an enforced block.
+search:
+  - '"suspicious" AND "installer"'
+  - '"user writable" AND "execution"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Windows process candidates. Sigma uses normalized process_creation fields; KQL requires
+  Defender for Endpoint; SPL requires the Sysmon XML sourcetype. Tune collectors, fields and
+  baselines before use.
+queries:
+  sigma: |
+    title: Hunt - Unapproved Windows program execution
+    id: e217e948-e57c-48b8-a331-66006de42ae1
+    status: experimental
+    description: A newly downloaded or staged executable runs from a user-writable
+      location and exhibits the reported follow-on behavior.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: process_creation
+      product: windows
+    detection:
+      selection:
+        Image|contains:
+          - \Downloads\
+          - \AppData\Local\Temp\
+          - \AppData\Roaming\
+      condition: selection
+  kql: >-
+    // Draft hunt; requires Defender for Endpoint process telemetry for this OS.
+
+    DeviceProcessEvents
+
+    | where Timestamp > ago(7d)
+
+    | where FolderPath contains "\\Downloads\\" or FolderPath contains "\\AppData\\Local\\Temp\\" or
+    FolderPath contains "\\AppData\\Roaming\\"
+
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+
+    | order by Timestamp desc
+  spl: |-
+    sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
+    Image IN ("*\\Downloads\\*", "*\\AppData\\Local\\Temp\\*", "*\\AppData\\Roaming\\*")
+    | table _time host User Image CommandLine ParentImage ParentCommandLine
+    | sort - _time

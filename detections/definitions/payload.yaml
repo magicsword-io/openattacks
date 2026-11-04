@@ -1,0 +1,78 @@
+id: payload
+title: Unexpected payload / remote-access behavior
+hypothesis:
+  A program delivered by the reported lure executes, establishes access or contacts
+  infrastructure outside the approved software baseline.
+telemetry:
+  - Platform-specific process and file provenance
+  - Signer / hash and software inventory
+  - Per-process network and remote-session records
+investigate:
+  - Confirm the payload's operating system, origin and execution context before choosing a
+    platform-specific rule.
+  - Correlate the launched program with child processes, persistence and network activity; verify
+    authorization.
+limitation:
+  A program name alone is not a signature. This normalized template requires the relevant
+  platform collector and does not assert Windows-only policy coverage.
+search:
+  - '"trojan" AND "remote access"'
+  - '"malicious" AND "installer"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Unexpected payload / remote-access behavior
+    id: 998d4263-6e73-4472-a74d-cb4d61c28544
+    status: experimental
+    description: A program delivered by the reported lure executes, establishes
+      access or contacts infrastructure outside the approved software baseline.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - process.unapproved.exec
+          - remote.session.start
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("process.unapproved.exec", "remote.session.start")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("process.unapproved.exec", "remote.session.start")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time
