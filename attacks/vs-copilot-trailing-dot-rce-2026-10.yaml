@@ -11,12 +11,14 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Copilot edit guard blocked writes to .mcp.json via string compare. Writing
-  '.mcp.json.' bypasses check; Win32 strips trailing dot so write lands on real MCP config → RCE via
-  MCP server command or ripgrepPath pointing at arbitrary binary. Chainable via indirect prompt
-  injection from a file or MCP server. Shared Microsoft.VisualStudio.Copilot.Core.dll affects VS
+technique_summary: Copilot edit guard blocked writes to .mcp.json via string
+  compare. Writing '.mcp.json.' bypasses check; Win32 strips trailing dot so
+  write lands on real MCP config → RCE via MCP server command or ripgrepPath
+  pointing at arbitrary binary. Chainable via indirect prompt injection from a
+  file or MCP server. Shared Microsoft.VisualStudio.Copilot.Core.dll affects VS
   2022/2026 and SSMS. Patched with GetFullPath.
-initial_access: Indirect prompt injection (file content / MCP) into Copilot chat, or misaligned agent
+initial_access: Indirect prompt injection (file content / MCP) into Copilot
+  chat, or misaligned agent
 ai_tooling_and_models:
   - GitHub Copilot in Visual Studio / SSMS
   - MAI-Code-1-Flash (PoC model)
@@ -28,8 +30,8 @@ regions:
   - unknown
 attribution_or_cluster: Vulnerability research; CVE-2026-103572 CVSS 8.8 Important
 scale_and_metrics: Patched 2026-10-13 Patch Tuesday
-prevention_angle: Patch VS/SSMS; alert on Copilot writes to .mcp.json / settings.VisualStudio.json;
-  watch devenv/Ssms spawning unexpected binaries
+prevention_angle: Patch VS/SSMS; alert on Copilot writes to .mcp.json /
+  settings.VisualStudio.json; watch devenv/Ssms spawning unexpected binaries
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -70,3 +72,13 @@ atlas_techniques:
   - id: AML.T0081
     rationale: The resulting edit modifies MCP startup or executable configuration.
     source_urls: *a1
+category: attacks-on-ai
+attribution:
+  actor_name: Vulnerability research
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Visual Studio / SSMS Copilot
+      trailing-dot RCE (CVE-2026-103572). Refer to sources for specific IOCs and
+      TTPs.

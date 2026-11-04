@@ -11,9 +11,10 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: DPRK-linked UNC1069 used Gemini for crypto recon, wallet path research, Spanish
-  lure text, and credential-theft 'update' instructions. Separately used deepfake images/video of
-  crypto industry figures to push malicious 'Zoom SDK' links delivering BIGMACHO backdoor.
+technique_summary: DPRK-linked UNC1069 used Gemini for crypto recon, wallet path
+  research, Spanish lure text, and credential-theft 'update' instructions.
+  Separately used deepfake images/video of crypto industry figures to push
+  malicious 'Zoom SDK' links delivering BIGMACHO backdoor.
 initial_access: Social engineering / deepfake lures with malicious Zoom SDK download
 ai_tooling_and_models:
   - Gemini
@@ -35,13 +36,15 @@ attack_flow:
   nodes:
     - id: step-1
       title: Actor prepares cryptocurrency operations
-      description: The report describes two related capability areas without proving a single combined chain.
+      description: The report describes two related capability areas without proving a
+        single combined chain.
       kind: access
       source_urls: &a1
         - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
     - id: step-2
       title: Gemini assists research and lure text
-      description: Requests cover cryptocurrency reconnaissance, wallet paths and Spanish-language messages.
+      description: Requests cover cryptocurrency reconnaissance, wallet paths and
+        Spanish-language messages.
       kind: ai
       source_urls: *a1
     - id: step-3
@@ -51,7 +54,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Malicious Zoom SDK delivers BIGMACHO
-      description: The separately reported social-engineering branch leads to a backdoor download.
+      description: The separately reported social-engineering branch leads to a
+        backdoor download.
       kind: execution
       source_urls: *a1
   edges:
@@ -70,3 +74,12 @@ atlas_techniques:
   - id: AML.T0016.002
     rationale: Gemini supports cryptocurrency research and lure writing.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: UNC1069 aka MASAN
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in UNC1069 (MASAN) Gemini misuse +
+      deepfake Zoom lures. Refer to sources for specific IOCs and TTPs.

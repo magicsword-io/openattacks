@@ -9,26 +9,31 @@ magicsword_coverage:
   - https://x.com/_josehelps/status/2112573809924739464
   - https://x.com/_josehelps/status/2112573809924739464
 borderline: true
-borderline_note: Research/framework post summarizing public AI-agent attack patterns (Hugging Face,
-  DSEWiki, RubyGems) rather than a single intrusion Jose covers in depth.
+borderline_note: Research/framework post summarizing public AI-agent attack
+  patterns (Hugging Face, DSEWiki, RubyGems) rather than a single intrusion Jose
+  covers in depth.
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Argues current public AI-agent attacks look like loud, high-volume pentests with
-  off-the-shelf tooling. Real risk arrives when swarms are prompted for OPSEC and red-team stealth.
-  Defense remains fundamentals plus raising cost in time/tokens/compute (app control).
+technique_summary: Argues current public AI-agent attacks look like loud,
+  high-volume pentests with off-the-shelf tooling. Real risk arrives when swarms
+  are prompted for OPSEC and red-team stealth. Defense remains fundamentals plus
+  raising cost in time/tokens/compute (app control).
 initial_access: "unknown (generalized: phishing, unpatched vulns, volume probes)"
 ai_tooling_and_models:
-  - "Autonomous AI agents / agent swarms (examples cited: lab agents against public infra)"
+  - "Autonomous AI agents / agent swarms (examples cited: lab agents against
+    public infra)"
 other_tooling:
   - Off-the-shelf offensive tooling (unspecified per campaign)
-victims_and_sectors: Public examples include Hugging Face, DSEWiki, RubyGems; general enterprise guidance
+victims_and_sectors: Public examples include Hugging Face, DSEWiki, RubyGems;
+  general enterprise guidance
 regions:
   - unknown
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: Phishing-resistant MFA everywhere; EDR; east-west and DNS visibility; assume one
-  credential set is popped; default-deny app control so agents still need drivers/RMM/LOLBins
+prevention_angle: Phishing-resistant MFA everywhere; EDR; east-west and DNS
+  visibility; assume one credential set is popped; default-deny app control so
+  agents still need drivers/RMM/LOLBins
 related_magicsword_projects:
   - LOLDrivers
   - LOLRMM
@@ -39,7 +44,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Generalized threat framework
-      description: The entry discusses public agent-enabled attacks rather than one fully traced intrusion.
+      description: The entry discusses public agent-enabled attacks rather than one
+        fully traced intrusion.
       kind: unknown
       source_urls: &a1
         - https://blog.talosintelligence.com/one-breach-please-and-make-no-mistakes/
@@ -55,7 +61,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Specific victim chain is not established
-      description: The framework’s observations should not be read as a separate confirmed campaign.
+      description: The framework’s observations should not be read as a separate
+        confirmed campaign.
       kind: unknown
       source_urls: *a1
   edges:
@@ -65,3 +72,10 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: adversary-use-of-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: "Monitor for the techniques described in Talos: AI agent attacks as loud
+      pentests (framework). Refer to sources for specific IOCs and TTPs."

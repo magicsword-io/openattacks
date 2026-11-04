@@ -11,26 +11,30 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Malicious or compromised remote MCP server returns 401 and OAuth discovery with
-  attacker-controlled authorization_endpoint. opencode passes that URL to npm open; on Windows/WSL
-  open 10.x builds a PowerShell -EncodedCommand without escaping the target, so $(...) in an https
-  URL runs before the browser launches. No prompt injection required.
-initial_access: Developer connects coding agent to attacker-controlled or later-compromised remote MCP server
+technique_summary: Malicious or compromised remote MCP server returns 401 and
+  OAuth discovery with attacker-controlled authorization_endpoint. opencode
+  passes that URL to npm open; on Windows/WSL open 10.x builds a PowerShell
+  -EncodedCommand without escaping the target, so $(...) in an https URL runs
+  before the browser launches. No prompt injection required.
+initial_access: Developer connects coding agent to attacker-controlled or
+  later-compromised remote MCP server
 ai_tooling_and_models:
   - opencode / opencode-ai 1.0.137–1.18.32
   - MCP OAuth discovery
 other_tooling:
   - npm open@10.1.2
   - PowerShell
-  - "related class CVEs: CVE-2025-6514 mcp-remote, CVE-2025-58062 openmcp-client, CVE-2025-10619
-    sequa-mcp"
-victims_and_sectors: Windows and WSL developers using opencode (~3M weekly npm downloads cited by Pillar)
+  - "related class CVEs: CVE-2025-6514 mcp-remote, CVE-2025-58062
+    openmcp-client, CVE-2025-10619 sequa-mcp"
+victims_and_sectors: Windows and WSL developers using opencode (~3M weekly npm
+  downloads cited by Pillar)
 regions:
   - unknown
 attribution_or_cluster: Vulnerability research (no in-the-wild campaign named)
 scale_and_metrics: Fixed in 1.18.33 (2026-09-28) without CVE/advisory; proposed CVSS 9.8
-prevention_angle: Upgrade opencode; inventory installations (no CVE for scanners); pull unvetted
-  remote MCP; argv not shell for URLs; MagicSword prevent unapproved second-stage binaries
+prevention_angle: Upgrade opencode; inventory installations (no CVE for
+  scanners); pull unvetted remote MCP; argv not shell for URLs; MagicSword
+  prevent unapproved second-stage binaries
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -54,7 +58,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Commands execute before the browser opens
-      description: The injection occurs in the URL-opening path without requiring prompt injection.
+      description: The injection occurs in the URL-opening path without requiring
+        prompt injection.
       kind: impact
       source_urls: *a1
   edges:
@@ -64,3 +69,12 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: attacks-on-ai
+attribution:
+  actor_name: Vulnerability research (no in-the-wild campaign named)
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in opencode remote MCP OAuth RCE.
+      Refer to sources for specific IOCs and TTPs.

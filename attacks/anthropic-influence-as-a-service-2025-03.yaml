@@ -11,21 +11,25 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Financially motivated influence-as-a-service used Claude not only for content but
-  to decide when 100+ social bot accounts should like, share, comment, or ignore posts based on
-  client political personas. Also generated multilingual responses and image-gen prompts.
+technique_summary: Financially motivated influence-as-a-service used Claude not
+  only for content but to decide when 100+ social bot accounts should like,
+  share, comment, or ignore posts based on client political personas. Also
+  generated multilingual responses and image-gen prompts.
 initial_access: n/a (influence ops on social platforms)
 ai_tooling_and_models:
   - Claude
   - image-generation tools (prompts only)
 other_tooling: []
-victims_and_sectors: Tens of thousands of authentic social accounts engaged; clients outside US with
-  varied political narratives; state-affiliated style not confirmed
+victims_and_sectors: Tens of thousands of authentic social accounts engaged;
+  clients outside US with varied political narratives; state-affiliated style
+  not confirmed
 regions:
   - Multiple regions
 attribution_or_cluster: unknown commercially motivated operator; state affiliation not confirmed
-scale_and_metrics: 100+ bot accounts on X/Facebook; tens of thousands of engagements; no viral hits noted
-prevention_angle: Platform bot detection; model-provider abuse monitoring (Anthropic banned accounts)
+scale_and_metrics: 100+ bot accounts on X/Facebook; tens of thousands of
+  engagements; no viral hits noted
+prevention_angle: Platform bot detection; model-provider abuse monitoring
+  (Anthropic banned accounts)
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -39,7 +43,8 @@ attack_flow:
         - https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
     - id: step-2
       title: Claude plans account activity
-      description: Claude helps decide when more than 100 bot accounts should engage or ignore posts.
+      description: Claude helps decide when more than 100 bot accounts should engage
+        or ignore posts.
       kind: ai
       source_urls: *a1
     - id: step-3
@@ -49,8 +54,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Coordinated influence
-      description: Authentic social accounts encounter the coordinated engagement; state affiliation is
-        unconfirmed.
+      description: Authentic social accounts encounter the coordinated engagement;
+        state affiliation is unconfirmed.
       kind: impact
       source_urls: *a1
   edges:
@@ -60,10 +65,21 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-region_notes: The source identifies clients in multiple countries outside the United States;
-  individual target countries are not disclosed.
+region_notes: The source identifies clients in multiple countries outside the
+  United States; individual target countries are not disclosed.
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: unknown commercially motivated operator
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Claude-orchestrated
+      influence-as-a-service bot network. Refer to sources for specific IOCs and
+      TTPs.
