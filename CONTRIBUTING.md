@@ -35,10 +35,12 @@ last_reviewed: '2026-10-20'
 
 ## Sourcing rules
 
+- Include only attacks **observed in the wild or documented in public reporting**: original researcher reports, vendor advisories, or news coverage of a concrete case. **No conceptual scenarios, hypothetical attack chains, or general threat frameworks.** A source URL alone does not make a speculative scenario eligible.
+- Published vulnerability demonstrations and research PoCs qualify when they document concrete behavior. Label them as research and do not imply exploitation in the wild. Reported marketplace claims must retain their uncertainty labels.
 - Every factual claim needs a source URL. Prefer primary reports, original researchers, vendor advisories, or court records. Add source notes when evidence has limitations.
 - Write **unknown** rather than guessing; use an empty array when no tooling or mapping is documented. Never invent a victim count, location, model, attribution, or MITRE mapping.
 - Include **no live victim data or unredacted victim IP addresses**. Only add non-victim indicators explicitly published for defensive use, and explain their origin. Defang domains and URLs in IOC fields; do not make them clickable.
-- Mark PoCs, conceptual findings, marketplace claims, and other uncertain cases with `borderline: true` and explain the qualification in `borderline_note`.
+- Mark PoCs, marketplace claims, and other uncertain cases with `borderline: true` and explain the qualification in `borderline_note`. This flag does not make a conceptual entry eligible.
 - Preserve date precision: `date_reported` accepts `YYYY-MM-DD` or `YYYY-MM`. `last_reviewed` is the date you actually reviewed the source, in `YYYY-MM-DD` format.
 - Confidence describes evidence for AI involvement: **high** for direct evidence, **medium** for credible but limited evidence, **low** for indirect or disputed evidence. Omit it when unassessed; the site shows “Not assessed.”
 - Keep the tone factual and calm. Credit the researcher prominently. Describe prevention without making unsupported claims about what a product blocks.

@@ -156,13 +156,17 @@ const chartHeight = baseline + 49;
       );
     })}
   </svg>
-  <div class="chart-legend" aria-label="Highlight timeline by AI role">
+  <div class="chart-legend-heading">
+    <h2>Attack categories</h2>
+    <p>Select a category to highlight its reports.</p>
+  </div>
+  <div class="chart-legend" role="group" aria-label="Highlight timeline by AI role">
     <button
       class="legend-button legend-all"
       aria-pressed="true"
       data-highlight=""
     >
-      All roles <span>{attacks.length}</span>
+      All roles <span class="legend-count">{attacks.length}</span>
     </button>
     {Object.entries(roles).map(([id, role]) => (
       <button
@@ -171,9 +175,9 @@ const chartHeight = baseline + 49;
         data-highlight={id}
         aria-pressed="false"
       >
-        <i></i>
+        <i aria-hidden="true"></i>
         {role.short}
-        <span>{attacks.filter((attack) => attack.ai_role === id).length}</span>
+        <span class="legend-count">{attacks.filter((attack) => attack.ai_role === id).length}</span>
       </button>
     ))}
   </div>
@@ -223,7 +227,7 @@ const chartHeight = baseline + 49;
             "aria-pressed",
             String(button.dataset.highlight === role),
           );
-          button.querySelector("span")!.textContent = String(
+          button.querySelector(".legend-count")!.textContent = String(
             entries.filter(
               (entry) =>
                 inStack(entry) &&

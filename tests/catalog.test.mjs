@@ -95,6 +95,7 @@ test("browse annotations preserve raw evidence and use valid, consistent categor
     readFileSync(new URL("../dist/api/catalog.json", import.meta.url), "utf8"),
   );
   assert.equal(index.entries.length, seeds.length);
+  assert.ok(!("concept" in index.evidence_types));
   assert.equal(
     new Set(index.entries.map((entry) => entry.id)).size,
     seeds.length,

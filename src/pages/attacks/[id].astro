@@ -83,7 +83,9 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           </time>
           {attack.date_reported.length === 7 && " (month only)"}
         </span>
-        <a href="#sources">Source: {attack.org}</a>
+        <a href={attack.sources[0].url} target="_blank" rel="noopener noreferrer">
+          Source: {attack.org}
+        </a>
       </div>
       {attack.borderline_note && (
         <aside class="entry-qualification">
@@ -96,9 +98,21 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
       <h2 id="what-happened">What happened</h2>
       <p>{attack.technique_summary}</p>
       {attack.ai_role_detail && <p>{attack.ai_role_detail}</p>}
-      <a class="text-link" href="#sources">
-        Read the original sources
-      </a>
+      <div class="entry-original-sources">
+        {attack.sources.map((source, index) => (
+          <a
+            class="text-link"
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {index === 0
+              ? "Read the original source"
+              : `Additional source: ${source.title || source.publisher || new URL(source.url).hostname.replace(/^www\./, "")}`}
+            <Icon name="arrow" size={13} />
+          </a>
+        ))}
+      </div>
     </section>
     <AttackFlowSection
       attack={attack}

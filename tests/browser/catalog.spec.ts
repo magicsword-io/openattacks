@@ -324,6 +324,28 @@ test("entry flows render with sources and controls; removed sections stay absent
   ).toHaveCount(0);
 });
 
+test("original-source links open the articles directly for single and multiple sources", async ({
+  page,
+}) => {
+  for (const attack of [
+    attacks.find((attack) => attack.sources.length === 1)!,
+    attacks.find((attack) => attack.sources.length > 1)!,
+  ]) {
+    await page.goto(`/attacks/${attack.id}/`);
+    const links = page.locator(".entry-original-sources a");
+    await expect(links).toHaveCount(attack.sources.length);
+    await expect(links.first()).toHaveText("Read the original source");
+    for (const [index, source] of attack.sources.entries()) {
+      await expect(links.nth(index)).toHaveAttribute("href", source.url);
+      await expect(links.nth(index)).toHaveAttribute("target", "_blank");
+    }
+    await expect(page.locator(".entry-meta a")).toHaveAttribute(
+      "href",
+      attack.sources[0].url,
+    );
+  }
+});
+
 test("LLM entry points are discoverable on the landing page", async ({
   page,
   request,
