@@ -34,7 +34,16 @@ scale_and_metrics: Domain admin achieved in 3-4 days; multiple schools targeted
 prevention_angle: Harden SQL Server; monitor for CyberStrikeAI indicators; detect SystemUpdate scheduled task creation; alert on certutil downloads; monitor comsvcs.dll LSASS dumps; detect DCSync activity; hunt for Golden Ticket use; block C2 infrastructure; review LOLBAS execution (certutil, comsvcs)
 related_magicsword_projects:
   - LOLBAS
-source_notes: null
+source_notes: |
+  Relevant detection rules:
+  - Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+  - Sigma: Suspicious File Downloaded From Direct IP Via Certutil (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_download_direct_ip.yml)
+  - Sigma: Process Memory Dump Via Comsvcs.DLL (LSASS dump) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml)
+  - Sigma: Suspicious LSASS Process Access (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_sysinternals_procdump_lsass.yml)
+  - Sigma: Powerview Add-DomainObjectAcl DCSync AD Extend Right (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_account_backdoor_dcsync_rights.yml)
+  - Sigma: DCSync Attack Detection via RPC Firewall (https://github.com/SigmaHQ/sigma/blob/master/rules/application/rpc_firewall/rpc_firewall_dcsync_attack.yml)
+  - Sigma: PowerShell Malicious Cmdlets (covers Mimikatz/DCSync) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_malicious_cmdlets.yml)
+  - LOLBAS references: certutil (https://lolbas-project.github.io/lolbas/Binaries/Certutil/), comsvcs.dll (https://lolbas-project.github.io/lolbas/Libraries/Comsvcs/), schtasks (https://lolbas-project.github.io/lolbas/Binaries/Schtasks/)
 iocs:
   domains:
     - fastcdn.bar

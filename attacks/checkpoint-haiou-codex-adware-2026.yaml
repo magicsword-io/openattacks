@@ -31,7 +31,13 @@ scale_and_metrics: Promoted on Bilibili and QQ; repository stars and download co
 prevention_angle: Review global Codex instructions for unauthorized modifications; scan installed skills for ad injection patterns; monitor agent responses for unexpected commercial content; verify instruction and skill sources; detect connections to suspicious API gateways; educate users about jailbreak bundle risks
 related_magicsword_projects:
   - LOLSkills
-source_notes: null
+source_notes: |
+  Relevant detection rules:
+  - Monitor modifications to global Codex instructions
+  - Detect installation of unexpected skills (seagull-* naming pattern)
+  - Alert on connections to suspicious API gateways (zz.aiapi2025.top)
+  - Review skill content for ad injection patterns or output manipulation logic
+  - Note: No direct Sigma rules for agent skill poisoning; requires custom monitoring of agent configuration changes and skill installation events, plus network monitoring for unexpected API gateway connections.
 iocs:
   domains:
     - zz.aiapi2025.top

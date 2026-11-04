@@ -30,7 +30,13 @@ scale_and_metrics: Proof of concept demonstrating attack vector; actual deployme
 prevention_angle: Review Downloads folder before launching agents; scan for unexpected .md instruction files; monitor ~/.codex/config.toml and other agent config modifications; detect npm install from unusual locations; restrict agent instruction file precedence; alert on OAuth token access from unexpected processes
 related_magicsword_projects:
   - LOLSkills
-source_notes: null
+source_notes: |
+  Relevant detection rules:
+  - Monitor file creation in ~/Downloads directory for unexpected .md instruction files (AGENTS.md, CLAUDE.md)
+  - Detect modifications to ~/.codex/config.toml and similar agent configuration files
+  - Monitor npm install executions from non-standard directories (Downloads, temp folders)
+  - Alert on OAuth token access from unexpected processes
+  - Note: No direct Sigma rules for agent instruction file manipulation; requires custom file integrity monitoring for agent config directories and process monitoring for agent launches from untrusted paths.
 last_reviewed: 2026-11-04
 confidence: high
 region_notes: Multiple regions reflects global developer population using coding agents

@@ -30,7 +30,16 @@ scale_and_metrics: Three malicious packages identified Nov 2 2026; exact install
 prevention_angle: Verify MCP server sources before installation; review MCP server permissions and network access; monitor cloud metadata endpoint access; detect unauthorized file reads of sensitive paths; inspect HTTP headers for credential leakage; use MCP server sandboxing; inventory installed MCP packages
 related_magicsword_projects:
   - LOLSkills
-source_notes: OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564
+source_notes: |
+  OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564
+  
+  Relevant detection rules:
+  - Monitor access to cloud metadata endpoints (169.254.169.254, metadata.google.internal, etc.)
+  - Alert on unauthorized reads of /etc/shadow, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, .env files
+  - Detect access to Kubernetes service account tokens (/var/run/secrets/kubernetes.io/)
+  - Monitor HTTP headers for sensitive environment variable leakage (WALLET_PRIVATE_KEY, AWS_SECRET_ACCESS_KEY, etc.)
+  - Alert on npm package installations from unverified sources
+  - Note: Cloud metadata access typically detected via network monitoring or instance-level audit logs (CloudTrail, Azure Monitor, GCP Cloud Logging). File access requires host-based file integrity monitoring.
 iocs:
   domains: []
   ips:

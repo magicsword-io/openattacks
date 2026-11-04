@@ -33,7 +33,19 @@ attribution_or_cluster: Microsoft Storm-0940 (related activity Oct 21)
 scale_and_metrics: Activity Sep 24-Oct 27 2026; approximately 50 MB data read; wrote to unauthenticated document store
 prevention_angle: Authenticate all API endpoints including development; remove source maps from production; restrict OpenAPI spec access; validate OAuth redirect URIs; implement API registration controls; monitor for automated reconnaissance patterns; detect bulk configuration file access; alert on unauthenticated document store writes; review Storm-0940 indicators
 related_magicsword_projects: []
-source_notes: Microsoft tracks related activity as Storm-0940 with Oct 21 observations
+source_notes: |
+  Microsoft tracks related activity as Storm-0940 with Oct 21 observations
+  
+  Relevant detection rules:
+  - Monitor for bulk access to source map files (.map.js, .js.map)
+  - Alert on OpenAPI specification downloads (openapi.json, swagger.json, api-docs)
+  - Detect runtime-config.json and similar configuration file access patterns
+  - Monitor for OAuth redirect URI manipulation attempts
+  - Alert on password spraying patterns (multiple authentication attempts across accounts)
+  - Detect unauthenticated API registration/account creation
+  - Monitor writes to development document stores from unexpected sources
+  - Track volume of API data reads (spike detection for ~50 MB threshold)
+  - Note: API reconnaissance detection typically requires application-level logging, WAF rules, and API gateway monitoring. No direct Sigma rules exist for OpenAPI/source map harvesting; requires custom rules based on web server access logs and application audit trails.
 last_reviewed: 2026-11-04
 confidence: high
 region_notes: Multiple regions reflects API reconnaissance patterns observed by Unit 42

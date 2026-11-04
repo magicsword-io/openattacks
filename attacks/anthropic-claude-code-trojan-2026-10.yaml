@@ -35,7 +35,13 @@ attribution_or_cluster: unknown
 scale_and_metrics: Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown
 prevention_angle: Monitor extension integrity; review SSH authorized_keys; detect outbound SSH tunnels to suspicious IPs; scan for LaunchAgent/cron/@reboot persistence; review scheduled tasks; monitor environment variable access patterns
 related_magicsword_projects: []
-source_notes: null
+source_notes: |
+  Relevant detection rules:
+  - Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+  - Sigma: Suspicious Cron File Created (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)
+  - Sigma: Persistence Via PlistBuddy (macOS LaunchAgent) (https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml)
+  - Sigma: SSH Port Forwarding/Tunneling (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml)
+  - Sigma: Suspicious SSH via OpenSSH Scheduled Task (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml)
 iocs:
   domains: []
   ips:
