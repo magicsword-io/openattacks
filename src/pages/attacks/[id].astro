@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import SimulationPreview from "../../components/SimulationPreview.astro";
+import AttackRelevance from "../../components/AttackRelevance.astro";
+import AttackActions from "../../components/AttackActions.astro";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
@@ -83,7 +84,13 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           </time>
           {attack.date_reported.length === 7 && " (month only)"}
         </span>
-        <a href="#sources">Source: {attack.org}</a>
+        <a
+          href={attack.sources[0].url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source: {attack.org}
+        </a>
       </div>
       {attack.borderline_note && (
         <aside class="entry-qualification">
@@ -92,13 +99,31 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
         </aside>
       )}
     </header>
+    <nav class="entry-section-nav" aria-label="On this page">
+      <a href="#what-happened">What happened</a>
+      <a href="#attack-flow">How it happened</a>
+      <a href="#why-it-matters">Why it matters</a>
+      <a href="#what-you-can-do">What you can do</a>
+    </nav>
     <section class="entry-story" aria-labelledby="what-happened">
       <h2 id="what-happened">What happened</h2>
       <p>{attack.technique_summary}</p>
       {attack.ai_role_detail && <p>{attack.ai_role_detail}</p>}
-      <a class="text-link" href="#sources">
-        Read the original sources
-      </a>
+      <div class="entry-original-sources">
+        {attack.sources.map((source, index) => (
+          <a
+            class="text-link"
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {index === 0
+              ? "Read the original source"
+              : `Additional source: ${source.title || source.publisher || new URL(source.url).hostname.replace(/^www\./, "")}`}
+            <Icon name="arrow" size={13} />
+          </a>
+        ))}
+      </div>
     </section>
     <AttackFlowSection
       attack={attack}
@@ -113,7 +138,8 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           : undefined
       }
     />
-    {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
+    <AttackRelevance attack={attack} />
+    <AttackActions attack={attack} />
     <div class="entry-supporting">
       <details class="technical-details" id="technical-details">
         <summary>
@@ -205,12 +231,6 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             <section>
               <h2>Reported attribution</h2>
               <p>{attack.attribution_or_cluster}</p>
-            </section>
-          )}
-          {meaningful(attack.prevention_angle) && (
-            <section>
-              <h2>Source defensive notes</h2>
-              <p>{attack.prevention_angle}</p>
             </section>
           )}
           {atlasMappings.length > 0 && (
@@ -365,7 +385,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
 </Layout>
 
 <script>
-  // Preserve deep links to technical sections without expanding the whole record by default.
+  // Reveal linked detection or technical details while keeping other sections collapsed.
   function revealLinkedSection() {
     let id: string;
     try {
@@ -375,6 +395,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     }
     if (!id) return;
     const target = document.getElementById(id);
+    if (target instanceof HTMLDetailsElement) target.open = true;
     let ancestor = target?.parentElement;
     while (ancestor) {
       if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
@@ -384,4 +405,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
   }
   revealLinkedSection();
   window.addEventListener("hashchange", revealLinkedSection);
+  document.addEventListener("click", (event) => {
+    const link =
+      event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+        : null;
+    // Selecting the same fragment again does not emit a hashchange event.
+    if (link?.hash && link.hash === location.hash) revealLinkedSection();
+  });
 </script>

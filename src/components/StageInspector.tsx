@@ -1,31 +1,8 @@
 import { useId, useState } from "react";
 import type { AttackFlowNode } from "../lib/catalog";
-import type { QueryFormat, StageGuidance } from "../lib/stage-guidance";
+import type { StageGuidance } from "../lib/stage-guidance";
 import FlowIcon from "./FlowIcon";
-
-function Copy({ text, label }: { text: string; label: string }) {
-  const [status, setStatus] = useState("");
-  return (
-    <div className="flow-copy-wrap">
-      <button
-        type="button"
-        className="flow-small-button"
-        onClick={async () => {
-          try {
-            await navigator.clipboard.writeText(text);
-            setStatus("Copied");
-          } catch {
-            setStatus("Select the text below to copy");
-          }
-        }}
-      >
-        <FlowIcon name="copy" size={13} />
-        {label}
-      </button>
-      <span role="status">{status}</span>
-    </div>
-  );
-}
+import HuntGuidance from "./HuntGuidance";
 
 export default function StageInspector({
   node,
@@ -45,18 +22,11 @@ export default function StageInspector({
   onClose: () => void;
 }) {
   const [view, setView] = useState(initialView);
-  const [format, setFormat] = useState<QueryFormat>("sigma");
   const id = useId();
-  const custom = !!guidance.queries?.kql.includes("OpenAttacksAudit_CL");
   const views = [
     { id: "evidence", label: "Evidence" },
     { id: "prevent", label: "Prevent" },
     { id: "hunt", label: "Hunt" },
-  ];
-  const formats = [
-    { id: "sigma" as const, label: "Sigma" },
-    { id: "kql" as const, label: "KQL" },
-    { id: "spl" as const, label: "SPL" },
   ];
   const tabKeys = (
     event: React.KeyboardEvent,
@@ -209,113 +179,7 @@ export default function StageInspector({
             )}
           </div>
         )}
-        {view === "hunt" && (
-          <div className="stage-hunt">
-            <div className="hunt-heading">
-              <h4>{guidance.title}</h4>
-              <span>{guidance.visibility}</span>
-            </div>
-            <p>{guidance.hypothesis}</p>
-            {guidance.telemetry.length > 0 && (
-              <div className="hunt-log-requirements">
-                <strong>Required logs</strong>
-                <ul>
-                  {guidance.telemetry.map((source) => (
-                    <li key={source}>{source}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <p className="stage-limit">
-              <strong>Coverage limit.</strong> {guidance.limitation}
-            </p>
-            {guidance.queries && (
-              <details className="stage-query-details" key={node.id}>
-                <summary>
-                  {custom
-                    ? "Query template · custom schema"
-                    : "Explore Sigma, KQL & SPL starters"}
-                  <span>
-                    {custom
-                      ? "Requires log collection and field mapping; not a native detector"
-                      : "Draft queries · not validated against your logs"}
-                  </span>
-                </summary>
-                <p className="query-scope">{guidance.query_scope}</p>
-                <div
-                  className="query-formats"
-                  role="tablist"
-                  aria-label="Hunt query format"
-                >
-                  {formats.map((f, index) => (
-                    <button
-                      type="button"
-                      role="tab"
-                      key={f.id}
-                      id={`${id}-format-${f.id}`}
-                      aria-controls={`${id}-query`}
-                      aria-selected={format === f.id}
-                      tabIndex={format === f.id ? 0 : -1}
-                      onClick={() => setFormat(f.id)}
-                      onKeyDown={(event) =>
-                        tabKeys(
-                          event,
-                          index,
-                          formats,
-                          (value) => setFormat(value as QueryFormat),
-                          `${id}-format`,
-                        )
-                      }
-                    >
-                      {f.label}
-                    </button>
-                  ))}
-                </div>
-                <div
-                  id={`${id}-query`}
-                  role="tabpanel"
-                  aria-labelledby={`${id}-format-${format}`}
-                  tabIndex={0}
-                >
-                  <Copy
-                    text={guidance.queries[format]}
-                    label={`Copy ${formats.find((f) => f.id === format)!.label}`}
-                  />
-                  <pre className="hunt-code" tabIndex={0}>
-                    <code>{guidance.queries[format]}</code>
-                  </pre>
-                </div>
-              </details>
-            )}
-            <details className="stage-mcp-details">
-              <summary>Investigation steps & Detection MCP</summary>
-              <ol className="stage-hunt-steps">
-                {guidance.investigate.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-              <p>
-                Use this brief with a connected{" "}
-                <a
-                  href="https://github.com/MHaggis/Security-Detections-MCP"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Security Detections MCP
-                </a>
-                . It requests existing rules and coverage gaps in Sigma, KQL and
-                SPL. This site does not search the rule index.
-              </p>
-              <Copy
-                text={guidance.mcp_prompt}
-                label="Copy MCP research brief"
-              />
-              <pre className="hunt-code mcp-brief" tabIndex={0}>
-                <code>{guidance.mcp_prompt}</code>
-              </pre>
-            </details>
-          </div>
-        )}
+        {view === "hunt" && <HuntGuidance key={node.id} guidance={guidance} />}
       </div>
     </section>
   );

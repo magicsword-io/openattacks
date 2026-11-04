@@ -1,0 +1,69 @@
+---
+import Icon from "./Icon.astro";
+import HuntGuidance from "./HuntGuidance";
+import { href, type AttackFlowNode } from "../lib/catalog";
+import type { StageGuidance } from "../lib/stage-guidance";
+
+const { attackId, stages } = Astro.props as {
+  attackId: string;
+  stages: { node: AttackFlowNode; guidance: StageGuidance }[];
+};
+---
+
+<section class="entry-detections" aria-labelledby="detection-queries">
+  <div class="entry-subsection-heading">
+    <div>
+      <h3 id="detection-queries">
+        <Icon name="search" size={19} /> Detection queries
+      </h3>
+      <p>
+        Investigate each stage with its required logs, query starters, and
+        coverage limits.
+      </p>
+    </div>
+    <a
+      class="entry-download"
+      href={href(`api/defenses/${attackId}.json`)}
+      download
+    >
+      <Icon name="download" size={15} /> Download stage pack
+    </a>
+  </div>
+  <p class="entry-editorial-note">
+    Draft hunt guidance. Validate queries against your logs and map any custom
+    fields before use.
+  </p>
+  <div class="detection-stages">
+    {stages.map(({ node, guidance }, index) => (
+      <details class="detection-stage" id={`detection-${node.id}`}>
+        <summary>
+          <span class="detection-stage-number">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span class="detection-stage-description">
+            <strong>{node.title}</strong>
+            <span>{guidance.hypothesis}</span>
+            <small>{guidance.visibility}</small>
+          </span>
+          <span class:list={["draft-badge", { "is-gap": !guidance.queries }]}>
+            {guidance.queries
+              ? "Draft queries"
+              : guidance.validation === "not_assessed"
+                ? "Not mapped"
+                : "Evidence gap"}
+          </span>
+          <Icon name="down" size={16} />
+        </summary>
+        <div class="detection-stage-body">
+          <HuntGuidance guidance={guidance} standalone client:visible />
+          <a
+            class="text-link detection-backlink"
+            href={`?stage=${encodeURIComponent(node.id)}&view=evidence#attack-flow`}
+          >
+            View attack stage {index + 1} <Icon name="arrow" size={13} />
+          </a>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
