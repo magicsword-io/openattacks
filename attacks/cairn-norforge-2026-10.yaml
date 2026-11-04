@@ -57,6 +57,25 @@ related_magicsword_projects:
   - LOLSkills
 source_notes: Jose post credits Reuters for the 100+ sites figure; exact Reuters article URL not
   captured in Typefully text.
+category: adversary-use-of-ai
+attribution:
+  actor_id: AIA0001
+  actor_name: NorForge AIA0001
+  country: China
+  motivation: financially-motivated
+  attributed_by: NorForge
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Detect unexpected binaries on web servers
+    format: guidance
+    notes: Monitor execution of nmap, python, php, openssl, and other recon/development
+      tools on web servers that typically serve HTTP/HTTPS only. Default-deny or application
+      control policies are recommended.
+  - name: Detect agent harness panel exposure
+    format: guidance
+    notes: Scan for exposed Cairn or similar AI agent harness panels (default port 8000, no auth).
+      Look for /api/*, /tasks, or panel-specific endpoints accessible without authentication.
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:
