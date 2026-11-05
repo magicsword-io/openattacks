@@ -88,7 +88,6 @@ attack_flow:
       target: harvest-credentials
     - source: harvest-credentials
       target: exfiltrate-persist
-source_notes: "Verified per primary security research and vendor advisories."
 category: attacks-on-ai
 attribution:
   actor_name: Multiple
@@ -108,4 +107,3 @@ timeline:
     - date: "2026-01-26"
       source: Aikido/Koi
       summary: "Campaign discovered and analyzed"
-last_reviewed: 2026-11-04

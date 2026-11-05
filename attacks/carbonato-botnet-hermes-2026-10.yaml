@@ -77,7 +77,6 @@ attack_flow:
       target: hermes-hunt
     - source: hermes-hunt
       target: exfiltrate-mine
-source_notes: "ThreatDown Labs analysis; Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Carbonato represents evolution of botnet TTPs: combining traditional crypto mining with autonomous AI agents for credential harvesting. Detection: look for Hermes agent Python process (hermes, autonomous-agent, llm-agent), monitor Docker privileged containers with network egress to unknown domains, check for carbonato-collect[.]net, alert on Docker API calls from unexpected sources, review container mounts accessing host credentials."
 category: attacks-on-ai  
 attribution:
   actor_name: Carbonato botnet operators
@@ -100,4 +99,3 @@ timeline:
     - date: "2026-10-28"
       source: ThreatDown Labs
       summary: "3,200+ compromised Docker hosts discovered; Hermes agent deployment for autonomous credential hunting; median 18-day dwell time"
-last_reviewed: 2026-11-04

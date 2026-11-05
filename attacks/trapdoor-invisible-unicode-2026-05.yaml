@@ -73,7 +73,6 @@ attack_flow:
       target: agent-reads-context
     - source: agent-reads-context
       target: agent-executes
-source_notes: "Verified per primary security research and vendor advisories."
 category: attacks-on-ai
 attribution:
   actor_name: Unknown
@@ -93,4 +92,3 @@ timeline:
     - date: "2026-05-24"
       source: Socket
       summary: "Campaign discovered and analyzed"
-last_reviewed: 2026-11-04

@@ -78,7 +78,6 @@ attack_flow:
       target: execute-stealer
     - source: execute-stealer
       target: exfiltrate
-source_notes: "Socket Security analysis; TensorZero GitHub github.com/tensorlake/tensorzero. Related to s1ngularity-nx-ai-cli-2025-08 entry (Shai-Hulud targeting NX.dev AI CLI) and Mini Shai-Hulud keyv campaign. Detection: monitor for 'Shai-Hulud' patterns (Discord webhooks, base64 obfuscation in postinstall, AI credential path access .cursor/*, Claude config access, env var harvesting), alert on npm packages with obfuscated postinstall scripts, check for tensorlakeapi[.]online domain."
 category: attacks-on-ai
 attribution:
   actor_name: ChainDrop

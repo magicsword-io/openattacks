@@ -77,7 +77,6 @@ attack_flow:
       target: harvest-credentials
     - source: harvest-credentials
       target: exfiltrate-dprk
-source_notes: "Verified sources per primary advisories and security research reports."
 category: attacks-on-ai
 attribution:
   actor_name: Sapphire Sleet (DPRK)
@@ -97,4 +96,3 @@ timeline:
     - date: "2026-06-17"
       source: Microsoft
       summary: "Initial discovery and analysis"
-last_reviewed: 2026-11-04

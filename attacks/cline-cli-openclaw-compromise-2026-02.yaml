@@ -77,7 +77,6 @@ attack_flow:
       target: harvest-on-startup
     - source: harvest-on-startup
       target: exfiltrate
-source_notes: "Verified sources per primary advisories and security research reports."
 category: attacks-on-ai
 attribution:
   actor_name: Unknown
@@ -97,4 +96,3 @@ timeline:
     - date: "2026-02-17"
       source: GitHub/Cline
       summary: "Initial discovery and analysis"
-last_reviewed: 2026-11-04
