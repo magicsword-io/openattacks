@@ -12,6 +12,9 @@ sources:
   - url: https://cursor.com/blog/claude-code-extension-security-notice
     title: Security notice regarding Claude Code extension
     publisher: Cursor
+  - url: https://opensourcemalware.com/analysis/claude-code-trojan-persistent-ssh-backdoor
+    title: "Claude Code Trojan: Persistent SSH Backdoor Analysis"
+    publisher: OpenSourceMalware.com
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -48,7 +51,20 @@ iocs:
     - 134.209.82.225
   hashes: []
   urls: []
-last_reviewed: 2026-11-04
+timeline:
+  first_seen: "2026-10-29"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-10-29"
+      source: Cursor, Microsoft
+      summary: "Trojanized anthropic.claude-code extension served via Cursor marketplace for ~11 hours"
+    - date: "2026-10-30"
+      source: Microsoft
+      summary: "Microsoft Threat Intelligence analysis of persistent SSH backdoor published"
+    - date: "2026-11-01"
+      source: OpenSourceMalware.com
+      summary: "Additional technical analysis of Claude Code trojan SSH backdoor persistence mechanisms"
+last_reviewed: 2026-11-05
 confidence: high
 region_notes: Multiple regions reflects global Cursor user base; specific affected geography unknown
 atlas_techniques:
