@@ -7,13 +7,19 @@ sources:
   - url: https://github.com/ossf/malicious-packages
     title: OpenSSF Malicious Packages repository
     publisher: OpenSSF
+  - url: https://www.pillar.io/blog/deadbugz-malicious-mcp-server-aug-2026
+    title: "Deadbugz: Malicious MCP Server on npm"
+    publisher: Pillar Security
+  - url: https://socket.dev/blog/sandworm-mode-malicious-mcp-server
+    title: "SANDWORM_MODE: Malicious MCP Server Campaign"
+    publisher: Socket
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Attack exploits trust in MCP ecosystem and npm package distribution.
+technique_summary: Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. Attack exploits trust in MCP ecosystem and npm package distribution.
 initial_access: User installs malicious MCP server from npm
 ai_tooling_and_models:
   - MCP servers
