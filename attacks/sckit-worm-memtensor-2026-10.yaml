@@ -82,3 +82,30 @@ attack_flow:
       target: exfiltrate
     - source: exfiltrate
       target: initial-infection
+source_notes: "StepSecurity analysis; MemTensor GitHub github.com/memtensor/memtensor. First documented self-replicating worm targeting AI package ecosystem. Detection: monitor for sckit-relay[.]online, look for postinstall scripts that scan package.json/requirements.txt and call npm publish/twine upload, check for typosquat generation logic, alert on credential file reads followed by network egress to unknown domains."
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: StepSecurity
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Self-replicating worm detection
+    format: guidance
+    notes: "Monitor postinstall/install scripts for package.json/requirements.txt scanning, npm publish/twine upload calls, and typosquat package name generation; alert on credential harvesting followed by automated package publishing"
+  - name: Network monitoring
+    format: guidance
+    notes: "Alert on connections to sckit-relay[.]io from npm/pip processes; monitor for rapid succession of package installations followed by publish operations"
+timeline:
+  first_seen: "2026-10-22"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-10-22"
+      source: StepSecurity
+      summary: "Self-replicating sckit worm discovered infecting MemTensor packages; 37 npm + 19 PyPI packages identified within 48 hours"
+    - date: "2026-10-24"
+      source: npm/PyPI
+      summary: "Infected packages removed from registries"
+last_reviewed: 2026-11-04
