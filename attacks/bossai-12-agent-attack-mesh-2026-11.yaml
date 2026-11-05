@@ -90,6 +90,14 @@ detections:
   - name: Multi-agent AI mesh detection
     format: guidance
     notes: "Monitor for patterns indicating multiple AI agents working in coordination: autonomous tool execution from unexpected contexts, MCP server traffic, high-volume reconnaissance, parallel targeting across multiple organizations"
+  - name: Suspicious Network Tool Launched Inside Container
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/discovery_suspicious_network_tool_launched_inside_container.toml"
+    notes: "Detects nmap, sqlmap, Metasploit tools in containers; directly applicable to BOSSAI mesh MCP-wrapped tooling"
+  - name: Web Application Suspicious Activity - sqlmap User Agent
+    format: elastic  
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/apm/apm_sqlmap_user_agent.toml"
+    notes: "Detects sqlmap tool used by BOSSAI against Thai universities"
   - name: Abliterated model abuse
     format: guidance
     notes: "Detect locally-run abliterated LLM models (DeepSeek-V4, Qwen, GLM variants) serving offensive agents; monitor for llama.cpp GPU inference serving attack frameworks"

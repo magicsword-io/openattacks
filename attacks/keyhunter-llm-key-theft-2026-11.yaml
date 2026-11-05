@@ -70,6 +70,14 @@ detections:
   - name: Cloud metadata endpoint abuse (IMDS)
     format: guidance
     notes: "Alert on access to 169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal; detect IMDS credential theft attempts"
+  - name: Kubernetes Pod Exec Cloud Instance Metadata Access
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/credential_access_kubernetes_pod_exec_cloud_instance_metadata.toml"
+    notes: "Detects IMDS access from K8s pods; applicable to KeyHunter's cloud metadata harvesting tactics"
+  - name: AWS Bedrock AgentCore Runtime Prompt Targeting Credentials
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws_bedrock_agentcore/credential_access_bedrock_agentcore_runtime_prompt_credential_harvesting.toml"
+    notes: "Detects prompts targeting credentials or metadata; relevant for AI-driven credential theft"
   - name: GitHub credential harvesting
     format: guidance
     notes: "Monitor for keyhunter/KeyHunter tool signatures scanning GitHub repos for API keys; detect mass repository enumeration"
