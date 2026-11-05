@@ -82,3 +82,24 @@ attack_flow:
       target: execute-payload
     - source: execute-payload
       target: exfiltrate-persist
+source_notes: "Verified per primary security research and vendor advisories."
+category: attacks-on-ai
+attribution:
+  actor_name: ClawHavoc+Unit42
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Koi/Unit42
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-02-01"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-02-01"
+      source: Koi/Unit42
+      summary: "Campaign discovered and analyzed"
+last_reviewed: 2026-11-04

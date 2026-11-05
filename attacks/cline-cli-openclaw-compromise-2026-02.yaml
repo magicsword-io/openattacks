@@ -77,3 +77,24 @@ attack_flow:
       target: harvest-on-startup
     - source: harvest-on-startup
       target: exfiltrate
+source_notes: "Verified sources per primary advisories and security research reports."
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: GitHub/Cline
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Supply chain monitoring
+    format: guidance
+    notes: "Monitor package installations, verify publisher authenticity, scan for malicious code patterns"
+timeline:
+  first_seen: "2026-02-17"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-02-17"
+      source: GitHub/Cline
+      summary: "Initial discovery and analysis"
+last_reviewed: 2026-11-04

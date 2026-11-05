@@ -77,3 +77,24 @@ attack_flow:
       target: user-installs
     - source: user-installs
       target: compromise
+source_notes: "Verified sources per primary advisories and security research reports."
+category: attacks-on-ai
+attribution:
+  actor_name: FakeGit
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Island
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Supply chain monitoring
+    format: guidance
+    notes: "Monitor package installations, verify publisher authenticity, scan for malicious code patterns"
+timeline:
+  first_seen: "2026-10-30"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-10-30"
+      source: Island
+      summary: "Initial discovery and analysis"
+last_reviewed: 2026-11-04
