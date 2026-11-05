@@ -7,13 +7,14 @@ sources:
   - url: https://unit42.paloaltonetworks.com/using-llms-obfuscate-malicious-javascript/
 magicsword_coverage: []
 borderline: true
-borderline_note: Research demonstration of LLM obfuscation efficacy; not a single named campaign.
+borderline_note: Research demonstration of LLM obfuscation efficacy; not a
+  single named campaign.
 ai_role: llm_generated_malware
 ai_role_secondary: null
 ai_role_detail: LLM used to rewrite/obfuscate existing malware JS for evasion
-technique_summary: Showed LLMs can effectively rewrite and obfuscate existing malicious JavaScript
-  to evade detection, while finding fully AI-written malware from scratch less practical at the
-  time.
+technique_summary: Showed LLMs can effectively rewrite and obfuscate existing
+  malicious JavaScript to evade detection, while finding fully AI-written
+  malware from scratch less practical at the time.
 initial_access: unknown
 ai_tooling_and_models:
   - Commercial LLMs
@@ -31,7 +32,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Researchers provide malicious JavaScript
-      description: The experiment starts with existing code rather than an observed delivery campaign.
+      description: The experiment starts with existing code rather than an observed
+        delivery campaign.
       kind: access
       source_urls: &a1
         - https://unit42.paloaltonetworks.com/using-llms-obfuscate-malicious-javascript/
@@ -47,7 +49,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Demo measures evasion
-      description: The finding concerns obfuscation efficacy, not a separate confirmed victim intrusion.
+      description: The finding concerns obfuscation efficacy, not a separate confirmed
+        victim intrusion.
       kind: impact
       source_urls: *a1
   edges:
@@ -59,6 +62,14 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: "Monitor for the techniques described in Unit 42: LLMs obfuscating
+      malicious JavaScript. Refer to sources for specific IOCs and TTPs."

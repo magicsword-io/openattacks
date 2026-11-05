@@ -7,14 +7,14 @@ sources:
   - url: https://www.hyas.com/blog/blackmamba-using-ai-to-generate-polymorphic-malware
 magicsword_coverage: []
 borderline: true
-borderline_note: Landmark PoC published ~Aug 2023 (just before Oct 2023 window). Included as
-  frequently cited precursor; not in-the-wild.
+borderline_note: Landmark PoC published ~Aug 2023 (just before Oct 2023 window).
+  Included as frequently cited precursor; not in-the-wild.
 ai_role: llm_generated_malware
 ai_role_secondary: null
 ai_role_detail: PoC polymorphic malware using LLM API to synthesize keylogger code in memory
-technique_summary: PoC that calls an LLM API to generate unique in-memory keylogger code each run
-  via Python exec and exfiltrates via Microsoft Teams webhooks; claimed to evade an industry EDR
-  with zero alerts in demo.
+technique_summary: PoC that calls an LLM API to generate unique in-memory
+  keylogger code each run via Python exec and exfiltrates via Microsoft Teams
+  webhooks; claimed to evade an industry EDR with zero alerts in demo.
 initial_access: unknown
 ai_tooling_and_models:
   - OpenAI-style LLM API
@@ -26,7 +26,8 @@ regions:
   - unknown
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: EDR behavioral on Teams webhook exfil; block unexpected generative API from endpoints
+prevention_angle: EDR behavioral on Teams webhook exfil; block unexpected
+  generative API from endpoints
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -34,7 +35,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Research execution starts in a lab
-      description: This is a proof of concept, with no established in-the-wild initial access.
+      description: This is a proof of concept, with no established in-the-wild initial
+        access.
       kind: unknown
       source_urls: &a1
         - https://www.hyas.com/blog/blackmamba-using-ai-to-generate-polymorphic-malware
@@ -62,5 +64,13 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0102
-    rationale: The proof of concept dynamically generates keylogger code through a model API.
+    rationale: The proof of concept dynamically generates keylogger code through a
+      model API.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in BlackMamba AI-synthesized
+      polymorphic keylogger (PoC). Refer to sources for specific IOCs and TTPs.

@@ -12,11 +12,11 @@ borderline_note: null
 ai_role: ai_credential_theft
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: After Laravel CVE-2021-3129 foothold, attackers stole cloud credentials and
-  probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure, ElevenLabs, MakerSuite, Mistral,
-  OpenAI, OpenRouter, GCP Vertex) to resell LLM access via reverse proxies while victims pay
-  inference bills. Later updates showed 85k+ Bedrock requests with Converse API abuse within 30 days
-  of launch.
+technique_summary: After Laravel CVE-2021-3129 foothold, attackers stole cloud
+  credentials and probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure,
+  ElevenLabs, MakerSuite, Mistral, OpenAI, OpenRouter, GCP Vertex) to resell LLM
+  access via reverse proxies while victims pay inference bills. Later updates
+  showed 85k+ Bedrock requests with Converse API abuse within 30 days of launch.
 initial_access: Vulnerable Laravel (CVE-2021-3129) leading to cloud credential theft
 ai_tooling_and_models:
   - AWS Bedrock Claude v2/v3
@@ -31,9 +31,10 @@ victims_and_sectors: unknown
 regions:
   - unknown
 attribution_or_cluster: unknown
-scale_and_metrics: Potential >$46,000/day Claude 2.x costs cited; July 2024 spike 61k Bedrock requests in 3 hours
-prevention_angle: Monitor Bedrock ListFoundationModels+Invoke/Converse from long-term AKIA keys;
-  rotate exposed keys; SCP restrict Bedrock
+scale_and_metrics: Potential >$46,000/day Claude 2.x costs cited; July 2024
+  spike 61k Bedrock requests in 3 hours
+prevention_angle: Monitor Bedrock ListFoundationModels+Invoke/Converse from
+  long-term AKIA keys; rotate exposed keys; SCP restrict Bedrock
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -58,7 +59,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Victim accounts incur inference usage
-      description: The report describes high-volume requests and potentially substantial costs.
+      description: The report describes high-volume requests and potentially
+        substantial costs.
       kind: impact
       source_urls: *a1
   edges:
@@ -72,3 +74,17 @@ atlas_techniques:
   - id: AML.T0012
     rationale: Stolen cloud credentials are used to access inference services.
     source_urls: *a1
+category: attacks-on-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Monitor AWS Bedrock API abuse
+    format: guidance
+    notes: Alert on unusual Bedrock ListFoundationModels, InvokeModel, and Converse
+      API calls, especially from AKIA long-term keys. Monitor for spike patterns (e.g.,
+      61k requests in 3 hours). Implement CloudTrail analysis for Bedrock usage from
+      unexpected geolocations or IAM principals.
+  - name: Detect stolen cloud credentials
+    format: guidance
+    notes: Scan for exposed AWS keys in public repositories, logs, and error tracking
+      services. Rotate credentials immediately upon detection. Use SCPs to restrict
+      Bedrock access to approved principals only.

@@ -8,13 +8,13 @@ sources:
   - url: https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
 magicsword_coverage: []
 borderline: true
-borderline_note: Underground tool offering; Check Point assessed WormGPT likely real but not clearly
-  superior to jailbroken mainstream models.
+borderline_note: Underground tool offering; Check Point assessed WormGPT likely
+  real but not clearly superior to jailbroken mainstream models.
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: GPT-J-based unrestricted LLM marketed on dark-web forums for phishing and malware
-  assistance without ethical filters.
+technique_summary: GPT-J-based unrestricted LLM marketed on dark-web forums for
+  phishing and malware assistance without ethical filters.
 initial_access: unknown
 ai_tooling_and_models:
   - WormGPT (GPT-J based)
@@ -39,12 +39,14 @@ attack_flow:
         - https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
     - id: step-2
       title: Unrestricted assistance is advertised
-      description: The offering claims support for phishing and malware without safety filters.
+      description: The offering claims support for phishing and malware without safety
+        filters.
       kind: ai
       source_urls: *a1
     - id: step-3
       title: Individual victim use is not established
-      description: The seed documents an offering and researcher assessment, not a confirmed exploit chain.
+      description: The seed documents an offering and researcher assessment, not a
+        confirmed exploit chain.
       kind: unknown
       source_urls: *a1
   edges:
@@ -52,3 +54,13 @@ attack_flow:
       target: step-2
     - source: step-2
       target: step-3
+category: adversary-use-of-ai
+attribution:
+  actor_name: underground cybercrime marketplace
+  motivation: financially-motivated
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in WormGPT underground malicious
+      LLM. Refer to sources for specific IOCs and TTPs.
