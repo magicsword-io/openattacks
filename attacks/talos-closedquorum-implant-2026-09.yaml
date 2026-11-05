@@ -1,0 +1,98 @@
+id: talos-closedquorum-implant-2026-09
+name: CLOSEDQUORUM - First autonomous C2 implant with 4-LLM voting panel
+date_reported: 2026-09-22
+researcher: Cisco Talos
+org: Cisco Talos Intelligence
+sources:
+  - url: https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    title: "Talos: The Closed Quorum - Inside the First Reported Autonomous AI C2 Implant"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "CLOSEDQUORUM implant uses 4-LLM voting panel (DeepSeek, Qwen, Mistral, Gemini) to autonomously decide next C2 actions without human operator input"
+technique_summary: "Sep 22, 2026: Cisco Talos analyzed CLOSEDQUORUM, first documented fully autonomous C2 implant. Deployed post-compromise on Windows/Linux. Architecture: (1) Implant collects host state (running processes, network connections, files, privileges, security tools); (2) Submits state to 4-LLM voting panel: DeepSeek V3, Qwen2.5, Mistral Large 2, Gemini 1.5 Pro; (3) Each LLM independently proposes next action; (4) Quorum voting requires 3/4 agreement; (5) Implant executes agreed action autonomously; (6) Cycle repeats. No human operator required after deployment. Talos observed in 3 intrusions (financial services, healthcare, government) Jul-Sep 2026."
+initial_access: "Not disclosed by Talos; implant deployed post-compromise"
+ai_tooling_and_models:
+  - DeepSeek V3
+  - Qwen 2.5 (Alibaba)
+  - Mistral Large 2
+  - Gemini 1.5 Pro (Google)
+other_tooling:
+  - CLOSEDQUORUM implant (Windows/Linux)
+victims_and_sectors: "3 observed intrusions Jul-Sep 2026: financial services, healthcare, government"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; sophisticated adversary"
+scale_and_metrics: "3 confirmed intrusions Jul-Sep 2026; implant operates autonomously for weeks"
+prevention_angle: "Monitor for multiple LLM API traffic from single host; detect long-running processes with periodic LLM queries; use behavioral analytics for autonomous C2 patterns"
+related_magicsword_projects: []
+source_notes: "Cisco Talos analysis. First documented fully autonomous C2 requiring no human operator input."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: espionage
+  attributed_by: Cisco Talos
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Multi-LLM API monitoring
+    format: guidance
+    notes: "Alert on hosts making API calls to multiple LLM providers (api.deepseek.com, dashscope.aliyuncs.com, api.mistral.ai, generativelanguage.googleapis.com)"
+  - name: Autonomous C2 pattern detection
+    format: guidance
+    notes: "Monitor for long-running processes with periodic LLM queries followed by system state collection and action execution"
+timeline:
+  first_seen: "2026-07-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-09-22"
+      source: Cisco Talos
+      summary: "First autonomous AI C2 implant disclosed; uses 4-LLM voting panel for decision-making; 3 intrusions observed Jul-Sep 2026"
+last_reviewed: 2026-11-05
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "First documented autonomous C2 implant using multi-LLM voting panel to make post-compromise decisions without human operator"
+    source_urls:
+      - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+attack_flow:
+  nodes:
+    - id: deploy
+      title: Deploy CLOSEDQUORUM implant
+      description: "Attacker deploys implant post-compromise; establishes persistence"
+      kind: access
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: collect-state
+      title: Collect host state
+      description: "Implant collects processes, network, files, privileges, security tools"
+      kind: ai
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: llm-voting
+      title: 4-LLM voting panel decides action
+      description: "Submit state to DeepSeek, Qwen, Mistral, Gemini; quorum voting requires 3/4 agreement"
+      kind: execution
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: execute
+      title: Execute actions autonomously
+      description: "Implant executes agreed action; cycle repeats; operates for weeks"
+      kind: impact
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+  edges:
+    - source: deploy
+      target: collect-state
+    - source: collect-state
+      target: llm-voting
+    - source: llm-voting
+      target: execute
+    - source: execute
+      target: collect-state
