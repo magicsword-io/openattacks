@@ -44,6 +44,13 @@ scale_and_metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
 prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 related_magicsword_projects: []
 source_notes: "Multiple overlapping threat clusters use ARTEX: CrowdStrike VAPOR PANDA (overlaps Earth Estries), GTIG/Mandiant UNC7228 (overlaps Storm-0940 per PentAGI use), Microsoft Storm-0940 (ConnectWise supply chain Oct 21, Okta/Entra/Cognito Oct 22), Microsoft DPRK actors Onyx Sleet and Pearl Sleet. ARTEX went closed-source after public disclosure. Related entry: unit42-artex-api-recon-2026-10 documents separate API reconnaissance incident."
+category: adversary-use-of-ai
+attribution:
+  country: China
+  motivation: financially-motivated
+  attributed_by: CrowdStrike Intelligence
+  confidence: medium
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-11-04
 attack_flow:
   nodes:

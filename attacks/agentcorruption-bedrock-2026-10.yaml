@@ -11,10 +11,11 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Chat prompt to public AgentCore agent abused tools that could HTTP/shell to IMDS
-  169.254.169.254, stealing execution-role credentials. Default role was region-wide across
-  AgentCore: invoke other agents, read conversations/memories, pull images, Secrets Manager /
-  AgentCore Identity, plant persistent memory hijacks. AWS tightened IMDSv2 defaults and narrowed
+technique_summary: "Chat prompt to public AgentCore agent abused tools that
+  could HTTP/shell to IMDS 169.254.169.254, stealing execution-role credentials.
+  Default role was region-wide across AgentCore: invoke other agents, read
+  conversations/memories, pull images, Secrets Manager / AgentCore Identity,
+  plant persistent memory hijacks. AWS tightened IMDSv2 defaults and narrowed
   default role."
 initial_access: Prompt injection / SSRF via agent tools against exposed AgentCore agent
 ai_tooling_and_models:
@@ -42,7 +43,8 @@ attack_flow:
         - https://labs.zenity.io/post/agentcorruption-how-a-single-prompt-collapsed-the-entire-cloud-security-model
     - id: step-2
       title: Agent tools reach metadata
-      description: Prompt injection abuses HTTP or shell tools to query the instance metadata service.
+      description: Prompt injection abuses HTTP or shell tools to query the instance
+        metadata service.
       kind: ai
       source_urls: *a1
     - id: step-3
@@ -52,8 +54,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Broader agent access
-      description: The role can reach other agents, memories and connected services; persistent memory
-        hijacks are described.
+      description: The role can reach other agents, memories and connected services;
+        persistent memory hijacks are described.
       kind: impact
       source_urls: *a1
   edges:
@@ -73,3 +75,12 @@ atlas_techniques:
   - id: AML.T0080.000
     rationale: The source describes persistent memory hijacks.
     source_urls: *a1
+category: attacks-on-ai
+attribution:
+  actor_name: Vulnerability research (Zenity at SecTor)
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in AgentCorruption (AWS Bedrock
+      AgentCore IMDS). Refer to sources for specific IOCs and TTPs.

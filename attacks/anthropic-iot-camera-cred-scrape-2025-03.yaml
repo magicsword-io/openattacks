@@ -7,14 +7,14 @@ sources:
   - url: https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
 magicsword_coverage: []
 borderline: true
-borderline_note: Capability development assisted by Claude; Anthropic did not confirm successful
-  real-world deployment.
+borderline_note: Capability development assisted by Claude; Anthropic did not
+  confirm successful real-world deployment.
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Actor used Claude to rewrite scraping toolkit, scrape target URLs, process
-  stealer-log Telegram posts, and improve UI/backend for testing leaked IoT camera credentials
-  against internet-facing devices.
+technique_summary: Actor used Claude to rewrite scraping toolkit, scrape target
+  URLs, process stealer-log Telegram posts, and improve UI/backend for testing
+  leaked IoT camera credentials against internet-facing devices.
 initial_access: unknown
 ai_tooling_and_models:
   - Claude
@@ -45,12 +45,14 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Credentials are tested
-      description: The toolkit tests leaked camera credentials against internet-facing devices.
+      description: The toolkit tests leaked camera credentials against internet-facing
+        devices.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Victim impact is undisclosed
-      description: The supplied report does not establish a confirmed set of compromised cameras.
+      description: The supplied report does not establish a confirmed set of
+        compromised cameras.
       kind: unknown
       source_urls: *a1
   edges:
@@ -62,6 +64,17 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: unknown sophisticated actor
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Claude-assisted IoT security
+      camera credential scraping toolkit. Refer to sources for specific IOCs and
+      TTPs.

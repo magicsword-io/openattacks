@@ -11,8 +11,9 @@ borderline_note: Marketplace claim; authenticity doubted by some researchers (Ch
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Advertised as AI for undetectable malware, vuln discovery, phishing kits, and
-  scam content. Seller also promoted related 'dark' LLM brands.
+technique_summary: Advertised as AI for undetectable malware, vuln discovery,
+  phishing kits, and scam content. Seller also promoted related 'dark' LLM
+  brands.
 initial_access: unknown
 ai_tooling_and_models:
   - FraudGPT (claimed)
@@ -36,12 +37,14 @@ attack_flow:
         - https://www.wired.com/story/chatgpt-scams-fraudgpt-wormgpt-crime/
     - id: step-2
       title: Unrestricted AI capabilities are claimed
-      description: The seller markets phishing, malware and vulnerability-discovery assistance.
+      description: The seller markets phishing, malware and vulnerability-discovery
+        assistance.
       kind: ai
       source_urls: *a1
     - id: step-3
       title: Authenticity and deployment are uncertain
-      description: The supplied record documents claims and researcher skepticism, not a verified victim chain.
+      description: The supplied record documents claims and researcher skepticism, not
+        a verified victim chain.
       kind: unknown
       source_urls: *a1
   edges:
@@ -49,3 +52,19 @@ attack_flow:
       target: step-2
     - source: step-2
       target: step-3
+category: adversary-use-of-ai
+attribution:
+  actor_name: underground marketplace
+ai_involvement_confidence: unverified
+detections:
+  - name: Monitor underground marketplace activity
+    format: guidance
+    notes: Track dark web forums and Telegram channels for mentions of jailbroken
+      LLM services like FraudGPT and WormGPT. Look for cryptocurrency transactions
+      associated with known underground AI service providers.
+  - name: Detect AI-generated content patterns
+    format: guidance
+    notes: Analyze phishing emails and malware samples for characteristics of LLM-generated
+      content (unnaturally fluent multi-language text, specific formatting patterns,
+      code style markers). Implement email security that flags likely AI-generated
+      phishing attempts.

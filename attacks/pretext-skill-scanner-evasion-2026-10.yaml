@@ -13,10 +13,10 @@ borderline_note: Academic research paper on evading skill scanners, not a real-w
 ai_role: other
 ai_role_secondary: null
 ai_role_detail: "Research: LLM attacker crafts malicious agent skills that evade scanners"
-technique_summary: "LLM attacker wrote payloads as plain-language instructions, framed as skill
-  purpose, split across files. Evaded NVIDIA SkillSpector-style static+LLM-judge scanners up to 97%
-  vs fixed detector, 77% vs adaptive. Takeaway: scanning SKILL.md alone is insufficient; scan whole
-  bundle."
+technique_summary: "LLM attacker wrote payloads as plain-language instructions,
+  framed as skill purpose, split across files. Evaded NVIDIA SkillSpector-style
+  static+LLM-judge scanners up to 97% vs fixed detector, 77% vs adaptive.
+  Takeaway: scanning SKILL.md alone is insufficient; scan whole bundle."
 initial_access: n/a (research)
 ai_tooling_and_models:
   - LLM attacker
@@ -37,7 +37,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Researchers construct skill bundles
-      description: The experiment evaluates skill-scanner resistance rather than a victim intrusion.
+      description: The experiment evaluates skill-scanner resistance rather than a
+        victim intrusion.
       kind: access
       source_urls: &a1
         - https://arxiv.org/abs/2609.39607
@@ -53,7 +54,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Research measures scanner evasion
-      description: Reported evasion rates apply to the evaluated detectors and experimental settings.
+      description: Reported evasion rates apply to the evaluated detectors and
+        experimental settings.
       kind: impact
       source_urls: *a1
   edges:
@@ -63,7 +65,8 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-region_notes: Controlled research against skill scanners, rather than a geographically located victim campaign.
+region_notes: Controlled research against skill scanners, rather than a
+  geographically located victim campaign.
 atlas_techniques:
   - id: AML.T0051.001
     rationale: Skill-bundle text carries instructions targeting the model-based scanner.
@@ -71,3 +74,12 @@ atlas_techniques:
   - id: AML.T0015
     rationale: The research measures evasion of AI-based detectors.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: Academic (Pretext paper)
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Pretext LLM attacker vs
+      agent-skill scanners. Refer to sources for specific IOCs and TTPs.
