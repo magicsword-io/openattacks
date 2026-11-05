@@ -11,10 +11,12 @@ borderline: true
 borderline_note: Proof of concept / experimental; not reported as active campaign.
 ai_role: llm_generated_malware
 ai_role_secondary: null
-ai_role_detail: Experimental ransomware using local/remote LLM to generate Lua scripts at runtime
-technique_summary: Cross-platform Go ransomware PoC that uses an LLM to dynamically generate and
-  execute malicious Lua for filesystem recon, exfil, and encryption on Windows and Linux. ESET
-  described related research as first known AI-written ransomware using local gpt-oss:20b.
+ai_role_detail: Experimental ransomware using local/remote LLM to generate Lua
+  scripts at runtime
+technique_summary: Cross-platform Go ransomware PoC that uses an LLM to
+  dynamically generate and execute malicious Lua for filesystem recon, exfil,
+  and encryption on Windows and Linux. ESET described related research as first
+  known AI-written ransomware using local gpt-oss:20b.
 initial_access: unknown
 ai_tooling_and_models:
   - LLM at runtime
@@ -27,7 +29,8 @@ regions:
   - unknown
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: Treat unexpected local LLM + script generation as high signal; ransomware fundamentals unchanged
+prevention_angle: Treat unexpected local LLM + script generation as high signal;
+  ransomware fundamentals unchanged
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -35,7 +38,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: PoC starts in a research setting
-      description: This entry is a ransomware proof of concept, not a confirmed victim campaign.
+      description: This entry is a ransomware proof of concept, not a confirmed victim
+        campaign.
       kind: unknown
       source_urls: &a1
         - https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
@@ -66,3 +70,10 @@ atlas_techniques:
   - id: AML.T0102
     rationale: The ransomware proof of concept generates Lua scripts at runtime.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in PROMPTLOCK LLM-generated Lua
+      ransomware PoC. Refer to sources for specific IOCs and TTPs.

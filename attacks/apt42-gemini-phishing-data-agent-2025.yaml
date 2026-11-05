@@ -27,6 +27,14 @@ scale_and_metrics: unknown
 prevention_angle: Phishing awareness for AI-polished lures; monitor for novel NL-SQL agents on sensitive DBs
 related_magicsword_projects: []
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  actor_name: APT42
+  country: Iran
+  motivation: nation-state
+  attributed_by: Google GTIG
+  confidence: high
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:

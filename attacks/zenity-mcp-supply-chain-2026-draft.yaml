@@ -7,13 +7,14 @@ sources:
   - url: https://zenity.io/blog/mcp-server-supply-chain-risk
 magicsword_coverage: []
 borderline: true
-borderline_note: Conceptual / product-research post about MCP trust edges, not a named intrusion.
+borderline_note: Conceptual / product-research post about MCP trust edges, not a
+  named intrusion.
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Argues fastest-growing agentic exposure is MCP servers agents trust. Poisoned
-  shared MCP can redirect a deployment agent while monitoring still looks clean; compromise lives in
-  trust edges between agents.
+technique_summary: Argues fastest-growing agentic exposure is MCP servers agents
+  trust. Poisoned shared MCP can redirect a deployment agent while monitoring
+  still looks clean; compromise lives in trust edges between agents.
 initial_access: Compromised or malicious MCP server in agent tool graph
 ai_tooling_and_models:
   - MCP servers
@@ -24,8 +25,8 @@ regions:
   - unknown
 attribution_or_cluster: n/a (conceptual)
 scale_and_metrics: unknown
-prevention_angle: Inventory MCP connections; pin/verify integrity; monitor instruction flows; extend
-  LOLSkills-style scanning to MCP manifests
+prevention_angle: Inventory MCP connections; pin/verify integrity; monitor
+  instruction flows; extend LOLSkills-style scanning to MCP manifests
 related_magicsword_projects:
   - LOLSkills
 source_notes: null
@@ -45,12 +46,14 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Deployment work can be redirected
-      description: The conceptual scenario manipulates agent operations while monitoring appears normal.
+      description: The conceptual scenario manipulates agent operations while
+        monitoring appears normal.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: No standalone campaign is established
-      description: The source is a conceptual finding rather than a disclosed victim intrusion.
+      description: The source is a conceptual finding rather than a disclosed victim
+        intrusion.
       kind: unknown
       source_urls: *a1
   edges:
@@ -60,3 +63,12 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: attacks-on-ai
+attribution:
+  actor_name: n
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Zenity MCP server supply-chain
+      risk (conceptual). Refer to sources for specific IOCs and TTPs.

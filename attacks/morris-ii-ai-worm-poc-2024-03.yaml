@@ -8,13 +8,15 @@ sources:
   - url: https://www.wired.com/story/here-come-the-ai-worms/
 magicsword_coverage: []
 borderline: true
-borderline_note: Controlled research PoC against GenAI-powered email assistants; not observed in the wild.
+borderline_note: Controlled research PoC against GenAI-powered email assistants;
+  not observed in the wild.
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Adversarial self-replicating prompts make GenAI email assistants propagate
-  malicious instructions to other agents (zero-click in lab), with potential spam/exfil side
-  effects. Tested against GPT-4, Gemini Pro, LLaVA in controlled setups.
+technique_summary: Adversarial self-replicating prompts make GenAI email
+  assistants propagate malicious instructions to other agents (zero-click in
+  lab), with potential spam/exfil side effects. Tested against GPT-4, Gemini
+  Pro, LLaVA in controlled setups.
 initial_access: unknown
 ai_tooling_and_models:
   - ChatGPT-4
@@ -35,7 +37,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Research payload enters an email assistant
-      description: The controlled experiment places adversarial content in assistant-readable email.
+      description: The controlled experiment places adversarial content in
+        assistant-readable email.
       kind: access
       source_urls: &a1
         - https://arxiv.org/abs/2403.02817
@@ -47,13 +50,14 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Assistant propagates the payload
-      description: Generated email carries the adversarial instructions to another assistant.
+      description: Generated email carries the adversarial instructions to another
+        assistant.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Lab demonstrates propagation
-      description: Potential spam and data-exfiltration effects are research outcomes, not confirmed
-        real-world victims.
+      description: Potential spam and data-exfiltration effects are research outcomes,
+        not confirmed real-world victims.
       kind: impact
       source_urls: *a1
   edges:
@@ -65,8 +69,16 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0051.001
-    rationale: Email content injects instructions into assistants in a controlled experiment.
+    rationale: Email content injects instructions into assistants in a controlled
+      experiment.
     source_urls: *a1
   - id: AML.T0061
     rationale: The prompt is designed to replicate into assistant output.
     source_urls: *a1
+category: attacks-on-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Morris II generative AI email
+      worm (research PoC). Refer to sources for specific IOCs and TTPs.

@@ -12,9 +12,10 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: SSRF in SharePoint connector used by Copilot Studio/Power Automate/Power
-  Apps/Copilot 365. Malicious agent List-folder action with attacker URL could harvest victim
-  SharePoint JWT when they connect/retry, enabling impersonation. Microsoft patched Dec 2024.
+technique_summary: SSRF in SharePoint connector used by Copilot Studio/Power
+  Automate/Power Apps/Copilot 365. Malicious agent List-folder action with
+  attacker URL could harvest victim SharePoint JWT when they connect/retry,
+  enabling impersonation. Microsoft patched Dec 2024.
 initial_access: unknown
 ai_tooling_and_models:
   - Microsoft Copilot Studio
@@ -60,3 +61,11 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: attacks-on-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Copilot Studio / Power Platform
+      SharePoint connector SSRF (CVE-2024-38206). Refer to sources for specific
+      IOCs and TTPs.

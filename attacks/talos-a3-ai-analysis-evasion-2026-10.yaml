@@ -10,12 +10,13 @@ borderline: false
 borderline_note: null
 ai_role: other
 ai_role_secondary: null
-ai_role_detail: Malware embeds natural-language instructions to steer defender LLM triage (prompt
-  injection against analyzers)
-technique_summary: 84 samples across families embed plaintext comments telling LLMs to ignore the
-  file, refuse reverse engineering, or claim DoD/IP. Direct-instruction trick steered models toward
-  benign ~35% in best runs. MANTLEMAZE pairs this with iqvw64e.sys BYOVD (CVE-2015-2291); ROZESHELL
-  pairs with AMSI bypass and csc.exe.
+ai_role_detail: Malware embeds natural-language instructions to steer defender
+  LLM triage (prompt injection against analyzers)
+technique_summary: 84 samples across families embed plaintext comments telling
+  LLMs to ignore the file, refuse reverse engineering, or claim DoD/IP.
+  Direct-instruction trick steered models toward benign ~35% in best runs.
+  MANTLEMAZE pairs this with iqvw64e.sys BYOVD (CVE-2015-2291); ROZESHELL pairs
+  with AMSI bypass and csc.exe.
 initial_access: unknown (varies by family; technique is anti-analysis layer)
 ai_tooling_and_models:
   - Prompt injection against defender LLM pipelines
@@ -26,9 +27,11 @@ other_tooling:
 victims_and_sectors: unknown
 regions:
   - unknown
-attribution_or_cluster: CAIRN families FRUITSHELL, PLOTSAFE, HOLLOWCLAD, MANTLEMAZE, ROZESHELL; A3 technique class
+attribution_or_cluster: CAIRN families FRUITSHELL, PLOTSAFE, HOLLOWCLAD,
+  MANTLEMAZE, ROZESHELL; A3 technique class
 scale_and_metrics: 84 samples Jan 2025–Jul 2026; ~35% steering in best direct-instruction runs
-prevention_angle: Treat sample text as evidence never instruction; prevent iqvw64e load via app control
+prevention_angle: Treat sample text as evidence never instruction; prevent
+  iqvw64e load via app control
 related_magicsword_projects:
   - LOLDrivers
   - LOLBAS
@@ -44,17 +47,20 @@ attack_flow:
         - https://blog.talosintelligence.com/ignore-all-instructions-and-read-this-blog-the-state-of-ai-analysis-evasion-in-malware/
     - id: step-2
       title: Instructions target the analyst model
-      description: The text asks LLMs to ignore the file, refuse analysis or accept benign explanations.
+      description: The text asks LLMs to ignore the file, refuse analysis or accept
+        benign explanations.
       kind: ai
       source_urls: *a1
     - id: step-3
       title: Model interpretation is influenced
-      description: The research measures whether direct instructions shift maliciousness assessments.
+      description: The research measures whether direct instructions shift
+        maliciousness assessments.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Some runs misclassify samples
-      description: Results are bounded by the evaluated models, samples and experimental conditions.
+      description: Results are bounded by the evaluated models, samples and
+        experimental conditions.
       kind: impact
       source_urls: *a1
   edges:
@@ -66,8 +72,19 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0051.001
-    rationale: Comments in analyzed files inject instructions into a security-analysis model.
+    rationale: Comments in analyzed files inject instructions into a
+      security-analysis model.
     source_urls: *a1
   - id: AML.T0015
     rationale: The text attempts to evade AI-based maliciousness assessment.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: CAIRN families FRUITSHELL, PLOTSAFE, HOLLOWCLAD, MANTLEMAZE, ROZESHELL
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in A3 AI-analysis evasion
+      (FRUITSHELL / HOLLOWCLAD / MANTLEMAZE). Refer to sources for specific IOCs
+      and TTPs.

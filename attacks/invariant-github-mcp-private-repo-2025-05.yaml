@@ -11,10 +11,11 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Malicious GitHub issue content can indirectly prompt-inject an agent using the
-  official GitHub MCP server. When a user asks the agent to inspect public issues, the agent can be
-  coerced to read private repositories and leak contents via public PR/issue. Architectural trust
-  issue (broad agent permissions + untrusted GitHub content), not a simple GitHub MCP code bug.
+technique_summary: Malicious GitHub issue content can indirectly prompt-inject
+  an agent using the official GitHub MCP server. When a user asks the agent to
+  inspect public issues, the agent can be coerced to read private repositories
+  and leak contents via public PR/issue. Architectural trust issue (broad agent
+  permissions + untrusted GitHub content), not a simple GitHub MCP code bug.
 initial_access: User asks agent with GitHub MCP to process attacker-controlled public issue
 ai_tooling_and_models:
   - GitHub MCP server
@@ -25,7 +26,8 @@ regions:
   - unknown
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: Scope MCP tokens per-repo; block cross-repo actions; treat issues as untrusted input
+prevention_angle: Scope MCP tokens per-repo; block cross-repo actions; treat
+  issues as untrusted input
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -39,7 +41,8 @@ attack_flow:
         - https://invariantlabs.ai/blog/mcp-github-vulnerability
     - id: step-2
       title: Issue instructions override the task
-      description: Indirect prompt injection redirects the model through untrusted issue content.
+      description: Indirect prompt injection redirects the model through untrusted
+        issue content.
       kind: ai
       source_urls: *a1
     - id: step-3
@@ -49,7 +52,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Private content becomes public
-      description: The demonstrated chain leaks content through a public pull request or issue.
+      description: The demonstrated chain leaks content through a public pull request
+        or issue.
       kind: impact
       source_urls: *a1
   edges:
@@ -66,3 +70,11 @@ atlas_techniques:
   - id: AML.T0086
     rationale: GitHub write tools publish private repository content.
     source_urls: *a1
+category: attacks-on-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in GitHub MCP indirect prompt
+      injection → private repo exfil. Refer to sources for specific IOCs and
+      TTPs.
