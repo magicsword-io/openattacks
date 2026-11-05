@@ -14,13 +14,7 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Operators run open-source Cairn harnesses that loop AI coding agents toward
-  intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose
-  binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did
-  not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal).
-  Oct 26 update: NorForge discovered threat actors AIA0009/AIA0010 hijacking exposed Cairn panels
-  themselves, harvesting SSH keys and operator secrets from compromised panels, deploying Poseidon
-  RAT to take over panel infrastructure and pivot to operators' own systems.
+technique_summary: "Operators run open-source Cairn harnesses that loop AI coding agents toward intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal). Oct 26 update: NorForge discovered threat actors AIA0009/AIA0010 hijacking exposed Cairn panels themselves, harvesting SSH keys and operator secrets from compromised panels, deploying Poseidon RAT to take over panel infrastructure and pivot to operators' own systems."
 initial_access: Unauthenticated web RCE / upload / deserialization / SQLi-to-RCE chains against
   e-commerce and payment sites (task-driven); CVE-2026-75650 Magento lab tooling observed on workers
 ai_tooling_and_models:

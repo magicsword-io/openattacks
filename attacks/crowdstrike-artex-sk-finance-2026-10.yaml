@@ -22,11 +22,7 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Likely Chinese-speaking financially motivated actor used open-source Chinese
-  agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories
-  held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via
-  xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX
-  later went closed-source.
+technique_summary: "Likely Chinese-speaking financially motivated actor used open-source Chinese agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX later went closed-source."
 initial_access: "unknown (industry reports: loan inquiry service; employee mobile work-support system)"
 ai_tooling_and_models:
   - ARTEX

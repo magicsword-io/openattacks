@@ -20,17 +20,7 @@ borderline_note: null
 ai_role: ai_credential_theft
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: After Laravel CVE-2021-3129 foothold, attackers stole cloud
-  credentials and probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure,
-  ElevenLabs, MakerSuite, Mistral, OpenAI, OpenRouter, GCP Vertex) to resell LLM
-  access via reverse proxies while victims pay inference bills. Later updates
-  showed 85k+ Bedrock requests with Converse API abuse within 30 days of launch.
-  Sep 3, 2026: FortiGuard discovered LLMjacking via AWS Bedrock Marketplace abuse;
-  attackers subscribe victims to high-cost model providers without approval.
-  Jan 28, 2026: Pillar Security "Bizarre Bazaar" campaign targets AI startups; stolen
-  credentials used for unauthorized inference resale. Sep 9, 2026: Okta disclosed stolen
-  AI session tokens enabling LLMjacking without long-term credentials; session hijacking
-  bypasses MFA and key rotation defenses.
+technique_summary: "After Laravel CVE-2021-3129 foothold, attackers stole cloud credentials and probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure, ElevenLabs, MakerSuite, Mistral, OpenAI, OpenRouter, GCP Vertex) to resell LLM access via reverse proxies while victims pay inference bills. Later updates showed 85k+ Bedrock requests with Converse API abuse within 30 days of launch. Sep 3, 2026: FortiGuard discovered LLMjacking via AWS Bedrock Marketplace abuse; attackers subscribe victims to high-cost model providers without approval. Jan 28, 2026: Pillar Security Bizarre Bazaar campaign targets AI startups; stolen credentials used for unauthorized inference resale. Sep 9, 2026: Okta disclosed stolen AI session tokens enabling LLMjacking without long-term credentials; session hijacking bypasses MFA and key rotation defenses."
 initial_access: Vulnerable Laravel (CVE-2021-3129) leading to cloud credential theft
 ai_tooling_and_models:
   - AWS Bedrock Claude v2/v3
