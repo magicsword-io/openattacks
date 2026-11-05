@@ -1,5 +1,5 @@
-id: langflow-mcp-rce-cve-2026-105740
-name: Langflow MCP-config RCE CVE-2026-105740 exploited for secrets
+id: langflow-mcp-rce-ghsa-2026
+name: Langflow MCP-config RCE (GHSA-7w94-79vh-5mr2, GHSA-w794-rj3p-xv45)
 date_reported: 2026-10-11
 researcher: Adam-Aghili, andifilhohub, Previdian
 org: Langflow, Previdian
@@ -17,7 +17,7 @@ borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: "Authenticated RCE via MCP Stdio server configuration allows arbitrary OS command execution on Langflow AI workflow platform"
-technique_summary: "CVE-2026-105740: Authenticated Langflow users can achieve RCE by adding MCP server with Stdio transport. User-supplied command field passed directly to bash -c 'exec {command}' with zero validation, no allowlisting, no sandboxing. Env field allows arbitrary environment variable injection (LD_PRELOAD, PATH override). Command executes when server list fetched with action_count=true - happens automatically in UI MCP settings page. Affects <1.9.0 (GHSA-7w94-79vh-5mr2) and <1.10.3 (GHSA-w794-rj3p-xv45). Default LANGFLOW_AUTO_LOGIN=true hands out token without credentials. Previdian honeypots recorded 1,423 exploitation attempts from 27 IPs (Belgium, China, Germany, Hong Kong, Japan, Nigeria, Philippines, Russia, Seychelles, Singapore, South Korea, Taiwan, Tanzania, US, Vietnam) beginning Sep 19, 2026. Attackers first checked auto-login, then brute-forced credentials. Fixed in 1.9.0 (command allowlist) and 1.10.3 (full policy enforcement, removed bash wrapper). GitHub: github.com/langflow-ai/langflow."
+technique_summary: "GHSA-7w94-79vh-5mr2 (CVE-2026-105697) and GHSA-w794-rj3p-xv45: Authenticated Langflow users can achieve RCE by adding MCP server with Stdio transport. User-supplied command field passed directly to bash -c 'exec {command}' with zero validation, no allowlisting, no sandboxing. Env field allows arbitrary environment variable injection (LD_PRELOAD, PATH override). Command executes when server list fetched with action_count=true - happens automatically in UI MCP settings page. Affects <1.9.0 (GHSA-7w94-79vh-5mr2) and <1.10.3 (GHSA-w794-rj3p-xv45). Default LANGFLOW_AUTO_LOGIN=true hands out token without credentials. Previdian honeypots recorded 1,423 exploitation attempts from 27 IPs (Belgium, China, Germany, Hong Kong, Japan, Nigeria, Philippines, Russia, Seychelles, Singapore, South Korea, Taiwan, Tanzania, US, Vietnam) beginning Sep 19, 2026. Attackers first checked auto-login, then brute-forced credentials. Fixed in 1.9.0 (command allowlist) and 1.10.3 (full policy enforcement, removed bash wrapper). GitHub: github.com/langflow-ai/langflow."
 initial_access: "Authenticated user access (or LANGFLOW_AUTO_LOGIN=true provides token without credentials); exploitation via POST/PATCH /api/v2/mcp/servers/{server_name} or embedded flow configs"
 ai_tooling_and_models:
   - Langflow AI workflow platform
