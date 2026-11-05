@@ -71,18 +71,28 @@ attribution:
   confidence: high
 ai_involvement_confidence: confirmed
 detections:
+  - name: Nmap/Zenmap Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_pua_nmap_zenmap.yml"
+    notes: "Detects nmap/zenmap execution used by BOSSAI agents for network reconnaissance"
+  - name: Linux HackTool Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_susp_hktl_execution.yml"
+    notes: "Detects execution of hacktools including nmap, sqlmap, Metasploit used by offensive agents"
+  - name: Linux Network Service Scanning
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/syscall/lnx_auditd_network_service_scanning.yml"
+    notes: "Detects network service enumeration via auditd syscalls"
+  - name: SQL Injection in Web Logs
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/web/webserver_generic/web_sql_injection_in_access_logs.yml"
+    notes: "Detects SQL injection attempts in web server access logs (BOSSAI targeted Thai universities with SQL injection)"
   - name: Multi-agent AI mesh detection
     format: guidance
-    notes: "Monitor for patterns indicating multiple AI agents working in coordination: autonomous tool execution (nmap, sqlmap, Metasploit from unexpected contexts), MCP server traffic, high-volume reconnaissance, parallel targeting across multiple organizations"
+    notes: "Monitor for patterns indicating multiple AI agents working in coordination: autonomous tool execution from unexpected contexts, MCP server traffic, high-volume reconnaissance, parallel targeting across multiple organizations"
   - name: Abliterated model abuse
     format: guidance
     notes: "Detect locally-run abliterated LLM models (DeepSeek-V4, Qwen, GLM variants) serving offensive agents; monitor for llama.cpp GPU inference serving attack frameworks"
-  - name: Emergency services API abuse
-    format: guidance
-    notes: "Monitor emergency services APIs (119 dispatch, patient care records, fire department systems) for unauthorized access, mass data extraction"
-  - name: AI agent hallucination indicators
-    format: guidance
-    notes: "Flag vulnerability reports claiming critical CVEs against filtered ports, RCE on failed connections, or misclassified process failures as high-severity findings"
 timeline:
   first_seen: "2026-07-01"
   last_updated: "2026-11-05"

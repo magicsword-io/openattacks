@@ -60,6 +60,10 @@ attribution:
   confidence: high
 ai_involvement_confidence: confirmed
 detections:
+  - name: AWS IMDS Malicious Usage
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/aws/cloudtrail/aws_cloudtrail_imds_malicious_usage.yml"
+    notes: "Detects malicious usage of AWS Instance Metadata Service (IMDS) for credential theft; applies to KeyHunter's cloud metadata harvesting"
   - name: Exposed .env file monitoring
     format: guidance
     notes: "Monitor for unauthorized access to .env files, config.json, secrets.toml on PaaS platforms; alert on .env.development, .env.prod, .env.staging, .env.backup access patterns"
@@ -72,9 +76,6 @@ detections:
   - name: API key validation traffic
     format: guidance
     notes: "Detect automated API key validation attempts against Anthropic, OpenAI, Google, DeepSeek endpoints; monitor for high-volume failed authentication from single sources"
-  - name: Wayback Machine .env queries
-    format: guidance
-    notes: "Alert on Internet Archive queries targeting .env, config.yaml, secrets files for historical exposure recovery"
 timeline:
   first_seen: "2026-01-15"
   last_updated: "2026-11-05"
