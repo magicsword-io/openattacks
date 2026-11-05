@@ -33,7 +33,6 @@ scale_and_metrics: "~450 downloads in 3-hour window; packages removed within 3 h
 prevention_angle: "Verify npm package integrity; review postinstall scripts; monitor for unexpected dependencies; use npm audit; implement software composition analysis (SCA); rotate credentials after suspected exposure; use credential vaults; monitor file access to AI credential stores; network egress filtering for Discord/unknown domains"
 related_magicsword_projects: []
 source_notes: "Socket Security analysis; TensorZero GitHub repo github.com/tensorlake/tensorzero. Related to s1ngularity-nx-ai-cli-2025-08 entry (Shai-Hulud targeting NX.dev AI CLI) and Mini Shai-Hulud keyv campaign. Detection: monitor for 'Shai-Hulud' patterns (Discord webhooks, base64 obfuscation in postinstall, AI credential path access .cursor/*, Claude config access, env var harvesting), alert on npm packages with obfuscated postinstall scripts, check for tensorlakeapi[.]online domain."
-last_reviewed: 2026-11-04
 iocs:
   domains:
     - tensorlakeapi.online
@@ -79,3 +78,27 @@ attack_flow:
       target: execute-stealer
     - source: execute-stealer
       target: exfiltrate
+source_notes: "Socket Security analysis; TensorZero GitHub github.com/tensorlake/tensorzero. Related to s1ngularity-nx-ai-cli-2025-08 entry (Shai-Hulud targeting NX.dev AI CLI) and Mini Shai-Hulud keyv campaign. Detection: monitor for 'Shai-Hulud' patterns (Discord webhooks, base64 obfuscation in postinstall, AI credential path access .cursor/*, Claude config access, env var harvesting), alert on npm packages with obfuscated postinstall scripts, check for tensorlakeapi[.]online domain."
+category: attacks-on-ai
+attribution:
+  actor_name: ChainDrop
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Socket Security
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: npm postinstall script monitoring
+    format: guidance
+    notes: "Monitor npm postinstall scripts for file system access to AI credential paths (~/.cursor/, ~/Library/Application Support/Claude, ~/.openai/, ~/.config/gh/, ~/.aws/); alert on Discord webhook URLs or unknown C2 domains in install scripts"
+  - name: Network egress monitoring
+    format: guidance
+    notes: "Alert on POST requests to tensorlakeapi[.]online or Discord webhook domains from npm/Node processes; monitor base64-encoded data exfiltration"
+timeline:
+  first_seen: "2026-10-17"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-10-17"
+      source: Socket Security
+      summary: "TensorZero packages compromised via phished maintainer credentials; ~450 downloads in 3-hour window before removal"
+last_reviewed: 2026-11-04
