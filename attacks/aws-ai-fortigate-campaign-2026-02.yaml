@@ -21,7 +21,7 @@ other_tooling:
   - FortiGate configuration harvesting
 victims_and_sectors: "600+ organizations using vulnerable FortiGate appliances"
 regions:
-  - Global
+  - Multiple regions
 attribution_or_cluster: "Unknown actor"
 scale_and_metrics: "600+ FortiGate appliances compromised as of Feb 2026"
 prevention_angle: "Patch FortiGate appliances (CVE-2024-21762); monitor for unusual configuration access; restrict VPN access; rotate credentials post-compromise"

@@ -20,7 +20,7 @@ other_tooling:
   - Automated secret harvesting
 victims_and_sectors: "Open-source projects with insecure GitHub Actions workflows"
 regions:
-  - Global
+  - Multiple regions
 attribution_or_cluster: "Unknown actor"
 scale_and_metrics: "Hundreds of repositories scanned and exploited; multiple secrets stolen as of Mar 2026"
 prevention_angle: "Secure GitHub Actions workflows; avoid untrusted input in run commands; use StepSecurity Harden Runner; rotate exposed secrets; restrict workflow permissions"
