@@ -32,7 +32,7 @@ category: adversary-use-of-ai
 attribution:
   actor_name: Unknown
   country: Unknown
-  motivation: espionage
+  motivation: unknown
   attributed_by: Cisco Talos
   confidence: medium
 ai_involvement_confidence: confirmed
