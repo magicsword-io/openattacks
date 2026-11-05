@@ -8,7 +8,7 @@ sources:
     title: "METR: Exposed Vibe-Coded Agent Dashboard Key Led to ~$600K Credit Theft"
 borderline: false
 borderline_note: null
-ai_role: attack_on_ai_systems
+ai_role: ai_credential_theft
 ai_role_secondary: attacker_uses_ai_as_operator
 ai_role_detail: "Threat actor discovers exposed API key in AI agent dashboard code; uses AI to rapidly enumerate and drain ~$600K in cloud AI credits"
 technique_summary: "Aug 31, 2026: METR disclosed incident where 'vibe-coded' (minimally tested, rapidly prototyped) AI agent dashboard accidentally exposed API key in client-side code. Unknown actor discovered key, used AI tooling to rapidly enumerate victim's cloud AI accounts (AWS Bedrock, Azure OpenAI, GCP Vertex AI), and drained approximately $600,000 in AI inference credits via unauthorized LLM calls. Demonstrates security risks of rapid AI prototyping ('vibe-coding') and AI-augmented attacker enumeration. METR estimates AI tooling accelerated enumeration ~10x vs manual methods."
@@ -27,7 +27,7 @@ scale_and_metrics: "~$600,000 in AI credits stolen over <24 hours"
 prevention_angle: "Secure AI prototypes before production; never expose API keys in client code; use secret management; monitor AI usage for anomalies; set usage limits"
 related_magicsword_projects: []
 source_notes: "METR disclosure. 'Vibe-coding' refers to rapid AI-assisted prototyping with minimal security review. Detection: monitor for unusual AI credit consumption spikes, unauthorized account access, rapid enumeration patterns."
-category: attack-on-ai
+category: attacks-on-ai
 attribution:
   actor_name: Unknown
   country: Unknown
@@ -53,7 +53,7 @@ iocs:
   hashes: []
   urls: []
 atlas_techniques:
-  - id: AML.T0030
+  - id: AML.T0000
     rationale: "Exposed API key in AI agent dashboard leads to theft of AI inference credits"
     source_urls:
       - https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
