@@ -37,12 +37,12 @@ ai_involvement_confidence: confirmed
 detections:
   - name: GitHub Self-Hosted Runner Suspicious Execution
     format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_github_self_hosted_runner.yml"
+    notes: "Detects suspicious execution from GitHub self-hosted runners; relevant for hackerbot-claw exploiting GitHub Actions"
   - name: GitHub Actions Workflow Modification Blocked
     format: elastic
     url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/github/initial_access_github_actions_workflow_injection_blocked.toml"
     notes: "Detects GitHub Actions workflow injection attempts; directly applicable to hackerbot-claw exploitation"
-    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_github_self_hosted_runner.yml"
-    notes: "Detects suspicious execution from GitHub self-hosted runners; relevant for hackerbot-claw exploiting GitHub Actions"
   - name: GitHub Actions exploitation monitoring
     format: guidance
     notes: "Monitor for automated pull requests with suspicious workflow triggers; alert on unexpected secret access or GITHUB_TOKEN usage; detect rapid workflow execution spikes"
