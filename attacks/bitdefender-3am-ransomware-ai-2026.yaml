@@ -10,6 +10,9 @@ sources:
   - url: https://github.com/bitdefender/threat-intel
     title: Bitdefender Threat Intelligence repository (IOCs)
     publisher: Bitdefender
+  - url: https://www.infosecurity-magazine.com/news/3am-ransomware-ai-uk-schools/
+    title: "3AM Ransomware Uses AI Loop to Target UK Schools"
+    publisher: Infosecurity Magazine
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -55,7 +58,17 @@ iocs:
   hashes: []
   urls:
     - https://github.com/bitdefender/threat-intel
-last_reviewed: 2026-11-04
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-11-04"
+      source: Bitdefender
+      summary: "3AM ransomware AI loop attack against UK schools disclosed"
+    - date: "2026-11-04"
+      source: Infosecurity Magazine
+      summary: "Additional coverage of 3AM ransomware AI-driven operations"
+last_reviewed: 2026-11-05
 confidence: high
 region_notes: United Kingdom reflects targeted school systems
 atlas_techniques:
