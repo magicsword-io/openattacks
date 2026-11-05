@@ -50,8 +50,27 @@ scale_and_metrics: Potential >$46,000/day Claude 2.x costs cited; July 2024
 prevention_angle: Monitor Bedrock ListFoundationModels+Invoke/Converse from
   long-term AKIA keys; rotate exposed keys; SCP restrict Bedrock
 related_magicsword_projects: []
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: "2026 updates expand LLMjacking scope: Bedrock Marketplace abuse (FortiGuard), AI startup targeting (Pillar Bizarre Bazaar), and session token theft (Okta)"
+timeline:
+  first_seen: "2024-05-06"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2024-05-06"
+      source: Sysdig
+      summary: "Initial LLMjacking disclosure; Laravel CVE-2021-3129 to cloud credential theft and AI inference resale"
+    - date: "2024-07-01"
+      source: Sysdig
+      summary: "Bedrock Converse API abuse observed; 85k+ requests within 30 days of launch"
+    - date: "2026-01-28"
+      source: Pillar Security
+      summary: "Bizarre Bazaar campaign targets AI startups with LLMjacking"
+    - date: "2026-09-03"
+      source: FortiGuard
+      summary: "AWS Bedrock Marketplace abuse; attackers subscribe victims to high-cost models without approval"
+    - date: "2026-09-09"
+      source: Okta Security
+      summary: "Stolen AI session tokens enable LLMjacking without long-term credentials; bypasses MFA and key rotation"
+last_reviewed: 2026-11-05
 attack_flow:
   nodes:
     - id: step-1
