@@ -33,6 +33,34 @@ scale_and_metrics: "1,423 exploitation attempts against Previdian honeypots from
 prevention_angle: "Upgrade to Langflow 1.10.3+; disable LANGFLOW_AUTO_LOGIN; enforce strong unique passwords; review MCP server configurations; monitor /api/v2/mcp/servers/ API access; check for unexpected command/env entries; network segmentation; principle of least privilege"
 related_magicsword_projects: []
 source_notes: "Two GitHub Security Advisories (GHSA-7w94-79vh-5mr2 for <1.9.0, GHSA-w794-rj3p-xv45 for <1.10.3); Previdian observed exploitation 2+ weeks before public CVE; VulnCheck analysis of AI stack vulnerabilities. Detection: monitor Langflow API /api/v2/mcp/servers/ for suspicious commands, review MCP Stdio configs, check for bash -c execution, monitor env var injection patterns (LD_PRELOAD, PATH), alert on auto-login token requests from unexpected IPs."
+category: attacks-on-ai
+attribution:
+  actor_name: Multiple opportunistic attackers
+  country: Multiple (27 countries)
+  motivation: financially-motivated
+  attributed_by: Previdian, VulnCheck
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Monitor MCP server API endpoints
+    format: guidance
+    notes: "Monitor POST/PATCH requests to /api/v2/mcp/servers/ endpoints for suspicious command parameters; alert on bash -c execution patterns, environment variable injection (LD_PRELOAD, PATH overrides), and auto-login token generation from unexpected IPs"
+  - name: File system monitoring
+    format: guidance
+    notes: "Monitor Langflow process for execution of child processes via bash; alert on unexpected shell command execution from Langflow worker processes"
+timeline:
+  first_seen: "2026-09-19"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-09-19"
+      source: Previdian honeypots
+      summary: "First exploitation attempts observed, 2+ weeks before CVE publication"
+    - date: "2026-10-05"
+      source: GitHub Security Advisory
+      summary: "CVE published"
+    - date: "2026-10-11"
+      source: Previdian, The Hacker News
+      summary: "333 exploitation attempts on this day alone; public disclosure"
 last_reviewed: 2026-11-04
 iocs:
   domains: []
