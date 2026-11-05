@@ -5,6 +5,9 @@ researcher: Snorre Fagerland
 org: NorForge
 sources:
   - url: https://norforge.com/blog/inside_cairn
+    title: "NorForge: Inside Cairn - Exposed AI Agent Panels (AIA0001-AIA0003)"
+  - url: https://norforge.com/blog/cairn-panels-hijacked-aia0009-aia0010
+    title: "NorForge: Cairn Panels Hijacked - AIA0009/AIA0010 Deploy Poseidon RAT"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -15,6 +18,9 @@ technique_summary: Operators run open-source Cairn harnesses that loop AI coding
   intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose
   binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did
   not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal).
+  Oct 26 update: NorForge discovered threat actors AIA0009/AIA0010 hijacking exposed Cairn panels
+  themselves, harvesting SSH keys and operator secrets from compromised panels, deploying Poseidon
+  RAT to take over panel infrastructure and pivot to operators' own systems.
 initial_access: Unauthenticated web RCE / upload / deserialization / SQLi-to-RCE chains against
   e-commerce and payment sites (task-driven); CVE-2026-75650 Magento lab tooling observed on workers
 ai_tooling_and_models:
@@ -76,7 +82,17 @@ detections:
     format: guidance
     notes: Scan for exposed Cairn or similar AI agent harness panels (default port 8000, no auth).
       Look for /api/*, /tasks, or panel-specific endpoints accessible without authentication.
-last_reviewed: 2026-10-20
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-10-19"
+      source: NorForge
+      summary: "Initial disclosure of exposed Cairn panels AIA0001-AIA0003; operators using AI agents for web exploitation"
+    - date: "2026-10-26"
+      source: NorForge
+      summary: "AIA0009/AIA0010 discovered hijacking exposed Cairn panels; harvesting SSH keys, deploying Poseidon RAT to compromise panel operators"
+last_reviewed: 2026-11-05
 attack_flow:
   nodes:
     - id: step-1
