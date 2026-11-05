@@ -77,3 +77,24 @@ attack_flow:
       target: install-malware
     - source: install-malware
       target: exfiltrate-mine
+source_notes: "Verified per primary security research and vendor advisories."
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Push Security
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-03-06"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-03-06"
+      source: Push Security
+      summary: "Campaign discovered and analyzed"
+last_reviewed: 2026-11-04

@@ -88,3 +88,24 @@ attack_flow:
       target: harvest-credentials
     - source: harvest-credentials
       target: exfiltrate-persist
+source_notes: "Verified per primary security research and vendor advisories."
+category: attacks-on-ai
+attribution:
+  actor_name: Multiple
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Aikido/Koi
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-01-26"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-01-26"
+      source: Aikido/Koi
+      summary: "Campaign discovered and analyzed"
+last_reviewed: 2026-11-04

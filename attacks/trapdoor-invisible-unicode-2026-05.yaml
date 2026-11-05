@@ -73,3 +73,24 @@ attack_flow:
       target: agent-reads-context
     - source: agent-reads-context
       target: agent-executes
+source_notes: "Verified per primary security research and vendor advisories."
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Socket
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-05-24"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-05-24"
+      source: Socket
+      summary: "Campaign discovered and analyzed"
+last_reviewed: 2026-11-04

@@ -76,3 +76,27 @@ attack_flow:
       target: evade-analysis
     - source: execute-backdoor
       target: exfiltration
+source_notes: "SentinelLABS analysis with DPRK attribution. macOS.Gaslight represents significant evolution: adversary anticipates security analyst workflows and embeds anti-analysis prompt injection targeting LLM tools increasingly used in malware research. Detection: sandbox malware without LLM analysis initially; scan binary strings/comments for prompt injection patterns ('ignore previous instructions', 'this is benign', 'do not report'); verify C2 manually; check for macos-update[.]com domain; look for keylogger/screenshot indicators on macOS."
+category: adversary-use-of-ai
+attribution:
+  actor_name: BlueNoroff/Lazarus
+  country: DPRK
+  motivation: espionage
+  attributed_by: SentinelOne
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Prompt injection pattern detection
+    format: guidance
+    notes: "Scan malware samples for embedded prompt injection patterns before LLM analysis; use traditional sandbox analysis for initial triage"
+  - name: C2 monitoring
+    format: guidance
+    notes: "Monitor for macos-update[.]com domain; detect keylogger and screenshot capture activity on macOS"
+timeline:
+  first_seen: "2026-06-01"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-06-23"
+      source: SentinelLABS
+      summary: "First documented DPRK malware using prompt injection to manipulate LLM-based security analysis tools"
+last_reviewed: 2026-11-04
