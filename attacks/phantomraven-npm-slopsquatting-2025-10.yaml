@@ -5,8 +5,13 @@ researcher: Koi Security / Sonatype / BleepingComputer
 org: Koi Security
 sources:
   - url: https://www.koi.ai/blog/phantomraven-npm-malware-hidden-in-invisible-dependencies
+    title: "Koi Security: PhantomRaven npm Malware Hidden in Invisible Dependencies"
   - url: https://www.sonatype.com/blog/phantomraven-npm-malware
+    title: "Sonatype: PhantomRaven npm Malware Campaign"
   - url: https://www.bleepingcomputer.com/news/security/phantomraven-attack-floods-npm-with-credential-stealing-packages/
+    title: "BleepingComputer: PhantomRaven Attack Floods npm"
+  - url: https://www.crowdstrike.com/blog/phantomraven-llm-generated-stealer-jpd/
+    title: "CrowdStrike: PhantomRaven Stealer is LLM-Generated, Operator JPD Identified"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -16,7 +21,9 @@ ai_role_detail: null
 technique_summary: Flood of malicious npm packages used remote dynamic HTTP
   dependencies invisible to many scanners and included AI-hallucination-friendly
   names such as unused-imports. Delivered credential stealers targeting
-  npm/Git/CI tokens.
+  npm/Git/CI tokens. Sep 15, 2026 update: CrowdStrike analysis confirmed stealer
+  code is LLM-generated (characteristic patterns, comments, structure) and attributed
+  operator to "JPD" based on code artifacts and infrastructure links.
 initial_access: npm install of malicious/slopsquat packages
 ai_tooling_and_models: []
 other_tooling:
@@ -25,13 +32,23 @@ other_tooling:
 victims_and_sectors: unknown
 regions:
   - unknown
-attribution_or_cluster: unknown
+attribution_or_cluster: Operator "JPD" (CrowdStrike, Sep 2026)
 scale_and_metrics: 126 packages cited in related reporting
 prevention_angle: Block remote HTTP deps; lockfiles; SCA; never trust
   AI-suggested package names blindly
 related_magicsword_projects: []
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: "CrowdStrike identified LLM-generated stealer patterns: characteristic variable naming, comments explaining basic operations, structured code organization typical of AI-generated malware"
+timeline:
+  first_seen: "2025-10-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2025-10-01"
+      source: Koi Security, Sonatype, BleepingComputer
+      summary: "PhantomRaven campaign disclosed; 126 malicious npm packages with slopsquatting names and remote dependencies"
+    - date: "2026-09-15"
+      source: CrowdStrike
+      summary: "Stealer code confirmed LLM-generated; operator identified as JPD"
+last_reviewed: 2026-11-05
 attack_flow:
   nodes:
     - id: step-3
@@ -75,6 +92,12 @@ atlas_techniques:
     source_urls: *a1
 category: attacks-on-ai
 ai_involvement_confidence: confirmed
+attribution:
+  actor_name: JPD
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: CrowdStrike
+  confidence: medium
 detections:
   - name: Review attack-specific indicators
     format: guidance
