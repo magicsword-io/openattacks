@@ -1,0 +1,174 @@
+id: keyhunter-llm-key-theft-2026-11
+name: KeyHunter Operation - LLM API key theft and academic fraud
+date_reported: 2026-11-04
+researcher: SOCRadar STRU
+org: SOCRadar
+sources:
+  - url: https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+    title: "SOCRadar STRU: KeyHunter Operation - Harvard Alumni Data, Stanford Applications and LLM Key Theft"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: attacker_uses_ai_as_operator
+ai_role_detail: "leepsmarts harvests LLM API keys from misconfigured cloud infrastructure while using AI agents (Hermes, OpenClaw) to manage operations and conduct parallel academic fraud campaign"
+technique_summary: "Nov 4, 2026: SOCRadar STRU discovered KeyHunter operation by leepsmarts (Chinese-speaking, UTC+8), active since Jan 2026. Two parallel tracks: (1) LLM API key theft: 2,233 API keys harvested (Anthropic, OpenAI, Google, DeepSeek), 12 marked valid (0.54% yield), targeting 247 exposed LLM gateways on PaaS platforms (Vercel, Netlify, Railway, Render, Replit, Streamlit, Fly.io, Cloudflare Pages). Tools scan .env files, GitHub repos, and cloud metadata. (2) Academic fraud: 195 Harvard alumni records from Nov 2025 ShinyHunters torrent, application payment links for Stanford/UChicago/Wake Forest/Case Western/Central Michigan, accounts at NYU/UC Berkeley/Oregon State/UIUC/Colorado State. (3) Financial fraud: Harmony ONE crypto drainer, stolen Stripe merchant keys for card validation, CVVs from Chinese underground market. Infrastructure: 6 servers + Malaysia OpenClaw host, tied by PentAGI CA certificate. AI agents manage operations: Hermes Agent node runs AI_radar cron (every 240min) monitoring X/Twitter, HuggingFace, GitHub, arXiv for new LLM releases/quotas via grok-4.6 + Tavily proxy. Four-phase pipeline: Phase 0 (AI monitoring), Phase 1 (FOFA/Shodan reconnaissance), Phase 2 (env_hunter scans 50+ paths, fadidevv/keyhunter + bigzooooz/KeyHunter GitHub scrapers), Phase 3 (validation), Phase 4 (unified dashboard). OPSEC failure: directory listing on 209.112.91.74 exposed 110 files/37 directories including Telegram bot tokens, operational logs, stolen credentials. CVE-2026-41940 (CVSS 9.8, CISA KEV) exploit staged against UTN Argentina, Arizona Christian University, University of Utah. Real victim seed phrases captured by Harmony ONE drainer."
+initial_access: "Exposed .env files on PaaS platforms, GitHub leaked credentials, cloud metadata endpoints (IMDS)"
+ai_tooling_and_models:
+  - Hermes Agent (github.com/NousResearch/hermes-agent)
+  - OpenClaw agent
+  - grok-4.6 model (AI_radar monitoring)
+  - PentAGI (github.com/vxcontrol/pentagi)
+  - aipocket (github.com/leepsmarts/aipocket)
+other_tooling:
+  - "fadidevv/keyhunter (github.com/fadidevv/keyhunter, Rust, crates.io: github-keyhunter v0.1.0)"
+  - "bigzooooz/KeyHunter (github.com/bigzooooz/KeyHunter)"
+  - env_hunter (v4.0, scans 50+ paths)
+  - FOFA reconnaissance
+  - Shodan API
+  - 360 Quake searches
+  - HFS server hunting
+  - Wayback Machine (wayback_verify.py)
+  - Tavily search proxy (tavily.astrdark.cyou)
+  - Exa and Firecrawl APIs
+  - anthropic_check.py
+  - openai_check.py
+  - cloud_check.py
+  - openrouter_check.py
+  - stripe_card_checker.py
+  - Harmony ONE crypto drainer (modified fork)
+  - CVE-2026-41940 exploit (4-stage, pre-staged SSH key)
+victims_and_sectors: "Developers and organizations with exposed LLM API keys on PaaS platforms; 20 universities (19 US): Harvard alumni data, Stanford/UChicago/Wake Forest/Case Western/Central Michigan applications, NYU/UC Berkeley/Oregon State/UIUC/Colorado State/CSU accounts; cryptocurrency wallet users (Harmony ONE drainer); credit card fraud victims"
+regions:
+  - United States
+  - China
+  - South Korea
+  - Malaysia
+  - Argentina
+attribution_or_cluster: "leepsmarts (@leepsmartsx), Chinese-speaking, UTC+8, GitHub PRO account"
+scale_and_metrics: "2,233 API keys harvested, 12 valid (0.54% yield); 247 exposed LLM gateways catalogued, 223 usable; 195 Harvard alumni records; 20 universities targeted (19 US); active since Jan 15, 2026, last activity Oct 13, 2026; 110 files exposed (37 directories, 9GB); AI_radar: 20 runs Aug-Sep, $6.13/run, $37/day est.; URL survival rate 1.9%; 41 keys in 24h; env_hunter v4.0: +257% path expansion (14→50)"
+prevention_angle: "Secure .env files and cloud configurations; never expose API keys in GitHub repos or PaaS platforms; monitor cloud metadata endpoints (169.254.169.254); rotate API keys regularly; implement API key usage monitoring; restrict .env access; use secret management solutions (Vault, AWS Secrets Manager); monitor FOFA/Shodan reconnaissance; detect HFS server scanning; alert on Wayback Machine queries for .env files; implement PaaS security best practices"
+related_magicsword_projects: []
+source_notes: "SOCRadar STRU analysis. Attribution via open directory at 209.112.91.74, Telegram bot tokens exposing @leepsmartsx, GitHub PRO account leepsmarts with forked repositories. Infrastructure: 209.112.91.74 (primary C2, US), 173.231.39.244 (Hermes Agent, US), 123.60.2.245 (PentAGI, Huawei Cloud CN), 14.47.118.194 (Open WebUI + Wazuh, Korea Telecom KR), 66.42.94.67 (Vultr relay), Malaysia Oracle Cloud (OpenClaw). Domains: senhai.store, astrdark.cyou, xxtt.me, sajuai.xyz, 712019.xyz, bfvdoor.com. Telegram bots: LEEP group messages through Oct 13, 2026. CVV source: 卷王二手CVV Chinese underground market (>60% live rate claim)."
+category: attacks-on-ai
+attribution:
+  actor_name: leepsmarts
+  aliases:
+    - "@leepsmartsx"
+  country: China
+  motivation: financially-motivated
+  attributed_by: SOCRadar STRU
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Exposed .env file monitoring
+    format: guidance
+    notes: "Monitor for unauthorized access to .env files, config.json, secrets.toml on PaaS platforms; alert on .env.development, .env.prod, .env.staging, .env.backup access patterns"
+  - name: Cloud metadata endpoint abuse (IMDS)
+    format: guidance
+    notes: "Alert on access to 169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal; detect IMDS credential theft attempts"
+  - name: GitHub credential harvesting
+    format: guidance
+    notes: "Monitor for keyhunter/KeyHunter tool signatures scanning GitHub repos for API keys; detect mass repository enumeration"
+  - name: API key validation traffic
+    format: guidance
+    notes: "Detect automated API key validation attempts against Anthropic, OpenAI, Google, DeepSeek endpoints; monitor for high-volume failed authentication from single sources"
+  - name: Wayback Machine .env queries
+    format: guidance
+    notes: "Alert on Internet Archive queries targeting .env, config.yaml, secrets files for historical exposure recovery"
+timeline:
+  first_seen: "2026-01-15"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-01-15"
+      source: SOCRadar STRU
+      summary: "KeyHunter operation began; infrastructure timeline starts"
+    - date: "2026-07-10"
+      source: SOCRadar STRU
+      summary: "Active key harvesting documented in operational summary; 2,233 keys total"
+    - date: "2026-08-16"
+      source: SOCRadar STRU
+      summary: "195 Harvard alumni records processed from ShinyHunters torrent"
+    - date: "2026-09-09"
+      source: SOCRadar STRU
+      summary: "Open directory discovered at 209.112.91.74, exposing operation"
+    - date: "2026-10-13"
+      source: SOCRadar STRU
+      summary: "Last observed LEEP group activity"
+    - date: "2026-11-04"
+      source: SOCRadar STRU
+      summary: "KeyHunter operation publicly disclosed by SOCRadar"
+last_reviewed: 2026-11-05
+iocs:
+  domains:
+    - senhai.store
+    - pentagi.senhai.store
+    - snap.senhai.store
+    - astrdark.cyou
+    - tavily.astrdark.cyou
+    - xxtt.me
+    - agent.xxtt.me
+    - sajuai.xyz
+    - web.712019.xyz
+    - mail2.bfvdoor.com
+    - new74.osxwrong.us.com
+    - vvbin.me
+  ips:
+    - 209.112.91.74
+    - 173.231.39.244
+    - 123.60.2.245
+    - 14.47.118.194
+    - 66.42.94.67
+    - 47.123.2.193
+  hashes: []
+  urls:
+    - https://github.com/fadidevv/keyhunter
+    - https://github.com/bigzooooz/KeyHunter
+    - https://github.com/leepsmarts/aipocket
+    - https://github.com/vxcontrol/pentagi
+    - https://github.com/NousResearch/hermes-agent
+atlas_techniques:
+  - id: AML.T0012
+    rationale: "KeyHunter operation harvests LLM API credentials from exposed cloud infrastructure, GitHub repos, and PaaS platforms"
+    source_urls:
+      - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+attack_flow:
+  nodes:
+    - id: ai-monitoring
+      title: "Phase 0: AI-driven intelligence monitoring"
+      description: "Hermes Agent runs AI_radar cron (240min intervals) using grok-4.6 to monitor X/Twitter, HuggingFace, GitHub, arXiv for new LLM releases, API quotas via Tavily proxy"
+      kind: ai
+      source_urls:
+        - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+    - id: recon
+      title: "Phase 1: Reconnaissance"
+      description: "mscanner-fofa.service + mscanner-shodan.service query FOFA/Shodan for exposed LLM endpoints on Vercel, Netlify, Railway, Render, Replit, Streamlit, Fly.io, Cloudflare Pages; 360 Quake, HFS scanning, Wayback Machine queries"
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+    - id: harvest
+      title: "Phase 2: Credential extraction"
+      description: "env_hunter v4.0 scans 50+ paths (.env, config.json, secrets.toml); fadidevv/keyhunter + bigzooooz/KeyHunter scrape GitHub; 2,233 API keys harvested"
+      kind: access
+      source_urls:
+        - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+    - id: validate
+      title: "Phase 3: Validation"
+      description: "anthropic_check.py, openai_check.py, cloud_check.py, openrouter_check.py validate keys; 12 marked valid (0.54% yield)"
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+    - id: monetize
+      title: "Phase 4: Monetization and fraud"
+      description: "Stolen keys used for unauthorized inference; parallel academic fraud (20 universities), crypto drainer (Harmony ONE), credit card fraud via Stripe validation"
+      kind: impact
+      source_urls:
+        - https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/
+  edges:
+    - source: ai-monitoring
+      target: recon
+    - source: recon
+      target: harvest
+    - source: harvest
+      target: validate
+    - source: validate
+      target: monetize
