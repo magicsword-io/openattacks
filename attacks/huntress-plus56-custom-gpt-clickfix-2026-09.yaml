@@ -11,10 +11,11 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Attacker Custom GPT 'Plus 5.6' on chatgpt.com (Google Ads) directs users to
-  Google Sites ClickFix; paste runs PowerShell → MSI → DLL sideload via Canon COTFileReadApp.exe /
-  ceiinfolog.dll / rdCore.dll (later Stardock DeElevate64). Dual persistence Run key + scheduled
-  task. Multi-stage obfuscated RAT.
+technique_summary: Attacker Custom GPT 'Plus 5.6' on chatgpt.com (Google Ads)
+  directs users to Google Sites ClickFix; paste runs PowerShell → MSI → DLL
+  sideload via Canon COTFileReadApp.exe / ceiinfolog.dll / rdCore.dll (later
+  Stardock DeElevate64). Dual persistence Run key + scheduled task. Multi-stage
+  obfuscated RAT.
 initial_access: Custom GPT social engineering → ClickFix paste → MSI
 ai_tooling_and_models:
   - ChatGPT Custom GPT 'Plus 5.6'
@@ -29,9 +30,11 @@ victims_and_sectors: 40+ Huntress incidents; 2 confirmed via Custom GPT; ongoing
 regions:
   - unknown
 attribution_or_cluster: unknown
-scale_and_metrics: 40+ related incidents; OpenAI took down first GPT ~2026-09-25; replacement appeared 09-27
-prevention_angle: Prevent signed binaries from user folders; HijackLibs entries for
-  ceiinfolog/DeElevator64; hunt COTFileReadApp/DeElevate64 under %LOCALAPPDATA%\Programs\
+scale_and_metrics: 40+ related incidents; OpenAI took down first GPT
+  ~2026-09-25; replacement appeared 09-27
+prevention_angle: Prevent signed binaries from user folders; HijackLibs entries
+  for ceiinfolog/DeElevator64; hunt COTFileReadApp/DeElevate64 under
+  %LOCALAPPDATA%\Programs\
 related_magicsword_projects:
   - HijackLibs
 source_notes: null
@@ -73,3 +76,10 @@ atlas_techniques:
   - id: AML.T0052
     rationale: The GPT directs the user into a ClickFix delivery flow.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Plus 5.6 Custom GPT ClickFix RAT.
+      Refer to sources for specific IOCs and TTPs.

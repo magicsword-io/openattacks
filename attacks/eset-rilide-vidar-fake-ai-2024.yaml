@@ -11,9 +11,9 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Fake Sora/Gemini ads and a Google Translate extension delivered Rilide stealer
-  targeting Facebook credentials; fake Midjourney installer delivered Vidar stealer (browsers,
-  wallets, keystrokes).
+technique_summary: Fake Sora/Gemini ads and a Google Translate extension
+  delivered Rilide stealer targeting Facebook credentials; fake Midjourney
+  installer delivered Vidar stealer (browsers, wallets, keystrokes).
 initial_access: Malicious ads / fake AI installers / malicious extension
 ai_tooling_and_models:
   - Fake Sora
@@ -36,7 +36,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: AI ads or downloads attract users
-      description: Fake Sora, Gemini and Midjourney offers lead to an installer or extension.
+      description: Fake Sora, Gemini and Midjourney offers lead to an installer or
+        extension.
       kind: access
       source_urls: &a1
         - https://blog.eset.ie/2024/07/30/beware-of-fake-ai-tools-masking-very-real-malware-threats/
@@ -62,3 +63,11 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Rilide/Vidar via fake
+      Sora/Gemini/Midjourney AI tools. Refer to sources for specific IOCs and
+      TTPs.

@@ -11,26 +11,31 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "1,258 public sandbox runs (Apr 15–Oct 5 2026) tied to lures as Claude, ChatGPT,
-  Copilot, Gemini, Ollama, OpenClaw, Manus. Patterns: InstallFix one-liner domain swap; ClickFix
-  Download Claude via mshta; shared claude.ai/chatgpt.com chats; trojanized Claude_x64-setup.exe
-  with mseupdate headless Edge cookie grab; BiTB fake AI ads for marketers."
+technique_summary: "1,258 public sandbox runs (Apr 15–Oct 5 2026) tied to lures
+  as Claude, ChatGPT, Copilot, Gemini, Ollama, OpenClaw, Manus. Patterns:
+  InstallFix one-liner domain swap; ClickFix Download Claude via mshta; shared
+  claude.ai/chatgpt.com chats; trojanized Claude_x64-setup.exe with mseupdate
+  headless Edge cookie grab; BiTB fake AI ads for marketers."
 initial_access: Search/malvertising/shared AI chats → paste command or run installer
 ai_tooling_and_models:
-  - Impersonated Claude, ChatGPT, Copilot, Gemini, Ollama, OpenClaw, Manus, Codex, Perplexity
+  - Impersonated Claude, ChatGPT, Copilot, Gemini, Ollama, OpenClaw, Manus,
+    Codex, Perplexity
 other_tooling:
   - mshta
   - PowerShell irm|iex
   - msiexec
   - msedge --remote-debugging-port=9222
   - MacSync / Aura Stealer / HijackLoader
-victims_and_sectors: Developers, marketers, general users; US second-largest submitter country
-  (16%), first in Download Claude and ChatGPT chains; tech/telecom/education heavy
+victims_and_sectors: Developers, marketers, general users; US second-largest
+  submitter country (16%), first in Download Claude and ChatGPT chains;
+  tech/telecom/education heavy
 regions:
   - Multiple regions
-attribution_or_cluster: Multiple overlapping kits (InstallFix, ClickFix Claude, trojanized installer, AI Ads BiTB)
+attribution_or_cluster: Multiple overlapping kits (InstallFix, ClickFix Claude,
+  trojanized installer, AI Ads BiTB)
 scale_and_metrics: 1,258 analyses; Claude 48%; ≥45% end in paste-and-run
-prevention_angle: Approved AI catalog; take paste-and-run from standard users; prevent mshta/wscript/unsigned scripts
+prevention_angle: Approved AI catalog; take paste-and-run from standard users;
+  prevent mshta/wscript/unsigned scripts
 related_magicsword_projects:
   - LOLBAS
 source_notes: null
@@ -39,23 +44,27 @@ attack_flow:
   nodes:
     - id: step-1
       title: AI-themed lures reach users
-      description: Search ads, shared AI chats and fake downloads promote familiar AI brands.
+      description: Search ads, shared AI chats and fake downloads promote familiar AI
+        brands.
       kind: access
       source_urls: &a1
         - https://any.run/cybersecurity-blog/fake-ai-tools-us-companies/
     - id: step-2
       title: Trusted brands frame the lure
-      description: Claude, ChatGPT, Copilot and other product names provide social-engineering context.
+      description: Claude, ChatGPT, Copilot and other product names provide
+        social-engineering context.
       kind: ai
       source_urls: *a1
     - id: step-3
       title: Commands or installers run
-      description: Reported branches use pasted commands, trojanized installers or browser-in-the-browser pages.
+      description: Reported branches use pasted commands, trojanized installers or
+        browser-in-the-browser pages.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Malware and cookie theft
-      description: The cluster includes malware delivery and a headless-browser cookie-grabbing chain.
+      description: The cluster includes malware delivery and a headless-browser
+        cookie-grabbing chain.
       kind: impact
       source_urls: *a1
   edges:
@@ -65,5 +74,16 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-region_notes: The seed describes a global campaign cluster. India and United States percentages
-  refer to sandbox submitters, not confirmed victim locations, and are excluded from country counts.
+region_notes: The seed describes a global campaign cluster. India and United
+  States percentages refer to sandbox submitters, not confirmed victim
+  locations, and are excluded from country counts.
+category: adversary-use-of-ai
+attribution:
+  actor_name: Multiple overlapping kits (InstallFix, ClickFix Claude, trojanized
+    installer, AI Ads BiTB)
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Fake AI tools campaign cluster
+      (ANY.RUN). Refer to sources for specific IOCs and TTPs.
