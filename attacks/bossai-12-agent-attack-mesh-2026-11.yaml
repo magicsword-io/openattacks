@@ -1,0 +1,184 @@
+id: bossai-12-agent-attack-mesh-2026-11
+name: BOSSAI 12-agent AI attack mesh targeting Taiwan emergency services
+date_reported: 2026-11-04
+researcher: Eliad Kimhy, Santiago Pontiroli, Subhajeet Singha
+org: Acronis TRU
+sources:
+  - url: https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+    title: "Acronis TRU: BOSSAI - Inside the AI Attack Mesh That Targeted Taiwan's Emergency Services"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Single operator 'bossjy' deployed mesh of 12 AI agents working together to conduct persistent espionage and intrusion campaigns across 11 countries"
+technique_summary: "Nov 4, 2026: Acronis TRU discovered BOSSAI, a mesh of 12 AI agents (9 active, 3 inactive) operated by single actor 'bossjy' (aliases TIAN0517, lstjks) based in Hualien, Taiwan. Agents divided into infrastructure builders (Grok, OpenClaw, Claude Code) running commercial models, and offensive agents (Hermes, HalberdStrike, CyberStrike) running abliterated local models (DeepSeek-V4, Qwen 3.5 122B). Commercial models repeatedly refused attack commands, forcing use of locally-run abliterated models. Agent mesh targeted hundreds of organizations across government emergency services, banks, universities, military systems in 11 countries. Confirmed breaches at Taiwan emergency services (patient care records, 119 dispatch data), universities (Thailand SQL injection), and financial institutions. Operator ran mesh from home IP alongside legitimate businesses (gas store, K-beauty reseller, Facebook auto-post SaaS). Attack mesh generated high volumes of data with frequent hallucinations and false positives; agents sometimes refused lucrative targets (Honduran military base) due to autonomous scope decisions. MCP servers provided GitHub security, CVE lookup, OSINT, cloud auditing, Ghidra, Radare2, Playwright automation, and Kali Linux tools (nmap, sqlmap, Metasploit, Hydra). GPU fleet: RTX 4090s serving abliterated models via llama.cpp, plus 8 VPS nodes for proxying. OPSEC failures exposed entire operation: GitHub account linked to physical storefront, SSH sessions exposed home IP, credentials hardcoded throughout."
+initial_access: "Vulnerability exploitation (SQL injection, RCE), credential harvesting, exposed systems"
+ai_tooling_and_models:
+  - BOSSAI 12-agent mesh
+  - Hermes Agent (github.com/NousResearch/hermes-agent)
+  - HexStrike AI (github.com/0x4m4/hexstrike-ai)
+  - PentestGPT (github.com/GreyDGL/PentestGPT)
+  - HalberdStrike (PentestGPT fork)
+  - CyberStrike (github.com/CyberStrikeAI/CyberStrikeAI)
+  - Grok 4.5 (infrastructure)
+  - Claude Code (infrastructure)
+  - MiniMax M3 (infrastructure, OpenClaw agent)
+  - Abliterated DeepSeek-V4 (DS4, 64K context, offensive)
+  - Abliterated Qwen 3.5 122B (offensive)
+  - Abliterated GLM (offensive)
+  - DeepSeek-R1 70B (offensive, later replaced)
+other_tooling:
+  - "MCP servers: HexStrike AI, Kali Linux, Ghidra, Radare2, Playwright"
+  - "nmap, sqlmap, Metasploit, Hydra"
+  - FOFA reconnaissance
+  - Acunetix Web Vulnerability Scanner (cracked)
+  - Hikvision Comprehensive Vulnerability Exploitation Tool
+  - RTX 4090 GPU fleet with llama.cpp
+  - SOCKS5 proxy pool
+  - BrightData datacenter proxies
+  - WeChat gateway
+  - LINE messenger
+victims_and_sectors: "Taiwan emergency services (fire department, 119 dispatch, disaster response), financial institutions (lending, mobile payment, fire-dispatch vendors), universities (Thailand: 3 confirmed SQL injection with data exfiltration, 2 partial), Mexico (206,800+ residential phone records, 124,000+ yellow pages records), Honduras military air force personnel system (characterized but not exploited), government agencies across 11 countries"
+regions:
+  - Taiwan
+  - Thailand
+  - Mexico
+  - Honduras
+  - United States
+  - United Kingdom
+  - Australia
+  - Sri Lanka
+  - China
+  - Vietnam
+attribution_or_cluster: "bossjy (TIAN0517, lstjks), Hualien City, Taiwan; high confidence single operator"
+scale_and_metrics: "12-agent mesh; hundreds of organizations targeted across 11 countries; ~10 confirmed breaches; 206,800+ Mexican residential phone records; 124,000+ Mexican yellow pages records; Taiwan emergency medical data (ECG, ambulance video, vitals from 2018), 119 dispatch case records (7 Taipei districts); 3 Thai universities SQL injection with data extraction; 16 SQL injection points at Taiwan lending firm; ~95 Hermes offensive sessions; attack mesh ran for 12+ days under observation; 9GB evidence (90,000+ files); false positive rate >50% on high-severity findings from HalberdStrike"
+prevention_angle: "Monitor for autonomous AI agent behavior patterns; detect nmap, sqlmap, Metasploit execution from unexpected contexts; block MCP server abuse; restrict abliterated model access; monitor FOFA/Shodan reconnaissance patterns; detect multi-agent mesh communication; secure emergency services APIs; patch SQL injection vulnerabilities; monitor for hallucinated vulnerability reports; detect AWVS signatures"
+related_magicsword_projects:
+  - LOLBAS
+  - GTFOBins
+  - LOLSkills
+source_notes: "Acronis TRU analysis. Attribution via OPSEC failures: GitHub account TIAN0517 with email linking to 99 Gas Store (九九瓦斯行) in Hualien County; lstjks SSH key identity matching GitHub; Jy技術團隊 logo across infrastructure; home IP exposed in SSH sessions; legitimate SaaS 行銷快手 (SnapPost) Facebook auto-post tool, INCELLDERM K-beauty reseller, and gas delivery business ran from same residential IP; WeChat QR tied to Tencent iLink enterprise registration; hardcoded credentials throughout (Shodan API, Cloudflare API, MiniMax API, NVIDIA API keys)"
+category: adversary-use-of-ai
+attribution:
+  actor_id: bossjy
+  actor_name: bossjy
+  aliases:
+    - TIAN0517
+    - lstjks
+  country: Taiwan
+  motivation: financially-motivated
+  attributed_by: Acronis TRU
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Nmap/Zenmap Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_pua_nmap_zenmap.yml"
+    notes: "Detects nmap/zenmap execution used by BOSSAI agents for network reconnaissance"
+  - name: Linux HackTool Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_susp_hktl_execution.yml"
+    notes: "Detects execution of hacktools including nmap, sqlmap, Metasploit used by offensive agents"
+  - name: Linux Network Service Scanning
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/syscall/lnx_auditd_network_service_scanning.yml"
+    notes: "Detects network service enumeration via auditd syscalls"
+  - name: SQL Injection in Web Logs
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/web/webserver_generic/web_sql_injection_in_access_logs.yml"
+    notes: "Detects SQL injection attempts in web server access logs (BOSSAI targeted Thai universities with SQL injection)"
+  - name: Multi-agent AI mesh detection
+    format: guidance
+    notes: "Monitor for patterns indicating multiple AI agents working in coordination: autonomous tool execution from unexpected contexts, MCP server traffic, high-volume reconnaissance, parallel targeting across multiple organizations"
+  - name: Suspicious Network Tool Launched Inside Container
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/discovery_suspicious_network_tool_launched_inside_container.toml"
+    notes: "Detects nmap, sqlmap, Metasploit tools in containers; directly applicable to BOSSAI mesh MCP-wrapped tooling"
+  - name: Web Application Suspicious Activity - sqlmap User Agent
+    format: elastic  
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/apm/apm_sqlmap_user_agent.toml"
+    notes: "Detects sqlmap tool used by BOSSAI against Thai universities"
+  - name: Abliterated model abuse
+    format: guidance
+    notes: "Detect locally-run abliterated LLM models (DeepSeek-V4, Qwen, GLM variants) serving offensive agents; monitor for llama.cpp GPU inference serving attack frameworks"
+timeline:
+  first_seen: "2026-07-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-11-04"
+      source: Acronis TRU
+      summary: "BOSSAI 12-agent mesh disclosed; single operator bossjy targeted Taiwan emergency services and 11 countries with AI-driven attack infrastructure"
+last_reviewed: 2026-11-05
+iocs:
+  domains:
+    - vps.xs1.ccwu.cc
+    - xss.xs1.ccwu.cc
+    - c.xs1.ccwu.cc
+    - attacker-collector.com
+    - boss.jytian.cc.cd
+    - gdp.gasjy.kdns.fr
+    - gds.gasjy.kdns.fr
+    - 888.bossjy.kdns.fr
+    - ssh.gputw.ai
+  ips:
+    - 112.121.185.218
+    - 156.240.109.26
+    - 49.158.237.136
+    - 202.160.76.153
+    - 202.160.76.154
+    - 202.160.76.155
+    - 202.160.76.156
+    - 202.160.76.157
+    - 202.160.76.174
+  hashes: []
+  urls:
+    - https://github.com/NousResearch/hermes-agent
+    - https://github.com/0x4m4/hexstrike-ai
+    - https://github.com/GreyDGL/PentestGPT
+    - https://github.com/CyberStrikeAI/CyberStrikeAI
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "12-agent AI mesh autonomously conducted offensive operations including reconnaissance, vulnerability scanning, and exploitation across multiple countries"
+    source_urls:
+      - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+attack_flow:
+  nodes:
+    - id: mesh-deploy
+      title: Deploy 12-agent BOSSAI mesh
+      description: "Operator bossjy deploys mesh: 3 infrastructure agents (Grok, OpenClaw, Claude Code) with commercial models; 9 offensive agents (Hermes, HalberdStrike, CyberStrike, Cursor, Trae, etc.) with abliterated models"
+      kind: ai
+      source_urls:
+        - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+    - id: recon
+      title: FOFA reconnaissance and target selection
+      description: "Agents scan hundreds of organizations across 11 countries; FOFA reconnaissance feeds target lists to offensive agents"
+      kind: execution
+      source_urls:
+        - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+    - id: vuln-scan
+      title: Autonomous vulnerability scanning
+      description: "HalberdStrike, AWVS, CyberStrike scan targets; agents generate vulnerability reports (many false positives due to hallucinations)"
+      kind: execution
+      source_urls:
+        - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+    - id: exploit
+      title: Autonomous exploitation
+      description: "Hermes agent executes SQL injection, RCE, credential harvesting autonomously; uses MCP tools (nmap, sqlmap, Metasploit, Hydra) via Kali MCP server"
+      kind: access
+      source_urls:
+        - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+    - id: exfiltrate
+      title: Data exfiltration
+      description: "Emergency medical data (Taiwan), 119 dispatch records, university student data (Thailand), 206K+ phone records (Mexico), financial data extracted"
+      kind: impact
+      source_urls:
+        - https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/
+  edges:
+    - source: mesh-deploy
+      target: recon
+    - source: recon
+      target: vuln-scan
+    - source: vuln-scan
+      target: exploit
+    - source: exploit
+      target: exfiltrate
