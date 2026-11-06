@@ -339,8 +339,11 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
         const rule = parse(stage.queries.sigma);
         assert.equal(rule.status, "experimental");
         assert.ok(rule.logsource);
-        assert.ok(Object.keys(rule.detection.selection).length);
-        assert.equal(rule.detection.condition, "selection");
+        assert.ok(
+          Object.keys(rule.detection).some((key) => key !== "condition"),
+        );
+        assert.equal(typeof rule.detection.condition, "string");
+        assert.ok(rule.detection.condition.length);
         assert.ok(stage.queries.kql.length && stage.queries.spl.length);
       } else
         assert.ok(

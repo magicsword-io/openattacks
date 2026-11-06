@@ -1,0 +1,69 @@
+id: windows-dll-sideload
+title: DLL loaded from a user-writable location
+hypothesis:
+  A signed or trusted Windows executable loads an unexpected DLL from an archive, download, temp,
+  or other user-writable directory, consistent with DLL search-order hijacking.
+telemetry:
+  - Windows image-load events such as Sysmon Event 7 or EDR equivalents
+  - File provenance, signature, and process ancestry
+  - Subsequent network and payload activity
+investigate:
+  - Verify the executable and DLL signatures, original archive or installer, hashes, and load path.
+  - Compare the DLL name/location with the vendor's expected installation and correlate child activity.
+limitation:
+  Portable and self-updating applications legitimately load DLLs from user paths. This broad hunt
+  requires signer, prevalence, and application-specific tuning and will not cover in-memory modules.
+search:
+  - '"DLL sideload"'
+  - '"DLL search order hijacking"'
+visibility: Windows image-load telemetry where collected
+reviewed: 2026-11-06
+origin: catalog_authored
+query_kind: native
+query_scope:
+  DLL image loads from common user-writable paths. Confirm the initiating executable is trusted and
+  the loaded module is unexpected before treating the event as sideloading.
+upstream_matches:
+  - name: Microsoft Defender Blocked from Loading Unsigned DLL
+    id: 0b0ea3cc-99c8-4730-9c53-45deee2a4c86
+    source: SigmaHQ
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security_mitigations/win_security_mitigations_defender_load_unsigned_dll.yml
+queries:
+  sigma: |
+    title: Hunt - DLL Load From User-Writable Location
+    id: a5e6a4a2-be30-4a0a-8559-5f9a2623403e
+    status: experimental
+    description: Detects DLL image loads from common user-writable Windows paths.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-06
+    falsepositives:
+      - Portable, development, and self-updating applications
+    level: medium
+    logsource:
+      category: image_load
+      product: windows
+    detection:
+      selection_path:
+        ImageLoaded|contains:
+          - \Downloads\
+          - \AppData\Local\Temp\
+          - \Windows\Temp\
+          - \Users\Public\
+      selection_dll:
+        ImageLoaded|endswith: .dll
+      condition: all of selection_*
+  kql: |-
+    DeviceImageLoadEvents
+    | where Timestamp > ago(7d)
+    | where FileName endswith ".dll"
+    | where FolderPath has_any ("\\Downloads\\", "\\AppData\\Local\\Temp\\", "\\Windows\\Temp\\", "\\Users\\Public\\")
+    | project Timestamp, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName,
+        InitiatingProcessFolderPath, FolderPath, FileName, SHA1
+    | order by Timestamp desc
+  spl: |-
+    sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=7
+    ImageLoaded="*.dll"
+    (ImageLoaded="*\\Downloads\\*" OR ImageLoaded="*\\AppData\\Local\\Temp\\*"
+      OR ImageLoaded="*\\Windows\\Temp\\*" OR ImageLoaded="*\\Users\\Public\\*")
+    | table _time host User Image ImageLoaded Signed SignatureStatus Hashes ProcessGuid
+    | sort - _time

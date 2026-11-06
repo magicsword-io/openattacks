@@ -103,6 +103,20 @@ export default function HuntGuidance({
             </span>
           </summary>
           <p className="query-scope">{guidance.query_scope}</p>
+          {guidance.upstream_matches.length > 0 && (
+            <p className="detection-upstream-matches">
+              <strong>MCP reference matches:</strong>{" "}
+              {guidance.upstream_matches.map((match, index) => (
+                <span key={match.id}>
+                  {index > 0 && ", "}
+                  <a href={match.url} target="_blank" rel="noreferrer">
+                    {match.name} ({match.source})
+                  </a>
+                </span>
+              ))}
+              . Catalog adaptation; not a verbatim upstream rule.
+            </p>
+          )}
           <div
             className="query-formats"
             role="tablist"

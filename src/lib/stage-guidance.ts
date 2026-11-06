@@ -9,6 +9,12 @@ const productURL = magicswordURL(
   "stage-control",
 );
 export type QueryFormat = "sigma" | "kql" | "spl";
+export interface UpstreamDetectionMatch {
+  name: string;
+  id: string;
+  source: string;
+  url: string;
+}
 export interface StageGuidance {
   profile: string;
   title: string;
@@ -27,6 +33,7 @@ export interface StageGuidance {
   validation: "draft" | "not_applicable" | "not_assessed";
   evidence: string[];
   reviewed: string | null;
+  upstream_matches: UpstreamDetectionMatch[];
   control?: {
     title: string;
     action: string;
@@ -50,6 +57,7 @@ interface Profile {
   query_kind: "native" | "custom_schema" | "gap";
   query_scope: string;
   queries: Record<QueryFormat, string> | null;
+  upstream_matches?: UpstreamDetectionMatch[];
 }
 const profiles = catalog.profiles as Record<string, Profile>;
 
@@ -130,6 +138,7 @@ export function stageGuidance(
         : "not_applicable",
     evidence: node.source_urls,
     reviewed: id === "unassessed" ? null : a?.reviewed || p.reviewed,
+    upstream_matches: p.upstream_matches || [],
     control: control
       ? {
           ...control,

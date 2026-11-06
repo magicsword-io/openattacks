@@ -1,0 +1,76 @@
+id: privileged-container
+title: Privileged container or pod with host access
+hypothesis:
+  A container or Kubernetes pod is created with privileged execution or a host-directory mount that
+  can expose the underlying node and enable container escape.
+telemetry:
+  - Kubernetes API audit or Docker daemon events
+  - Container runtime process and mount telemetry
+  - Cloud control-plane identity and admission-controller decisions
+investigate:
+  - Identify the creating principal, image digest, namespace, security context, host mounts, and admission result.
+  - Compare with approved workloads, then inspect node-level file access, processes, and credentials.
+limitation:
+  Infrastructure, storage, observability, and security workloads may legitimately require elevated
+  access. Docker and Kubernetes use different audit schemas, and creation does not prove escape.
+search:
+  - '"privileged container"'
+  - '"hostPath"'
+  - '"docker" AND "--privileged"'
+visibility: Container orchestration and runtime audit logs where collected
+reviewed: 2026-11-06
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Kubernetes audit candidates for privileged pods or hostPath volumes. The KQL and SPL examples need
+  the respective Kubernetes audit sources and local field extraction.
+upstream_matches:
+  - name: Privileged Container Deployed
+    id: c5cd1b20-36bb-488d-8c05-486be3d0cb97
+    source: SigmaHQ
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_privileged_pod_creation.yml
+  - name: Linux Suspicious Privileged Container Execution
+    id: 29b888db-d6e7-4286-bbf5-39d9f260444c
+    source: Splunk Security Content
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_suspicious_privileged_container_execution.yml
+queries:
+  sigma: |
+    title: Hunt - Privileged Kubernetes Pod or Host Mount
+    id: 5a3e19f4-3f1f-46e9-974f-4985b4692d30
+    status: experimental
+    description: Detects pod creation requests containing privileged containers or hostPath volumes.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-06
+    references:
+      - https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_privileged_pod_creation.yml
+    falsepositives:
+      - Approved infrastructure, storage, observability, and security workloads
+    level: high
+    logsource:
+      category: application
+      product: kubernetes
+      service: audit
+    detection:
+      selection_create:
+        verb: create
+        objectRef.resource: pods
+      selection_privileged:
+        requestObject.spec.containers.securityContext.privileged: true
+      selection_hostpath:
+        requestObject.spec.volumes.hostPath.path|startswith: /
+      condition: selection_create and 1 of selection_privileged, selection_hostpath
+  kql: |-
+    AzureDiagnostics
+    | where TimeGenerated > ago(7d)
+    | where Category in ("kube-audit", "kube-audit-admin")
+    | where log_s has '"verb":"create"' and log_s has '"resource":"pods"'
+    | where log_s has '"privileged":true' or log_s has '"hostPath"'
+    | project TimeGenerated, Resource, ResourceGroup, SubscriptionId, log_s
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="kube:apiserver-audit" verb=create objectRef.resource=pods
+    (requestObject.spec.containers{}.securityContext.privileged=true
+      OR requestObject.spec.volumes{}.hostPath.path="*")
+    | table _time user.username sourceIPs{} objectRef.namespace objectRef.name
+        requestObject.spec.containers{}.image requestObject.spec.volumes{}.hostPath.path
+    | sort - _time

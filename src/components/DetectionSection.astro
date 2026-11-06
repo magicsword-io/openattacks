@@ -78,6 +78,19 @@ const formats: { id: QueryFormat; label: string; extension: string }[] = [
         <p class="detection-limit"><strong>Coverage limit.</strong> {guidance.limitation}</p>
         <div class="detection-query-list">
           <p class="detection-query-scope">{guidance.query_scope}</p>
+          {guidance.upstream_matches.length > 0 && (
+            <p class="detection-upstream-matches">
+              <strong>MCP reference matches:</strong>{" "}
+              {guidance.upstream_matches.map((match, index) => (
+                <>
+                  {index > 0 && ", "}
+                  <a href={match.url} target="_blank" rel="noopener noreferrer">
+                    {match.name} ({match.source})
+                  </a>
+                </>
+              ))}. The query below is a catalog adaptation, not a verbatim upstream rule.
+            </p>
+          )}
           {formats.map((format) => (
             <details class="detection-query-format" open={format.id === "kql"}>
               <summary>{format.label}<Icon name="down" size={13} /></summary>

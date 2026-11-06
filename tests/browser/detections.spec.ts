@@ -176,6 +176,27 @@ test("detection cards retain their original phase numbers after filtering", asyn
   );
 });
 
+test("MCP-reviewed detections render only on matching stages", async ({
+  page,
+}) => {
+  await page.goto(
+    "/attacks/kaspersky-cyberstrikeai-schools-2026/#detection-privilege-escalation",
+  );
+  await expect(page.locator("#detection-initial-access")).toHaveCount(0);
+  const dumpStage = page.locator("#detection-privilege-escalation");
+  await expect(dumpStage).toHaveAttribute("open", "");
+  await expect(dumpStage).toContainText(
+    "Windows credential dumping with system utilities",
+  );
+  await expect(
+    dumpStage.getByRole("link", { name: /Process Memory Dump Via Comsvcs/ }),
+  ).toHaveAttribute("href", /SigmaHQ/);
+  await expect(dumpStage).toContainText("catalog adaptation");
+  await expect(page.locator("#detection-domain-admin")).toContainText(
+    "Active Directory replication from an unexpected account",
+  );
+});
+
 test("all phase content and downloads are available without JavaScript", async ({
   browser,
   baseURL,

@@ -33,19 +33,21 @@
   },
   "anthropic-claude-code-trojan-2026-10": {
     "supply-chain": {
-      "profile": "unassessed"
+      "profile": "repository",
+      "note": "Review the repository audit trail for the unauthorized extension release. A repository write is the observable event; Claude branding is not a signal.",
+      "reviewed": "2026-11-06"
     },
     "distribution": {
-      "profile": "unassessed"
+      "profile": "extension"
     },
     "collection": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "backdoor": {
-      "profile": "unassessed"
+      "profile": "linux-ssh-persistence"
     },
     "persistence": {
-      "profile": "unassessed"
+      "profile": "persistence"
     }
   },
   "anthropic-influence-as-a-service-2025-03": {
@@ -243,19 +245,22 @@
   },
   "bitdefender-3am-ransomware-ai-2026": {
     "initial-access": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "The source does not disclose the initial-access procedure, so no runtime query is displayed for this stage."
     },
     "ai-commands": {
-      "profile": "unassessed"
+      "profile": "windows-shell",
+      "note": "Apply the process hunt to the generated Windows commands and their parent process; syntax errors alone are not malicious.",
+      "reviewed": "2026-11-06"
     },
     "iteration": {
-      "profile": "unassessed"
+      "profile": "windows-shell"
     },
     "persistence": {
-      "profile": "unassessed"
+      "profile": "persistence"
     },
     "ransomware": {
-      "profile": "unassessed"
+      "profile": "impact"
     }
   },
   "bossai-12-agent-attack-mesh-2026-11": {
@@ -328,16 +333,20 @@
   },
   "carbonato-botnet-hermes-2026-10": {
     "scan-docker": {
-      "profile": "unassessed"
+      "profile": "web",
+      "note": "Use internet-facing Docker/API request logs for the scan, then require daemon or host activity before treating it as exploitation.",
+      "reviewed": "2026-11-06"
     },
     "deploy-container": {
-      "profile": "unassessed"
+      "profile": "privileged-container"
     },
     "hermes-hunt": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "exfiltrate-mine": {
-      "profile": "unassessed"
+      "profile": "exfil",
+      "note": "This hunt covers the reported credential transfer. Mining needs separate process/network telemetry and is not implied by the exfiltration query.",
+      "reviewed": "2026-11-06"
     }
   },
   "cert-in-crafty-falcon-bfsi-2026-11": {
@@ -379,22 +388,24 @@
   },
   "checkpoint-yoba-fake-ai-2026-10": {
     "seo-poison": {
-      "profile": "unassessed"
+      "profile": "phishing"
     },
     "lure": {
-      "profile": "unassessed"
+      "profile": "phishing"
     },
     "sideload": {
-      "profile": "unassessed"
+      "profile": "windows-dll-sideload"
     },
     "dropper": {
-      "profile": "unassessed"
+      "profile": "windows-install"
     },
     "c2": {
-      "profile": "unassessed"
+      "profile": "payload",
+      "note": "Correlate the loader process with Telegram, Tor, Catbox, or DoH activity; those services are not malicious by themselves.",
+      "reviewed": "2026-11-06"
     },
     "payload": {
-      "profile": "unassessed"
+      "profile": "payload"
     }
   },
   "cl-unk-1211-unit42-2026-10": {
@@ -432,16 +443,16 @@
   },
   "cline-cli-openclaw-compromise-2026-02": {
     "compromise-package": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "install-skill": {
-      "profile": "unassessed"
+      "profile": "package-install-execution"
     },
     "harvest-on-startup": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "exfiltrate": {
-      "profile": "unassessed"
+      "profile": "exfil"
     }
   },
   "copilot-autoapprove-cve-2025-53773": {
@@ -587,22 +598,25 @@
   },
   "cyera-anthropic-pdf-skill-backdoor-2026-11": {
     "create-tampered-skill": {
-      "profile": "unassessed"
+      "profile": "skill-review"
     },
     "truncate-skill-md": {
-      "profile": "unassessed"
+      "profile": "skill-review"
     },
     "obfuscate-backdoor": {
-      "profile": "unassessed"
+      "profile": "skill-review"
     },
     "distribute-skill": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "The distribution channel is unknown, so no delivery-specific query is displayed."
     },
     "developer-install": {
-      "profile": "unassessed"
+      "profile": "skill-review"
     },
     "backdoor-execution": {
-      "profile": "unassessed"
+      "profile": "payload",
+      "note": "Apply this to system_linux execution and its connection to the reported endpoint; the IP alone is not a durable behavioral rule.",
+      "reviewed": "2026-11-06"
     }
   },
   "datadog-bedrock-key-testing-2025": {
@@ -680,33 +694,36 @@
   },
   "fakegit-agentbaiting-island-2026-10": {
     "create-fakes": {
-      "profile": "unassessed"
+      "profile": "social"
     },
     "agent-recommends": {
-      "profile": "unassessed"
+      "profile": "agent-input",
+      "note": "Review recommendation provenance and the subsequent action. A repository appearing in search results is not compromise.",
+      "reviewed": "2026-11-06"
     },
     "user-installs": {
-      "profile": "unassessed"
+      "profile": "package-install-execution"
     },
     "compromise": {
-      "profile": "unassessed"
+      "profile": "credentials"
     }
   },
   "forever-agents-md-hijack-2026": {
     "drop": {
-      "profile": "unassessed"
+      "profile": "agent-input"
     },
     "launch": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "Launching an agent in Downloads is common and is not independently a detection signal."
     },
     "read": {
-      "profile": "unassessed"
+      "profile": "agent-input"
     },
     "execute": {
-      "profile": "unassessed"
+      "profile": "agent-tools"
     },
     "impact": {
-      "profile": "unassessed"
+      "profile": "credentials"
     }
   },
   "fraudgpt-underground-2023": {
@@ -800,16 +817,19 @@
   },
   "hackerbot-claw-github-actions-2026-03": {
     "scan": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "Public-repository scanning is attacker-side activity and has no organization-local query unless platform telemetry is available."
     },
     "exploit": {
-      "profile": "unassessed"
+      "profile": "package",
+      "note": "Review workflow changes and runs involving untrusted pull-request input; a submitted pull request is not proof of execution.",
+      "reviewed": "2026-11-06"
     },
     "harvest": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "pivot": {
-      "profile": "unassessed"
+      "profile": "repository"
     }
   },
   "hermes-operators-campaigns-2026": {
@@ -953,42 +973,47 @@
   },
   "jfrog-testmetest-worm-2026-10": {
     "initial-compromise": {
-      "profile": "unassessed"
+      "profile": "identity"
     },
     "repository-poison": {
-      "profile": "unassessed"
+      "profile": "repository"
     },
     "npm-distribution": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "evasion": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "The source describes anti-analysis checks inside the payload; no separate stage query is displayed without execution telemetry."
     },
     "decrypt-payload": {
-      "profile": "unassessed"
+      "profile": "linux-fileless-execution"
     },
     "credential-theft": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "c2": {
-      "profile": "unassessed"
+      "profile": "exfil"
     }
   },
   "kaspersky-cyberstrikeai-schools-2026": {
     "initial-access": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "The source states that SQL Server was compromised but does not establish the access procedure."
     },
     "implant": {
-      "profile": "unassessed"
+      "profile": "windows-install"
     },
     "llm-decision": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "The LLM decision occurs on attacker-controlled C2 infrastructure and is not independently observable in victim logs."
     },
     "privilege-escalation": {
-      "profile": "unassessed"
+      "profile": "windows-credential-dump",
+      "note": "This query covers the reported comsvcs.dll LSASS dump. The scheduled task and certutil branches require their own correlation.",
+      "reviewed": "2026-11-06"
     },
     "domain-admin": {
-      "profile": "unassessed"
+      "profile": "windows-dcsync"
     }
   },
   "keyhunter-llm-key-theft-2026-11": {
@@ -1103,19 +1128,19 @@
   },
   "malicious-mcp-servers-npm-2026-11": {
     "publish": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "install": {
-      "profile": "unassessed"
+      "profile": "package-install-execution"
     },
     "probe": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "exfil-files": {
-      "profile": "unassessed"
+      "profile": "exfil"
     },
     "exfil-header": {
-      "profile": "unassessed"
+      "profile": "exfil"
     }
   },
   "malicious-openclaw-skills-2026": {
@@ -1297,19 +1322,22 @@
   },
   "pluto-loadmine-qwen2-malware-2026": {
     "upload": {
-      "profile": "unassessed"
+      "profile": "unobserved",
+      "note": "Repository upload is outside the consumer environment; review repository provenance rather than displaying an endpoint rule."
     },
     "load": {
-      "profile": "unassessed"
+      "profile": "model-network"
     },
     "execute": {
-      "profile": "unassessed"
+      "profile": "payload"
     },
     "miner": {
-      "profile": "unassessed"
+      "profile": "linux-fileless-execution"
     },
     "escalation": {
-      "profile": "unassessed"
+      "profile": "privileged-container",
+      "note": "Apply this only to the reported GPUStack/container branch; reverse-shell activity needs endpoint process and network correlation.",
+      "reviewed": "2026-11-06"
     }
   },
   "pretext-skill-scanner-evasion-2026-10": {
@@ -1437,16 +1465,18 @@
   },
   "sapphire-sleet-mastra-npm-2026-06": {
     "compromise-maintainer": {
-      "profile": "unassessed"
+      "profile": "identity"
     },
     "publish-backdoored": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "harvest-credentials": {
-      "profile": "unassessed"
+      "profile": "package-install-execution",
+      "note": "Use package-manager ancestry to identify the postinstall execution, then pivot to the credential-store hunt for confirmed reads.",
+      "reviewed": "2026-11-06"
     },
     "exfiltrate-dprk": {
-      "profile": "unassessed"
+      "profile": "exfil"
     }
   },
   "shareleak-copilot-studio-cve-2026-21520": {
@@ -1484,22 +1514,22 @@
   },
   "socket-litellm-supply-chain-2026-10": {
     "supply-chain": {
-      "profile": "unassessed"
+      "profile": "repository"
     },
     "distribution": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "installation": {
-      "profile": "unassessed"
+      "profile": "python-startup-persistence"
     },
     "collection": {
-      "profile": "unassessed"
+      "profile": "credentials"
     },
     "exfiltration": {
-      "profile": "unassessed"
+      "profile": "exfil"
     },
     "persistence": {
-      "profile": "unassessed"
+      "profile": "python-startup-persistence"
     }
   },
   "socradar-n0n-ransomware-ai-2026-10": {
@@ -1618,16 +1648,16 @@
   },
   "tensorlake-shai-hulud-chaindrop-2026-10": {
     "phish-maintainer": {
-      "profile": "unassessed"
+      "profile": "phishing"
     },
     "publish-malicious": {
-      "profile": "unassessed"
+      "profile": "package"
     },
     "execute-stealer": {
-      "profile": "unassessed"
+      "profile": "package-install-execution"
     },
     "exfiltrate": {
-      "profile": "unassessed"
+      "profile": "exfil"
     }
   },
   "trailofbits-mcp-line-jumping-2025-04": {

@@ -109,6 +109,26 @@ export function buildCatalog(base = root) {
         );
       }
     }
+    if (definition.upstream_matches !== undefined) {
+      assert(
+        Array.isArray(definition.upstream_matches) &&
+          definition.upstream_matches.length > 0,
+        `${id}: invalid upstream matches`,
+      );
+      for (const match of definition.upstream_matches) {
+        for (const field of ["name", "id", "source", "url"])
+          assert.equal(
+            typeof match[field],
+            "string",
+            `${id}: invalid upstream ${field}`,
+          );
+        assert.equal(
+          new URL(match.url).protocol,
+          "https:",
+          `${id}: upstream URL must use HTTPS`,
+        );
+      }
+    }
     profiles[id] = definition;
   }
   assert(Object.keys(profiles).length, "No detection definitions found");
