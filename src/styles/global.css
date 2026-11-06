@@ -2312,44 +2312,75 @@ p {
 .interactive-timeline[data-paused="true"] .attack-dot {
   animation-play-state: paused;
 }
-.chart-legend {
+.chart-legend-heading {
   display: flex;
-  justify-content: center;
-  gap: 5px 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 20px;
   flex-wrap: wrap;
-  padding: 16px 0;
+  padding-top: 20px;
   border-top: 1px solid var(--line-soft);
+}
+.chart-legend-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+.chart-legend-heading p {
+  margin: 0;
+  font-size: 13px;
+}
+.chart-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 0 20px;
 }
 .legend-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 28px;
-  padding: 3px 7px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background: none;
-  font-size: 9px;
-  color: var(--muted);
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--text);
 }
 .legend-button i {
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--role-color);
 }
-.legend-button span {
-  font: 8px var(--mono);
-  color: var(--subtle);
+.legend-count {
+  margin-left: auto;
+  padding-left: 4px;
+  font: 12px var(--mono);
+  color: var(--muted);
 }
-.legend-button[aria-pressed="true"] {
-  border-color: var(--line);
-  background: var(--panel-hover);
+.legend-button[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
   color: var(--text);
 }
 .legend-button:hover {
+  background: var(--panel-hover);
   color: var(--text);
-  border-color: var(--line);
+  border-color: var(--accent);
+}
+.entry-original-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+.entry-original-sources a {
+  overflow-wrap: anywhere;
 }
 .chart-inspector {
   max-width: 80%;
@@ -3303,10 +3334,7 @@ p {
     padding: 20px 16px;
   }
   .chart-legend {
-    gap: 5px 8px;
-  }
-  .legend-button {
-    font-size: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .agent-access {
     gap: 35px;
@@ -3486,14 +3514,6 @@ p {
   .interactive-timeline .chart-bottom > a {
     font-size: 8px;
   }
-  .chart-legend {
-    justify-content: flex-start;
-    gap: 5px 9px;
-  }
-  .legend-button {
-    font-size: 8px;
-    min-height: 31px;
-  }
   .interactive-timeline .chart-period {
     display: none;
   }
@@ -3579,21 +3599,9 @@ p {
     margin-top: 14px;
     margin-bottom: 4px;
   }
-  .chart-legend {
-    padding: 12px 0;
-    column-gap: 4px;
-    row-gap: 2px;
-  }
   .legend-button {
-    font-size: 7px;
-    padding: 4px 6px;
-    gap: 5px;
-  }
-  .legend-button span {
-    font-size: 7px;
-  }
-  .legend-all {
-    font-size: 8px;
+    padding: 10px;
+    gap: 8px;
   }
   .interactive-timeline .chart-bottom {
     display: block;
@@ -3909,7 +3917,6 @@ p {
   white-space: normal;
 }
 .evidence-research,
-.evidence-concept,
 .evidence-claim,
 .evidence-finding {
   color: var(--accent);

@@ -19,7 +19,6 @@ export const evidenceTypes: Record<string, string> = {
   campaign: "Reported campaign",
   vulnerability: "Vulnerability report",
   research: "Research demonstration",
-  concept: "Conceptual analysis",
   claim: "Unverified claim",
   analysis: "Malware analysis",
   provider: "Provider report",

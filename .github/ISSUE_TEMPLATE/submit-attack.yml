@@ -1,5 +1,5 @@
 name: Submit an attack
-description: Add a sourced AI-enabled attack or research finding to the catalog.
+description: Add an AI attack observed in the wild or a concrete case documented in public reporting.
 title: 'New entry: '
 labels: [new-entry]
 body:
@@ -13,7 +13,7 @@ body:
     id: sources
     attributes:
       label: Source URLs and researcher credit
-      description: Prefer primary research. Every claim needs a source URL.
+      description: Link reporting of a concrete case. Prefer original research, vendor advisories, or news coverage. No conceptual scenarios or hypothetical attack chains.
     validations:
       required: true
   - type: textarea
@@ -33,5 +33,7 @@ body:
     attributes:
       label: Privacy and sourcing
       options:
+        - label: This entry documents an attack observed in the wild or a concrete publicly reported case, not a conceptual scenario or general threat framework.
+          required: true
         - label: I included source URLs and no live victim data or unredacted victim IPs.
           required: true

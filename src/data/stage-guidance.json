@@ -351,13 +351,6 @@
     "step-2": { "profile": "analysis-review" },
     "step-3": { "profile": "analysis-review" }
   },
-  "talos-yuri-agent-attacks-2026-10": {
-    "step-2": { "profile": "provider" },
-    "step-3": {
-      "profile": "web",
-      "note": "This is a generalized threat framework; these are prospective hunts, not a reconstructed victim incident."
-    }
-  },
   "temp-zagros-gemini-malware-dev-2025": {
     "step-2": { "profile": "provider" },
     "step-3": { "profile": "provider" },
@@ -413,13 +406,5 @@
     "step-2": { "profile": "agent-tools" },
     "step-3": { "profile": "identity" },
     "step-4": { "profile": "cloud" }
-  },
-  "zenity-mcp-supply-chain-2026-draft": {
-    "step-1": { "profile": "mcp-config" },
-    "step-2": { "profile": "agent-tools", "resource": "LOLSkills" },
-    "step-3": {
-      "profile": "agent-tools",
-      "note": "A conceptual supply-chain scenario; validate the trust-boundary hypothesis with a controlled fixture."
-    }
   }
 }

@@ -1025,13 +1025,6 @@
       }
     ]
   },
-  "talos-yuri-agent-attacks-2026-10": {
-    "status": "attacker_tool_only",
-    "reviewed": "2026-10-23",
-    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
-    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
-    "rules": []
-  },
   "temp-zagros-gemini-malware-dev-2025": {
     "status": "attacker_tool_only",
     "reviewed": "2026-10-23",
@@ -1164,27 +1157,6 @@
           "https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat",
           "https://nvd.nist.gov/vuln/detail/cve-2024-38206"
         ]
-      }
-    ]
-  },
-  "zenity-mcp-supply-chain-2026-draft": {
-    "status": "mapped",
-    "reviewed": "2026-10-23",
-    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
-    "stage_id": "step-2",
-    "action": "Inventory MCP dependencies and review server changes, deployment permissions and trust boundaries.",
-    "rules": [
-      {
-        "tools": [],
-        "systems": [],
-        "mcp": true,
-        "relationship": "workflow",
-        "reason": "The conceptual account examines trust in shared MCP servers used by agents.",
-        "conditions": [
-          "This is a conceptual source account, not a named observed intrusion.",
-          "Confirm whether trusted servers can influence agent deployment actions or access sensitive tools."
-        ],
-        "source_urls": ["https://zenity.io/blog/mcp-server-supply-chain-risk"]
       }
     ]
   }
