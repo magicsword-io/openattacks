@@ -375,7 +375,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
 }) => {
   await page.goto("/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
-  await expect(page.locator(".network-orb svg")).toHaveCount(4);
+  await expect(page.locator(".network-orb > svg")).toHaveCount(4);
   await page
     .getByRole("button", {
       name: "Inspect stage 3: PowerShell launches the payload chain",

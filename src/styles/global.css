@@ -2829,6 +2829,33 @@ p {
     border-color 0.2s,
     background 0.2s;
 }
+.network-stage-capabilities {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  gap: 3px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.stage-capability-icon {
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--bg) 65%, transparent);
+}
+.stage-capability-icon[data-capability="prevention"] {
+  color: var(--green);
+}
+.stage-capability-icon[data-capability="simulation"] {
+  color: #c0a0fa;
+}
 .is-active .network-orb,
 .network-stage:hover .network-orb {
   border-color: var(--step-color);
@@ -2915,8 +2942,22 @@ p {
   border-color: var(--line);
   color: var(--text);
 }
-.network-stage-picker svg {
-  color: var(--green);
+.stage-picker-capabilities,
+.mobile-stage-capabilities {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.stage-picker-capabilities .stage-capability-icon,
+.mobile-stage-capabilities .stage-capability-icon {
+  width: 20px;
+  height: 20px;
+  box-shadow: none;
+}
+.stage-picker-capabilities .stage-capability-icon {
+  width: 17px;
+  height: 17px;
 }
 .stage-inspector {
   display: grid;
@@ -4746,9 +4787,6 @@ p {
   border-radius: 50%;
   color: var(--accent);
   flex-shrink: 0;
-}
-.mobile-network-stage > svg {
-  color: var(--green);
 }
 .mobile-stage-connections {
   padding: 4px 0 4px 35px;

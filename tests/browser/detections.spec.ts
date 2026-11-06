@@ -14,6 +14,18 @@ for (const width of [1440, 390]) {
     await page.goto(`/attacks/${native}/`);
     await expect(page.locator("[data-simulation]")).toHaveCount(0);
     await page.locator("#attack-flow").scrollIntoViewIfNeeded();
+    const stageThree = page.locator(
+      `${width < 900 ? ".mobile-network-stage" : ".network-stage"}[data-stage-id="step-3"]`,
+    );
+    await expect(
+      stageThree.locator('[data-capability="detection"]'),
+    ).toHaveCount(1);
+    await expect(
+      stageThree.locator('[data-capability="prevention"]'),
+    ).toHaveCount(1);
+    await expect(
+      stageThree.locator('[data-capability="simulation"]'),
+    ).toHaveCount(0);
     const links = page.locator(
       width < 900 ? ".mobile-detection-link" : ".network-detection-link",
     );
@@ -42,6 +54,18 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto(`/attacks/${custom}/#detection-step-2`);
+    const stageTwo = page.locator(
+      `${width < 900 ? ".mobile-network-stage" : ".network-stage"}[data-stage-id="step-2"]`,
+    );
+    await expect(
+      stageTwo.locator('[data-capability="detection"]'),
+    ).toHaveCount(1);
+    await expect(
+      stageTwo.locator('[data-capability="prevention"]'),
+    ).toHaveCount(0);
+    await expect(
+      stageTwo.locator('[data-capability="simulation"]'),
+    ).toHaveCount(1);
     const stage = page.locator("#detection-step-2");
     await expect(stage).toHaveAttribute("open", "");
     await expect(stage).toContainText("Custom schema · Draft");
