@@ -1,0 +1,80 @@
+id: greynoise-papercut-ai-campaign-2026-09
+name: GreyNoise PaperCut campaign uses Codex-harness agents with DeepSeek against 395 organizations
+date_reported: 2026-09-09
+researcher: GreyNoise Intelligence
+org: GreyNoise
+sources:
+  - url: https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+    title: "GreyNoise: AI-Orchestrated Campaign Against PaperCut NG/MF"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Adversary deploys autonomous AI agents (Codex-harness + DeepSeek models) to exploit PaperCut print management vulnerabilities and conduct post-exploitation against 395 organizations"
+technique_summary: "Sep 9, 2026: GreyNoise identified campaign exploiting PaperCut NG/MF print management servers (CVE-2023-27350, CVE-2023-27351 path traversal + RCE). Attacker deploys 'Codex-harness' framework with DeepSeek Coder and DeepSeek V3 models. Workflow: (1) Mass scan for exposed PaperCut servers (9191/tcp, 9192/tcp); (2) Exploit CVEs to gain initial RCE; (3) Deploy AI agent with 'post-exploitation', 'credential-harvesting', 'lateral-movement' skills; (4) Agent autonomously enumerates Active Directory, identifies print job logs containing credentials, extracts passwords from print queues; (5) Pivots to fileservers and workstations; (6) Deploys ransomware or sells access. GreyNoise observed 395 organizations compromised Aug-Sep 2026 (healthcare, education, government, finance). Agents generated exploits in real-time adapting to endpoint security. Detection: monitor PaperCut servers for exploitation (CVE-2023-27350, CVE-2023-27351); detect DeepSeek API traffic from print servers; alert on rapid AD enumeration post-PaperCut compromise; review print job logs for credential exposure; monitor lateral movement from print infrastructure."
+initial_access: "Exploitation of PaperCut NG/MF servers via CVE-2023-27350 and CVE-2023-27351 (path traversal + RCE)"
+ai_tooling_and_models:
+  - Codex-harness autonomous agent framework
+  - DeepSeek Coder
+  - DeepSeek V3
+other_tooling:
+  - PaperCut NG/MF CVE-2023-27350, CVE-2023-27351 exploits
+  - Active Directory enumeration
+  - Print job credential harvesting
+  - Ransomware (some cases)
+victims_and_sectors: "395 organizations compromised Aug-Sep 2026; healthcare, education, government, finance; print management infrastructure"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; financially motivated (ransomware, access sales); sophisticated AI agent deployment"
+scale_and_metrics: "395 organizations compromised Aug-Sep 2026 via PaperCut exploitation + AI agent post-exploitation"
+prevention_angle: "Patch PaperCut NG/MF (CVE-2023-27350, CVE-2023-27351); segment print management servers; monitor DeepSeek API traffic from infrastructure hosts; implement least-privilege for print servers; disable print job logging where possible or encrypt logs; detect rapid AD enumeration; use EDR on print servers; monitor lateral movement from print infrastructure"
+related_magicsword_projects: []
+source_notes: "GreyNoise Intelligence analysis. Campaign demonstrates AI agent use in mass exploitation and post-compromise automation. Detection: alert on PaperCut CVE exploitation attempts, monitor DeepSeek API traffic (api.deepseek.com) from print servers or unexpected hosts, detect rapid AD queries from print server IPs, review print job logs for credential exposure, monitor lateral movement patterns from print infrastructure to fileservers/workstations."
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "Attacker deploys autonomous AI agents for post-exploitation following PaperCut vulnerability exploitation"
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+  - id: AML.T0016.002
+    rationale: "AI automates credential harvesting and lateral movement"
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+attack_flow:
+  nodes:
+    - id: scan-exploit
+      title: Mass scan and exploit PaperCut
+      description: "Attacker scans internet for exposed PaperCut NG/MF servers (9191/tcp, 9192/tcp); exploits CVE-2023-27350 and CVE-2023-27351 for path traversal + RCE; gains foothold on print management infrastructure"
+      kind: access
+      source_urls:
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+    - id: deploy-agent
+      title: Deploy Codex-harness AI agent
+      description: "Install Codex-harness framework with DeepSeek Coder and DeepSeek V3 on compromised PaperCut server; agent loads 'post-exploitation', 'credential-harvesting', 'lateral-movement' skills"
+      kind: ai
+      source_urls:
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+    - id: autonomous-post-exploit
+      title: Automated credential harvesting and lateral movement
+      description: "Agent autonomously enumerates AD, extracts credentials from print job logs (users print docs with passwords visible), identifies fileservers and workstations, pivots laterally, adapts exploits to endpoint security in real-time"
+      kind: execution
+      source_urls:
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+    - id: ransomware-sales
+      title: Ransomware deployment or access sales
+      description: "Deploy ransomware or sell access to other actors; 395 organizations compromised Aug-Sep 2026; print infrastructure pivot enables enterprise-wide compromise"
+      kind: impact
+      source_urls:
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+  edges:
+    - source: scan-exploit
+      target: deploy-agent
+    - source: deploy-agent
+      target: autonomous-post-exploit
+    - source: autonomous-post-exploit
+      target: ransomware-sales

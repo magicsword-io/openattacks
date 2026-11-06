@@ -1,0 +1,97 @@
+id: socradar-n0n-ransomware-ai-2026-10
+name: n0n ransomware with OpenCode - 154 models including abliterated
+date_reported: 2026-10-28
+researcher: SOCRadar Threat Research Unit (STRU)
+org: SOCRadar
+sources:
+  - url: https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+    title: "n0n Ransomware: Inside an AI-Assisted Extortion Operation"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Ransomware operator uses OpenCode coding agent with 154 model entries including abliterated models to write and debug hundreds of attack scripts; $7,216 AI spend"
+technique_summary: "n0n ransomware operator exposed staging server at 185.157.161.148 with 1,719 files including 829 scripts, 5 C++ encryptor sources, and OpenCode AI coding agent environment. OpenCode configured with 154 model entries across 7 providers (Gemini, Mistral, Nemotron, Llama, Claude, GPT-5.x, Grok, Kimi, GLM, DeepSeek, MiniMax, Qwen) including uncensored and abliterated models (safety training removed) plus self-hosted model. Agent wrote and debugged hundreds of attack scripts; gateway spending $7,216 by Oct 22, 2026. Entry via credential stuffing (305 FortiGate SSL-VPN), exposed AWS keys, weak RDP/WinRM, compromised hosting portals. Hijacked Cisco Firepower Management Center to switch all policies to BLOCK. Human-directed operation supported by AI; no fully autonomous attack system. 93 listed victims, $283.7M total ransom demands."
+initial_access: "Credential-only access: credential stuffing campaign against 305 FortiGate SSL-VPN devices, exposed AWS keys, weak RDP/WinRM credentials, compromised hosting management portals; no vulnerability exploitation found"
+ai_tooling_and_models:
+  - OpenCode (open-source AI coding agent)
+  - Gemini
+  - Mistral
+  - Nemotron
+  - Llama
+  - Claude
+  - GPT-5.x
+  - Grok
+  - Kimi
+  - GLM
+  - DeepSeek
+  - MiniMax
+  - Qwen
+  - Abliterated models (safety training removed)
+  - Uncensored models
+  - Self-hosted model
+other_tooling:
+  - n0n ransomware encryptor (5 C++ versions)
+  - Credential stuffing tools
+  - Cisco Firepower Management Center (hijacked for policy manipulation)
+victims_and_sectors: "23 organizations across 14 countries; 93 listed victims as of Oct 19, 2026"
+regions:
+  - Multiple regions
+attribution_or_cluster: "n0n ransomware group; operations Sep 17 - Oct 22, 2026"
+scale_and_metrics: "Exposed workspace with 1,719 files (829 scripts, 5 encryptor sources); 154 model entries across 7 providers; $7,216 in AI gateway spending by Oct 22; 93 victims listed with $283.7M total ransom demands; 23 intrusion attempts across 14 countries"
+prevention_angle: "Strong credential policies; MFA for VPN/RDP/WinRM; AWS key rotation and monitoring; hosting portal security; Cisco FMC access control; monitor OpenCode/AI coding agent usage; gateway spending anomalies; exposed file servers"
+related_magicsword_projects: []
+source_notes: "SOCRadar STRU discovered exposed staging server in Sweden on port 8877; snapshots Sep 25-26, 2026; first documented criminal use of abliterated models; human-directed operation, not fully autonomous; SOCRadar access to blog post may be restricted (403 observed)"
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips:
+    - 185.157.161.148
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: "Operator uses OpenCode AI coding agent with 154 models to generate and debug attack scripts, demonstrating attacker use of AI for offensive operations"
+    source_urls:
+      - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+attack_flow:
+  nodes:
+    - id: credential-access
+      title: Credential-only initial access
+      description: "Credential stuffing against 305 FortiGate SSL-VPN devices; exposed AWS keys; weak RDP/WinRM credentials; compromised hosting management portals; no vulnerability exploitation"
+      kind: access
+      source_urls:
+        - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+    - id: ai-tooling
+      title: OpenCode with 154 models
+      description: "Configured OpenCode coding agent with 154 model entries across 7 providers: Gemini, Mistral, Nemotron, Llama, Claude, GPT-5.x, Grok, Kimi, GLM, DeepSeek, MiniMax, Qwen; includes abliterated (safety training removed) and uncensored models plus self-hosted model; $7,216 gateway spending"
+      kind: ai
+      source_urls:
+        - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+    - id: script-generation
+      title: AI-generated attack scripts
+      description: "OpenCode wrote and debugged hundreds of attack scripts; human-directed operation with AI support; agent kept encryption keys in memory file"
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+    - id: fmc-hijack
+      title: Cisco FMC policy manipulation
+      description: "Hijacked Cisco Firepower Management Center instances; switched all access policies to BLOCK; claimed widespread service disruption"
+      kind: impact
+      source_urls:
+        - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+    - id: ransomware
+      title: Encryption and extortion
+      description: "Deployed n0n ransomware (5 C++ encryptor versions); stole and encrypted files; deleted data and backups; extortion; 93 victims listed with $283.7M total ransom demands"
+      kind: impact
+      source_urls:
+        - https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/
+  edges:
+    - source: credential-access
+      target: ai-tooling
+    - source: ai-tooling
+      target: script-generation
+    - source: script-generation
+      target: fmc-hijack
+    - source: script-generation
+      target: ransomware

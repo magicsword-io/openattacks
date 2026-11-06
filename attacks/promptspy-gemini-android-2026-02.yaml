@@ -1,0 +1,93 @@
+id: promptspy-gemini-android-2026-02
+name: PromptSpy Android spyware using Gemini for C2 decisions
+date_reported: 2026-02-19
+researcher: ESET
+org: ESET
+sources:
+  - url: https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+    title: "ESET: PromptSpy Android Spyware Uses Gemini for C2"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "PromptSpy Android spyware uses Google Gemini API to determine next C2 actions based on collected surveillance data"
+technique_summary: "Feb 19, 2026: ESET discovered PromptSpy Android spyware using Gemini 1.5 Pro for C2 decision-making. After collecting surveillance data (location, photos, contacts, messages, call logs), malware sends summary to Gemini with prompt asking what additional data to collect or which contacts to target. Gemini response directs next collection phase. Enables adaptive targeting of high-value contacts and data. Attribution unknown."
+initial_access: "Sideloaded APK, distribution method unknown"
+ai_tooling_and_models:
+  - Google Gemini 1.5 Pro
+other_tooling:
+  - Android spyware
+  - Location tracking
+  - Photo exfiltration
+  - Contact/message harvesting
+victims_and_sectors: "Android users; targeted surveillance"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor"
+scale_and_metrics: "Limited deployment observed as of Feb 2026"
+prevention_angle: "Install apps only from official stores; use mobile security solutions; review app permissions; monitor for unexpected Gemini API usage"
+related_magicsword_projects: []
+source_notes: "ESET analysis. Demonstrates adversary use of commercial AI APIs for adaptive spyware C2."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: unknown
+  attributed_by: ESET
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Gemini API monitoring from mobile apps
+    format: guidance
+    notes: "Monitor Android apps for unexpected Google Gemini API calls; alert on spyware indicators (location, photo, contact access) combined with LLM queries"
+timeline:
+  first_seen: "2026-02-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-02-19"
+      source: ESET
+      summary: "PromptSpy discovered using Gemini to adaptively direct surveillance data collection"
+last_reviewed: 2026-11-05
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "Spyware uses Gemini API to adaptively determine surveillance targets and data collection priorities"
+    source_urls:
+      - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+attack_flow:
+  nodes:
+    - id: install
+      title: Install PromptSpy APK
+      description: "Victim installs malicious APK"
+      kind: access
+      source_urls:
+        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+    - id: initial-collection
+      title: Collect surveillance data
+      description: "Gather location, photos, contacts, messages, call logs"
+      kind: execution
+      source_urls:
+        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+    - id: gemini-decision
+      title: Query Gemini for next targets
+      description: "Send data summary to Gemini 1.5 Pro asking what to collect next or which contacts to target"
+      kind: ai
+      source_urls:
+        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+    - id: adaptive-targeting
+      title: Execute Gemini-directed collection
+      description: "Follow Gemini recommendations for high-value contact targeting and additional data gathering"
+      kind: impact
+      source_urls:
+        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+  edges:
+    - source: install
+      target: initial-collection
+    - source: initial-collection
+      target: gemini-decision
+    - source: gemini-decision
+      target: adaptive-targeting

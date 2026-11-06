@@ -1,0 +1,99 @@
+id: hackerbot-claw-github-actions-2026-03
+name: hackerbot-claw autonomous GitHub Actions exploitation
+date_reported: 2026-03-01
+researcher: StepSecurity
+org: StepSecurity
+sources:
+  - url: https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+    title: "StepSecurity: hackerbot-claw Autonomous GitHub Actions Exploitation"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "hackerbot-claw autonomous agent exploits misconfigured GitHub Actions workflows"
+technique_summary: "Mar 1, 2026: StepSecurity discovered hackerbot-claw, autonomous agent exploiting misconfigured GitHub Actions workflows. Agent scans public repositories for insecure workflow patterns (untrusted input injection, secrets exposure, pull_request_target misuse), automatically submits exploits, harvests exposed secrets and GITHUB_TOKEN, pivots to other repositories accessible with stolen credentials. Fully autonomous: scans, exploits, collects, pivots without operator intervention. Attribution unknown."
+initial_access: "Public GitHub scanning"
+ai_tooling_and_models:
+  - Autonomous agent (model/framework unspecified)
+other_tooling:
+  - GitHub Actions exploitation
+  - Automated secret harvesting
+victims_and_sectors: "Open-source projects with insecure GitHub Actions workflows"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor"
+scale_and_metrics: "Hundreds of repositories scanned and exploited; multiple secrets stolen as of Mar 2026"
+prevention_angle: "Secure GitHub Actions workflows; avoid untrusted input in run commands; use StepSecurity Harden Runner; rotate exposed secrets; restrict workflow permissions"
+related_magicsword_projects: []
+source_notes: "StepSecurity analysis. Detection: monitor for automated pull requests exploiting workflow patterns, mass secret access, rapid workflow execution spikes from untrusted actors."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: unknown
+  attributed_by: StepSecurity
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: GitHub Self-Hosted Runner Suspicious Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_github_self_hosted_runner.yml"
+    notes: "Detects suspicious execution from GitHub self-hosted runners; relevant for hackerbot-claw exploiting GitHub Actions"
+  - name: GitHub Actions Workflow Modification Blocked
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/github/initial_access_github_actions_workflow_injection_blocked.toml"
+    notes: "Detects GitHub Actions workflow injection attempts; directly applicable to hackerbot-claw exploitation"
+  - name: GitHub Actions exploitation monitoring
+    format: guidance
+    notes: "Monitor for automated pull requests with suspicious workflow triggers; alert on unexpected secret access or GITHUB_TOKEN usage; detect rapid workflow execution spikes"
+timeline:
+  first_seen: "2026-03-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-03-01"
+      source: StepSecurity
+      summary: "hackerbot-claw autonomous GitHub Actions exploitation disclosed"
+last_reviewed: 2026-11-05
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "Autonomous agent exploits GitHub Actions workflows to harvest secrets and pivot"
+    source_urls:
+      - https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+attack_flow:
+  nodes:
+    - id: scan
+      title: Scan public repositories
+      description: "Agent scans for insecure GitHub Actions patterns"
+      kind: execution
+      source_urls:
+        - https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+    - id: exploit
+      title: Submit automated exploits
+      description: "Submit pull requests or trigger workflows to exploit untrusted input injection, secrets exposure"
+      kind: access
+      source_urls:
+        - https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+    - id: harvest
+      title: Harvest secrets and tokens
+      description: "Collect exposed secrets, GITHUB_TOKEN credentials"
+      kind: impact
+      source_urls:
+        - https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+    - id: pivot
+      title: Pivot to accessible repositories
+      description: "Use stolen credentials to access and compromise additional repositories"
+      kind: execution
+      source_urls:
+        - https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+  edges:
+    - source: scan
+      target: exploit
+    - source: exploit
+      target: harvest
+    - source: harvest
+      target: pivot

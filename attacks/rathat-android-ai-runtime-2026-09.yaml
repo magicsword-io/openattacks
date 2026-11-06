@@ -1,0 +1,93 @@
+id: rathat-android-ai-runtime-2026-09
+name: RatHat Android trojan with AI-driven runtime behavior
+date_reported: 2026-09-16
+researcher: Zimperium
+org: Zimperium
+sources:
+  - url: https://www.zimperium.com/blog/rathat-android-ai-runtime/
+    title: "Zimperium: RatHat Android Trojan Uses AI at Runtime"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+ai_role_detail: "RatHat Android trojan calls AI models at runtime to dynamically adapt malicious behavior based on device state"
+technique_summary: "Sep 16, 2026: Zimperium discovered RatHat, Android banking trojan making real-time API calls to Chinese LLM providers (DeepSeek, Qwen) during execution to adapt behavior. Trojan collects device state (installed apps, security tools, screen content) and sends to LLM with prompt requesting optimal attack strategy. LLM responds with commands for credential harvesting, screen overlay injection, or SMS interception based on context. China-linked based on LLM provider selection and C2 infrastructure. Observed targeting banking apps across multiple regions."
+initial_access: "Sideloaded APK via phishing or malicious app stores"
+ai_tooling_and_models:
+  - DeepSeek (Chinese LLM)
+  - Qwen (Alibaba, Chinese LLM)
+other_tooling:
+  - Android banking trojan
+  - Screen overlay injection
+  - SMS interception
+victims_and_sectors: "Android users with banking apps; multiple regions"
+regions:
+  - Multiple regions
+attribution_or_cluster: "China-linked based on LLM provider selection"
+scale_and_metrics: "Unknown number of infections as of Sep 2026"
+prevention_angle: "Install apps only from official stores; use mobile security solutions detecting runtime LLM API calls from apps; monitor for overlay attacks"
+related_magicsword_projects: []
+source_notes: "Zimperium analysis. First documented Android malware making runtime LLM API calls for adaptive behavior."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: China
+  motivation: financially-motivated
+  attributed_by: Zimperium
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Runtime LLM API monitoring
+    format: guidance
+    notes: "Monitor Android apps for unexpected API calls to DeepSeek, Qwen, or other LLM providers; alert on overlay injection attempts"
+timeline:
+  first_seen: "2026-09-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-09-16"
+      source: Zimperium
+      summary: "RatHat discovered making runtime LLM calls to adapt banking trojan behavior dynamically"
+last_reviewed: 2026-11-05
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "Android malware uses LLM at runtime to dynamically adapt attack behavior based on device state"
+    source_urls:
+      - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+attack_flow:
+  nodes:
+    - id: install
+      title: Install malicious APK
+      description: "User installs RatHat via phishing or third-party store"
+      kind: access
+      source_urls:
+        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+    - id: collect-state
+      title: Collect device state
+      description: "Trojan scans installed apps, security tools, screen content"
+      kind: execution
+      source_urls:
+        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+    - id: query-llm
+      title: Query LLM for strategy
+      description: "Send device state to DeepSeek/Qwen with prompt requesting optimal attack approach"
+      kind: ai
+      source_urls:
+        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+    - id: execute-attack
+      title: Execute LLM-directed attack
+      description: "LLM responds with commands; trojan executes credential harvesting, overlay injection, or SMS interception"
+      kind: impact
+      source_urls:
+        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+  edges:
+    - source: install
+      target: collect-state
+    - source: collect-state
+      target: query-llm
+    - source: query-llm
+      target: execute-attack

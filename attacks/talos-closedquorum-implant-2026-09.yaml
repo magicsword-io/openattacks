@@ -11,7 +11,7 @@ borderline_note: "Public distribution build contains dummy API keys and webhook;
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: ai_infra_as_c2
 ai_role_detail: "First publicly documented Windows implant to delegate C2 decisions to LLM panel; 4 models vote on next action via plurality voting"
-technique_summary: "CLOSEDQUORUM is Go-based Windows implant that queries DeepSeek, Qwen (via OpenRouter), Mistral, and Gemini in sequence for post-compromise decisions. Each model receives system info (hostname, Windows version, admin status) and constrained JSON prompt with 4 actions: steal (credentials/browsers/wallets), inject (process hollowing), persist (registry/startup), move (no handler in public build). Models vote; plurality wins; ties favor DeepSeek > Qwen > Mistral > Gemini. Decisions posted to Discord webhook with reasoning. No human operator commands needed after deployment. Public build uses dummy keys and webhook; injection branches reach Windows primitives but demonstrate no successful execution; empty decision round defaults to injection with STATUS_INVALID_PARAMETER. Talos discovered via CAIRN tool (open-source AI-malware hunter released same day). Developer artifacts link to carding forums since 2025."
+technique_summary: "CLOSEDQUORUM is a Go-based Windows implant that queries DeepSeek, Qwen (via OpenRouter), Mistral, and Gemini in sequence for post-compromise decisions. Each model receives system info (hostname, Windows version, admin status) and a constrained JSON prompt with 4 actions: steal (credentials/browsers/wallets), inject (process hollowing), persist (registry/startup), or move (no handler in the public build). Models vote; plurality wins; ties favor DeepSeek > Qwen > Mistral > Gemini. Decisions are posted to a Discord webhook with reasoning. No human operator commands are needed after deployment. The public build uses dummy keys and a dummy webhook, so Talos did not observe end-to-end execution. Talos discovered it via CAIRN, its open-source AI-malware hunting toolkit. Developer artifacts link to carding forums dating to 2025."
 initial_access: "Not established in public sample; deployment method unknown"
 ai_tooling_and_models:
   - DeepSeek (api.deepseek.com, deepseek-chat)
@@ -30,8 +30,29 @@ attribution_or_cluster: "Developer artifacts link to carding forum postings dati
 scale_and_metrics: "First publicly documented autonomous AI C2 implant; analysis dated Jun 17, 2026; disclosed Sep 22, 2026; public build non-functional (dummy keys)"
 prevention_angle: "AI API key monitoring; Discord webhook traffic from unexpected processes; plurality voting pattern detection; LLM query patterns with system enumeration; CAIRN tool for AI-malware hunting"
 related_magicsword_projects: []
-source_notes: "Cisco Talos first public documentation; discovered via CAIRN (released same day); public build has significant discrepancies between advertised capabilities and execution paths; no quorum threshold, empty decision selects injection, main function queries providers only once; Malware Cake Factory independent analysis confirms plurality voting and tie-breaking logic"
-last_reviewed: 2026-11-04
+source_notes: "Cisco Talos first public documentation; discovered via CAIRN. Talos reports that the public distribution binary is inert because it contains dummy API keys and a dummy webhook. Static analysis confirms plurality voting and deterministic tie-breaking, not a minimum 3-of-4 quorum; if every provider fails, an unhandled consensus value causes the loop to sleep and retry."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  motivation: unknown
+  attributed_by: Cisco Talos
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Correlated LLM-provider and Discord traffic
+    format: guidance
+    notes: "Alert on unexpected Windows processes contacting several LLM providers and Discord webhooks within the same execution window."
+  - name: Autonomous implant behavior correlation
+    format: guidance
+    notes: "Correlate LLM API traffic with LSASS access, process injection, persistence creation, or repeated execution at randomized intervals."
+timeline:
+  first_seen: "2026-06-17"
+  last_updated: "2026-09-22"
+  updates:
+    - date: "2026-09-22"
+      source: Cisco Talos
+      summary: "Talos published its static analysis and stated that it had no confirmation of in-the-wild deployment."
+last_reviewed: 2026-11-06
 iocs:
   domains:
     - api.deepseek.com
