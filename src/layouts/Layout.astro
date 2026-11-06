@@ -24,11 +24,11 @@ const {
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
-  href("openattacks-share.png"),
+  href("openattacks-share-v2.png"),
   Astro.site || Astro.url.origin,
 );
 const imageAlt =
-  "OpenAttacks by MagicSword. One technology. Many attack paths. A colorful dot graph on a dark grid.";
+  "OpenAttacks by MagicSword. The open catalog of AI attacks, shown with a mapped attack flow on a dark grid.";
 ---
 
 <!doctype html>
