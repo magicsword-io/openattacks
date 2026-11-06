@@ -1,6 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import SimulationPreview from "../../components/SimulationPreview.astro";
+import DetectionSection from "../../components/DetectionSection.astro";
+import { attackFlow } from "../../lib/attack-flow";
+import { stageGuidance } from "../../lib/stage-guidance";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
@@ -28,6 +31,9 @@ export async function getStaticPaths() {
 const { attack } = Astro.props as { attack: Attack };
 const display = present(attack);
 const simulations = simulationsFor(attack.id);
+const hasDetections = attackFlow(attack).nodes.some(
+  (node) => stageGuidance(attack, node).queries,
+);
 const techniques = atlas.techniques as Record<
   string,
   { name: string; url: string }
@@ -54,6 +60,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     </nav>
     <header class="entry-heading">
       <div class="entry-evidence">
+        {hasDetections && (
+          <a class="detection-available" href="#detections">
+            <Icon name="search" size={13} /> Detection queries{" "}
+            <Icon name="down" size={11} />
+          </a>
+        )}
         {simulations.length > 0 && (
           <a class="simulation-available" href="#simulation">
             <Icon name="terminal" size={13} /> Simulation available{" "}
@@ -127,6 +139,14 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           : undefined
       }
     />
+    {hasDetections && (
+      <DetectionSection
+        attack={attack}
+        simulationStages={
+          [...new Set(simulations.flatMap((sim: any) => sim.stage_ids))] as string[]
+        }
+      />
+    )}
     {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
     <div class="entry-supporting">
       <details class="technical-details" id="technical-details">

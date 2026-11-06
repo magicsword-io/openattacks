@@ -109,3 +109,9 @@ An attack record can link to one or more reviewed simulation definitions under `
 Definitions contain a legitimate task, synthetic clean/changed fixtures, prerequisites, expected observations and limits. Agent injection and fixed local comparisons are distinct modes. Never infer agent attribution, native vulnerability reproduction or detection from a helper receipt. Platform status needs identified execution evidence.
 
 Regenerate with `npm run simulations:build`, then run `npm run validate`, `npm test` and the browser checks. A new executable recipe or tool capability requires code review, boundary tests and native verification; adding a YAML field cannot enable arbitrary commands or destinations. Keep source fixtures inert; only explicit preparation may materialize a project or skill instruction inside its run-owned disposable workspace. See [the lab guide](docs/SIMULATIONS.md).
+
+## Stage detections
+
+Add an explicit mapping for every phase in `detections/stages.json`, including attacks without simulations. Select a reviewed profile from `detections/definitions/`, explain its fit in a stage note when needed, or use `unassessed` / `unobserved` to record a gap. Fallback diagrams use `entry`, `activity` and `ai` IDs. Do not infer victim-side detection of attacker-side prompts, unknown delivery or unconfirmed deployments.
+
+Profiles hold canonical Sigma / KQL / SPL text, required telemetry, field mapping, research terms and limits. They are catalog-authored drafts; upstream rules need distinct provenance and license attribution. Keep custom-schema event names explicit and retain existing Sigma IDs when editing a shared profile. Run `npm run detections:build` after changing a definition, followed by the normal validation, build and test checks. See [the detection guide](detections/README.md).

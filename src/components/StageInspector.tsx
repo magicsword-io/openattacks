@@ -44,14 +44,16 @@ export default function StageInspector({
   initialView?: string;
   onClose: () => void;
 }) {
-  const [view, setView] = useState(initialView);
+  const [selectedView, setView] = useState(initialView);
+  const view =
+    selectedView === "hunt" && !guidance.queries ? "evidence" : selectedView;
   const [format, setFormat] = useState<QueryFormat>("sigma");
   const id = useId();
   const custom = !!guidance.queries?.kql.includes("OpenAttacksAudit_CL");
   const views = [
     { id: "evidence", label: "Evidence" },
     { id: "prevent", label: "Prevent" },
-    { id: "hunt", label: "Hunt" },
+    ...(guidance.queries ? [{ id: "hunt", label: "Hunt" }] : []),
   ];
   const formats = [
     { id: "sigma" as const, label: "Sigma" },
@@ -119,15 +121,7 @@ export default function StageInspector({
             {v.id === "prevent" && guidance.control && (
               <FlowIcon name="shield" size={12} />
             )}
-            {v.id === "hunt" && (
-              <span className="draft-badge">
-                {guidance.queries
-                  ? "Draft"
-                  : guidance.validation === "not_assessed"
-                    ? "Not mapped"
-                    : "Evidence gap"}
-              </span>
-            )}
+            {v.id === "hunt" && <span className="draft-badge">Draft</span>}
           </button>
         ))}
       </div>
@@ -141,7 +135,7 @@ export default function StageInspector({
         {view === "evidence" && (
           <div className="stage-evidence">
             <p>{node.description}</p>
-            {guidance.note && (
+            {guidance.note && guidance.queries && (
               <p className="stage-editorial-note">{guidance.note}</p>
             )}
             <div className="stage-source-links">
@@ -216,6 +210,13 @@ export default function StageInspector({
               <span>{guidance.visibility}</span>
             </div>
             <p>{guidance.hypothesis}</p>
+            <a
+              className="inspector-detection-link"
+              href={`#detection-${node.id}`}
+            >
+              <FlowIcon name="search" size={14} /> Open detection queries &
+              downloads
+            </a>
             {guidance.telemetry.length > 0 && (
               <div className="hunt-log-requirements">
                 <strong>Required logs</strong>

@@ -1,0 +1,74 @@
+id: bedrock
+title: Bedrock discovery / key testing
+hypothesis:
+  A key enumerates Bedrock models from an unfamiliar origin, followed by unexpected model
+  access or usage.
+telemetry:
+  - AWS CloudTrail management events
+  - Bedrock invocation logging / relevant data events when explicitly enabled
+  - Key inventory and inference usage
+investigate:
+  - Group ListFoundationModels / GetFoundationModel calls by key, source IP and user agent; compare
+    against normal application identities.
+  - Correlate with invocation logs and cost. Discovery alone does not establish a stolen key or
+    successful inference.
+limitation:
+  The starter queries cover discovery only. Do not assume default CloudTrail management
+  logs contain InvokeModel / Converse requests or prompt content.
+search:
+  - '"bedrock"'
+  - '"ListFoundationModels"'
+  - '"LLMjacking"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: native
+query_scope:
+  'AWS discovery candidates: Sigma CloudTrail, Sentinel AWSCloudTrail, and Splunk
+  aws:cloudtrail. Invocation logging is a separate prerequisite.'
+queries:
+  sigma: |
+    title: Hunt - Bedrock discovery / key testing
+    id: 89e0e836-0c7b-44b4-a9d4-3524f68318b2
+    status: experimental
+    description: A key enumerates Bedrock models from an unfamiliar origin, followed
+      by unexpected model access or usage.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      product: aws
+      service: cloudtrail
+    detection:
+      selection:
+        eventSource: bedrock.amazonaws.com
+        eventName:
+          - ListFoundationModels
+          - GetFoundationModel
+      condition: selection
+  kql: >-
+    // Discovery only; correlate with principal inventory and enabled invocation logs.
+
+    AWSCloudTrail
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventSource == "bedrock.amazonaws.com"
+
+    | where EventName in ("ListFoundationModels", "GetFoundationModel")
+
+    | summarize Requests=count() by UserIdentityArn, SourceIpAddress, UserAgent, EventName,
+    bin(TimeGenerated, 1h)
+
+    | order by Requests desc
+  spl: |-
+    sourcetype="aws:cloudtrail" eventSource="bedrock.amazonaws.com"
+    eventName IN ("ListFoundationModels", "GetFoundationModel")
+    | bin _time span=1h
+    | stats count by _time userIdentity.arn sourceIPAddress userAgent eventName
+    | sort - count

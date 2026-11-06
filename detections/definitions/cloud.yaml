@@ -1,0 +1,81 @@
+id: cloud
+title: Unexpected cloud / inference identity use
+hypothesis:
+  A service key or role is used from an unfamiliar origin, gains broader access or causes
+  inference usage outside its established baseline.
+telemetry:
+  - Cloud control-plane and identity audit
+  - AI-service invocation / diagnostic logs when enabled
+  - Usage, quotas, cost and key inventory
+investigate:
+  - Pivot on key ID / principal, source network and user agent, then inspect role changes, token
+    minting and service pivots.
+  - Join inference usage and billing anomalies to the same principal; verify whether the behavior
+    was authorized.
+limitation:
+  Cloud control-plane logs alone may not include model prompts or inference calls. No
+  endpoint policy is claimed to stop cloud-only key misuse.
+search:
+  - '"LLMjacking"'
+  - '"Bedrock"'
+  - '"Azure OpenAI"'
+  - '"service account" AND "token"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Unexpected cloud / inference identity use
+    id: afac2e65-c838-485b-a26f-7f175d422f61
+    status: experimental
+    description: A service key or role is used from an unfamiliar origin, gains
+      broader access or causes inference usage outside its established baseline.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - cloud.credential.use
+          - cloud.role.change
+          - model.invoke
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("cloud.credential.use", "cloud.role.change", "model.invoke")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("cloud.credential.use", "cloud.role.change", "model.invoke")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

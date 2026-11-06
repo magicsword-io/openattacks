@@ -108,6 +108,13 @@ export function attackMarkdown(
       return [
         `### ${node.id}: ${plain(guidance.title)}`,
         `- Visibility: ${plain(guidance.visibility)}`,
+        `- Query origin: ${guidance.origin}; status: ${guidance.validation}; log scope: ${guidance.query_kind}`,
+        ...(guidance.query_downloads
+          ? Object.entries(guidance.query_downloads).map(
+              ([format, url]) =>
+                `- ${format.toUpperCase()} query download: ${url}`,
+            )
+          : []),
         `- Hunt hypothesis: ${plain(guidance.hypothesis)}`,
         `- Required telemetry: ${guidance.telemetry.map(plain).join("; ") || "not assessed"}`,
         ...guidance.investigate.map((step) => `- Investigate: ${plain(step)}`),

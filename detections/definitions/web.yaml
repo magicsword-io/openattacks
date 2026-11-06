@@ -1,0 +1,78 @@
+id: web
+title: Web exploitation → host activity
+hypothesis:
+  Repeated exploit or upload requests are followed by an unexpected server process, file,
+  or outbound connection.
+telemetry:
+  - Reverse-proxy / WAF request logs
+  - Server process and file events
+  - Outbound DNS / proxy records
+investigate:
+  - Join requests to the affected host and process tree by time and request ID.
+  - Inspect uploaded files and server-spawned shells; distinguish authorized testing from
+    exploitation.
+limitation:
+  A scan or high request rate alone does not prove compromise or AI use. Host telemetry is
+  needed to confirm execution.
+search:
+  - '"web shell"'
+  - '"web server" AND "child process"'
+  - '"file upload"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Web exploitation → host activity
+    id: 04d900b5-0c04-46f2-a13a-91f5574fae98
+    status: experimental
+    description: Repeated exploit or upload requests are followed by an unexpected
+      server process, file, or outbound connection.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - web.exploit_candidate
+          - web.upload
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("web.exploit_candidate", "web.upload")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("web.exploit_candidate", "web.upload")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

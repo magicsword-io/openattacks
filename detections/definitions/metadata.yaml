@@ -1,0 +1,78 @@
+id: metadata
+title: Agent tool access to cloud metadata
+hypothesis:
+  An agent tool reaches a metadata endpoint and the resulting role identity is used
+  outside its intended task or resource scope.
+telemetry:
+  - Agent HTTP / shell tool audit
+  - Workload egress / metadata access instrumentation
+  - Role-session and downstream cloud audit
+investigate:
+  - Look for metadata destination access from the agent's execution context and determine which
+    credentials were available.
+  - Trace that role session into agent memory, secrets and other resources; review the permissions
+    boundary.
+limitation:
+  Metadata traffic may stay on the host and be absent from ordinary proxy logs. IMDS
+  access can be legitimate; correlate the role and task.
+search:
+  - '"169.254.169.254"'
+  - '"metadata" AND "credentials"'
+  - '"SSRF"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Agent tool access to cloud metadata
+    id: c88eca38-d2f7-4e6a-aabf-6a58f5787823
+    status: experimental
+    description: An agent tool reaches a metadata endpoint and the resulting role
+      identity is used outside its intended task or resource scope.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    references:
+      - https://github.com/MHaggis/Security-Detections-MCP
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - agent.metadata.request
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("agent.metadata.request")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("agent.metadata.request")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

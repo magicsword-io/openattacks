@@ -1,0 +1,17 @@
+id: unassessed
+title: Stage hunt not mapped yet
+visibility: Not assessed
+hypothesis: A stage-specific hunt has not been reviewed for this part of the source account.
+telemetry: []
+investigate:
+  - Review the cited behavior, identify the observing party and available logs, then propose and
+    test a hunt.
+limitation:
+  An unmapped stage does not mean it is undetectable or that no behavior occurred. It
+  means this catalog has not supplied a reviewed hunt for it.
+search: []
+reviewed: null
+origin: catalog_authored
+query_kind: gap
+query_scope: No query has been reviewed for this stage yet.
+queries: null

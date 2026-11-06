@@ -12,6 +12,9 @@ export const GET: APIRoute = async () =>
         detection_mcp: detectionMcp,
         integration:
           "Copyable MCP research briefs; no live MCP connection, credentials or rule search is performed by the site.",
+        query_origin: "catalog_authored",
+        query_downloads:
+          "api/detections/{profile}.sigma.yml, .kql and .spl; stage-specific URLs are included with each stage",
         custom_audit_schema: {
           table: "OpenAttacksAudit_CL",
           splunk_sourcetype: "openattacks:audit",
