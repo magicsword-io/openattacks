@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import SimulationPreview from "../../components/SimulationPreview.astro";
-import DetectionSection from "../../components/DetectionSection.astro";
+import AttackRelevance from "../../components/AttackRelevance.astro";
+import AttackActions from "../../components/AttackActions.astro";
 import { attackFlow } from "../../lib/attack-flow";
 import { stageGuidance } from "../../lib/stage-guidance";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
@@ -113,7 +113,11 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           </time>
           {attack.date_reported.length === 7 && " (month only)"}
         </span>
-        <a href={attack.sources[0].url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={attack.sources[0].url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Source: {attack.org}
         </a>
       </div>
@@ -124,6 +128,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
         </aside>
       )}
     </header>
+    <nav class="entry-section-nav" aria-label="On this page">
+      <a href="#what-happened">What happened</a>
+      <a href="#attack-flow">How it happened</a>
+      <a href="#why-it-matters">Why it matters</a>
+      <a href="#what-you-can-do">What you can do</a>
+    </nav>
     <section class="entry-story" aria-labelledby="what-happened">
       <h2 id="what-happened">What happened</h2>
       <p>{attack.technique_summary}</p>
@@ -157,15 +167,8 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           : undefined
       }
     />
-    {hasDetections && (
-      <DetectionSection
-        attack={attack}
-        simulationStages={
-          [...new Set(simulations.flatMap((sim: any) => sim.stage_ids))] as string[]
-        }
-      />
-    )}
-    {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
+    <AttackRelevance attack={attack} />
+    <AttackActions attack={attack} />
     <div class="entry-supporting">
       <details class="technical-details" id="technical-details">
         <summary>
@@ -544,7 +547,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
 </Layout>
 
 <script>
-  // Preserve deep links to technical sections without expanding the whole record by default.
+  // Reveal linked detection or technical details while keeping other sections collapsed.
   function revealLinkedSection() {
     let id: string;
     try {
@@ -554,6 +557,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     }
     if (!id) return;
     const target = document.getElementById(id);
+    if (target instanceof HTMLDetailsElement) target.open = true;
     let ancestor = target?.parentElement;
     while (ancestor) {
       if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
@@ -563,4 +567,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
   }
   revealLinkedSection();
   window.addEventListener("hashchange", revealLinkedSection);
+  document.addEventListener("click", (event) => {
+    const link =
+      event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+        : null;
+    // Selecting the same fragment again does not emit a hashchange event.
+    if (link?.hash && link.hash === location.hash) revealLinkedSection();
+  });
 </script>

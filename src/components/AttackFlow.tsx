@@ -107,6 +107,7 @@ function Step({ data }: NodeProps<StepNode>) {
         <a
           className="network-detection-link nodrag nopan"
           href={`#detection-${data.id}`}
+          aria-label={`Detect this stage: ${data.title}`}
         >
           <FlowIcon name="search" size={12} /> Detect this stage
         </a>
@@ -363,6 +364,7 @@ export default function AttackFlow({
                   <a
                     className="mobile-detection-link"
                     href={`#detection-${node.id}`}
+                    aria-label={`Detect this stage: ${node.title}`}
                   >
                     <FlowIcon name="search" size={13} /> Detect this stage
                   </a>
