@@ -298,6 +298,42 @@ Contributors without repo access can also open the GitHub issue form at `.github
 - `confidence` is about evidence of AI involvement, not about the attack itself.
 - Keep the tone factual. Credit the researcher. Don't make unsupported claims about what a product blocks.
 
+### Importing from Notion
+
+`scripts/import-notion.mjs` converts rows from the "AI Threat Feed" Notion database into entries:
+
+```bash
+node scripts/import-notion.mjs --dry-run export.json   # report only
+node scripts/import-notion.mjs export.json [more.json] # write attacks/*.yaml
+npm run format:data && npm run validate
+```
+
+Each input is the JSON a Notion data-source SQL query returns (`{"results": [...]}`), with the Notion property names as keys: `Headline`, `Summary`, `Source`, `URL`, `Other coverage`, `Targeted AI / Vendor`, `Threat Actor`, `Attribution`, `Actor Type`, `Techniques`, `Sectors`, `Confidence`, `Severity`, `Published`, `Novelty`.
+
+| Notion property | YAML field |
+|---|---|
+| `Headline` | `name`, and the slug for `id` (first six meaningful words + `YYYY-MM`) |
+| `Published` | `date_reported` |
+| `Source` | `org`, and `publisher` on the first source |
+| `URL`, `Other coverage` | `sources` (invalid and duplicate links dropped) |
+| `Summary` | `technique_summary` |
+| `Techniques` | `ai_role` and `ai_role_secondary` (first match in the precedence list in the script), plus `tags` |
+| `Targeted AI / Vendor` | `ai_tooling_and_models`, split on `;` outside parentheses |
+| `Sectors` | `victims_and_sectors` |
+| `Threat Actor`, `Attribution`, `Actor Type` | `attribution_or_cluster` and `attribution` (`country` only for a single nation-state attribution) |
+| `Confidence` | `ai_involvement_confidence`: Confirmed → `confirmed`, Reported → `vendor-asserted`. `Claimed / unverified` rows are rejected. |
+| `Actor Type` = `Researcher / PoC` | `borderline: true` with a note |
+| `Severity`, `Novelty` | `source_notes` |
+
+What the importer does not fill, and why:
+
+- **`researcher`, `initial_access`, `scale_and_metrics`, `prevention_angle`** are `unknown`. The feed doesn't capture them.
+- **`regions`** is `[unknown]`. The feed has no target geography, and actor attribution must never become a victim region.
+- **`confidence` and `last_reviewed`** are left out, because nobody has reviewed the entry yet.
+- **`attack_flow`** is left out, so the site shows the generated summary flow. The importer adds an explicit `unassessed` gap mapping for the generated `entry`, `activity` and `ai` stages in `detections/stages.json`.
+
+Every imported entry is tagged `notion-import`, and its `source_notes` say it hasn't been editorially reviewed. The script never overwrites a file, skips rows whose `URL` is already cited by an entry, and validates every entry before writing it. De-duplication is by URL only, so check for the same story cited through a different link before importing.
+
 ## 6. Simulations: a closed set
 
 Simulation labs live in `simulations/definitions/<slug>.yaml` with inert fixtures in `simulations/fixtures/<slug>/`. `npm run simulations:build` compiles them into `simulations/catalog.json`. `validate` and `build` fail on drift.

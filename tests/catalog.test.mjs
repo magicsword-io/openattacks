@@ -12,7 +12,14 @@ const files = readdirSync(new URL("../attacks/", import.meta.url)).filter(
 const seeds = files.map((file) =>
   parse(readFileSync(new URL(`../attacks/${file}`, import.meta.url), "utf8")),
 );
-const sample = seeds[0];
+// attack_flow is optional; flow tests need an entry with a curated flow.
+const sample = seeds.find((entry) => entry.attack_flow);
+// Node IDs of the summary flow generated for an entry without attack_flow
+// (src/lib/attack-flow.ts), matching scripts/build-detections.mjs.
+const flowNodeIds = (attack) =>
+  attack.attack_flow
+    ? attack.attack_flow.nodes.map((n) => n.id)
+    : ["entry", "activity", "ai"];
 test("all catalog entries validate and IDs are unique", () => {
   assert.ok(seeds.length > 0);
   files.forEach((filename, index) =>
@@ -296,7 +303,7 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
     assert.ok(attack, `Stale attack annotation: ${id}`);
     for (const nodeId of Object.keys(stages))
       assert.ok(
-        attack.attack_flow.nodes.some((n) => n.id === nodeId),
+        flowNodeIds(attack).includes(nodeId),
         `${id}: stale stage ${nodeId}`,
       );
   }
