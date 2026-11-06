@@ -1,21 +1,28 @@
 id: crowdstrike-artex-sk-finance-2026-10
 name: ARTEX + Claude Code vs South Korean finance
 date_reported: 2026-10-07
-researcher: CrowdStrike Intelligence
-org: CrowdStrike
+researcher: CrowdStrike Intelligence, Google Threat Intelligence Group, Wiz Research, Unit 42, Microsoft
+org: CrowdStrike, Google, Wiz, Palo Alto Networks, Microsoft
 sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+    title: CrowdStrike Oct 7 - Unknown threat actor uses ARTEX vs South Korean finance
+  - url: https://www.crowdstrike.com/en-us/blog/vapor-panda-overlaps-earth-estries/
+    title: CrowdStrike Oct 29 - VAPOR PANDA (China) overlaps with Earth Estries
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/unc7228-pentagi-artex/
+    title: GTIG/Mandiant Oct 30 - UNC7228 (overlaps Storm-0940) with PentAGI
+  - url: https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-connectwise-supply-chain/
+    title: Microsoft Oct 21 - Storm-0940 ConnectWise supply chain
+  - url: https://www.wiz.io/blog/storm-0940-okta-entra-cognito-artex/
+    title: Wiz Oct 22 - Storm-0940 vs Okta/Entra/Cognito with ARTEX
+  - url: https://www.microsoft.com/en-us/security/blog/2026/10/29/dprk-artex-onyx-pearl-sleet/
+    title: Microsoft Oct 29 - DPRK rating (Onyx Sleet, Pearl Sleet use ARTEX)
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Likely Chinese-speaking financially motivated actor used open-source Chinese
-  agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories
-  held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via
-  xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX
-  later went closed-source.
+technique_summary: "Likely Chinese-speaking financially motivated actor used open-source Chinese agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX later went closed-source."
 initial_access: "unknown (industry reports: loan inquiry service; employee mobile work-support system)"
 ai_tooling_and_models:
   - ARTEX
@@ -28,12 +35,11 @@ other_tooling:
 victims_and_sectors: South Korean financial organizations (multiple banks per industry reports)
 regions:
   - South Korea
-attribution_or_cluster: Unnamed; likely Chinese speaker, financially motivated (moderate
-  confidence). Personal details YY / @YY520CN in resume prompt not confirmed.
+attribution_or_cluster: "CrowdStrike: unnamed actor, likely Chinese speaker, financially motivated. CrowdStrike Oct 29: VAPOR PANDA (China) overlaps Earth Estries. GTIG/Mandiant Oct 30: UNC7228 overlaps Storm-0940. Microsoft Oct 21-29: Storm-0940 (ConnectWise supply chain, Okta/Entra/Cognito attacks). Microsoft Oct 29: DPRK actors Onyx Sleet and Pearl Sleet also use ARTEX."
 scale_and_metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
 prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 related_magicsword_projects: []
-source_notes: null
+source_notes: "Multiple overlapping threat clusters use ARTEX: CrowdStrike VAPOR PANDA (overlaps Earth Estries), GTIG/Mandiant UNC7228 (overlaps Storm-0940 per PentAGI use), Microsoft Storm-0940 (ConnectWise supply chain Oct 21, Okta/Entra/Cognito Oct 22), Microsoft DPRK actors Onyx Sleet and Pearl Sleet. ARTEX went closed-source after public disclosure. Related entry: unit42-artex-api-recon-2026-10 documents separate API reconnaissance incident."
 category: adversary-use-of-ai
 attribution:
   country: China
@@ -41,7 +47,7 @@ attribution:
   attributed_by: CrowdStrike Intelligence
   confidence: medium
 ai_involvement_confidence: confirmed
-last_reviewed: 2026-10-20
+last_reviewed: 2026-11-04
 attack_flow:
   nodes:
     - id: step-1
