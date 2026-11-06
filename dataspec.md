@@ -11,7 +11,7 @@ There is **no database and no runtime backend**. Everything is plain files in gi
 | Attack records | `attacks/<id>.yaml` | YAML, one file per entry | Source of truth for each attack | **Yes** |
 | Record schema | `schema.yaml` | JSON Schema 2020-12, written as YAML | Validates every attack file | Change it only to add fields or enum values |
 | Browse card | `src/data/presentation.json` | JSON keyed by attack ID | Curated title, summary, environments and evidence class | No, but recommended (there's a fallback) |
-| Stage defenses | `detections/stages.json` + `detections/definitions/*.yaml` | JSON stage mappings + YAML profiles | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping |
+| Stage defenses | `detections/stages.json` + `detections/*.yaml` | JSON stage mappings + YAML profiles | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping |
 | Stack relevance | `src/data/applicability.json` | JSON keyed by attack ID | Reviewed "does this affect my stack" rules | No (the default is `not_assessed`) |
 | ATLAS reference | `src/data/atlas-techniques.json` | JSON | Official MITRE ATLAS technique names and URLs (v5.6.0) | Only when new ATLAS IDs are needed |
 | Simulations | `simulations/definitions/*.yaml` + `simulations/fixtures/` → `simulations/catalog.json` | YAML in, generated JSON out | Lab exercises linked to attack stages | No (closed set; see §6) |
@@ -211,11 +211,11 @@ These files are keyed by attack ID. A YAML record alone is enough to publish an 
 }
 ```
 
-- `profile` is required and must match a canonical profile in `detections/definitions/*.yaml`. `native` profiles use named vendor/normalized telemetry, `custom_schema` profiles require the documented OpenAttacks audit mapping, and `gap` profiles publish no query.
+- `profile` is required and must match a canonical profile in `detections/*.yaml`. `native` profiles use named vendor/normalized telemetry, `custom_schema` profiles require the documented OpenAttacks audit mapping, and `gap` profiles publish no query.
 - Use `unobserved` when the source does not establish runtime behavior and `unassessed` when no stage-specific hunt has been reviewed. These gaps do not mean the behavior is undetectable or absent.
 - `control` (optional): `script-hosts`, `shell-helper`, `unapproved-code`. These produce the MagicSword policy CTA.
 - `resource` (optional): `LOLSkills`, `GTFOBins`, `HijackLibs`, `LOLDrivers`.
-- Add or edit profiles under `detections/definitions/`, then run `npm run detections:build` to regenerate `detections/catalog.json`. Controls and resources remain code-reviewed definitions in `src/lib/stage-guidance.ts`.
+- Add or edit profiles directly under `detections/`, then run `npm run detections:build` to regenerate `detections/catalog.json`. Controls and resources remain code-reviewed definitions in `src/lib/stage-guidance.ts`.
 
 ### 4.3 `applicability.json`: "my stack" relevance
 

@@ -12,117 +12,86 @@ const mapped = relevance.status === "mapped" && relevance.rules.length > 0;
 const outcomes = attackFlow(attack).nodes.filter(
   (node) => node.kind === "impact" && meaningful(node.description),
 );
+const withoutTerminalPunctuation = (value: string) =>
+  value.trim().replace(/[.!?]+$/, "");
+const entryPoint = meaningful(attack.initial_access)
+  ? withoutTerminalPunctuation(attack.initial_access)
+  : null;
+const impact = outcomes.length
+  ? outcomes
+      .map((node) => withoutTerminalPunctuation(node.description))
+      .join("; ")
+  : meaningful(attack.scale_and_metrics)
+    ? withoutTerminalPunctuation(attack.scale_and_metrics)
+    : "the cited report does not establish a confirmed victim outcome";
+const targets = meaningful(attack.victims_and_sectors)
+  ? `; reported targets include ${withoutTerminalPunctuation(attack.victims_and_sectors)}`
+  : "";
+const qualification = mapped
+  ? ""
+  : relevance.status === "attacker_tool_only"
+    ? "; using the named AI products does not by itself establish exposure"
+    : "; applicability to your setup has not been assessed, so verify affected versions, permissions, and configuration in the original report";
+const summary = [
+  entryPoint ? `Reported entry point: ${entryPoint}.` : null,
+  `Reported impact: ${impact}${targets}${qualification}.`,
+]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <section class="entry-relevance" aria-labelledby="why-it-matters">
   <h2 id="why-it-matters">Why it matters</h2>
-  <div class="entry-relevance-grid">
-    <div class="entry-exposure">
-      <h3>
-        <Icon name="target" size={18} /> Could this affect you?
-      </h3>
-      {mapped ? (
-        <>
-          <p class="entry-section-intro">
-            Check these source-linked conditions against your setup.
-          </p>
-          {relevance.rules.map((rule) => (
-            <div class="entry-exposure-rule">
-              <div class="entry-scope-tags">
-                {rule.tools.map((id) => (
-                  <span>
-                    {stackTools.find((tool) => tool.id === id)?.label || id}
-                  </span>
-                ))}
-                {rule.systems.map((id) => (
-                  <span>
-                    {stackSystems.find((system) => system.id === id)?.label ||
-                      id}
-                  </span>
-                ))}
-                {rule.mcp && <span>MCP connection required</span>}
-              </div>
-              <p>{rule.reason}</p>
-              {rule.conditions.length > 0 && (
-                <>
-                  <strong class="entry-fact-label">Conditions to check</strong>
-                  <ul>
-                    {rule.conditions.map((condition) => (
-                      <li>{condition}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              <a
-                class="text-link"
-                href={rule.source_urls[0]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read the supporting source <Icon name="arrow" size={12} />
-              </a>
-            </div>
-          ))}
-          <p class="entry-editorial-note">
-            Source-linked applicability guidance. Check affected versions,
-            permissions, and configuration in the original report.
-          </p>
-        </>
-      ) : (
-        <>
-          <p class="entry-exposure-status">
-            {relevance.status === "attacker_tool_only"
-              ? "AI is used by the attacker"
-              : "Exposure conditions not assessed"}
-          </p>
-          <p>
-            {relevance.status === "attacker_tool_only"
-              ? "Using the named AI products does not by itself establish exposure to this attack. Check the victim-side entry point and environment described below."
-              : "Specific conditions for your setup have not been mapped for this entry. Review the original report for affected versions, permissions, and configuration."}
-          </p>
-          {meaningful(attack.initial_access) && (
-            <div class="entry-reported-access">
-              <strong class="entry-fact-label">Reported entry point</strong>
-              <p>{attack.initial_access}</p>
-            </div>
-          )}
-          <a
-            class="text-link"
-            href={attack.sources[0].url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Check the original report <Icon name="arrow" size={12} />
-          </a>
-        </>
-      )}
-    </div>
-    <aside class="entry-outcome" aria-labelledby="reported-outcome">
-      <h3 id="reported-outcome">What’s at risk?</h3>
-      <strong class="entry-fact-label">Reported outcome</strong>
-      {outcomes.length > 0 ? (
-        outcomes.map((node) => <p>{node.description}</p>)
-      ) : (
-        <p>
-          {meaningful(attack.scale_and_metrics)
-            ? attack.scale_and_metrics
-            : "A confirmed victim outcome is not established in this entry."}
+  <div class="entry-exposure">
+    <p class="entry-relevance-summary">{summary}</p>
+    {mapped && (
+      <div class="entry-exposure-checks">
+        <p class="entry-section-intro">
+          Check these source-linked conditions against your setup.
         </p>
-      )}
-      {meaningful(attack.victims_and_sectors) && (
-        <>
-          <strong class="entry-fact-label">Reported targets</strong>
-          <p>{attack.victims_and_sectors}</p>
-        </>
-      )}
+        {relevance.rules.map((rule) => (
+          <div class="entry-exposure-rule">
+            <div class="entry-scope-tags">
+              {rule.tools.map((id) => (
+                <span>
+                  {stackTools.find((tool) => tool.id === id)?.label || id}
+                </span>
+              ))}
+              {rule.systems.map((id) => (
+                <span>
+                  {stackSystems.find((system) => system.id === id)?.label || id}
+                </span>
+              ))}
+              {rule.mcp && <span>MCP connection required</span>}
+            </div>
+            <p>{rule.reason}</p>
+            {rule.conditions.length > 0 && (
+              <>
+                <strong class="entry-fact-label">Conditions to check</strong>
+                <ul>
+                  {rule.conditions.map((condition) => (
+                    <li>{condition}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        ))}
+        <p class="entry-editorial-note">
+          Source-linked applicability guidance. Confirm current scope in the
+          original report.
+        </p>
+      </div>
+    )}
+    <div class="entry-relevance-link">
       <a
         class="text-link"
         href={attack.sources[0].url}
         target="_blank"
         rel="noopener noreferrer"
       >
-        Read the reported evidence <Icon name="arrow" size={12} />
+        Read the original report <Icon name="arrow" size={12} />
       </a>
-    </aside>
+    </div>
   </div>
 </section>

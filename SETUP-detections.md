@@ -80,7 +80,7 @@ Expected output: JSON with detection rules from Sigma/Splunk/Elastic.
 - `analyze_coverage` - Analyze detection coverage
 
 ## Usage in OpenAttacks
-Query for behaviors, retrieve and verify the complete upstream rule, then add a canonical profile under `detections/definitions/<profile>.yaml`. Keep upstream and adapted rules distinguishable and include the real repository URL, revision, author/license, log requirements and stage relationship. The website displays the stored Sigma, KQL and SPL query text directly; it does not publish an MCP prompt.
+Query for behaviors, retrieve and verify the complete upstream rule, then add a canonical profile at `detections/<profile>.yaml`. Keep upstream and adapted rules distinguishable and include the real repository URL, revision, author/license, log requirements and stage relationship. The website displays the stored Sigma, KQL and SPL query text directly; it does not publish an MCP prompt.
 
 The profile shape is:
 ```yaml

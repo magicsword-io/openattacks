@@ -66,7 +66,7 @@ test("downloaded queries exactly match canonical definitions and API payloads", 
   assert.deepEqual(buildCatalog(), compiled);
   for (const profile of Object.values(compiled.profiles)) {
     if (!profile.queries) continue;
-    const original = parse(read(`detections/definitions/${profile.id}.yaml`));
+    const original = parse(read(`detections/${profile.id}.yaml`));
     for (const [format, extension] of Object.entries(formats)) {
       assert.equal(
         read(`dist/api/detections/${profile.id}.${extension}`),
@@ -132,7 +132,7 @@ test("validation rejects missing phases, stale references and unknown profiles",
 
 test("validation rejects fabricated gap queries, duplicate YAML keys and catalog drift", () =>
   scratch((base) => {
-    const file = join(base, "detections/definitions/unobserved.yaml");
+    const file = join(base, "detections/unobserved.yaml");
     const original = readFileSync(file, "utf8");
     const gap = parse(original);
     gap.queries = { sigma: "invented" };

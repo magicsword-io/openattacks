@@ -21,9 +21,15 @@ test("entry pages connect the story, exposure and actions to the existing eviden
   await expect(page.locator(".entry-exposure")).toContainText(
     "not a confirmed campaign against every MCP user",
   );
-  await expect(page.locator(".entry-outcome")).toContainText(
+  await expect(page.locator(".entry-exposure")).toContainText(
     "Tool arguments or redirected operations",
   );
+  await expect(
+    page.getByRole("heading", { name: "Could this affect you?" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "What’s at risk?" }),
+  ).toHaveCount(0);
   await expect(page.locator(".entry-protection")).toContainText(
     "Inspect complete tool descriptions",
   );
@@ -135,12 +141,9 @@ test("attacker tooling and unassessed exposure remain qualified", async ({
 }) => {
   await page.goto("/attacks/cairn-norforge-2026-10/");
   await expect(page.locator(".entry-exposure")).toContainText(
-    "AI is used by the attacker",
+    "using the named AI products does not by itself establish exposure",
   );
-  await expect(page.locator(".entry-exposure")).toContainText(
-    "does not by itself establish exposure",
-  );
-  await expect(page.locator(".entry-reported-access")).toContainText(
+  await expect(page.locator(".entry-relevance-summary")).toContainText(
     "Unauthenticated web RCE",
   );
   await expect(page.locator(".entry-exposure-rule")).toHaveCount(0);
@@ -148,8 +151,8 @@ test("attacker tooling and unassessed exposure remain qualified", async ({
     "Provider / operator records",
   );
   await page.goto("/attacks/arup-deepfake-video-fraud-2024-01/");
-  await expect(page.locator(".entry-exposure-status")).toHaveText(
-    "Exposure conditions not assessed",
+  await expect(page.locator(".entry-relevance-summary")).toContainText(
+    "applicability to your setup has not been assessed",
   );
   await expect(page.locator(".entry-exposure-rule")).toHaveCount(0);
 });

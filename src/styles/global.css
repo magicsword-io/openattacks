@@ -4117,26 +4117,15 @@ p {
   font-size: 25px;
   margin: 0 0 22px;
 }
-.entry-relevance-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-}
 .entry-exposure,
-.entry-outcome,
 .entry-protection {
   min-width: 0;
   padding: 25px 28px;
 }
 .entry-exposure {
+  border: 1px solid var(--line);
   border-top: 2px solid var(--accent);
-}
-.entry-outcome {
-  background: var(--panel);
-  border-left: 1px solid var(--line);
-  border-top: 2px solid var(--line);
+  border-radius: 8px;
 }
 .entry-relevance h3,
 .entry-protection > h3,
@@ -4149,7 +4138,6 @@ p {
   line-height: 1.5;
   margin: 0 0 13px;
 }
-.entry-relevance h3 svg,
 .entry-protection h3 svg,
 .entry-subsection-heading h3 svg {
   color: var(--accent);
@@ -4168,6 +4156,19 @@ p {
 .entry-relevance p,
 .entry-protection p {
   margin: 10px 0 16px;
+}
+.entry-relevance-summary {
+  max-width: 980px;
+  margin-top: 0 !important;
+  color: var(--text) !important;
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+}
+.entry-exposure-checks {
+  max-width: 980px;
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 12px;
 }
 .entry-exposure-rule + .entry-exposure-rule {
   border-top: 1px solid var(--line);
@@ -4202,10 +4203,6 @@ p {
   color: var(--text);
   margin-top: 18px;
 }
-.entry-exposure-status {
-  color: var(--text) !important;
-  font-weight: 500;
-}
 .entry-editorial-note {
   font-size: 12px !important;
   color: var(--subtle) !important;
@@ -4219,6 +4216,9 @@ p {
   min-height: 32px;
   font-size: 12px;
   color: var(--accent);
+}
+.entry-relevance-link {
+  margin-top: 4px;
 }
 .entry-protection {
   border: 1px solid var(--line);
@@ -4393,15 +4393,6 @@ p {
 .detection-backlink {
   margin-top: 20px;
 }
-@media (max-width: 900px) {
-  .entry-relevance-grid {
-    grid-template-columns: 1fr;
-  }
-  .entry-outcome {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-}
 @media (max-width: 680px) {
   .entry-section-nav {
     display: grid;
@@ -4412,7 +4403,6 @@ p {
     min-height: 44px;
   }
   .entry-exposure,
-  .entry-outcome,
   .entry-protection {
     padding: 21px 19px;
   }

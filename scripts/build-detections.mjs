@@ -21,10 +21,10 @@ function yaml(file) {
 
 export function buildCatalog(base = root) {
   const profiles = {};
-  for (const file of readdirSync(join(base, "detections/definitions"))
+  for (const file of readdirSync(join(base, "detections"))
     .filter((f) => f.endsWith(".yaml"))
     .sort()) {
-    const definition = yaml(join(base, "detections/definitions", file));
+    const definition = yaml(join(base, "detections", file));
     const { id } = definition;
     assert.match(id, /^[a-z][a-z0-9-]*$/, `${file}: invalid ID`);
     assert.equal(file, `${id}.yaml`, `${file}: ID must match filename`);

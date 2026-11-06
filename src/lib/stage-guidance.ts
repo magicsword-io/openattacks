@@ -115,7 +115,7 @@ export function stageGuidance(
     query_scope: p.query_scope,
     query_kind: p.query_kind,
     origin: "catalog_authored",
-    definition_url: `${repo}/blob/main/detections/definitions/${id}.yaml`,
+    definition_url: `${repo}/blob/main/detections/${id}.yaml`,
     query_downloads: querySet
       ? {
           sigma: href(`api/detections/${id}.sigma.yml`),

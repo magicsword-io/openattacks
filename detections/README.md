@@ -2,7 +2,7 @@
 
 Every attack phase has an explicit entry in `stages.json`, keyed by attack ID and exact flow-node ID. This includes attacks without simulations, unknown steps, provider-side activity and qualified research. The catalog currently contains 111 attacks and 471 phases.
 
-`definitions/*.yaml` are the canonical, editable behavior profiles. Each contains its hypothesis, required logs, investigation steps, limits, research search terms, review date and Sigma / KQL / SPL query text. The query origin is `catalog_authored`: these are editorial drafts, not rules retrieved from an upstream detection index. Profiles are reusable; a stage mapping and its note explain how to apply one to the specific reported behavior. Shared Sigma rule IDs remain stable across the move from the former TypeScript generator.
+The `*.yaml` files in this directory are the canonical, editable behavior profiles. Each contains its hypothesis, required logs, investigation steps, limits, research search terms, review date and Sigma / KQL / SPL query text. The query origin is `catalog_authored`: these are editorial drafts, not rules retrieved from an upstream detection index. Profiles are reusable; a stage mapping and its note explain how to apply one to the specific reported behavior. Shared Sigma rule IDs remain stable across the move from the former TypeScript generator.
 
 `query_kind: native` identifies a named collector or table, such as Defender `DeviceProcessEvents`, Windows Sysmon or CloudTrail. It does not establish validation, collection, alerting or incident coverage. Non-Windows process SPL still requires the explicitly documented custom process normalization. `custom_schema` profiles require application/platform telemetry mapped to the `OpenAttacksAudit_CL` table or `openattacks:audit` sourcetype. Their proposed event names are not native vendor events. These queries select candidates; correlation, approval context and local alert logic remain operator work.
 
@@ -10,7 +10,7 @@ Every attack phase has an explicit entry in `stages.json`, keyed by attack ID an
 
 ## Editing and publishing
 
-1. Edit a profile under `definitions/`, or add one with a unique ID matching its filename. Keep catalog Sigma rules `experimental`. State exactly which logs and field mappings are needed.
+1. Edit a profile in this directory, or add one with a unique ID matching its filename. Keep catalog Sigma rules `experimental`. State exactly which logs and field mappings are needed.
 2. Add a `stages.json` mapping for every source flow node. Use an explicit gap when needed. Preserve conditional policy scope and source qualifications. A stage note can narrow a shared profile without claiming that its candidate query implements the entire hypothesis.
 3. Run `npm run detections:build` to regenerate `catalog.json`. Do not edit the generated catalog by hand.
 4. Run `npm run validate`, `npm run check`, `npm run build`, `npm test` and the browser checks. Validation rejects missing phases, stale references, unknown profiles, duplicate YAML keys, invented gap queries and catalog drift.
@@ -21,7 +21,7 @@ Raw downloads are available at `api/detections/<profile>.sigma.yml`, `.kql` and 
 
 ## Query provenance
 
-The website displays the query text from `definitions/*.yaml` directly; it does not generate detections from a prompt at runtime. The current rules are catalog-authored drafts. If an upstream rule is added later, retain its real ID, repository URL, revision, author/license and log requirements, and explain the stage relationship. Keep verbatim upstream rules, adaptations and catalog-authored drafts distinguishable. A matching tag or keyword is not verified procedure coverage. ATLAS annotations and upstream ATT&CK IDs are separate namespaces.
+The website displays the query text from these YAML files directly; it does not generate detections from a prompt at runtime. The current rules are catalog-authored drafts. If an upstream rule is added later, retain its real ID, repository URL, revision, author/license and log requirements, and explain the stage relationship. Keep verbatim upstream rules, adaptations and catalog-authored drafts distinguishable. A matching tag or keyword is not verified procedure coverage. ATLAS annotations and upstream ATT&CK IDs are separate namespaces.
 
 ## Simulation evidence
 
