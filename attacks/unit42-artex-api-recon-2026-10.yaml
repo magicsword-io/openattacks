@@ -1,0 +1,93 @@
+id: unit42-artex-api-recon-2026-10
+name: ARTEX planner agent API reconnaissance and exploitation
+date_reported: 2026-10-30
+date_activity_start: 2026-09-24
+date_activity_end: 2026-10-27
+researcher: Ben Magee, Will Cates
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-30-activity-using-ARTEX-agentic-AI.txt
+    title: Activity using ARTEX agentic AI
+    publisher: Unit 42 (Palo Alto Networks)
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: ARTEX planner agent activity observed Sep 24-Oct 27 2026 by Unit 42. Agent autonomously harvested source maps, OpenAPI specifications, and runtime-config.json files. Attempted OAuth redirect URI abuse and password spraying. Successfully self-registered on exposed APIs without authentication. Read approximately 50 MB of data. Wrote data to an unauthenticated development document store. Attack demonstrates autonomous API reconnaissance and exploitation capabilities. Microsoft tracks related activity as Storm-0940 with Oct 21 observations.
+initial_access: Exposed API endpoints without authentication
+ai_tooling_and_models:
+  - ARTEX planner agent
+  - Autonomous API reconnaissance
+other_tooling:
+  - Source map harvesting
+  - OpenAPI specification parsing
+  - OAuth redirect abuse attempts
+  - Password spraying
+  - API self-registration
+victims_and_sectors: Organizations with exposed APIs and unauthenticated development endpoints
+regions:
+  - Multiple regions
+attribution_or_cluster: Microsoft Storm-0940 (related activity Oct 21)
+scale_and_metrics: Activity Sep 24-Oct 27 2026; approximately 50 MB data read; wrote to unauthenticated document store
+prevention_angle: Authenticate all API endpoints including development; remove source maps from production; restrict OpenAPI spec access; validate OAuth redirect URIs; implement API registration controls; monitor for automated reconnaissance patterns; detect bulk configuration file access; alert on unauthenticated document store writes; review Storm-0940 indicators
+related_magicsword_projects: []
+source_notes: |
+  Microsoft tracks related activity as Storm-0940 with Oct 21 observations
+  
+  Relevant detection rules:
+  - Monitor for bulk access to source map files (.map.js, .js.map)
+  - Alert on OpenAPI specification downloads (openapi.json, swagger.json, api-docs)
+  - Detect runtime-config.json and similar configuration file access patterns
+  - Monitor for OAuth redirect URI manipulation attempts
+  - Alert on password spraying patterns (multiple authentication attempts across accounts)
+  - Detect unauthenticated API registration/account creation
+  - Monitor writes to development document stores from unexpected sources
+  - Track volume of API data reads (spike detection for ~50 MB threshold)
+  - Note: API reconnaissance detection typically requires application-level logging, WAF rules, and API gateway monitoring. No direct Sigma rules exist for OpenAPI/source map harvesting; requires custom rules based on web server access logs and application audit trails.
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: Multiple regions reflects API reconnaissance patterns observed by Unit 42
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: ARTEX planner agent autonomously conducted API reconnaissance and exploitation
+    source_urls:
+      - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-30-activity-using-ARTEX-agentic-AI.txt
+attack_flow:
+  nodes:
+    - id: recon
+      title: Agent harvests API metadata
+      description: ARTEX planner agent autonomously collected source maps, OpenAPI specifications, and runtime-config.json files from exposed endpoints
+      kind: access
+      source_urls: &a1
+        - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-30-activity-using-ARTEX-agentic-AI.txt
+    - id: exploit-attempts
+      title: OAuth and credential attacks attempted
+      description: Agent tried OAuth redirect URI abuse and password spraying
+      kind: ai
+      source_urls: *a1
+    - id: registration
+      title: Self-registration on exposed APIs
+      description: Successfully registered accounts on APIs without authentication controls
+      kind: execution
+      source_urls: *a1
+    - id: data-access
+      title: Approximately 50 MB data read
+      description: Agent read substantial data from compromised APIs
+      kind: impact
+      source_urls: *a1
+    - id: data-write
+      title: Data written to unauthenticated store
+      description: Wrote collected data to unauthenticated development document store
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: recon
+      target: exploit-attempts
+    - source: exploit-attempts
+      target: registration
+    - source: registration
+      target: data-access
+    - source: data-access
+      target: data-write
