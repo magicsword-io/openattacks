@@ -95,7 +95,7 @@ test("environment and evidence filters use the browse index and can be removed s
   await page.getByRole("button", { name: "More filters" }).click();
   await expect(
     page.getByRole("combobox", { name: "Filter by confidence" }),
-  ).toHaveCount(0);
+  ).toHaveCount(attacks.some((attack) => attack.confidence) ? 1 : 0);
   await expect(page.getByLabel("Related project")).toHaveCount(0);
   expect(
     await page

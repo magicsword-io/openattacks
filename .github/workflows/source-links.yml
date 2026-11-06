@@ -1,0 +1,24 @@
+name: Audit catalog source links
+on:
+  schedule:
+    - cron: '23 9 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: source-link-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.2'
+          cache: npm
+      - run: npm ci
+      - run: npm run check:links -- --all

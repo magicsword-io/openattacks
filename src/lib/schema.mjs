@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { entryLinks, sourceUrlError } from "./source-urls.mjs";
 
 export const schema = parse(
   readFileSync(new URL("../../schema.yaml", import.meta.url), "utf8"),
@@ -34,6 +35,12 @@ export function entryErrors(data, filename) {
   }
   if (data?.id && filename !== `${data.id}.yaml`)
     errors.push(`${filename}: id must match the filename (${data.id}.yaml)`);
+  for (const { field, url } of entryLinks(data)) {
+    const issue = sourceUrlError(url);
+    if (issue) errors.push(`${filename}${field}: ${issue}`);
+  }
+  if (new Set(data.sources.map(({ url }) => url)).size !== data.sources.length)
+    errors.push(`${filename}/sources: source URLs must be unique`);
   if (data?.attack_flow?.nodes && data?.attack_flow?.edges) {
     const ids = data.attack_flow.nodes.map((node) => node.id);
     if (new Set(ids).size !== ids.length)

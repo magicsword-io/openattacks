@@ -7,6 +7,8 @@ The catalog is maintained as one YAML file per entry in `attacks/`. You can also
 3. Run `npm ci` once, then `npm run validate`. Preview with `npm run dev`.
 4. Open a pull request against `main`. CI validates the YAML, checks types, builds the static site, and compares the API to the YAML.
 
+CI also checks the published source and coverage URLs in added or modified entries. Run `npm run check:links -- --all` locally to audit the catalog, or `npm run check:links -- --base origin/main` to check entries changed in commits since `origin/main`. URL syntax checks run offline with `npm run validate`; live checks require network access.
+
 ```yaml
 id: example-campaign-2026
 name: Example campaign
@@ -38,6 +40,7 @@ last_reviewed: '2026-10-20'
 - Include only attacks **observed in the wild or documented in public reporting**: original researcher reports, vendor advisories, or news coverage of a concrete case. **No conceptual scenarios, hypothetical attack chains, or general threat frameworks.** A source URL alone does not make a speculative scenario eligible.
 - Published vulnerability demonstrations and research PoCs qualify when they document concrete behavior. Label them as research and do not imply exploitation in the wild. Reported marketplace claims must retain their uncertainty labels.
 - Every factual claim needs a source URL. Prefer primary reports, original researchers, vendor advisories, or court records. Add source notes when evidence has limitations.
+- Published source, flow, ATLAS evidence, and coverage links must use absolute `http://` or `https://` URLs, with no embedded credentials or private/local destinations. Source URLs must be unique within an entry; multiple entries may cite the same report. A reachable URL still needs human review to confirm it supports the claim.
 - Write **unknown** rather than guessing; use an empty array when no tooling or mapping is documented. Never invent a victim count, location, model, attribution, or MITRE mapping.
 - Include **no live victim data or unredacted victim IP addresses**. Only add non-victim indicators explicitly published for defensive use, and explain their origin. Defang domains and URLs in IOC fields; do not make them clickable.
 - Mark PoCs, marketplace claims, and other uncertain cases with `borderline: true` and explain the qualification in `borderline_note`. This flag does not make a conceptual entry eligible.
@@ -93,6 +96,10 @@ Do not convert actor language, actor nationality, hosting infrastructure, a pare
 ## Automatic AI-readable publishing
 
 Every build generates `llms.txt`, `llms-full.txt`, `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. Do not edit generated files. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds all outputs together; tests check each YAML ID against the generated guide, full context, page and individual exports. GitHub Pages is an optional manual workflow.
+
+The `source-links` CI check follows up to five redirects, uses an eight-second timeout per request and up to four concurrent checks, and retries failures once. It confirms failed HEAD requests with GET before failing on HTTP 404/410. Invalid or unsafe destinations and broken redirect chains also fail. Authentication/bot blocking (401/403), rate limits (429), other unexpected statuses, server errors, DNS failures, and timeouts produce review warnings in the Actions job summary. The checker reads response headers only and never crawls IOC fields or free-text payload URLs. URL fragments are preserved in records but are not checked for matching page anchors. A separate weekly and manually triggered workflow audits all existing links.
+
+For maintainer merge protection and deployment behavior, see [CI and merge checks](docs/CI.md).
 
 ## Stack relevance
 
