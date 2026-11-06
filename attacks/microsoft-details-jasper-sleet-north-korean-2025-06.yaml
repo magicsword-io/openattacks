@@ -1,0 +1,34 @@
+id: microsoft-details-jasper-sleet-north-korean-2025-06
+name: "Microsoft details Jasper Sleet: North Korean IT workers using AI face-swaps and voice changers"
+date_reported: 2025-06-30
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/
+    publisher: Microsoft Threat Intelligence
+borderline: false
+ai_role: other
+technique_summary: Microsoft reports North Korean IT workers use AI to doctor identity photos, polish resumes and alter voices, and suspended 3,000 related Outlook and Hotmail accounts.
+initial_access: unknown
+ai_tooling_and_models:
+  - Face-swap tools, AI photo enhancement, voice-changing software, AI writing tools
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Jasper Sleet (North Korean remote IT worker activity)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Jasper Sleet (North Korean remote IT worker activity)
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

@@ -1,0 +1,33 @@
+id: grokking-malvertisers-got-xs-grok-repost-2025-09
+name: "Grokking: malvertisers got X's Grok to repost hidden malicious links from promoted adult-video ads"
+date_reported: 2025-09-04
+researcher: unknown
+org: The Hacker News (reporting Guardio Labs research)
+sources:
+  - url: https://thehackernews.com/2025/09/cybercriminals-exploit-xs-grok-ai-to.html
+    publisher: The Hacker News (reporting Guardio Labs research)
+borderline: false
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Scammers manipulated Grok into amplifying links hidden in ad metadata, laundering malicious URLs through a trusted AI account.
+initial_access: unknown
+ai_tooling_and_models:
+  - xAI Grok on X
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed malvertising network
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - prompt-injection
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

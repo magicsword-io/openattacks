@@ -1,0 +1,40 @@
+id: recorded-future-ai-multiplied-irans-information-2026-07
+name: "Recorded Future: AI multiplied Iran's information warfare and cyber tradecraft during the 2026 war"
+date_reported: 2026-07-16
+researcher: unknown
+org: Recorded Future Insikt Group
+sources:
+  - url: https://www.recordedfuture.com/research/iran-ai-asymmetric-playbook
+    publisher: Recorded Future Insikt Group
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Insikt judged that AI sped up and scaled Iran's existing hybrid playbook in the 2026 conflict, most visibly in AI video propaganda, without giving it new capabilities.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLMs including ChatGPT
+  - AI video and image generators
+  - AI voice impersonation
+other_tooling: []
+victims_and_sectors: Government; Critical infrastructure; Defense; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: IRGC, MOIS, Explosive Media, Storm-2035, APT42, MuddyWater, RedKitten, Ababil of Minab, Handala and others
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+  - phishing-social-eng
+  - malware-tooling-dev
+  - recon-osint
+category: adversary-use-of-ai
+attribution:
+  actor_name: IRGC, MOIS, Explosive Media, Storm-2035, APT42, MuddyWater, RedKitten, Ababil of Minab, Handala and others
+  country: Iran
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

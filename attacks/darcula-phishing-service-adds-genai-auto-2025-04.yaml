@@ -1,0 +1,36 @@
+id: darcula-phishing-service-adds-genai-auto-2025-04
+name: Darcula phishing-as-a-service adds GenAI to auto-build and translate phishing pages in any language
+date_reported: 2025-04-24
+researcher: unknown
+org: Netcraft
+sources:
+  - url: https://www.netcraft.com/blog/ai-enabled-darcula-suite-makes-phishing-kits-more-accessible-easier-to-deploy
+    publisher: Netcraft
+  - url: https://thehackernews.com/2025/04/darcula-adds-genai-to-phishing-toolkit.html
+  - url: https://www.theregister.com/2025/04/25/darcula_ai/
+  - url: https://www.darkreading.com/remote-workforce/phishing-kit-darcula-gets-major-ai-upgrade
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Netcraft found the Darcula phishing kit now uses GenAI to generate custom forms and translate cloned brand pages, cutting setup time to minutes.
+initial_access: unknown
+ai_tooling_and_models:
+  - Generative AI integrated into darcula-suite phishing kit
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Darcula PhaaS (Smishing Triad ecosystem)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: Darcula PhaaS (Smishing Triad ecosystem)
+  country: China
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

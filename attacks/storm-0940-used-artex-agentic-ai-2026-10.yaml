@@ -1,0 +1,39 @@
+id: storm-0940-used-artex-agentic-ai-2026-10
+name: Storm-0940 used ARTEX agentic AI framework in ConnectWise supply-chain attack reaching 2,250+ Microsoft 365 tenants
+date_reported: 2026-10-21
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/10/21/storm-0940-uses-artex-agentic-ai-connectwise-supply-chain-compromise/
+    publisher: Microsoft Threat Intelligence
+  - url: https://www.bleepingcomputer.com/news/security/hackers-breach-microsoft-365-tenants-via-connectwise-supply-chain-attack/
+  - url: https://cyberscoop.com/microsoft-attributes-connectwise-supply-chain-attack-china-storm-0940/
+  - url: https://www.business-standard.com/technology/artificial-intelligence/chinese-linked-hackers-use-ai-to-compromise-firms-globally-microsoft-126102200170_1.html
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Microsoft attributes the ConnectWise Cloud Backup supply-chain compromise to China-aligned Storm-0940, which used the ARTEX multi-agent AI framework to automate recon, spraying and OAuth abuse, reaching privileged cloud access in some tenants in under three hours.
+initial_access: unknown
+ai_tooling_and_models:
+  - ARTEX (open-source multi-agent LLM pen-test framework, model-agnostic)
+  - ConnectWise Cloud Backup (SkyKick) app identities
+  - Microsoft 365 / Entra ID
+other_tooling: []
+victims_and_sectors: Defense; Government; Finance; Technology and AI companies; Critical infrastructure; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-0940
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-0940
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: confirmed

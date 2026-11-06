@@ -1,0 +1,35 @@
+id: us-japan-south-korea-jointly-warn-2025-08
+name: US, Japan and South Korea jointly warn DPRK IT workers use AI tools to fake identities
+date_reported: 2025-08-27
+researcher: unknown
+org: Republic of Korea Ministry of Foreign Affairs (joint statement with Japan and the United States)
+sources:
+  - url: https://www.mofa.go.kr/eng/brd/m_5676/view.do?seq=322943
+    publisher: Republic of Korea Ministry of Foreign Affairs (joint statement with Japan and the United States)
+  - url: https://www.globalsecurity.org/wmd/library/news/dprk/2025/dprk-250827-state01.htm
+  - url: https://www.koreatimes.co.kr/amp/foreignaffairs/northkorea/20250827/s-korea-us-japan-voice-serious-concerns-over-nk-it-workers-malicious-cyber-activities
+borderline: false
+ai_role: other
+technique_summary: A trilateral US-Japan-ROK statement said North Korean IT workers disguise identities and locations by leveraging AI tools, alongside new Japanese alerts, Korean advisories and US sanctions.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified AI tools used to fabricate identities and locations
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: DPRK IT workers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Low. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  actor_name: DPRK IT workers
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

@@ -1,0 +1,34 @@
+id: unit-42-tuxbot-v3-iot-botnet-2026-07
+name: "Unit 42: TuxBot v3 IoT botnet shows heavy, buggy LLM-assisted development by Keksec-linked operator"
+date_reported: 2026-07-15
+researcher: unknown
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://unit42.paloaltonetworks.com/tuxbot-v3-evolution-iot-botnet/
+    publisher: Unit 42 (Palo Alto Networks)
+  - url: https://thehackernews.com/2026/07/tuxbot-v3-evolution-shows-signs-of-llm.html
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-tuxbot-llm-assisted-botnet-20260723-csa-st/
+borderline: false
+ai_role: llm_generated_malware
+technique_summary: An IoT botnet framework shipped with leftover LLM reasoning, AI safety disclaimers in every C file and LLM-introduced bugs that disabled about 30 percent of its features.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM used for code generation and exploit porting
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: TuxBot developer (Keksec ecosystem overlaps)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: TuxBot developer (Keksec ecosystem overlaps)
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

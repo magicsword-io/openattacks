@@ -1,0 +1,35 @@
+id: 123-reg-ai-driven-intrusion-read-2026-10
+name: 123 Reg says an AI-driven intrusion read customer data; suspects China nexus and ARTEX
+date_reported: 2026-10-28
+researcher: unknown
+org: The Register
+sources:
+  - url: https://www.theregister.com/cyber-crime/2026/10/28/123-reg-discloses-ai-cyberattack-on-customer-data-suspects-china-nexus/5305936
+    publisher: The Register
+  - url: https://agentbeam.com/blog/123-reg-ai-driven-cyberattack-artex-claimed-vs-verified
+  - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: UK registrar 123 Reg (GoDaddy) told customers an AI-driven intrusion on 18 Sep read their contact and account data, citing China/Singapore infrastructure, ARTEX and AI skill packs, though none of the AI evidence is public.
+initial_access: unknown
+ai_tooling_and_models:
+  - ARTEX (claimed)
+  - copies of Anthropic open-source skills and other AI exploitation frameworks found on attacker infrastructure
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (suspected Chinese state-sponsored group per 123 Reg; possibly the ARTEX operator CrowdStrike saw in South Korea)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+attribution:
+  country: China
+ai_involvement_confidence: vendor-asserted

@@ -1,0 +1,37 @@
+id: withsecure-exposes-greyvibe-russia-nexus-group-2026-05
+name: WithSecure exposes GREYVIBE, a Russia-nexus group using ChatGPT, Gemini and Ideogram against Ukraine
+date_reported: 2026-05-28
+researcher: unknown
+org: WithSecure
+sources:
+  - url: https://www.withsecure.com/en/resources-hub/w-labs/greyvibe/
+    publisher: WithSecure
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-greyvibe-ai-nation-state-20260530-csa-styl/
+  - url: https://www.team-cymru.com/post/threat-hunting-legionrelay-c2-servers-ukraine
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A previously untracked Russia-aligned group used commercial LLMs and image generators to build lures, obfuscators and RATs for campaigns against Ukrainian military, government and civilians.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI ChatGPT, Google Gemini, Ideogram AI
+other_tooling: []
+victims_and_sectors: Defense; Government; Critical infrastructure; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: GREYVIBE
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: GREYVIBE
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

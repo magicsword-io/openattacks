@@ -1,0 +1,37 @@
+id: hong-kong-police-arrest-31-deepfake-2025-01
+name: Hong Kong police arrest 31 in deepfake face-swap romance and crypto investment scam ring
+date_reported: 2025-01-05
+researcher: unknown
+org: The Star (Asia News Network, via South China Morning Post)
+sources:
+  - url: https://www.thestar.com.my/aseanplus/aseanplus-news/2025/01/05/hong-kong-police-arrest-31-who-used-deepfakes-to-scam-victims-in-singapore-malaysia
+    publisher: The Star (Asia News Network, via South China Morning Post)
+  - url: https://www.scmp.com/news/hong-kong/law-and-crime/article/3293476/hong-kong-police-arrest-31-who-used-deepfakes-scam-victims-singapore-malaysia
+  - url: https://hongkongfp.com/2025/01/06/hong-kong-police-arrest-31-over-deepfake-romance-scams-targeting-victims-in-taiwan-malaysia-singapore/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Hong Kong's Commercial Crime Bureau arrested 31 people from a syndicate that used AI face-swapping to pose as attractive, wealthy men and women on dating apps and steer victims into a fake crypto platform, netting over HKD 34 million.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI face-swapping software used on video calls
+  - deepfaked persona images (tools not named)
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed Kowloon Bay scam syndicate
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

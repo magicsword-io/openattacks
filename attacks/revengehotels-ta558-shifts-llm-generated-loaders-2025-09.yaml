@@ -1,0 +1,35 @@
+id: revengehotels-ta558-shifts-llm-generated-loaders-2025-09
+name: RevengeHotels (TA558) shifts to LLM-generated loaders to push VenomRAT at Brazilian hotels
+date_reported: 2025-09-16
+researcher: unknown
+org: Kaspersky (Securelist)
+sources:
+  - url: https://securelist.com/revengehotels-attacks-with-ai-and-venomrat-across-latin-america/117493/
+    publisher: Kaspersky (Securelist)
+  - url: https://thehackernews.com/2025/09/ta558-uses-ai-generated-scripts-to.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A long-running hotel-targeting crew adopted LLM-generated JavaScript and PowerShell loaders and AI-written lures to expand campaigns.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM agents
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: RevengeHotels (TA558)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: RevengeHotels (TA558)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

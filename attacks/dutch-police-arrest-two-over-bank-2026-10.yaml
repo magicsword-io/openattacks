@@ -1,0 +1,35 @@
+id: dutch-police-arrest-two-over-bank-2026-10
+name: Dutch police arrest two over bank-helpdesk fraud using dozens of AI-generated voices and NFC card relay
+date_reported: 2026-10-20
+researcher: unknown
+org: Politie (Netherlands Police)
+sources:
+  - url: https://www.politie.nl/nieuws/2026/oktober/20/07-twee-verdachten-aangehouden-in-onderzoek-naar-nieuwe-vorm-van-bankhelpdeskfraude.html
+    publisher: Politie (Netherlands Police)
+  - url: https://thehackernews.com/2026/10/threatsday-ai-secrets-leak-pingcap.html
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Dutch police dismantled a bank-helpdesk fraud ring that used dozens of AI-generated voice clips to front robocalls and NFC-relay apps to drain cards, hitting about 170 victims for roughly EUR 380,000 in three weeks.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI voice generation (unspecified tools)
+other_tooling: []
+victims_and_sectors: Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed Dutch fraud group (two suspects arrested)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

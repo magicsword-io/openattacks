@@ -1,0 +1,34 @@
+id: taiwans-security-bureau-china-using-generative-2025-04
+name: Taiwan's security bureau says China is using generative AI to scale divisive disinformation
+date_reported: 2025-04-08
+researcher: unknown
+org: Reuters (reporting Taiwan National Security Bureau report to parliament)
+sources:
+  - url: https://media.interaksyon.com/politics-issues/2025/04/08/294572/taiwan-china-generative-ai-disinformation-divide-island/
+    publisher: Reuters (reporting Taiwan National Security Bureau report to parliament)
+  - url: https://www.globalsecurity.org/intell/library/news/2026/intell-260111-cna01.htm
+borderline: false
+ai_role: other
+technique_summary: Taiwan's NSB told lawmakers that Beijing used AI tools to produce and spread over half a million controversial messages in early 2025, timed to Lai's China speech and TSMC's US investment.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified generative AI tools
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Chinese Communist Party propaganda apparatus and contracted marketing firms
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - influence-ops
+category: adversary-use-of-ai
+attribution:
+  actor_name: Chinese Communist Party propaganda apparatus and contracted marketing firms
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

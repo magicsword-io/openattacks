@@ -1,0 +1,31 @@
+id: chainalysis-external-actor-using-offensive-agentic-2026-10
+name: Chainalysis says an external actor using 'offensive agentic techniques' accessed internal tools and customer user data
+date_reported: 2026-10-30
+researcher: unknown
+org: Chainalysis
+sources:
+  - url: https://www.chainalysis.com/blog/security-incident-october-30/
+    publisher: Chainalysis
+  - url: https://fourweekmba.com/ai-chainalysis-says-an-agentic-attack-exposed-customer-emails/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Blockchain-analytics firm Chainalysis disclosed an October intrusion it attributes to an actor using offensive agentic techniques, exposing customer user names, emails and role labels but, it says, no investigation data.
+initial_access: unknown
+ai_tooling_and_models:
+  - Chainalysis platform and internal tools
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: vendor-asserted

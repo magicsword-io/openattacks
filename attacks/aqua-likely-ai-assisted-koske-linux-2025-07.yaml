@@ -1,0 +1,37 @@
+id: aqua-likely-ai-assisted-koske-linux-2025-07
+name: "Aqua: likely AI-assisted Koske Linux cryptominer hides in panda JPEGs after JupyterLab intrusion"
+date_reported: 2025-07-24
+researcher: unknown
+org: Aqua Security (Aqua Nautilus)
+sources:
+  - url: https://www.aquasec.com/blog/ai-generated-malware-in-panda-image-hides-persistent-linux-threat/
+    publisher: Aqua Security (Aqua Nautilus)
+  - url: https://www.csoonline.com/article/4028933/ai-forged-panda-images-hide-persistent-cryptomining-malware-koske.html
+  - url: https://betanews.com/2025/07/24/hackers-are-using-ai-and-panda-images-to-infect-linux-machines-heres-how/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: Koske, a Linux cryptomining toolkit with rootkit and polyglot image payloads, shows code patterns Aqua attributes to LLM-assisted development.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLM-assisted code generation (suspected)
+  - misconfigured JupyterLab data-science servers
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Koske operator (unnamed)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - ai-infra-intrusion
+category: adversary-use-of-ai
+attribution:
+  actor_name: Koske operator (unnamed)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

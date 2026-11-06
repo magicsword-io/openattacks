@@ -1,0 +1,36 @@
+id: irans-educated-manticore-apt35-phishes-israeli-2025-06
+name: Iran's Educated Manticore (APT35) phishes Israeli tech experts with likely AI-written lures
+date_reported: 2025-06-25
+researcher: unknown
+org: Check Point Research
+sources:
+  - url: https://research.checkpoint.com/2025/iranian-educated-manticore-targets-leading-tech-academics/
+    publisher: Check Point Research
+  - url: https://thehackernews.com/2025/06/iranian-apt35-hackers-targeting-israeli.html
+  - url: https://blog.checkpoint.com/security/educated-manticore-reemerges-iranian-spear-phishing-campaign-targeting-high-profile-figures/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: During the Israel-Iran conflict, Educated Manticore targeted Israeli cyber experts and professors with polished, likely AI-generated WhatsApp and email lures leading to MFA-relay phishing kits.
+initial_access: unknown
+ai_tooling_and_models:
+  - Generative AI (unspecified) suspected for message drafting
+  - AI-themed lures
+other_tooling: []
+victims_and_sectors: Education; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Educated Manticore (APT35, Charming Kitten overlap)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: Educated Manticore (APT35, Charming Kitten overlap)
+  country: Iran
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

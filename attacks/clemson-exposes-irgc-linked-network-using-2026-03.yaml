@@ -1,0 +1,35 @@
+id: clemson-exposes-irgc-linked-network-using-2026-03
+name: Clemson exposes IRGC-linked network using AI-generated profiles and war imagery on X, Instagram, Bluesky
+date_reported: 2026-03-11
+researcher: unknown
+org: Clemson University Media Forensics Hub
+sources:
+  - url: https://open.clemson.edu/mfh_reports/10/
+    publisher: Clemson University Media Forensics Hub
+  - url: https://www.foxnews.com/media/iranian-regime-spreading-anti-israel-propaganda-across-dozens-social-media-accounts-report.amp
+  - url: https://www.euronews.com/my-europe/2026/06/04/social-media-operation-linked-to-iran-manipulated-public-through-fake-irish-and-scottish-p
+borderline: false
+ai_role: other
+technique_summary: At least 62 IRGC-linked accounts posing as Latin Americans and British and Irish locals switched to pro-Tehran war propaganda, using AI-generated profile photos and fake images of destroyed US bases.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI image generators (profile photos, fake strike imagery)
+other_tooling: []
+victims_and_sectors: Government; Defense; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: IRGC-affiliated network
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - influence-ops
+category: adversary-use-of-ai
+attribution:
+  actor_name: IRGC-affiliated network
+  country: Iran
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

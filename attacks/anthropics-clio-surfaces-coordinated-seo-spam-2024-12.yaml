@@ -1,0 +1,33 @@
+id: anthropics-clio-surfaces-coordinated-seo-spam-2024-12
+name: Anthropic's Clio surfaces a coordinated SEO spam network and Claude access-resale abuse
+date_reported: 2024-12-12
+researcher: unknown
+org: Anthropic
+sources:
+  - url: https://www.anthropic.com/research/clio
+    publisher: Anthropic
+borderline: false
+ai_role: ai_credential_theft
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Anthropic's aggregate-analysis system Clio caught a network of automated accounts generating SEO spam that no single conversation revealed, plus attempts to resell unauthorized Claude access.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anthropic Claude
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed automated account network
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - jailbreak-misuse
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

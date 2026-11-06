@@ -1,0 +1,32 @@
+id: two-six-pro-russia-pro-china-2026-06
+name: "Two Six: pro-Russia and pro-China X networks used AI to post less but look more human, 2024 to 2026"
+date_reported: 2026-06-12
+researcher: unknown
+org: Two Six Technologies
+sources:
+  - url: https://twosixtech.com/blog/more-sophistication-less-slop-russian-and-chinese-malign-influence-actors-are-working-smarter-in-the-age-of-ai/
+    publisher: Two Six Technologies
+  - url: https://vpncentral.com/russian-and-chinese-influence-networks-use-ai-to-look-more-human-online/
+borderline: false
+ai_role: other
+technique_summary: A three-year study of thousands of pro-Russia and pro-China X accounts found AI used to improve quality, add languages and imagery, and mimic human posting rhythms rather than to raise volume.
+initial_access: unknown
+ai_tooling_and_models:
+  - Generative AI for images, translation and content polishing
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Pro-Russia and pro-China inauthentic X networks
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+category: adversary-use-of-ai
+attribution:
+  actor_name: Pro-Russia and pro-China inauthentic X networks
+ai_involvement_confidence: vendor-asserted

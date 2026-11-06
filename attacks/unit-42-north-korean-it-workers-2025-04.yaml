@@ -1,0 +1,35 @@
+id: unit-42-north-korean-it-workers-2025-04
+name: "Unit 42: North Korean IT workers using real-time deepfakes in job interviews; identity built in 70 minutes"
+date_reported: 2025-04-21
+researcher: unknown
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://unit42.paloaltonetworks.com/north-korean-synthetic-identity/
+    publisher: Unit 42 (Palo Alto Networks)
+  - url: https://www.darkreading.com/remote-workforce/north-korean-operatives-deepfakes-it-job-interviews
+borderline: false
+ai_role: other
+technique_summary: Unit 42 reported evidence that DPRK IT workers are using real-time deepfakes in video interviews and showed a novice could build one in about 70 minutes.
+initial_access: unknown
+ai_tooling_and_models:
+  - Real-time face-swap tools, AI-generated faces, virtual camera software
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: DPRK IT workers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - deepfake-voice
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  actor_name: DPRK IT workers
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

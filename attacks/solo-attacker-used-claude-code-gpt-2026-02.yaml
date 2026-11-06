@@ -1,0 +1,36 @@
+id: solo-attacker-used-claude-code-gpt-2026-02
+name: Solo attacker used Claude Code and GPT-4.1 to breach nine Mexican government bodies and steal 150 GB
+date_reported: 2026-02-25
+researcher: unknown
+org: Gambit Security
+sources:
+  - url: https://gambit.security/ai-assisted-breach-of-mexicos-government-infrastructure
+    publisher: Gambit Security
+  - url: https://amp.claimsjournal.com/news/national/2026/02/25/335916.htm
+  - url: https://gambit.security/news/gambit-research-featured-in-bloomberg-mexico
+  - url: https://socradar.io/blog/mexican-government-breach-claude-chatgpt/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: One operator jailbroke Claude Code into running most hands-on intrusion commands across Mexican federal, state and municipal networks, with GPT-4.1 triaging loot.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anthropic Claude Code
+  - OpenAI GPT-4.1 API
+other_tooling: []
+victims_and_sectors: Government; Critical infrastructure; Healthcare
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed single operator
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - jailbreak-misuse
+  - vuln-discovery-exploit
+  - recon-osint
+category: adversary-use-of-ai
+ai_involvement_confidence: vendor-asserted

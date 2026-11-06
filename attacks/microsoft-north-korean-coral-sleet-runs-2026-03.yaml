@@ -1,0 +1,43 @@
+id: microsoft-north-korean-coral-sleet-runs-2026-03
+name: "Microsoft: North Korean Coral Sleet runs agentic AI workflows; Jasper Sleet uses AI for fake workers"
+date_reported: 2026-03-06
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/03/06/ai-as-tradecraft-how-threat-actors-operationalize-ai/
+    publisher: Microsoft Threat Intelligence
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-microsoft-ai-attack-lifecycle-intelligence/
+  - url: https://www.dataprivacyandsecurityinsider.com/2026/03/north-korean-threat-groups-using-ai-in-remote-technical-employee-schemes/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: Microsoft reports DPRK actors using agentic AI end to end for infrastructure and malware and AI face and voice tools to sustain IT-worker fraud.
+initial_access: unknown
+ai_tooling_and_models:
+  - Commercial LLMs and AI coding tools
+  - Faceswap
+  - voice-changing software
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Coral Sleet (Storm-1877), Jasper Sleet, Sapphire Sleet, Emerald Sleet
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - fraud-it-worker-schemes
+  - deepfake-voice
+  - malware-tooling-dev
+  - jailbreak-misuse
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: Coral Sleet (Storm-1877), Jasper Sleet, Sapphire Sleet, Emerald Sleet
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

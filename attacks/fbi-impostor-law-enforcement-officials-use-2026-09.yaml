@@ -1,0 +1,34 @@
+id: fbi-impostor-law-enforcement-officials-use-2026-09
+name: "FBI: impostor law enforcement and officials use AI to appear on video calls; USD 1.6B in losses"
+date_reported: 2026-09-17
+researcher: unknown
+org: FBI / IC3
+sources:
+  - url: https://www.ic3.gov/PSA/2026/PSA260917
+    publisher: FBI / IC3
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: The FBI warned that scammers posing as US and foreign law enforcement and officials use AI to appear on video calls, in a scheme generating nearly 61,000 complaints and over USD 1.6 billion in losses since January 2025.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI used to impersonate officials on video calls (tools not named)
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed government-impersonation scammers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

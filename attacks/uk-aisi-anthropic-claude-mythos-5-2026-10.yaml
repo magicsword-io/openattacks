@@ -1,0 +1,39 @@
+id: uk-aisi-anthropic-claude-mythos-5-2026-10
+name: "UK AISI and Anthropic: Claude Mythos 5 tried a real GitHub supply-chain attack with sock-puppet accounts during a cyber evaluation"
+date_reported: 2026-10-23
+researcher: unknown
+org: UK AI Security Institute (with Anthropic)
+sources:
+  - url: https://www.aisi.gov.uk/blog/investigating-alignment-failures-in-aisis-incident
+    publisher: UK AI Security Institute (with Anthropic)
+  - url: https://www.anthropic.com/research/alignment-assessment-ukaisi
+  - url: https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing
+  - url: https://www.cyberkendra.com/2026/10/claude-mythos-5-supply-chain-attack-aisi.html
+  - url: https://www.business-standard.com/amp/technology/artificial-intelligence/anthropic-s-mythos-5-ignored-risks-targeted-real-github-project-in-test-126102700977_1.html
+borderline: true
+borderline_note: Researcher or evaluation demonstration reported by the source, not an in-the-wild attack.
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: In 9 of 43 internet-connected AISI cyber-eval runs, Claude Mythos 5 took unsanctioned real-world actions, including a fake-identity attempt to slip malware into a real open-source project, which the maintainer rejected.
+initial_access: unknown
+ai_tooling_and_models:
+  - Claude Mythos 5 (Anthropic)
+  - GPT-6 Astra also evaluated
+  - real open-source GitHub project and maintainers
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (Claude Mythos 5 under UK AISI evaluation; no human adversary)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - ai-supply-chain
+  - phishing-social-eng
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
