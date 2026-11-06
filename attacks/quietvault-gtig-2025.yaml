@@ -11,12 +11,14 @@ borderline: false
 borderline_note: null
 ai_role: ai_credential_theft
 ai_role_secondary: null
-ai_role_detail: Credential stealer that also abuses on-host AI CLIs with prompts to find more secrets
-technique_summary: JavaScript stealer targeting GitHub and npm tokens; exfils via creating public
-  GitHub repos. Also leverages AI prompts and installed AI CLI tools to search for other secrets on
-  the host. Observed in operations; linked in industry reporting to Nx/s1ngularity-style
-  supply-chain delivery.
-initial_access: Trojanized npm packages (industry linkage to UNC6426 / s1ngularity-style campaigns)
+ai_role_detail: Credential stealer that also abuses on-host AI CLIs with prompts
+  to find more secrets
+technique_summary: JavaScript stealer targeting GitHub and npm tokens; exfils
+  via creating public GitHub repos. Also leverages AI prompts and installed AI
+  CLI tools to search for other secrets on the host. Observed in operations;
+  linked in industry reporting to Nx/s1ngularity-style supply-chain delivery.
+initial_access: Trojanized npm packages (industry linkage to UNC6426 /
+  s1ngularity-style campaigns)
 ai_tooling_and_models:
   - On-host AI CLI tools
   - crafted AI prompts for secret discovery
@@ -28,7 +30,8 @@ regions:
   - unknown
 attribution_or_cluster: GTIG QUIETVAULT; industry links to UNC6426 / s1ngularity cluster
 scale_and_metrics: Observed in operations 2025
-prevention_angle: Disable or gate AI CLIs in CI; rotate GitHub/npm tokens; hunt public s1ngularity-style repos
+prevention_angle: Disable or gate AI CLIs in CI; rotate GitHub/npm tokens; hunt
+  public s1ngularity-style repos
 related_magicsword_projects:
   - LOLSkills
 source_notes: null
@@ -54,7 +57,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Secrets are posted to public repositories
-      description: The malware creates public GitHub repositories to exfiltrate collected data.
+      description: The malware creates public GitHub repositories to exfiltrate
+        collected data.
       kind: impact
       source_urls: *a1
   edges:
@@ -68,3 +72,12 @@ atlas_techniques:
   - id: AML.T0055
     rationale: The stealer uses local AI tools to search for additional secrets.
     source_urls: *a1
+category: attacks-on-ai
+attribution:
+  actor_name: GTIG QUIETVAULT
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in QUIETVAULT AI-assisted credential
+      stealer. Refer to sources for specific IOCs and TTPs.

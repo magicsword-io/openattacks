@@ -27,6 +27,14 @@ scale_and_metrics: unknown
 prevention_angle: Standard APT41 detections; AI assistance does not change post-exploitation signals
 related_magicsword_projects: []
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  actor_name: APT41
+  country: China
+  motivation: nation-state
+  attributed_by: Google GTIG
+  confidence: high
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:

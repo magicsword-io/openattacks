@@ -11,9 +11,10 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: October 2025 OpenAI report documents Chinese-language accounts using ChatGPT for
-  phishing and malware campaign help, including research into further automation via
-  DeepSeek—illustrating multi-model hopping.
+technique_summary: October 2025 OpenAI report documents Chinese-language
+  accounts using ChatGPT for phishing and malware campaign help, including
+  research into further automation via DeepSeek—illustrating multi-model
+  hopping.
 initial_access: unknown
 ai_tooling_and_models:
   - ChatGPT
@@ -38,7 +39,8 @@ attack_flow:
         - https://cdn.openai.com/threat-intelligence-reports/7d662b68-952f-4dfd-a2f2-fe55b041cc4a/disrupting-malicious-uses-of-ai-october-2025.pdf
     - id: step-2
       title: ChatGPT assists the workflow
-      description: The report also describes investigation of further automation through DeepSeek.
+      description: The report also describes investigation of further automation
+        through DeepSeek.
       kind: ai
       source_urls: *a1
     - id: step-3
@@ -48,7 +50,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: OpenAI disrupts the accounts
-      description: The supplied record reports account disruption rather than a complete victim intrusion chain.
+      description: The supplied record reports account disruption rather than a
+        complete victim intrusion chain.
       kind: impact
       source_urls: *a1
   edges:
@@ -60,6 +63,16 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: Chinese-language cyber cluster (OpenAI)
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: "Monitor for the techniques described in OpenAI disruption: Phish and
+      Scripts cyber cluster. Refer to sources for specific IOCs and TTPs."

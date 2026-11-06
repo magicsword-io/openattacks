@@ -241,6 +241,103 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               <p>{attack.attribution_or_cluster}</p>
             </section>
           )}
+          {attack.attribution && (
+            <section id="structured-attribution">
+              <h2>Structured attribution</h2>
+              <dl class="technical-facts">
+                {attack.attribution.actor_name && (
+                  <>
+                    <dt>Actor</dt>
+                    <dd>
+                      {attack.attribution.actor_name}
+                      {attack.attribution.actor_id && ` (${attack.attribution.actor_id})`}
+                    </dd>
+                  </>
+                )}
+                {attack.attribution.aliases && attack.attribution.aliases.length > 0 && (
+                  <>
+                    <dt>Aliases</dt>
+                    <dd>{attack.attribution.aliases.join(" · ")}</dd>
+                  </>
+                )}
+                {attack.attribution.country && (
+                  <>
+                    <dt>Country</dt>
+                    <dd>{attack.attribution.country}</dd>
+                  </>
+                )}
+                {attack.attribution.motivation && (
+                  <>
+                    <dt>Motivation</dt>
+                    <dd>{attack.attribution.motivation}</dd>
+                  </>
+                )}
+                {attack.attribution.attributed_by && (
+                  <>
+                    <dt>Attributed by</dt>
+                    <dd>{attack.attribution.attributed_by}</dd>
+                  </>
+                )}
+                {attack.attribution.confidence && (
+                  <>
+                    <dt>Attribution confidence</dt>
+                    <dd>{attack.attribution.confidence}</dd>
+                  </>
+                )}
+              </dl>
+            </section>
+          )}
+          {attack.detections && attack.detections.length > 0 && (
+            <section id="detections">
+              <h2>Detection rules</h2>
+              <ul class="detection-list">
+                {attack.detections.map((detection) => (
+                  <li>
+                    <strong>{detection.name}</strong>
+                    <span class="detection-format">{detection.format.toUpperCase()}</span>
+                    {detection.url && (
+                      <a href={detection.url} target="_blank" rel="noopener noreferrer">
+                        View rule
+                      </a>
+                    )}
+                    {detection.notes && <p class="detection-notes">{detection.notes}</p>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {attack.timeline && (
+            <section id="timeline">
+              <h2>Activity timeline</h2>
+              <dl class="technical-facts">
+                {attack.timeline.first_seen && (
+                  <>
+                    <dt>First seen</dt>
+                    <dd>{attack.timeline.first_seen}</dd>
+                  </>
+                )}
+                {attack.timeline.last_updated && (
+                  <>
+                    <dt>Last updated</dt>
+                    <dd>{attack.timeline.last_updated}</dd>
+                  </>
+                )}
+              </dl>
+              {attack.timeline.updates && attack.timeline.updates.length > 0 && (
+                <>
+                  <h3>Updates</h3>
+                  <ul class="timeline-updates">
+                    {attack.timeline.updates.map((update) => (
+                      <li>
+                        <strong>{update.date}</strong> — {update.source}
+                        {update.summary && <p>{update.summary}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </section>
+          )}
           {meaningful(attack.prevention_angle) && (
             <section>
               <h2>Source defensive notes</h2>
@@ -365,6 +462,18 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             <>
               <dt>AI-role confidence</dt>
               <dd>{attack.confidence}</dd>
+            </>
+          )}
+          {attack.category && (
+            <>
+              <dt>Category</dt>
+              <dd>{attack.category}</dd>
+            </>
+          )}
+          {attack.ai_involvement_confidence && (
+            <>
+              <dt>AI involvement confidence</dt>
+              <dd>{attack.ai_involvement_confidence}</dd>
             </>
           )}
           {!!attack.aliases?.length && (

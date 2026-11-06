@@ -11,9 +11,10 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Google ad for 'claude mac' lists bing.com, Bing click-tracking redirects through
-  compromised retailer to fake Claude download. Page shows real Anthropic install command; Copy
-  button swaps clipboard to decode lake-90.com URL and pipe into zsh (InstallFix). Dual cloaking on
+technique_summary: Google ad for 'claude mac' lists bing.com, Bing
+  click-tracking redirects through compromised retailer to fake Claude download.
+  Page shows real Anthropic install command; Copy button swaps clipboard to
+  decode lake-90.com URL and pipe into zsh (InstallFix). Dual cloaking on
   referrer.
 initial_access: Malvertising + clipboard swap / paste into Terminal
 ai_tooling_and_models:
@@ -35,8 +36,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Search ad redirects
-      description: An ad for Claude on Mac redirects through tracking and a compromised retailer to a fake
-        download page.
+      description: An ad for Claude on Mac redirects through tracking and a
+        compromised retailer to a fake download page.
       kind: access
       source_urls: &a1
         - https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results
@@ -47,8 +48,8 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Clipboard command is swapped
-      description: The Copy button substitutes a command that decodes a different download URL and pipes
-        content to zsh.
+      description: The Copy button substitutes a command that decodes a different
+        download URL and pipes content to zsh.
       kind: execution
       source_urls: *a1
     - id: step-4
@@ -67,3 +68,14 @@ atlas_techniques:
   - id: AML.T0073
     rationale: A fake Claude download impersonates a trusted AI vendor.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: Push AcSig ClickFix toolkit family
+ai_involvement_confidence: confirmed
+detections:
+  - name: Detect malicious Claude/AI install redirects
+    format: guidance
+    notes: Monitor for suspicious redirects from search ads to fake AI tool download
+      pages. Educate users to download Claude and other AI tools only from official
+      sites. Implement browser security extensions that warn about lookalike domains
+      and clipboard manipulation.

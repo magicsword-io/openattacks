@@ -29,6 +29,8 @@ prevention_angle: Show full tool descriptions; pin tool hashes; isolate MCP serv
 related_magicsword_projects:
   - LOLSkills
 source_notes: null
+category: attacks-on-ai
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:

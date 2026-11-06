@@ -34,6 +34,13 @@ scale_and_metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
 prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 related_magicsword_projects: []
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  country: China
+  motivation: financially-motivated
+  attributed_by: CrowdStrike Intelligence
+  confidence: medium
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:

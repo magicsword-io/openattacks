@@ -11,9 +11,9 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: DPRK UNC4899 (PUKCHONG), known for supply-chain compromise, used Gemini for code
-  development, exploit research, and tooling improvements targeting edge devices and modern
-  browsers.
+technique_summary: DPRK UNC4899 (PUKCHONG), known for supply-chain compromise,
+  used Gemini for code development, exploit research, and tooling improvements
+  targeting edge devices and modern browsers.
 initial_access: unknown
 ai_tooling_and_models:
   - Gemini
@@ -42,12 +42,14 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Existing offensive tooling is refined
-      description: The source describes development assistance to an actor known for supply-chain compromise.
+      description: The source describes development assistance to an actor known for
+        supply-chain compromise.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Specific deployment is undisclosed
-      description: The seed does not connect each model interaction to a confirmed victim intrusion.
+      description: The seed does not connect each model interaction to a confirmed
+        victim intrusion.
       kind: unknown
       source_urls: *a1
   edges:
@@ -59,6 +61,16 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: UNC4899 aka PUKCHONG
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in UNC4899 (PUKCHONG) Gemini for
+      exploit and tooling R&D. Refer to sources for specific IOCs and TTPs.
