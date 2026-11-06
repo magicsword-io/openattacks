@@ -103,7 +103,7 @@ Every merge to `main` rebuilds and publishes the site, `llms.txt`, `llms-full.tx
 
 Use the root base path (`/`, the default). Canonical URLs, sitemaps, social metadata, and LLM links default to `https://openattacks.ai`, including in preview builds. Remove stale `SITE_URL` and `BASE_PATH` overrides from the Vercel project, or explicitly set `SITE_URL=https://openattacks.ai` and `BASE_PATH=/`. `SITE_URL` can still override the canonical domain for an alternate deployment. Local commands never publish anything.
 
-The production Vercel project is named `openattacks`. In its Domains settings, attach `openattacks.ai`, `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai`, then apply the DNS records Vercel specifies at the registrar. The `.ai` apex serves the site; `vercel.json` redirects the other three hosts with HTTP 308 responses. Existing `ai-attacks.vercel.app` links remain as a legacy alias of the same project. Legacy social-image paths also redirect to `openattacks-share.png`.
+The production Vercel project is named `openattacks`. In its Domains settings, attach `openattacks.ai`, `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai`, then apply the DNS records Vercel specifies at the registrar. The `.ai` apex serves the site; `vercel.json` redirects the other three hosts with HTTP 308 responses. Existing `ai-attacks.vercel.app` links remain as a legacy alias of the same project. Legacy social-image paths also redirect to `openattacks-share-v2.png`.
 
 The four domains were attached to Vercel on 2026-10-29. DNS is managed at Squarespace; Vercel's current configuration check requests these records in each domain's DNS zone:
 

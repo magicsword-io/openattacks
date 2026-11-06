@@ -25,12 +25,17 @@
     },
     {
       "source": "/ai-attacks-share.png",
-      "destination": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
       "permanent": true
     },
     {
       "source": "/og.png",
-      "destination": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
+      "permanent": true
+    },
+    {
+      "source": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
       "permanent": true
     }
   ],
