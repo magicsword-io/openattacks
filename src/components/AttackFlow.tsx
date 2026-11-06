@@ -412,7 +412,7 @@ export default function AttackFlow({
             panOnScroll={false}
             fitView={!mobile}
             fitViewOptions={{ padding: 0.18, maxZoom: 1.15 }}
-            proOptions={{ hideAttribution: false }}
+            proOptions={{ hideAttribution: true }}
           >
             <Background
               color="var(--line)"

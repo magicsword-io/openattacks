@@ -300,6 +300,7 @@ test("entry flows render with sources and controls; removed sections stay absent
 }) => {
   await page.goto("/attacks/cairn-norforge-2026-10/");
   await expect(page.locator(".attack-flow-node")).toHaveCount(4);
+  await expect(page.locator(".react-flow__attribution")).toHaveCount(0);
   const viewport = page.locator(".react-flow__viewport");
   const before = await viewport.getAttribute("style");
   await page.getByRole("button", { name: "Zoom In", exact: true }).click();

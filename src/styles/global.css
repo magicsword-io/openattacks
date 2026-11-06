@@ -3185,14 +3185,6 @@ p {
   width: 28px !important;
   height: 28px !important;
 }
-.react-flow__attribution {
-  font-size: 8px !important;
-  background: var(--panel) !important;
-  color: var(--muted) !important;
-}
-.react-flow__attribution a {
-  color: var(--muted) !important;
-}
 .flow-caption {
   border-top: 1px solid var(--line);
   display: flex;
