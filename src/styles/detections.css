@@ -128,7 +128,7 @@
 }
 .detection-stage[open] > summary > svg,
 .detection-query-format[open] > summary > svg,
-.detection-research[open] > summary > svg {
+.detection-investigation[open] > summary > svg {
   transform: rotate(180deg);
 }
 .detection-stage-body {
@@ -186,7 +186,7 @@
   overflow: hidden;
 }
 .detection-query-format > summary,
-.detection-research > summary {
+.detection-investigation > summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -237,27 +237,16 @@
   font: 11px/1.85 var(--mono);
   white-space: pre;
 }
-.detection-research {
+.detection-investigation {
   margin-top: 20px;
   border-top: 1px solid var(--line);
 }
-.detection-research > summary {
+.detection-investigation > summary {
   padding-inline: 0;
 }
-.detection-research ol {
+.detection-investigation ol {
   padding-left: 18px;
   color: var(--muted);
-}
-.detection-research p {
-  color: var(--muted);
-}
-.detection-research p a {
-  color: var(--accent);
-}
-.detection-research .detection-copy-block {
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  overflow: hidden;
 }
 .detection-stage-footer {
   display: flex;
@@ -357,7 +346,7 @@
   }
   .detection-section :is(button, a),
   .detection-query-format > summary,
-  .detection-research > summary {
+  .detection-investigation > summary {
     min-height: 44px;
   }
   .detection-section a {

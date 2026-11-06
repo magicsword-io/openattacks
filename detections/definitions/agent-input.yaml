@@ -38,8 +38,6 @@ queries:
       task.
     author: MagicSword OpenAttacks catalog
     date: 2026-11-04
-    references:
-      - https://github.com/MHaggis/Security-Detections-MCP
     falsepositives:
       - Authorized activity matching this broad hunt; baseline and investigate
         before alerting.

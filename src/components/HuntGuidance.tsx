@@ -85,6 +85,7 @@ export default function HuntGuidance({
       </p>
       {guidance.queries && (
         <details
+          open
           className={
             standalone ? "detection-query-details" : "stage-query-details"
           }
@@ -150,32 +151,13 @@ export default function HuntGuidance({
           </div>
         </details>
       )}
-      <details className="stage-mcp-details">
-        <summary>Investigation steps & Detection MCP</summary>
+      <details className="stage-investigation-details">
+        <summary>Investigation steps</summary>
         <ol className="stage-hunt-steps">
           {guidance.investigate.map((step) => (
             <li key={step}>{step}</li>
           ))}
         </ol>
-        <p>
-          Use this brief with a connected{" "}
-          <a
-            href="https://github.com/MHaggis/Security-Detections-MCP"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Security Detections MCP
-          </a>
-          . It requests existing rules and coverage gaps in Sigma, KQL and SPL.
-          This site does not search the rule index.
-        </p>
-        <Copy text={guidance.mcp_prompt} label="Copy MCP research brief" />
-        <pre
-          className={`${standalone ? "detection-code" : "hunt-code"} mcp-brief`}
-          tabIndex={0}
-        >
-          <code>{guidance.mcp_prompt}</code>
-        </pre>
       </details>
     </div>
   );

@@ -3,7 +3,7 @@ import Icon from "./Icon.astro";
 import "../styles/detections.css";
 import { href, type Attack } from "../lib/catalog";
 import { attackFlow } from "../lib/attack-flow";
-import { stageGuidance, detectionMcp, type QueryFormat } from "../lib/stage-guidance";
+import { stageGuidance, type QueryFormat } from "../lib/stage-guidance";
 
 const { attack, simulationStages = [] } = Astro.props as {
   attack: Attack;
@@ -95,18 +95,9 @@ const formats: { id: QueryFormat; label: string; extension: string }[] = [
             ))}
           </div>
         )}
-        <details class="detection-research">
-          <summary>Investigation steps &amp; Detection MCP<Icon name="down" size={13} /></summary>
+        <details class="detection-investigation">
+          <summary>Investigation steps<Icon name="down" size={13} /></summary>
           <ol>{guidance.investigate.map((step) => <li>{step}</li>)}</ol>
-          <p>Use this stage brief with a connected <a href={detectionMcp} target="_blank" rel="noopener noreferrer">Security Detections MCP</a> to research existing rules and remaining gaps. The site does not search its rule index.</p>
-          <div class="detection-copy-block">
-            <div class="detection-copy-actions">
-              <span>Stage-specific research brief</span>
-              <button type="button" data-detection-copy>Copy MCP research brief</button>
-              <span role="status" data-detection-copy-status></span>
-            </div>
-            <pre tabindex="0" role="region" aria-label={`Stage ${number} MCP research brief`}><code>{guidance.mcp_prompt}</code></pre>
-          </div>
         </details>
         <div class="detection-stage-footer">
           <span>

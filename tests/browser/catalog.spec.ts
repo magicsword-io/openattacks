@@ -406,15 +406,16 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     "enforced Windows policy",
   );
   await page.getByRole("tab", { name: /Hunt/ }).click();
-  await page
-    .getByText("Explore Sigma, KQL & SPL starters", { exact: false })
-    .click();
+  await expect(page.locator(".stage-inspector")).not.toContainText(
+    "Detection MCP",
+  );
+  await expect(page.locator(".stage-query-details")).toHaveAttribute("open", "");
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "DeviceProcessEvents",
   );
-  await page.locator(".hunt-code:not(.mcp-brief)").focus();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toBeFocused();
+  await page.locator(".hunt-code").focus();
+  await expect(page.locator(".hunt-code")).toBeFocused();
   for (const theme of ["dark", "light"]) {
     if (theme === "light")
       await page.getByRole("button", { name: "Switch to light mode" }).click();
@@ -425,14 +426,14 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   }
   await page.getByRole("button", { name: "Switch to dark mode" }).click();
   await page.getByRole("tab", { name: "SPL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "EventCode=1",
   );
   await page.getByRole("tab", { name: "SPL", exact: true }).press("ArrowRight");
   await expect(
     page.getByRole("tab", { name: "Sigma", exact: true }),
   ).toBeFocused();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "status: experimental",
   );
   await page
@@ -580,9 +581,9 @@ test("qualifications stay before the diagram and custom schema guidance stays ex
   await expect(page.locator(".stage-query-details > summary")).toContainText(
     "Requires log collection and field mapping",
   );
-  await page.locator(".stage-query-details > summary").click();
+  await expect(page.locator(".stage-query-details")).toHaveAttribute("open", "");
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "OpenAttacksAudit_CL",
   );
   for (const name of ["Evidence", "Prevent", "Hunt"]) {

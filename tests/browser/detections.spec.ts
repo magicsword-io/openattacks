@@ -73,13 +73,12 @@ for (const width of [1440, 390]) {
       expect(response.ok()).toBe(true);
       expect(await response.text()).toBe(query);
     }
-    await stage.locator(".detection-research > summary").click();
-    await stage
-      .getByRole("button", { name: "Copy MCP research brief" })
-      .click();
-    const brief = await page.evaluate(() => navigator.clipboard.readText());
-    expect(brief).toContain("Stage: step-2");
-    expect(brief).toContain("not a retrieved upstream rule");
+    await stage.locator(".detection-investigation > summary").click();
+    await expect(stage.locator(".detection-investigation ol")).toBeVisible();
+    await expect(stage).not.toContainText("Detection MCP");
+    await expect(
+      stage.getByRole("button", { name: "Copy MCP research brief" }),
+    ).toHaveCount(0);
     await stage
       .getByRole("link", { name: "Test this stage", exact: true })
       .click();

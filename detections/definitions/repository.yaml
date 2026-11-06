@@ -38,8 +38,6 @@ queries:
       repository, commit or visibility change inconsistent with the approved task.
     author: MagicSword OpenAttacks catalog
     date: 2026-10-23
-    references:
-      - https://github.com/MHaggis/Security-Detections-MCP
     falsepositives:
       - Authorized activity matching this broad hunt; baseline and investigate
         before alerting.

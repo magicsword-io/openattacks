@@ -124,7 +124,7 @@ export function attackMarkdown(
     ),
     "",
     "## Stage defense and hunting recommendations",
-    "Editorial recommendations, not validated coverage. Query starters are drafts. Custom-schema examples require telemetry collection and field mapping; absence of a mapping means not assessed. MagicSword policy opportunities require managed Windows scope and enforcement. Upstream detection MCP searches are not run by this site.",
+    "Editorial recommendations, not validated coverage. Source-controlled query starters are drafts. Custom-schema examples require telemetry collection and field mapping; absence of a mapping means not assessed. MagicSword policy opportunities require managed Windows scope and enforcement.",
     ...flow.nodes.flatMap((node) => {
       const guidance = stageGuidance(attack, node);
       return [

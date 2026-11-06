@@ -38,8 +38,6 @@ queries:
       identity is used outside its intended task or resource scope.
     author: MagicSword OpenAttacks catalog
     date: 2026-10-23
-    references:
-      - https://github.com/MHaggis/Security-Detections-MCP
     falsepositives:
       - Authorized activity matching this broad hunt; baseline and investigate
         before alerting.

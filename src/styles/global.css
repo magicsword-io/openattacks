@@ -3081,7 +3081,7 @@ p {
 }
 .stage-query-details,
 .detection-query-details,
-.stage-mcp-details {
+.stage-investigation-details {
   border-top: 1px solid var(--line);
   padding-top: 12px;
   margin-top: 15px;
@@ -3098,16 +3098,12 @@ p {
   color: var(--muted);
   margin: 4px 0 0 13px;
 }
-.stage-mcp-details summary svg {
+.stage-investigation-details summary svg {
   margin-left: 5px;
 }
-.stage-mcp-details > p,
 .query-scope {
   margin: 15px 0;
   font-size: 10px !important;
-}
-.stage-mcp-details a {
-  color: var(--accent);
 }
 .query-formats {
   display: flex;
@@ -3161,10 +3157,6 @@ p {
   font: 9px/1.8 var(--mono);
   tab-size: 2;
   margin: 10px 0 0;
-}
-.mcp-brief {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 :root[data-theme="light"] .attack-flow-node.kind-ai {
   --step-color: #7149aa;
@@ -4374,8 +4366,7 @@ p {
   padding-top: 20px;
 }
 .detection-hunt .stage-limit,
-.detection-hunt .query-scope,
-.detection-hunt .stage-mcp-details > p {
+.detection-hunt .query-scope {
   font-size: 12px !important;
 }
 .detection-hunt summary {

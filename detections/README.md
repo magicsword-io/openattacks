@@ -15,17 +15,13 @@ Every attack phase has an explicit entry in `stages.json`, keyed by attack ID an
 3. Run `npm run detections:build` to regenerate `catalog.json`. Do not edit the generated catalog by hand.
 4. Run `npm run validate`, `npm run check`, `npm run build`, `npm test` and the browser checks. Validation rejects missing phases, stale references, unknown profiles, duplicate YAML keys, invented gap queries and catalog drift.
 
-The site, defense APIs and raw query downloads all consume the generated catalog. Attack pages with query starters have a server-rendered detection section, phase anchors, query downloads and a JSON stage pack. Only phases with queries appear in that section and receive detection links or a Hunt tab; other phases have no detection placeholder. Pages without queries omit the section and header link. Stage numbering follows the source flow. Content remains readable without JavaScript. Existing `?stage=...&view=hunt#attack-flow` links open the Hunt tab when queries exist and otherwise show the stage evidence.
+The site, defense APIs and raw query downloads all consume the generated catalog. Attack pages have a server-rendered detection section, phase anchors, query downloads and a JSON stage pack. Query-bearing phases receive detection links and a Hunt tab whose source-controlled query panel opens by default. Gap phases remain visible as explicit evidence-gap cards but do not get a Hunt tab or an invented query. Stage numbering follows the source flow. Content remains readable without JavaScript. Existing `?stage=...&view=hunt#attack-flow` links open the Hunt tab when queries exist and otherwise show the stage evidence.
 
 Raw downloads are available at `api/detections/<profile>.sigma.yml`, `.kql` and `.spl`. Complete stage context, evidence, origin, validation status and download URLs are included in `api/defenses.json` and `api/defenses/<attack-id>.json`.
 
-## Research with Security Detections MCP
+## Query provenance
 
-Every phase exports a source-specific research brief for [Security Detections MCP](https://github.com/MHaggis/Security-Detections-MCP). In a connected client, discover available tools, inspect `get_stats`, search by behavior and required telemetry, and retrieve real candidates with `get_by_id`. Use CVE/process/data-source filters when supported. The tool inventory varies between installations; inspect it before assuming a capability exists.
-
-If adding an upstream rule later, retain its real ID, repository URL, revision, author/license and log requirements, and explain the stage relationship. Keep verbatim upstream rules, adaptations and catalog-authored drafts distinguishable. A matching tag or keyword is not verified procedure coverage. ATLAS annotations and upstream ATT&CK IDs are separate namespaces.
-
-The website has no live MCP connection and performs no index search or deployment. This change migrates existing drafts, adds an input-exposure profile and explicit phase mappings, and publishes the research briefs; it does not claim to have queried a live MCP rule index.
+The website displays the query text from `definitions/*.yaml` directly; it does not generate detections from a prompt at runtime. The current rules are catalog-authored drafts. If an upstream rule is added later, retain its real ID, repository URL, revision, author/license and log requirements, and explain the stage relationship. Keep verbatim upstream rules, adaptations and catalog-authored drafts distinguishable. A matching tag or keyword is not verified procedure coverage. ATLAS annotations and upstream ATT&CK IDs are separate namespaces.
 
 ## Simulation evidence
 
