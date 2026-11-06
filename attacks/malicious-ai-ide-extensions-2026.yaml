@@ -1,0 +1,109 @@
+id: malicious-ai-ide-extensions-2026
+name: Multiple campaigns distributing malicious AI IDE extensions (VS Code, JetBrains)
+date_reported: 2026-06-16
+researcher: Aikido, Koi Security
+org: Aikido Security, Koi Security
+sources:
+  - url: https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+    title: "Aikido: JetBrains AI Plugins Stealing API Keys"
+  - url: https://koi.security/blog/maliciouscorgi-vscode-extensions
+    title: "Koi: MaliciousCorgi Campaign - VS Code Extensions Targeting AI Developers"
+  - url: https://www.aikido.dev/blog/fake-clawdbot-vscode-extension
+    title: "Aikido: Fake ClawdBot VS Code Extension"
+  - url: https://www.aikido.dev/blog/codexui-android-malicious-extension
+    title: "Aikido: codexui-android Malicious VS Code Extension"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: ai_tool_as_lure
+ai_role_detail: "Multiple campaigns distributing malicious IDE extensions (VS Code, JetBrains) posing as AI coding assistants to steal API keys and credentials"
+technique_summary: "Multiple 2026 campaigns targeting AI developers via malicious IDE extensions: (1) JetBrains AI plugins (Aikido, Jun 16): 8 malicious IntelliJ IDEA/PyCharm/WebStorm plugins ('AI Code Assistant Pro', 'Claude Integration', 'GPT-4 Helper') on JetBrains Marketplace. Steal Anthropic keys, OpenAI keys, GitHub tokens from IDE settings and env vars. 3,400+ downloads Jun 2026 before removal. (2) MaliciousCorgi (Koi, Jan 26): 12 VS Code extensions ('AI Copilot Enhanced', 'Claude Code Helper', 'Codex Assistant Plus') on VS Code Marketplace. Embedded credential stealer + keylogger. 5,800+ installs Jan-Feb 2026. (3) Fake ClawdBot (Aikido, Jan 27): VS Code extension impersonating legitimate ClawdBot; steals API keys + installs backdoor. 1,200+ installs. (4) codexui-android (Aikido, May 27): VS Code extension 'codexui-android' posing as Android UI builder; harvests keys and AWS credentials. 890+ installs. All campaigns exfiltrate to attacker C2 endpoints. Detection: review installed IDE extensions for suspicious publishers; check extension permissions (filesystem access, network requests, env var access); monitor for unexpected network egress from IDE processes; use IDE marketplace security reports."
+initial_access: "User installs malicious IDE extension from JetBrains Marketplace or VS Code Marketplace (typosquat names, fake functionality, SEO manipulation)"
+ai_tooling_and_models:
+  - JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm)
+  - Visual Studio Code
+  - Anthropic Claude API
+  - OpenAI API
+  - GitHub Copilot
+other_tooling:
+  - Malicious IDE extensions
+  - Credential stealers
+  - Keyloggers
+  - SSH backdoors
+victims_and_sectors: "JetBrains: 3,400+ downloads; MaliciousCorgi: 5,800+ installs; ClawdBot: 1,200+ installs; codexui-android: 890+ installs; combined 11,290+ affected AI developers Jan-Jun 2026"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Multiple distinct campaigns (JetBrains plugins, MaliciousCorgi, ClawdBot, codexui-android); likely separate actors with similar TTPs; financially motivated"
+scale_and_metrics: "11,290+ combined installs across four campaigns Jan-Jun 2026; extensions removed from marketplaces after reports but significant exposure windows"
+prevention_angle: "Verify extension publishers before install; check extension ratings and review count; review extension permissions; prefer extensions from known legitimate publishers; monitor IDE extension installations; use endpoint security monitoring IDE processes; educate developers on extension risks; implement allowlisted extensions in enterprise environments"
+related_magicsword_projects: []
+source_notes: "Aikido Security reports (JetBrains, ClawdBot, codexui-android); Koi Security MaliciousCorgi analysis. IDE extensions operate with user-level permissions and can access all IDE-managed secrets, environment variables, and filesystem. Detection: review installed extensions in IDE settings, alert on extensions with network egress or credential file access, monitor for unexpected outbound connections from IDE processes (IntelliJ, Code), scan for keylogger behavior in extension code."
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Multiple campaigns delivering malicious IDE extensions to steal AI service credentials from developer environments"
+    source_urls:
+      - https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+      - https://koi.security/blog/maliciouscorgi-vscode-extensions
+      - https://www.aikido.dev/blog/fake-clawdbot-vscode-extension
+attack_flow:
+  nodes:
+    - id: publish-extensions
+      title: Publish malicious extensions
+      description: "Adversaries publish extensions to JetBrains Marketplace and VS Code Marketplace with typosquat/combosquat names ('AI Code Assistant Pro', 'Claude Integration', 'AI Copilot Enhanced', 'ClawdBot', 'codexui-android'); use fake descriptions and screenshots to appear legitimate"
+      kind: access
+      source_urls:
+        - https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+        - https://koi.security/blog/maliciouscorgi-vscode-extensions
+    - id: user-installs
+      title: User installs extension
+      description: "Developer searches for AI coding assistant or recommended tool; finds malicious extension via marketplace search or social engineering; installs to IDE; extension activates on IDE startup"
+      kind: ai
+      source_urls:
+        - https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+        - https://koi.security/blog/maliciouscorgi-vscode-extensions
+    - id: harvest-credentials
+      title: Harvest credentials and keys
+      description: "Extension reads IDE settings (API keys, tokens), scans env vars (OPENAI_API_KEY, ANTHROPIC_API_KEY, GITHUB_TOKEN, AWS_*), accesses workspace files (.env, config files); some variants include keyloggers capturing typed credentials"
+      kind: execution
+      source_urls:
+        - https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+        - https://koi.security/blog/maliciouscorgi-vscode-extensions
+    - id: exfiltrate-persist
+      title: Exfiltrate and establish persistence
+      description: "Extensions POST credentials to attacker C2; some variants install SSH backdoors or modify IDE startup scripts for persistence; 11,290+ affected installations across all campaigns Jan-Jun 2026"
+      kind: impact
+      source_urls:
+        - https://www.aikido.dev/blog/jetbrains-ai-plugins-stealing-keys
+        - https://koi.security/blog/maliciouscorgi-vscode-extensions
+  edges:
+    - source: publish-extensions
+      target: user-installs
+    - source: user-installs
+      target: harvest-credentials
+    - source: harvest-credentials
+      target: exfiltrate-persist
+category: attacks-on-ai
+attribution:
+  actor_name: Multiple
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Aikido/Koi
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-01-26"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-01-26"
+      source: Aikido/Koi
+      summary: "Campaign discovered and analyzed"

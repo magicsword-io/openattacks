@@ -1,0 +1,106 @@
+id: gtig-llmjacking-unc6993-2026-11
+name: GTIG LLMJacking - UNC6993, Jet Night, D1337-KAIROS monetize cloud models
+date_reported: 2026-11-02
+researcher: Christopher Romano, Codi Starks, Garrett Mahoney, John Wolfram, Josh Murchie, K Singh, Mathew Potaczek, Mike Lombardi, Rik Dolfing
+org: Google Threat Intelligence Group (GTIG)
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+    title: The Rise of LLMJacking - How Threat Actors Monetize Compromised Cloud and Model Resources
+borderline: false
+borderline_note: null
+ai_role: ai_infra_as_c2
+ai_role_secondary: ai_credential_theft
+ai_role_detail: "Threat actors hijack enterprise LLM access, generate $100K-$1M USD fraudulent charges, monetize via LLM Mixers (illicit routing gateways), deploy agentic workloads with Manus framework"
+technique_summary: "Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, LiteLLM CVE-2026-40217 (/key/regenerate endpoint rebind). UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization."
+initial_access: "Misconfigured Service Account keys; session hijacking page masquerading as LLM portal; stolen GitHub PATs + web app vulnerability exploitation; compromised IAM credentials with cloud federation tokens; harvested exposed LLM API keys from public GitHub; LiteLLM CVE-2026-40217 (user ID rebind vulnerability in /key/regenerate endpoint)"
+ai_tooling_and_models:
+  - AWS Bedrock
+  - Azure Cognitive Services
+  - GCP Gemini Enterprise Agent Platform
+  - LiteLLM gateway
+  - new-api (centralized model hub and gateway)
+  - gcli2api (API proxy tool)
+  - Manus agent framework
+  - SearXNG metasearch
+  - agent-infra/sandbox execution environments
+other_tooling:
+  - Jet Night reseller (jet-night.com)
+  - D1337-KAIROS persona
+  - ai-relay custom proxy infrastructure
+  - newapi.pro resale ecosystem
+  - Node.js proxy bundles
+  - Burn and rotate service account strategy
+victims_and_sectors: "Organizations in North America, South America, Asia Pacific across financial services, retail, technology, transportation sectors"
+regions:
+  - North America
+  - South America
+  - Asia
+attribution_or_cluster: "UNC6993 (Mandiant); Jet Night operators; D1337-KAIROS persona; multiple financially motivated threat clusters operating globally; division of labor between initial access operators and LLM Mixer monetization operators"
+scale_and_metrics: "Multiple incidents in 2026; fraudulent charges exceeding $100K USD in single day; cumulative charges at some orgs reaching $1M USD; Jet Night passed nearly $1M in token costs to victim org; one actor made ~800K Bedrock calls over 30 hours (90% success), another 1.7M calls over 13 hours (1M+ success); 500K+ LLM API calls in <8 hours; Jet Night offers unlimited tokens $60/month (typical market $100-$250/month)"
+prevention_angle: "IAM least privilege; centralized secrets management; code monitoring for API keys; routine config audits; rate limiting via Cloud Armor; network allow listing; budget alerts and API quotas; phishing-resistant MFA; shadow LLM discovery; granular API key scopes; validation sweep monitoring (max_tokens=1); vulnerability/ML supply chain patching; gateway patch management (LiteLLM CVE-2026-40217); sandboxed execution; vetted model repositories; graph-based exposure modeling"
+related_magicsword_projects: []
+source_notes: "GTIG (Google Threat Intelligence Group) responded to multiple 2026 incidents; building on previous underground LLM credential market reporting; observed division of labor between access and monetization; LLM Mixers as illicit routing gateways; 'burn and rotate' service account strategy; Jet Night advertised outages on Telegram likely due to revoked stolen keys"
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - jet-night.com
+    - newapi.pro
+  ips:
+    - 23.106.46.239
+    - 38.246.114.118
+    - 104.243.32.50
+    - 31.57.201.201
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0012
+    rationale: "Threat actors hijack enterprise LLM infrastructure (AWS Bedrock, Azure Cognitive Services, GCP Gemini) to conduct LLMJacking"
+    source_urls:
+      - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+  - id: AML.T0034
+    rationale: "Actors exploit LiteLLM gateway CVE-2026-40217 (/key/regenerate endpoint user ID rebind) to escalate Virtual Keys to PROXY_ADMIN master admin credentials"
+    source_urls:
+      - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+attack_flow:
+  nodes:
+    - id: initial-access
+      title: Compromised cloud identity and LLM API keys
+      description: "Misconfigured Service Account keys; session hijacking page for LLM portal JSON payloads; stolen GitHub PATs + web app vuln; compromised IAM with federation tokens; exposed LLM API keys harvested from public GitHub; stealthy validation sweeps with max_tokens=1"
+      kind: access
+      source_urls:
+        - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+    - id: lateral-persistence
+      title: Privilege escalation and persistence
+      description: "Enumerated cloud services/repos/data stores; cloned codebases for secrets; queried data warehouse metadata; exploited LiteLLM CVE-2026-40217 (/key/regenerate rebind) to elevate Virtual Keys to PROXY_ADMIN; created unauthorized IAM/service accounts; injected SSH keys; attached admin policies; created backdoor accounts disguised as billing utilities"
+      kind: execution
+      source_urls:
+        - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+    - id: llm-abuse
+      title: LLM resource hijacking
+      description: "Enabled managed generative platforms; created additional API keys; subscribed Pay-As-You-Go; selected premium models; launched high-volume inference; 'burn and rotate' short-lived service accounts; provisioned GPU instances; requested quota increases; deployed LiteLLM gateways; hosted Manus agent framework with SearXNG metasearch and sandbox execution"
+      kind: ai
+      source_urls:
+        - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+    - id: monetization
+      title: LLM Mixer resale
+      description: "UNC6993 deployed new-api and gcli2api to aggregate stolen keys and balance loads; Jet Night (jet-night.com) $60/month unlimited token plan powered by stolen keys, passed ~$1M costs to victim; ai-relay on lookalike domains siphons access to newapi.pro resale ecosystem; D1337-KAIROS persona with Node.js proxy bundles; division of labor between access and monetization operators"
+      kind: impact
+      source_urls:
+        - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+    - id: charges
+      title: Fraudulent billing
+      description: "UNC6993 accumulated $100K+ charges quickly; cumulative charges at orgs reaching $1M; one actor 800K Bedrock calls over 30 hours (Opus 75% of calls), another 1.7M calls over 13 hours; token usage profile resembles resold coding-agent traffic with prompt caching; $100K+ estimated usage at list price for two documented cases"
+      kind: impact
+      source_urls:
+        - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+  edges:
+    - source: initial-access
+      target: lateral-persistence
+    - source: lateral-persistence
+      target: llm-abuse
+    - source: llm-abuse
+      target: monetization
+    - source: llm-abuse
+      target: charges
+    - source: monetization
+      target: charges

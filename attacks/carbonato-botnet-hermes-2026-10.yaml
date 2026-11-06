@@ -1,0 +1,101 @@
+id: carbonato-botnet-hermes-2026-10
+name: Carbonato botnet deploys Hermes agent to hunt AI keys on Docker hosts
+date_reported: 2026-10-28
+researcher: ThreatDown Labs
+org: ThreatDown (formerly Malwarebytes)
+sources:
+  - url: https://www.threatdown.com/blog/carbonato/
+    title: "ThreatDown: Carbonato Botnet Spreads Via Exposed Docker Hosts"
+  - url: https://github.com/Hermes-Autonomous-Intelligence/hermes
+    title: "Hermes - Autonomous AI Agent Framework"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_credential_theft
+ai_role_detail: "Carbonato botnet installs Hermes autonomous agent (github.com/Hermes-Autonomous-Intelligence/hermes) on compromised Docker hosts to autonomously hunt for AI API keys and credentials"
+technique_summary: "Oct 28, 2026: Carbonato botnet scans for exposed Docker daemons (TCP 2375/2376, unauthenticated or weak credentials). On compromise, deploys privileged container running Ubuntu with: (1) Hermes autonomous agent (Python-based LLM agent framework); (2) scanning modules for AWS credentials, GitHub tokens, OpenAI/Anthropic API keys, HuggingFace tokens, Docker secrets, Kubernetes service accounts; (3) XMRig crypto miner (secondary payload). Hermes agent autonomously navigates filesystem, reads environment variables, parses .env files, queries Docker secrets API, extracts credentials from running containers, and exfiltrates findings to hxxps://carbonato-collect[.]net/api/ingest. Agent continues running indefinitely, adapting search patterns based on discovered infrastructure. ThreatDown tracked 3,200+ compromised Docker hosts Oct-Nov 2026; hosts in cloud providers (AWS, GCP, Azure, DigitalOcean) and on-premise. Median dwell time 18 days before detection. Detection: monitor Docker daemon exposure (Shodan queries docker 2375/2376), review privileged container deployments, alert on Hermes agent indicators (Python LLM agent process, hermes CLI usage), check for carbonato-collect[.]net egress, monitor API key/token file access patterns from containers."
+initial_access: "Internet-exposed Docker daemon on TCP 2375 (unencrypted) or 2376 (TLS but weak/no auth); credential brute-force or default credentials"
+ai_tooling_and_models:
+  - Hermes autonomous agent framework
+  - OpenAI API (targeted)
+  - Anthropic Claude API (targeted)
+  - HuggingFace (targeted)
+other_tooling:
+  - Docker container escape
+  - XMRig cryptocurrency miner
+  - carbonato-collect[.]net C2
+victims_and_sectors: "3,200+ compromised Docker hosts across AWS, GCP, Azure, DigitalOcean, on-premise; AI/ML development environments, CI/CD pipelines, cloud-native infrastructure"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; Carbonato botnet infrastructure; financially motivated (crypto mining + credential monetization)"
+scale_and_metrics: "3,200+ compromised Docker hosts (Oct-Nov 2026); median dwell time 18 days; credential theft + crypto mining dual-purpose operation"
+prevention_angle: "Never expose Docker daemon to internet; require TLS with client cert authentication; use Docker socket firewall rules; implement least-privilege container policies; disable privileged containers where possible; monitor container resource usage; rotate API keys regularly; use secret management solutions (HashiCorp Vault, AWS Secrets Manager); network segmentation; Docker security scanning"
+related_magicsword_projects: []
+source_notes: "ThreatDown Labs analysis; Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Carbonato represents evolution of botnet TTPs: combining traditional crypto mining with autonomous AI agents for credential harvesting. Detection: look for Hermes agent Python process (hermes, autonomous-agent, llm-agent), monitor Docker privileged containers with network egress to unknown domains, check for carbonato-collect[.]net, alert on Docker API calls from unexpected sources, review container mounts accessing host credentials."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - carbonato-collect.net
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Attacker deploys autonomous AI agent (Hermes) to hunt for AI service credentials on compromised infrastructure"
+    source_urls:
+      - https://www.threatdown.com/blog/carbonato/
+attack_flow:
+  nodes:
+    - id: scan-docker
+      title: Scan for exposed Docker
+      description: "Botnet scans internet for exposed Docker daemons on TCP 2375 (unencrypted) and 2376 (TLS); brute-forces weak credentials or exploits no-auth configs"
+      kind: access
+      source_urls:
+        - https://www.threatdown.com/blog/carbonato/
+    - id: deploy-container
+      title: Deploy malicious container
+      description: "Creates privileged Docker container with host filesystem mounts; runs Ubuntu image with Hermes agent, scanning tools, and XMRig miner; container gains host-level access"
+      kind: ai
+      source_urls:
+        - https://www.threatdown.com/blog/carbonato/
+    - id: hermes-hunt
+      title: Autonomous credential hunting
+      description: "Hermes agent autonomously navigates filesystem, reads env vars, parses .env files, queries Docker secrets, extracts credentials from running containers; adapts search patterns based on discovered infrastructure; targets AWS, GitHub, OpenAI, Anthropic, HuggingFace keys"
+      kind: execution
+      source_urls:
+        - https://www.threatdown.com/blog/carbonato/
+    - id: exfiltrate-mine
+      title: Exfiltrate and mine
+      description: "Hermes POSTs credentials to hxxps://carbonato-collect[.]net/api/ingest; XMRig mines Monero using host CPU; agent maintains persistence and continues hunting indefinitely; median 18-day dwell time"
+      kind: impact
+      source_urls:
+        - https://www.threatdown.com/blog/carbonato/
+  edges:
+    - source: scan-docker
+      target: deploy-container
+    - source: deploy-container
+      target: hermes-hunt
+    - source: hermes-hunt
+      target: exfiltrate-mine
+category: attacks-on-ai  
+attribution:
+  actor_name: Carbonato botnet operators
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: ThreatDown Labs
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Docker daemon exposure monitoring
+    format: guidance
+    notes: "Monitor for exposed Docker daemons on TCP 2375/2376; alert on unauthorized privileged container deployments with host filesystem mounts"
+  - name: Hermes agent detection
+    format: guidance
+    notes: "Monitor for Hermes Python processes, autonomous-agent activity, API calls to DeepSeek from Docker containers; alert on carbonato-collect[.]net egress"
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-10-28"
+      source: ThreatDown Labs
+      summary: "3,200+ compromised Docker hosts discovered; Hermes agent deployment for autonomous credential hunting; median 18-day dwell time"

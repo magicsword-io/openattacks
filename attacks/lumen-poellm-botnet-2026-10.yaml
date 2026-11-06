@@ -1,0 +1,102 @@
+id: lumen-poellm-botnet-2026-10
+name: PoeLLM botnet targets 3,400+ exposed LiteLLM/Ollama servers for mining
+date_reported: 2026-10-07
+researcher: Black Lotus Labs
+org: Lumen
+sources:
+  - url: https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+    title: "Canto incognito: tracking the PoeLLM malware"
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: ai_infra_as_c2
+ai_role_detail: "Malware targets exposed AI/LLM services (LiteLLM, Ollama) for cryptocurrency mining; uses GitHub-hosted poem to derive C2 address; turns victims into scanners"
+technique_summary: "PoeLLM malware exploits vulnerable internet-facing AI/LLM deployments (LiteLLM, Ollama, Gotenberg, Gitea, possibly Ivanti Sentry CVE-2026-10520). Derives C2 from keywords in poem 'On the Nature of Connection' hosted in GitHub repo ejejejdfbbebe/nodejs.org fork (dash.css file). Malware parses poem to extract 4 words/phrases via pattern matching ('In the silent hum of X,', 'each pulse of X threading', 'Beyond the wall of X,', 'the X servers'), converts words to numbers via hardcoded dictionary, combines to form IPv4 C2 address. Deploys XMRig and Iron crypto miners connecting to Kryptex (5.180.174.162). Converts victims into HTTP/S scanners and exploit servers for expansion. Poem updated 11 times since Apr 13, 2026 to rotate C2. Italian-speaking actor. 3,400+ victims, peak 800 active/day, predominantly US/Western Europe."
+initial_access: "Exploitation of publicly exposed vulnerable services: LiteLLM, Ollama, Gotenberg, Gitea, possibly Ivanti Sentry CVE-2026-10520; first activity April 2026"
+ai_tooling_and_models:
+  - LiteLLM
+  - Ollama
+other_tooling:
+  - PoeLLM malware (libgcrypt)
+  - XMRig crypto miner
+  - Iron crypto miner
+  - Kryptex mining service
+  - GitHub for C2 poem hosting
+  - Gotenberg (PDF converter)
+  - Gitea (software development toolkit)
+  - Ivanti Sentry (possibly CVE-2026-10520)
+victims_and_sectors: "3,400+ victim servers; enterprise AI infrastructure; development toolkits; predominantly US and Western Europe; peak activity 800 active servers per day"
+regions:
+  - United States
+  - Europe
+attribution_or_cluster: "Canto Incognito campaign; Italian-speaking threat actor (assessment); financially motivated cryptocurrency mining operation"
+scale_and_metrics: "Active since April 2026; 3,400+ impacted servers; peak ~2,200 affected servers mid-June, ~800 active per day; first C2 commit Apr 13, 2026; poem updated 11 times; broader scanning/exploitation began May 2026; recent traffic suggests distributed brute-force experiments"
+prevention_angle: "Do not expose AI/LLM services to internet (Gotenberg guidance explicit); vulnerability patching for LiteLLM/Ollama/Gitea/Ivanti Sentry; monitor for crypto mining (Kryptex 5.180.174.162); GitHub repository monitoring; C2 poem pattern detection; HTTP scanning from AI servers; GPU utilization anomalies"
+related_magicsword_projects: []
+source_notes: "Black Lotus Labs discovered via Ivanti Sentry CVE-2026-10520 investigation; disrupted campaign, blocked C2 traffic; Lumen Defender customers protected; malware includes remote shell, miners, HTTP/S scanning, exploit deployment; Gotenberg installation guide warns not to expose to internet"
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips:
+    - 5.78.73.122
+    - 120.224.114.212
+    - 5.180.174.162
+    - 92.119.165.74
+  hashes: []
+  urls:
+    - https://github.com/ejejejdfbbebe/nodejs.org
+    - http://5.78.73.122:81/private/python3.6
+    - http://5.78.73.122:81/private/bins.sh
+atlas_techniques:
+  - id: AML.T0010
+    rationale: "Supply chain-style targeting of exposed AI/LLM services (LiteLLM, Ollama) for compromise and cryptocurrency mining"
+    source_urls:
+      - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+  - id: AML.T0034
+    rationale: "Exploitation of vulnerabilities in AI/LLM infrastructure (possibly Ivanti Sentry CVE-2026-10520, vulnerable LiteLLM/Ollama versions)"
+    source_urls:
+      - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+attack_flow:
+  nodes:
+    - id: vuln-exploit
+      title: Exploit vulnerable AI/LLM services
+      description: "Target publicly exposed LiteLLM, Ollama, Gotenberg, Gitea, possibly Ivanti Sentry CVE-2026-10520; Gotenberg docs explicitly warn not to expose to internet"
+      kind: access
+      source_urls:
+        - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+    - id: poem-c2
+      title: GitHub poem-derived C2
+      description: "Malware queries GitHub repo ejejejdfbbebe/nodejs.org fork for dash.css; parses poem 'On the Nature of Connection' to extract 4 words ('In the silent hum of X', 'each pulse of X threading', 'Beyond the wall of X', 'the X servers'); converts words to numbers via hardcoded dictionary; combines to IPv4 C2 address; poem updated 11 times since Apr 13, 2026"
+      kind: execution
+      source_urls:
+        - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+    - id: deploy-malware
+      title: Deploy libgcrypt malware
+      description: "Downloads and executes ELF 'libgcrypt' from C2; malware includes remote shell, XMRig and Iron crypto miners, HTTP/S scanning capabilities, exploit deployment"
+      kind: execution
+      source_urls:
+        - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+    - id: mining
+      title: Cryptocurrency mining
+      description: "Deploys XMRig and Iron miners; connects to Kryptex mining service at 5.180.174.162; GPU hardware attractive target for mining"
+      kind: ai
+      source_urls:
+        - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+    - id: expand-botnet
+      title: Convert victims to scanners
+      description: "Infected servers become HTTP/S vulnerability scanners and exploit servers; proxy attacks through compromised hosts to expand botnet; repurposed routers for C2 infrastructure; recent experiments with distributed brute-force"
+      kind: impact
+      source_urls:
+        - https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware
+  edges:
+    - source: vuln-exploit
+      target: poem-c2
+    - source: poem-c2
+      target: deploy-malware
+    - source: deploy-malware
+      target: mining
+    - source: deploy-malware
+      target: expand-botnet
+    - source: expand-botnet
+      target: vuln-exploit
+      loop: true

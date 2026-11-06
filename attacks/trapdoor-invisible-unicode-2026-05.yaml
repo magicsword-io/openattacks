@@ -1,0 +1,94 @@
+id: trapdoor-invisible-unicode-2026-05
+name: TrapDoor invisible-Unicode CLAUDE.md and .cursorrules packages
+date_reported: 2026-05-24
+researcher: Socket Security Research Team
+org: Socket
+sources:
+  - url: https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+    title: "Socket: TrapDoor Campaign Uses Invisible Unicode in AI Config Files"
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: ai_credential_theft
+ai_role_detail: "TrapDoor campaign embeds invisible Unicode characters in CLAUDE.md and .cursorrules files distributed via npm to inject malicious instructions into AI agent prompts"
+technique_summary: "May 24, 2026: Socket identified 'TrapDoor' campaign distributing malicious CLAUDE.md and .cursorrules files via npm packages. Packages named to appear as AI configuration helpers ('claude-config-pro', 'cursor-rules-helper', 'ai-context-optimizer'). Files contain invisible Unicode characters (U+200B zero-width space, U+202E right-to-left override, U+2060 word joiner) embedding hidden instructions that: (1) tell Claude/Cursor to execute arbitrary commands via shell; (2) modify agent behavior to ignore security warnings; (3) instruct agent to fetch and execute code from attacker-controlled URLs. When user adds these files to project, AI agent reads hidden instructions as part of project context and follows them. 37 malicious npm packages identified; 2,800+ downloads May-Jun 2026 before removal. Detection: scan CLAUDE.md/.cursorrules/AI config files for invisible Unicode (U+200B, U+202E, U+2060, U+FEFF); review npm packages installing to project root or .cursor/ directory; monitor AI agent behavior for unexpected shell commands or URL fetches."
+initial_access: "npm install of package containing malicious CLAUDE.md or .cursorrules file; file copied to project root or .cursor/ directory"
+ai_tooling_and_models:
+  - Claude Code
+  - Cursor IDE
+  - AI coding assistants reading project context files
+other_tooling:
+  - Invisible Unicode characters for prompt injection
+  - npm supply chain attack
+  - Shell command execution via AI agent
+victims_and_sectors: "2,800+ downloads across 37 packages May-Jun 2026; AI developers using Claude/Cursor with project context files"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; 'TrapDoor' campaign; sophisticated understanding of AI agent context mechanisms and Unicode steganography"
+scale_and_metrics: "37 malicious npm packages, 2,800+ downloads May-Jun 2026; packages removed after Socket disclosure"
+prevention_angle: "Scan AI config files for invisible Unicode before committing; use Unicode normalization; review npm packages that install to project root; monitor AI agent command execution; use allowlisted AI config sources; educate users on invisible character risks; implement pre-commit hooks scanning for hidden Unicode"
+related_magicsword_projects: []
+source_notes: "Socket Security analysis. First documented campaign using invisible Unicode in AI agent config files for prompt injection and command execution. Detection: grep files for Unicode ranges U+200B, U+202E, U+2060, U+FEFF, U+061C (invisible/control chars); check npm packages with postinstall scripts writing to project root/.cursor/; monitor AI agent shell executions initiated from project context."
+last_reviewed: 2026-11-04
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0015
+    rationale: "Adversary embeds invisible Unicode characters in AI config files to inject malicious instructions into agent prompts, causing unintended command execution"
+    source_urls:
+      - https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+attack_flow:
+  nodes:
+    - id: publish-packages
+      title: Publish npm packages with malicious configs
+      description: "Adversary publishes 37 npm packages ('claude-config-pro', 'cursor-rules-helper', etc.) containing CLAUDE.md/.cursorrules files with embedded invisible Unicode characters"
+      kind: access
+      source_urls:
+        - https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+    - id: user-installs
+      title: User installs package
+      description: "Developer installs package seeking AI config help; postinstall script copies malicious CLAUDE.md/.cursorrules to project root or .cursor/ directory; files appear benign in normal text editors"
+      kind: ai
+      source_urls:
+        - https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+    - id: agent-reads-context
+      title: AI agent reads malicious context
+      description: "Claude/Cursor loads project context; reads CLAUDE.md/.cursorrules including invisible Unicode instructions; instructions tell agent to execute shell commands, ignore security warnings, fetch code from attacker URLs"
+      kind: execution
+      source_urls:
+        - https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+    - id: agent-executes
+      title: Agent follows hidden instructions
+      description: "AI agent executes shell commands per hidden instructions; fetches and runs code from attacker-controlled URLs; may install backdoors, steal credentials, modify code; 2,800+ affected installations"
+      kind: impact
+      source_urls:
+        - https://socket.dev/blog/trapdoor-invisible-unicode-supply-chain
+  edges:
+    - source: publish-packages
+      target: user-installs
+    - source: user-installs
+      target: agent-reads-context
+    - source: agent-reads-context
+      target: agent-executes
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Socket
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-05-24"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-05-24"
+      source: Socket
+      summary: "Campaign discovered and analyzed"

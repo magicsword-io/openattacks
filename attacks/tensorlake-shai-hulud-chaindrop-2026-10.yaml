@@ -1,0 +1,103 @@
+id: tensorlake-shai-hulud-chaindrop-2026-10
+name: Tensorlake AI sandbox SDK hijacked with Shai-Hulud stealer by ChainDrop
+date_reported: 2026-10-17
+researcher: Socket Security Research Team
+org: Socket
+sources:
+  - url: https://socket.dev/blog/tensorlake-compromise
+    title: "Socket: AI Sandbox SDK Compromised in Supply Chain Attack"
+  - url: https://github.com/tensorlake/tensorzero
+    title: "TensorZero - LLM Gateway for Engineering Teams"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: ai_tool_as_lure
+ai_role_detail: "Supply chain compromise of TensorZero AI sandbox SDK (github.com/tensorlake/tensorzero) to deliver Shai-Hulud credential stealer targeting AI development tools"
+technique_summary: "Oct 17, 2026: Actor 'ChainDrop' compromised Tensorlake maintainer's npm account via phishing. Published malicious TensorZero@1.8.4, @tensorzero/gateway@2.0.1, @tensorzero/cli@1.4.0. Embedded obfuscated Shai-Hulud infostealer targeting AI development credentials: Cursor IDE (.cursor/User/globalStorage/*.json), Claude Desktop (~/Library/Application Support/Claude), OpenAI keys (env vars, .openai/), GitHub tokens (~/.config/gh/), AWS credentials (~/.aws/), Docker configs, SSH keys. Exfiltrated to discord.com/api/webhooks/... and hxxps://tensorlakeapi[.]online/api/collect. Packages removed within 3 hours; ~450 downloads during window. TensorZero is LLM gateway/observability platform for engineering teams. ChainDrop previously linked to @tensorzero/keyv Mini Shai-Hulud campaign (Aug 7, GitGuardian) and other AI supply chain hits. Detection: monitor npm package.json for unexpected dependencies, review postinstall scripts, check for base64/eval obfuscation, scan for Discord webhook URLs, monitor file access to AI credential paths."
+initial_access: "npm install of malicious @tensorzero/* packages (1.8.4, gateway@2.0.1, cli@1.4.0) via compromised maintainer account"
+ai_tooling_and_models:
+  - TensorZero LLM gateway and observability platform
+  - Cursor IDE
+  - Claude Desktop
+  - OpenAI API
+other_tooling:
+  - Shai-Hulud credential stealer
+  - npm supply chain attack
+  - Discord webhooks for exfiltration
+  - tensorlakeapi[.]online C2
+victims_and_sectors: "~450 downloads during 3-hour window; AI/ML engineering teams using TensorZero; broader Shai-Hulud campaign targets AI developers"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Actor 'ChainDrop'; linked to Mini Shai-Hulud keyv campaign (Aug 7); persistent targeting of AI development supply chains"
+scale_and_metrics: "~450 downloads in 3-hour window; packages removed within 3 hours of publication; part of broader Shai-Hulud campaign across AI tooling ecosystem"
+prevention_angle: "Verify npm package integrity; review postinstall scripts; monitor for unexpected dependencies; use npm audit; implement software composition analysis (SCA); rotate credentials after suspected exposure; use credential vaults; monitor file access to AI credential stores; network egress filtering for Discord/unknown domains"
+related_magicsword_projects: []
+source_notes: "Socket Security analysis; TensorZero GitHub repo github.com/tensorlake/tensorzero. Related to s1ngularity-nx-ai-cli-2025-08 entry (Shai-Hulud targeting NX.dev AI CLI) and Mini Shai-Hulud keyv campaign. Detection: monitor for 'Shai-Hulud' patterns (Discord webhooks, base64 obfuscation in postinstall, AI credential path access .cursor/*, Claude config access, env var harvesting), alert on npm packages with obfuscated postinstall scripts, check for tensorlakeapi[.]online domain."
+iocs:
+  domains:
+    - tensorlakeapi.online
+  ips: []
+  hashes: []
+  urls:
+    - https://discord.com/api/webhooks/...
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Supply chain compromise of AI development SDK to steal AI service credentials and API keys"
+    source_urls:
+      - https://socket.dev/blog/tensorlake-compromise
+attack_flow:
+  nodes:
+    - id: phish-maintainer
+      title: Compromise maintainer account
+      description: "ChainDrop phished Tensorlake maintainer's npm credentials to gain publish access to @tensorzero packages"
+      kind: access
+      source_urls:
+        - https://socket.dev/blog/tensorlake-compromise
+    - id: publish-malicious
+      title: Publish malicious packages
+      description: "Published malicious versions: TensorZero@1.8.4, @tensorzero/gateway@2.0.1, @tensorzero/cli@1.4.0 with embedded Shai-Hulud stealer in obfuscated postinstall script"
+      kind: ai
+      source_urls:
+        - https://socket.dev/blog/tensorlake-compromise
+    - id: execute-stealer
+      title: Execute credential harvesting
+      description: "Postinstall script runs Shai-Hulud: scans filesystem for Cursor IDE config, Claude Desktop tokens, OpenAI keys, GitHub tokens, AWS credentials, Docker configs, SSH keys; base64 encodes and stages"
+      kind: execution
+      source_urls:
+        - https://socket.dev/blog/tensorlake-compromise
+    - id: exfiltrate
+      title: Exfiltrate credentials
+      description: "POST stolen credentials to Discord webhook and hxxps://tensorlakeapi[.]online/api/collect; credentials enable downstream AI service abuse and lateral movement"
+      kind: impact
+      source_urls:
+        - https://socket.dev/blog/tensorlake-compromise
+  edges:
+    - source: phish-maintainer
+      target: publish-malicious
+    - source: publish-malicious
+      target: execute-stealer
+    - source: execute-stealer
+      target: exfiltrate
+category: attacks-on-ai
+attribution:
+  actor_name: ChainDrop
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Socket Security
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: npm postinstall script monitoring
+    format: guidance
+    notes: "Monitor npm postinstall scripts for file system access to AI credential paths (~/.cursor/, ~/Library/Application Support/Claude, ~/.openai/, ~/.config/gh/, ~/.aws/); alert on Discord webhook URLs or unknown C2 domains in install scripts"
+  - name: Network egress monitoring
+    format: guidance
+    notes: "Alert on POST requests to tensorlakeapi[.]online or Discord webhook domains from npm/Node processes; monitor base64-encoded data exfiltration"
+timeline:
+  first_seen: "2026-10-17"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-10-17"
+      source: Socket Security
+      summary: "TensorZero packages compromised via phished maintainer credentials; ~450 downloads in 3-hour window before removal"
+last_reviewed: 2026-11-04
