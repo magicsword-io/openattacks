@@ -154,7 +154,7 @@ npm run dev            # local preview with hot reload of attacks/*.yaml
 
 CI (`.github/workflows/ci.yml`) runs format:data:check → validate → check → build → test → browser tests on every PR and on pushes to `main`.
 
-Formatting uses Prettier, configured in `.prettierrc.json`: YAML only, `printWidth: 100`, `proseWrap: preserve`. Simulation definitions are deliberately excluded, because `build-simulations.mjs` hashes their exact bytes into `simulations/catalog.json`.
+The formatting check also runs inside `npm test` (`tests/format.test.mjs`), so a local test run catches unformatted YAML. Formatting uses Prettier, configured in `.prettierrc.json`: YAML only, `printWidth: 100`, `proseWrap: preserve`. Simulation definitions are deliberately excluded, because `build-simulations.mjs` hashes their exact bytes into `simulations/catalog.json`.
 
 ### 3.2 Schema checks (Ajv, strict mode)
 
