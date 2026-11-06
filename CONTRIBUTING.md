@@ -4,8 +4,8 @@ The catalog is maintained as one YAML file per entry in `attacks/`. You can also
 
 1. Copy the template below into `attacks/<id>.yaml`. Use a unique lowercase, hyphenated ID that matches the filename.
 2. Read the original research. Attribute the researcher and organization, link the source of every claim, and explain what role AI played.
-3. Run `npm ci` once, then `npm run validate`. Preview with `npm run dev`.
-4. Open a pull request against `main`. CI validates the YAML, checks types, builds the static site, and compares the API to the YAML.
+3. Run `npm ci` once, then `npm run format:data` (Prettier) and `npm run validate`. Preview with `npm run dev`.
+4. Open a pull request against `main`. CI checks YAML formatting, validates the YAML, checks types, builds the static site, and compares the API to the YAML.
 
 ```yaml
 id: example-campaign-2026
