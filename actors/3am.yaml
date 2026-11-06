@@ -1,0 +1,11 @@
+id: 3am
+name: 3AM
+aliases: []
+country: null
+motivation: cybercrime
+description: Ransomware operation active since 2023, known for quick deployment and double extortion tactics. Associated with other ransomware families and financially motivated cybercrime.
+sources:
+  - url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-263a
+    title: 3AM Ransomware
+    publisher: CISA
+linked_attacks: []

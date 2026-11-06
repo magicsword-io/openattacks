@@ -1,0 +1,12 @@
+id: norforge-aia0001
+name: NorForge AIA0001
+aliases: []
+country: China
+motivation: financially-motivated
+description: Chinese-language financially motivated threat actor tracked by NorForge. Operates exposed Cairn AI harness panels targeting e-commerce, payment, and merchant sites primarily in the United States, Japan, and Australia. Reuters reporting indicates one operator compromised 100+ sites. Infrastructure associated with CGI Global Limited (AS56594). Achieved roughly 10% success rate with automated AI-driven web exploitation.
+sources:
+  - url: https://norforge.com/blog/inside_cairn
+    title: Inside Cairn
+    publisher: NorForge
+linked_attacks:
+  - cairn-norforge-2026-10

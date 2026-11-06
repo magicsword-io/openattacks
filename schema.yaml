@@ -529,6 +529,16 @@ properties:
     type: array
     items:
       type: string
+  linked_actors:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  linked_tools:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
   confidence:
     type: string
     enum:

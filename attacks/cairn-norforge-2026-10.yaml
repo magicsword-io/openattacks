@@ -111,6 +111,10 @@ attack_flow:
 region_notes: Reported target geography includes the United States, Japan and Australia. Canada
   appeared in task text and African commerce was suggested by hints; those unconfirmed locations are
   excluded from country counts.
+linked_actors:
+  - norforge-aia0001
+linked_tools:
+  - cairn
 atlas_techniques:
   - id: AML.T0016.002
     rationale: The supplied source explicitly describes generative-model tooling assisting the reported

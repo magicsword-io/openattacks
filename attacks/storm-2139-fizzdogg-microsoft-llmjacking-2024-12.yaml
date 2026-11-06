@@ -67,6 +67,9 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+linked_actors:
+  - storm-2139
+linked_tools: []
 atlas_techniques:
   - id: AML.T0012
     rationale: The civil case alleges use of stolen Azure OpenAI credentials.

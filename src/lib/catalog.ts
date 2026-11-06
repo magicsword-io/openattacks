@@ -58,6 +58,8 @@ export interface Attack {
   iocs?: Record<string, string[]>;
   tags?: string[];
   aliases?: string[];
+  linked_actors?: string[];
+  linked_tools?: string[];
 }
 export interface AttackFlowNode {
   id: string;
@@ -266,6 +268,8 @@ export function toCSV(attacks: Attack[]) {
     "iocs",
     "tags",
     "aliases",
+    "linked_actors",
+    "linked_tools",
   ];
   const quote = (value: unknown) => {
     let text =

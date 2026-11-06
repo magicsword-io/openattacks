@@ -1,0 +1,12 @@
+id: apt42
+name: APT42
+aliases: []
+country: Iran
+motivation: nation-state
+description: Iranian government-backed advanced persistent threat group focused on intelligence collection and espionage operations. Targets think tanks, government entities, and defense-related organizations. Observed using Gemini for phishing lure drafting, translation, geopolitical research, and attempting to build a natural language to SQL data processing agent for sensitive personal data schemas.
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    title: How Threat Actors Are Using AI Tools
+    publisher: Google GTIG
+linked_attacks:
+  - apt42-gemini-phishing-data-agent-2025

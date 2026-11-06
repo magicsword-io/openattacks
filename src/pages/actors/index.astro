@@ -1,0 +1,105 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { href } from "../../lib/catalog";
+
+const actors = (await getCollection("actors")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name),
+);
+---
+
+<Layout title="Threat Actors — OpenAttacks" description="Threat actors documented in the OpenAttacks catalog">
+  <div class="container">
+    <header class="page-header">
+      <h1>Threat Actors</h1>
+      <p>
+        Adversary groups and operations documented in the OpenAttacks catalog.
+        {actors.length} {actors.length === 1 ? "actor" : "actors"} tracked.
+      </p>
+    </header>
+    <div class="actors-grid">
+      {actors.map((actor) => (
+        <article class="actor-card">
+          <h2>
+            <a href={href(`actors/${actor.id}/`)}>{actor.data.name}</a>
+          </h2>
+          {actor.data.aliases && actor.data.aliases.length > 0 && (
+            <p class="actor-aliases">
+              {actor.data.aliases.slice(0, 2).join(", ")}
+              {actor.data.aliases.length > 2 && `, +${actor.data.aliases.length - 2} more`}
+            </p>
+          )}
+          <dl class="actor-metadata">
+            {actor.data.country && (
+              <>
+                <dt>Country:</dt>
+                <dd>{actor.data.country}</dd>
+              </>
+            )}
+            {actor.data.motivation && (
+              <>
+                <dt>Motivation:</dt>
+                <dd>{actor.data.motivation}</dd>
+              </>
+            )}
+          </dl>
+          <p class="actor-description">{actor.data.description.slice(0, 200)}...</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    margin-bottom: 2rem;
+  }
+  .actors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .actor-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: var(--surface);
+  }
+  .actor-card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+  .actor-card h2 a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .actor-card h2 a:hover {
+    text-decoration: underline;
+  }
+  .actor-aliases {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0 0 1rem 0;
+  }
+  .actor-metadata {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+  .actor-metadata dt {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .actor-metadata dd {
+    margin: 0;
+  }
+  .actor-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

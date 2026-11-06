@@ -1,0 +1,14 @@
+id: temp-zagros
+name: TEMP.Zagros
+aliases:
+  - MuddyWater
+  - MUDDYCOAST
+country: Iran
+motivation: nation-state
+description: Iranian state-sponsored threat actor, also known as MuddyWater. Observed using Gemini with student project pretexts to develop custom malware including web shells and Python C2 frameworks. OPSEC failure led to exposure of hard-coded C2 domains and encryption keys pasted into AI prompts, aiding disruption efforts.
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    title: How Threat Actors Are Using AI Tools
+    publisher: Google GTIG
+linked_attacks:
+  - temp-zagros-gemini-malware-dev-2025
