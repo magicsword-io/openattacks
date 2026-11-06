@@ -1,0 +1,155 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { getAttacks, href, repo } from "../../lib/catalog";
+
+export async function getStaticPaths() {
+  const tools = await getCollection("tools");
+  return tools.map((tool) => ({
+    params: { id: tool.id },
+    props: { tool: tool.data },
+  }));
+}
+
+const { tool } = Astro.props;
+const attacks = (await getAttacks()).filter((attack) =>
+  tool.linked_attacks?.includes(attack.id),
+);
+const actors = tool.linked_actors
+  ? await Promise.all(
+      tool.linked_actors.map(async (id: string) => {
+        const allActors = await getCollection("actors");
+        return allActors.find((a) => a.id === id);
+      }),
+    ).then((actors) => actors.filter(Boolean))
+  : [];
+---
+
+<Layout title={`${tool.name} — OpenAttacks Tools`} description={tool.description}>
+  <article class="container entry-focused">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={href("tools/")}>Tools</a>
+      <span aria-hidden="true">/</span>
+      <span>{tool.name}</span>
+    </nav>
+    <header class="entry-heading">
+      <h1>{tool.name}</h1>
+      <p class="tool-type">{tool.type}</p>
+    </header>
+    <section class="entry-story">
+      <h2>Overview</h2>
+      <p>{tool.description}</p>
+      <dl class="technical-facts">
+        <dt>Type</dt>
+        <dd>{tool.type}</dd>
+        {tool.github_url && (
+          <>
+            <dt>GitHub</dt>
+            <dd>
+              <a href={tool.github_url} target="_blank" rel="noopener noreferrer">
+                {tool.github_url}
+              </a>
+            </dd>
+          </>
+        )}
+        {tool.project_url && (
+          <>
+            <dt>Project URL</dt>
+            <dd>
+              <a href={tool.project_url} target="_blank" rel="noopener noreferrer">
+                {tool.project_url}
+              </a>
+            </dd>
+          </>
+        )}
+      </dl>
+    </section>
+    {actors.length > 0 && (
+      <section>
+        <h2>Linked actors</h2>
+        <ul class="linked-list">
+          {actors.map((actor) => (
+            <li>
+              <a href={href(`actors/${actor.id}/`)}>{actor.data.name}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    {attacks.length > 0 && (
+      <section>
+        <h2>Linked attacks</h2>
+        <ul class="linked-list">
+          {attacks.map((attack) => (
+            <li>
+              <a href={href(`attacks/${attack.id}/`)}>{attack.name}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+    <section id="sources" class="entry-sources">
+      <div class="section-title">
+        <h2>Sources</h2>
+        <span>
+          {tool.sources.length}{" "}
+          {tool.sources.length === 1 ? "source" : "sources"}
+        </span>
+      </div>
+      <ol class="source-list">
+        {tool.sources.map((source: any, i: number) => (
+          <li id={`source-${i + 1}`}>
+            <a href={source.url} target="_blank" rel="noopener noreferrer">
+              {source.title ||
+                new URL(source.url).hostname.replace(/^www\./, "")}{" "}
+              {source.title && (
+                <span class="source-host">
+                  {new URL(source.url).hostname}
+                </span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+    <details class="entry-record">
+      <summary>Record & downloads</summary>
+      <dl class="technical-facts">
+        <dt>Entry ID</dt>
+        <dd class="mono">{tool.id}</dd>
+      </dl>
+      <div class="record-links">
+        <a
+          href={`${repo}/edit/main/tools/${tool.id}.yaml`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Edit on GitHub
+        </a>
+      </div>
+    </details>
+  </article>
+</Layout>
+
+<style>
+  .tool-type {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+    text-transform: capitalize;
+  }
+  .linked-list {
+    list-style: none;
+    padding: 0;
+  }
+  .linked-list li {
+    margin-bottom: 0.5rem;
+  }
+  .linked-list a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .linked-list a:hover {
+    text-decoration: underline;
+  }
+</style>

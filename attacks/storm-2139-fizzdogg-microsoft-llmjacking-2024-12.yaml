@@ -27,6 +27,15 @@ scale_and_metrics: unknown (litigation)
 prevention_angle: Protect Azure OpenAI keys; monitor anomalous image/model invocation
 related_magicsword_projects: []
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-2139
+  aliases:
+    - FizzDogg
+  motivation: cybercrime
+  attributed_by: Microsoft Digital Crimes Unit
+  confidence: high
+ai_involvement_confidence: vendor-asserted
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:
@@ -58,6 +67,9 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+linked_actors:
+  - storm-2139
+linked_tools: []
 atlas_techniques:
   - id: AML.T0012
     rationale: The civil case alleges use of stolen Azure OpenAI credentials.

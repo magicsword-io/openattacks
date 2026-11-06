@@ -1,0 +1,18 @@
+id: apt28
+name: APT28
+aliases:
+  - FROZENLAKE
+  - Fancy Bear
+  - Sofacy
+country: Russia
+motivation: nation-state
+description: Russian state-sponsored advanced persistent threat group active since at least 2007. Known for targeting government, military, and security organizations globally. Observed using AI tools including LLM-generated malware (PROMPTSTEAL/LAMEHUG) that queries Qwen models at runtime to generate Windows reconnaissance commands.
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/
+    title: How Threat Actors Are Using AI Tools
+    publisher: Google GTIG
+  - url: https://csirt.csi.cip.gov.ua/en/posts/apt28-targets-security-and-defence-sector-with-ai-powered-software
+    title: APT28 Targets Security and Defence Sector with AI-powered Software
+    publisher: CERT-UA
+linked_attacks:
+  - promptsteal-lamehug-apt28-2025-07

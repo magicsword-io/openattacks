@@ -5,17 +5,14 @@ researcher: CrowdStrike Intelligence
 org: CrowdStrike
 sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+    title: CrowdStrike Oct 7 - Unknown threat actor uses ARTEX vs South Korean finance
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Likely Chinese-speaking financially motivated actor used open-source Chinese
-  agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories
-  held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via
-  xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX
-  later went closed-source.
+technique_summary: "Likely Chinese-speaking financially motivated actor used open-source Chinese agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX later went closed-source."
 initial_access: "unknown (industry reports: loan inquiry service; employee mobile work-support system)"
 ai_tooling_and_models:
   - ARTEX
@@ -28,13 +25,19 @@ other_tooling:
 victims_and_sectors: South Korean financial organizations (multiple banks per industry reports)
 regions:
   - South Korea
-attribution_or_cluster: Unnamed; likely Chinese speaker, financially motivated (moderate
-  confidence). Personal details YY / @YY520CN in resume prompt not confirmed.
+attribution_or_cluster: "CrowdStrike did not attribute the activity to a named adversary. It assessed with moderate confidence that the actor was likely a Chinese speaker and financially motivated."
 scale_and_metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
 prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 related_magicsword_projects: []
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign."
+category: adversary-use-of-ai
+attribution:
+  country: China
+  motivation: financially-motivated
+  attributed_by: CrowdStrike Intelligence
+  confidence: medium
+ai_involvement_confidence: confirmed
+last_reviewed: 2026-11-04
 attack_flow:
   nodes:
     - id: step-1
@@ -50,13 +53,15 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Agents support financial-sector attacks
-      description: Open directories exposed sessions, configurations and model use tied to South Korean
+      description:
+        Open directories exposed sessions, configurations and model use tied to South Korean
         financial targets.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Actor discusses selling breach data
-      description: Claude session material includes questions about selling Korean breach data; identities
+      description:
+        Claude session material includes questions about selling Korean breach data; identities
         remain unconfirmed.
       kind: impact
       source_urls: *a1
@@ -69,8 +74,11 @@ attack_flow:
       target: step-4
 region_notes: South Korea describes victim financial organizations. Chinese language concerns actor
   attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
+linked_tools:
+  - artex
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

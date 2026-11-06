@@ -1,0 +1,97 @@
+id: checkpoint-haiou-codex-adware-2026
+name: Haiou prompt-adware in Codex jailbreak bundle
+date_reported: 2026-11-04
+researcher: Check Point Research
+org: Check Point
+sources:
+  - url: https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+    title: "Free the Model, Sell the Gateway: Prompt Adware Hidden in Jailbreak Bundles"
+    publisher: Check Point Research
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: GitHub repository haiou-666/haiou-codex promoted on Bilibili and QQ as Codex jailbreak bundle. Installation decrypts AES-GCM encrypted payload.pkg and installs global Codex instructions plus seagull-* skills that inject advertisements for zz.aiapi2025.top into agent responses. Malicious skills also prevent agent from testing or revealing the injected ads. Attack monetizes jailbreak distribution through forced API gateway advertising while appearing to provide free model access workarounds.
+initial_access: User downloads and installs haiou-codex jailbreak bundle from GitHub promoted on Chinese social platforms
+ai_tooling_and_models:
+  - Codex
+  - Global Codex instructions
+  - Malicious skills (seagull-* series)
+other_tooling:
+  - AES-GCM encrypted payload
+  - GitHub repository (haiou-666/haiou-codex)
+victims_and_sectors: Codex users seeking jailbreak or free access, primarily Chinese-speaking users
+regions:
+  - China
+  - Asia
+attribution_or_cluster: haiou-666 (GitHub username)
+scale_and_metrics: Promoted on Bilibili and QQ; repository stars and download count unknown
+prevention_angle: Review global Codex instructions for unauthorized modifications; scan installed skills for ad injection patterns; monitor agent responses for unexpected commercial content; verify instruction and skill sources; detect connections to suspicious API gateways; educate users about jailbreak bundle risks
+related_magicsword_projects:
+  - LOLSkills
+source_notes: |
+  Relevant detection rules:
+  - Monitor modifications to global Codex instructions
+  - Detect installation of unexpected skills (seagull-* naming pattern)
+  - Alert on connections to suspicious API gateways (zz.aiapi2025.top)
+  - Review skill content for ad injection patterns or output manipulation logic
+  - Note: No direct Sigma rules for agent skill poisoning; requires custom monitoring of agent configuration changes and skill installation events, plus network monitoring for unexpected API gateway connections.
+iocs:
+  domains:
+    - zz.aiapi2025.top
+  ips: []
+  hashes: []
+  urls:
+    - https://github.com/haiou-666/haiou-codex
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: China and Asia reflect primary promotion on Bilibili and QQ; global Codex users potentially affected
+atlas_techniques:
+  - id: AML.T0054
+    rationale: Malicious skills inject advertisements into agent responses
+    source_urls:
+      - https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+  - id: AML.T0081
+    rationale: Global instructions and skills contain malicious prompt injection to force ad display
+    source_urls:
+      - https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+  - id: AML.T0080
+    rationale: Skills manipulate agent output to include commercial advertisements
+    source_urls:
+      - https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+  - id: AML.T0010.001
+    rationale: Attacker distributes compromised agent configuration through fake jailbreak bundle
+    source_urls:
+      - https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+attack_flow:
+  nodes:
+    - id: distribution
+      title: Jailbreak bundle promoted on social platforms
+      description: haiou-666/haiou-codex GitHub repository promoted on Bilibili and QQ as Codex jailbreak solution
+      kind: access
+      source_urls: &a1
+        - https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/
+    - id: install
+      title: User installs encrypted payload
+      description: Installation process decrypts AES-GCM payload.pkg and installs to system
+      kind: execution
+      source_urls: *a1
+    - id: inject
+      title: Malicious instructions and skills installed
+      description: Global Codex instructions modified and seagull-* skills installed with ad injection logic
+      kind: ai
+      source_urls: *a1
+    - id: adware
+      title: Ads injected into agent responses
+      description: Agent responses include advertisements for zz.aiapi2025.top API gateway; skills prevent agent from testing or revealing ads
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: distribution
+      target: install
+    - source: install
+      target: inject
+    - source: inject
+      target: adware

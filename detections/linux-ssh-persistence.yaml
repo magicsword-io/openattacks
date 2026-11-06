@@ -1,0 +1,76 @@
+id: linux-ssh-persistence
+title: Linux SSH authorized-key persistence
+hypothesis:
+  A shell or file utility modifies an SSH authorized_keys file and is followed by an SSH session or
+  outbound tunnel that is not part of approved administration.
+telemetry:
+  - Linux process creation with complete command lines
+  - File modification telemetry for user and root SSH directories
+  - SSH authentication and network connection logs
+investigate:
+  - Recover the added key and identify the process, user, package, or script that changed the file.
+  - Correlate the change with new SSH sessions, reverse tunnels, and other persistence artifacts.
+limitation:
+  Administrators and configuration-management tools legitimately rotate SSH keys. Process-only
+  telemetry can miss direct file writes, and a matching command does not prove that the write succeeded.
+search:
+  - '"authorized_keys"'
+  - '"reverse SSH"'
+visibility: Linux endpoint and SSH logs where collected
+reviewed: 2026-11-06
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Linux process candidates that reference authorized_keys. The queries require process command lines;
+  correlate with file and SSH telemetry before alerting.
+upstream_matches:
+  - name: Linux SSH Authorized Keys Modification
+    id: f5ab595e-28e5-4327-8077-5008ba97c850
+    source: Splunk Security Content
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml
+queries:
+  sigma: |
+    title: Hunt - Linux SSH Authorized Key Modification
+    id: ba847b8a-0dd7-4062-a6ba-bc923654f22a
+    status: experimental
+    description: Detects shell and file utilities referencing SSH authorized_keys files.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-06
+    references:
+      - https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml
+    falsepositives:
+      - Approved SSH key rotation and configuration management
+    level: medium
+    logsource:
+      category: process_creation
+      product: linux
+    detection:
+      selection_image:
+        Image|endswith:
+          - /bash
+          - /sh
+          - /zsh
+          - /cat
+          - /tee
+          - /sed
+          - /cp
+      selection_target:
+        CommandLine|contains: authorized_keys
+      condition: all of selection_*
+  kql: |-
+    DeviceProcessEvents
+    | where Timestamp > ago(7d)
+    | where OSPlatform =~ "Linux"
+    | where ProcessCommandLine contains "authorized_keys"
+    | where FileName in~ ("bash", "sh", "zsh", "cat", "tee", "sed", "cp")
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+        InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+    | order by Timestamp desc
+  spl: |-
+    | tstats count min(_time) as firstTime max(_time) as lastTime
+      from datamodel=Endpoint.Processes
+      where Processes.process="*authorized_keys*"
+      by Processes.dest Processes.user Processes.process_name Processes.process
+         Processes.parent_process_name Processes.parent_process
+    | `drop_dm_object_name(Processes)`
+    | sort - lastTime

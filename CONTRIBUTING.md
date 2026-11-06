@@ -4,8 +4,10 @@ The catalog is maintained as one YAML file per entry in `attacks/`. You can also
 
 1. Copy the template below into `attacks/<id>.yaml`. Use a unique lowercase, hyphenated ID that matches the filename.
 2. Read the original research. Attribute the researcher and organization, link the source of every claim, and explain what role AI played.
-3. Run `npm ci` once, then `npm run validate`. Preview with `npm run dev`.
-4. Open a pull request against `main`. CI validates the YAML, checks types, builds the static site, and compares the API to the YAML.
+3. Run `npm ci` once, then `npm run format:data` (Prettier) and `npm run validate`. Preview with `npm run dev`.
+4. Open a pull request against `main`. CI checks YAML formatting, validates the YAML, checks types, builds the static site, and compares the API to the YAML.
+
+CI also checks the published source and coverage URLs in added or modified entries. Run `npm run check:links -- --all` locally to audit the catalog, or `npm run check:links -- --base origin/main` to check entries changed in commits since `origin/main`. URL syntax checks run offline with `npm run validate`; live checks require network access.
 
 ```yaml
 id: example-campaign-2026
@@ -33,12 +35,21 @@ last_reviewed: '2026-10-20'
 
 `schema.yaml` is the source of truth. Unknown fields fail validation. Optional fields include `aliases`, `ai_role_secondary`, `ai_role_detail`, `date_activity_start`, `date_activity_end`, `atlas_techniques`, `source_notes`, `iocs`, `tags`, `confidence`, `borderline_note`, and `magicsword_coverage`.
 
+## Tool project links
+
+Keep reported tool names and versions as plain strings in the YAML. Attack pages and Markdown downloads link recognized names using the reviewed registry in `src/data/tool-projects.json`. Add a project there to link it everywhere it is reported, including both AI artifacts and other tooling.
+
+Verify the project identity and destination against its maintainer's repository or website. Prefer an official GitHub repository; use the official project or model page when no suitable repository is available. Record aliases as literal product names, update `reviewed_on` when researching links, and add `source_urls` for identity checks or unusual destinations. Label community forks and upstream-only references with a visible `note`. Do not substitute an unrelated project with the same name, guess repositories for unidentified artifacts, or link attacker infrastructure and indicators.
+
 ## Sourcing rules
 
+- Include only attacks **observed in the wild or documented in public reporting**: original researcher reports, vendor advisories, or news coverage of a concrete case. **No conceptual scenarios, hypothetical attack chains, or general threat frameworks.** A source URL alone does not make a speculative scenario eligible.
+- Published vulnerability demonstrations and research PoCs qualify when they document concrete behavior. Label them as research and do not imply exploitation in the wild. Reported marketplace claims must retain their uncertainty labels.
 - Every factual claim needs a source URL. Prefer primary reports, original researchers, vendor advisories, or court records. Add source notes when evidence has limitations.
+- Published source, flow, ATLAS evidence, and coverage links must use absolute `http://` or `https://` URLs, with no embedded credentials or private/local destinations. Source URLs must be unique within an entry; multiple entries may cite the same report. A reachable URL still needs human review to confirm it supports the claim.
 - Write **unknown** rather than guessing; use an empty array when no tooling or mapping is documented. Never invent a victim count, location, model, attribution, or MITRE mapping.
 - Include **no live victim data or unredacted victim IP addresses**. Only add non-victim indicators explicitly published for defensive use, and explain their origin. Defang domains and URLs in IOC fields; do not make them clickable.
-- Mark PoCs, conceptual findings, marketplace claims, and other uncertain cases with `borderline: true` and explain the qualification in `borderline_note`.
+- Mark PoCs, marketplace claims, and other uncertain cases with `borderline: true` and explain the qualification in `borderline_note`. This flag does not make a conceptual entry eligible.
 - Preserve date precision: `date_reported` accepts `YYYY-MM-DD` or `YYYY-MM`. `last_reviewed` is the date you actually reviewed the source, in `YYYY-MM-DD` format.
 - Confidence describes evidence for AI involvement: **high** for direct evidence, **medium** for credible but limited evidence, **low** for indirect or disputed evidence. Omit it when unassessed; the site shows “Not assessed.”
 - Keep the tone factual and calm. Credit the researcher prominently. Describe prevention without making unsupported claims about what a product blocks.
@@ -92,6 +103,10 @@ Do not convert actor language, actor nationality, hosting infrastructure, a pare
 
 Every build generates `llms.txt`, `llms-full.txt`, `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. Do not edit generated files. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds all outputs together; tests check each YAML ID against the generated guide, full context, page and individual exports. GitHub Pages is an optional manual workflow.
 
+The `source-links` CI check follows up to five redirects, uses an eight-second timeout per request and up to four concurrent checks, and retries failures once. It confirms failed HEAD requests with GET before failing on HTTP 404/410. Invalid or unsafe destinations and broken redirect chains also fail. Authentication/bot blocking (401/403), rate limits (429), other unexpected statuses, server errors, DNS failures, and timeouts produce review warnings in the Actions job summary. The checker reads response headers only and never crawls IOC fields or free-text payload URLs. URL fragments are preserved in records but are not checked for matching page anchors. A separate weekly and manually triggered workflow audits all existing links.
+
+For maintainer merge protection and deployment behavior, see [CI and merge checks](docs/CI.md).
+
 ## Stack relevance
 
 Adding a YAML record is sufficient to publish it everywhere. The homepage's personalized matches use separate reviewed annotations in `src/data/applicability.json`; a new entry without an annotation is exported as `not_assessed` and does not receive guessed matches.
@@ -107,3 +122,9 @@ An attack record can link to one or more reviewed simulation definitions under `
 Definitions contain a legitimate task, synthetic clean/changed fixtures, prerequisites, expected observations and limits. Agent injection and fixed local comparisons are distinct modes. Never infer agent attribution, native vulnerability reproduction or detection from a helper receipt. Platform status needs identified execution evidence.
 
 Regenerate with `npm run simulations:build`, then run `npm run validate`, `npm test` and the browser checks. A new executable recipe or tool capability requires code review, boundary tests and native verification; adding a YAML field cannot enable arbitrary commands or destinations. Keep source fixtures inert; only explicit preparation may materialize a project or skill instruction inside its run-owned disposable workspace. See [the lab guide](docs/SIMULATIONS.md).
+
+## Stage detections
+
+Add an explicit mapping for every phase in `detections/stages.json`, including attacks without simulations. Select a reviewed profile from `detections/definitions/`, explain its fit in a stage note when needed, or use `unassessed` / `unobserved` to record a gap. Fallback diagrams use `entry`, `activity` and `ai` IDs. Do not infer victim-side detection of attacker-side prompts, unknown delivery or unconfirmed deployments.
+
+Profiles hold canonical Sigma / KQL / SPL text, required telemetry, field mapping, research terms and limits. They are catalog-authored drafts; upstream rules need distinct provenance and license attribution. Keep custom-schema event names explicit and retain existing Sigma IDs when editing a shared profile. Run `npm run detections:build` after changing a definition, followed by the normal validation, build and test checks. See [the detection guide](detections/README.md).

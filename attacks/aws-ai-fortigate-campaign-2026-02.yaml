@@ -1,0 +1,92 @@
+id: aws-ai-fortigate-campaign-2026-02
+name: AWS AI-augmented actor compromising 600+ FortiGate firewalls
+date_reported: 2026-02-20
+researcher: AWS Security
+org: Amazon Web Services
+sources:
+  - url: https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+    title: "AWS: AI-Augmented Actor Compromising 600+ FortiGate Firewalls"
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Unknown actor uses AI to accelerate exploitation and credential harvesting in mass FortiGate compromise"
+technique_summary: "Feb 20, 2026: AWS disclosed compromise of 600+ FortiGate firewall appliances by AI-augmented threat actor. Actor exploits CVE-2024-21762 (FortiGate SSL VPN RCE) at scale; uses AI-assisted tooling to rapidly parse configurations, extract credentials, identify high-value targets for lateral movement. AI significantly accelerates post-compromise triage and targeting. Compromised appliances provide VPN access to victim networks. Attribution unknown."
+initial_access: "CVE-2024-21762 FortiGate SSL VPN RCE"
+ai_tooling_and_models:
+  - AI-assisted configuration parsing
+  - Automated credential extraction
+other_tooling:
+  - CVE-2024-21762 exploit
+  - FortiGate configuration harvesting
+victims_and_sectors: "600+ organizations using vulnerable FortiGate appliances"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor"
+scale_and_metrics: "600+ FortiGate appliances compromised as of Feb 2026"
+prevention_angle: "Patch FortiGate appliances (CVE-2024-21762); monitor for unusual configuration access; restrict VPN access; rotate credentials post-compromise"
+related_magicsword_projects: []
+source_notes: "AWS Security bulletin. Detection: monitor FortiGate appliances for exploitation indicators, unusual configuration file access, credential harvesting attempts."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: unknown
+  attributed_by: AWS Security
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: FortiGate compromise monitoring
+    format: guidance
+    notes: "Monitor FortiGate appliances for CVE-2024-21762 exploitation indicators, unusual configuration file access, credential harvesting"
+timeline:
+  first_seen: "2026-02-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-02-20"
+      source: AWS Security
+      summary: "600+ FortiGate compromises disclosed with AI-augmented attacker tooling"
+last_reviewed: 2026-11-05
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "AI-augmented actor uses AI to accelerate post-compromise configuration parsing and credential extraction at scale"
+    source_urls:
+      - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+attack_flow:
+  nodes:
+    - id: exploit
+      title: Exploit CVE-2024-21762
+      description: "Mass exploitation of FortiGate SSL VPN RCE vulnerability"
+      kind: access
+      source_urls:
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+    - id: ai-triage
+      title: AI-assisted configuration parsing
+      description: "AI rapidly parses FortiGate configurations, extracts credentials, identifies high-value targets"
+      kind: ai
+      source_urls:
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+    - id: lateral
+      title: Lateral movement via VPN
+      description: "Use harvested VPN credentials to access victim networks"
+      kind: execution
+      source_urls:
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+    - id: compromise
+      title: Compromise internal networks
+      description: "Pivot through VPN access to compromise high-value internal systems"
+      kind: impact
+      source_urls:
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
+  edges:
+    - source: exploit
+      target: ai-triage
+    - source: ai-triage
+      target: lateral
+    - source: lateral
+      target: compromise

@@ -1,0 +1,136 @@
+id: malicious-openclaw-skills-2026
+name: Multiple campaigns distributing malicious OpenClaw skills
+date_reported: 2026-06-23
+researcher: Koi Security, Cyera Research
+org: Koi Security, Cyera
+sources:
+  - url: https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+    title: "Koi: ClawHavoc Campaign Delivers AMOS via Malicious OpenClaw Skills"
+  - url: https://www.cyera.com/research/poisoned-skills-target-developer-credentials
+    title: "Cyera: Poisoned Skills Target Developer Credentials"
+    publisher: Cyera Research
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: ai_tool_as_lure
+ai_role_detail: "Multiple adversary campaigns distributing malicious OpenClaw skills via fake repos and skill registries to steal AI credentials and deliver malware"
+technique_summary: "Koi reported ClawHavoc skills distributed through fake repositories and a rogue registry to deliver infostealers and harvest developer credentials. Cyera later reported poisoned skills using fake prerequisite lures, OS-specific installation instructions, external paste relays, and inflated README droppers. Detection should verify skill provenance, inspect companion files rather than only SKILL.md, and monitor agent-initiated shell and network activity."
+initial_access: "User installs malicious OpenClaw skill from fake GitHub repo, typosquat, or rogue skill registry (openclaw-skills[.]com)"
+ai_tooling_and_models:
+  - OpenClaw AI skill framework
+  - Anthropic Claude API
+  - OpenAI API
+other_tooling:
+  - AMOS infostealer (macOS)
+  - Raccoon Stealer (Windows)
+  - Node.js credential harvesters
+  - Reverse shells
+  - openclaw-skills[.]com rogue registry
+victims_and_sectors: AI developers installing untrusted OpenClaw skills
+regions:
+  - Multiple regions
+attribution_or_cluster: ClawHavoc campaign and related poisoned-skill activity; actor unknown
+scale_and_metrics: Multiple malicious skills and associated payload infrastructure reported during 2026
+prevention_angle: "Only install OpenClaw skills from trusted sources; verify GitHub repo authenticity (org, stars, commit history); review skill manifest permissions before install; use allowlisted skill sources; monitor ~/.openclaw/skills/ for unexpected additions; implement endpoint security detecting AMOS/Raccoon; educate users on skill installation risks"
+related_magicsword_projects: []
+source_notes: "Koi Security ClawHavoc analysis and Cyera poisoned-skill research. Detection should monitor skill installation, unknown source repositories, unexpected network egress, and credential-file access."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - openclaw-skills.com
+    - socifiapp.com
+    - custom-registry.com
+    - openclawskills.net
+    - install.app-distribution.net
+    - openclawcli.vercel.app
+    - download.setup-service.com
+    - laosji.net
+    - letssendit.fun
+    - monster-secure.site
+    - vorderingenonline.com
+  ips:
+    - 91.92.242.30
+    - 5.42.65.10
+    - 45.137.65.112
+    - 185.234.72.19
+    - 2.26.75.16
+  hashes: []
+  urls:
+    - "https://glot.io/snippets/hfdxv8uyaf"
+    - "https://glot.io/snippets/hfd3x9ueu5"
+    - "https://rentry.co/openclaw-code"
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Multiple campaigns delivering malicious AI skill framework extensions to steal credentials and deploy malware on AI developer machines"
+    source_urls:
+      - https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+attack_flow:
+  nodes:
+    - id: distribute-skills
+      title: Distribute malicious skills
+      description: "ClawHavoc: 23 skills on fake GitHub repos + openclaw-skills[.]com registry. Unit 42: 5 skills via typosquat repos + SEO-poisoned blogs. Skills named to appear legitimate (productivity-boost, code-optimizer, security-scanner, api-connector-pro, github-integration-plus)"
+      kind: access
+      source_urls:
+        - https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+    - id: user-installs
+      title: User installs skill
+      description: "User finds malicious skill via search, fake registry, or social engineering; installs to ~/.openclaw/skills/ via OpenClaw CLI or UI; skill auto-loads on next OpenClaw startup"
+      kind: ai
+      source_urls:
+        - https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+    - id: execute-payload
+      title: Execute malware and harvest
+      description: "ClawHavoc: deploys AMOS (macOS) or Raccoon Stealer (Windows); harvests Anthropic keys, OpenAI keys, GitHub tokens, AWS creds, crypto wallets, browser cookies. Unit 42: Node.js credential harvester + reverse shell; targets same credential types"
+      kind: execution
+      source_urls:
+        - https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+    - id: exfiltrate-persist
+      title: Exfiltrate and maintain access
+      description: "Credentials POST to attacker C2; reverse shells provide persistent access; 6,900+ affected installations across both campaigns (ClawHavoc 4,800, Unit 42 2,100)"
+      kind: impact
+      source_urls:
+        - https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos
+  edges:
+    - source: distribute-skills
+      target: user-installs
+    - source: user-installs
+      target: execute-payload
+    - source: execute-payload
+      target: exfiltrate-persist
+category: attacks-on-ai
+attribution:
+  actor_name: ClawHavoc
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Koi Security
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Linux Base64 Encoded Pipe to Shell
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_base64_execution.yml"
+    notes: "Detects base64 -D | bash patterns; directly applicable to Cyera-documented AMOS macOS delivery via base64-decoded pipes"
+  - name: Keychain Password Retrieval via Command Line
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/macos/credential_access_keychain_pwd_retrieval_security_cmd.toml"
+    notes: "Detects macOS keychain credential access; relevant for AMOS infostealer credential theft on macOS"
+  - name: Linux Shell Pipe to Shell
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_susp_pipe_shell.yml"
+    notes: "Detects suspicious shell pipes; applicable to AMOS delivery mechanisms using curl | bash patterns"
+  - name: OpenClaw skill supply-chain monitoring
+    format: guidance
+    notes: "Monitor ~/.openclaw/skills/ for unexpected installations; alert on skills from unknown publishers (hightower6eu, Demerzels-lab, LJT-520, dexiaong, Ddoy233); detect fake openclaw-agent prerequisite lures; scan SKILL.md for inflated README droppers (22 MB+); flag Skills Directory A/B grades on skills with external paste relay references (glot.io, rentry.co); monitor outbound connections to AMOS C2 91.92.242.30 and secondary IPs; detect base64 -D | bash with decoy echo swcdn.apple.com; block domains socifiapp.com, custom-registry.com, openclawskills.net, laosji.net; audit skills with OS-split instructions for macOS (bash delivery) vs Windows (ZIP/EXE)"
+timeline:
+  first_seen: "2026-02-01"
+  last_updated: "2026-11-06"
+  updates:
+    - date: "2026-02-01"
+      source: Koi Security
+      summary: "ClawHavoc campaign discovered delivering AMOS via 23 malicious skills"
+    - date: "2026-06-23"
+      source: Unit 42
+      summary: "Five malicious skills with Node.js credential harvesters and reverse shells identified"
+    - date: "2026-11-03"
+      source: Cyera Research
+      summary: "Analysis of 1M+ skills reveals 516 AMOS-linked samples, 70 confirmed-malicious active in Sep 2026; all received A/B Skills Directory grades despite malicious payloads; primary C2 91.92.242.30 in 83.7% of references; fake openclaw-agent lures, OS-split delivery (base64 bash on macOS, ZIP/EXE on Windows), paste relay infrastructure"

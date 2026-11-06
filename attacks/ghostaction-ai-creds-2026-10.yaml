@@ -7,18 +7,19 @@ sources:
   - url: https://opensourcemalware.com/blog/ghostaction-copycats-polinrider-by-hiding-a-stealer-in-a-fake-font-file
 magicsword_coverage: []
 borderline: true
-borderline_note: Primary attack is CI secret theft + VS Code folderOpen stealer; AI is a credential
-  target (Claude/Gemini keys), not the attack operator. Included because Jose's post calls out AI
-  tooling theft.
+borderline_note: Primary attack is CI secret theft + VS Code folderOpen stealer;
+  AI is a credential target (Claude/Gemini keys), not the attack operator.
+  Included because Jose's post calls out AI tooling theft.
 ai_role: ai_credential_theft
 ai_role_secondary: null
 ai_role_detail: Steals AI client credentials (~/.claude/.credentials.json,
   ~/.gemini/oauth_creds.json, sk-ant- grep) alongside cloud/git tokens
-technique_summary: "GhostAction pushes malicious GitHub Actions then Stage 2: .vscode/tasks.json
-  folderOpen runs node on fake fa-solid-400.woff2 JS stealer; cron */5 pulls C2. Targets
-  AWS/npm/git/kube/SSH plus Claude/Gemini creds. 94 repos / 66 owners. PolinRider copycat technique,
-  not DPRK per OSM."
-initial_access: Compromised GitHub account → malicious workflow + VS Code trusted workspace auto task
+technique_summary: "GhostAction pushes malicious GitHub Actions then Stage 2:
+  .vscode/tasks.json folderOpen runs node on fake fa-solid-400.woff2 JS stealer;
+  cron */5 pulls C2. Targets AWS/npm/git/kube/SSH plus Claude/Gemini creds. 94
+  repos / 66 owners. PolinRider copycat technique, not DPRK per OSM."
+initial_access: Compromised GitHub account → malicious workflow + VS Code
+  trusted workspace auto task
 ai_tooling_and_models:
   - Targets Claude and Gemini credential stores
 other_tooling:
@@ -32,8 +33,8 @@ regions:
   - unknown
 attribution_or_cluster: GhostAction; PolinRider-technique copycat (no shared IOCs with DPRK per OSM)
 scale_and_metrics: 94 compromised repos; Stage 1 Oct 8, Stage 2 Oct 15 2026
-prevention_angle: "task.allowAutomaticTasks off; Restricted Mode; crontab -l for #ghc2; rotate
-  Claude/Gemini/cloud/git creds"
+prevention_angle: "task.allowAutomaticTasks off; Restricted Mode; crontab -l for
+  #ghc2; rotate Claude/Gemini/cloud/git creds"
 related_magicsword_projects: []
 source_notes: null
 last_reviewed: 2026-10-20
@@ -52,12 +53,14 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: AI credential stores are searched
-      description: The stealer targets Claude and Gemini tokens alongside cloud and developer credentials.
+      description: The stealer targets Claude and Gemini tokens alongside cloud and
+        developer credentials.
       kind: ai
       source_urls: *a1
     - id: step-4
       title: Secrets are stolen with persistence
-      description: The report describes periodic C2 retrieval through cron and a multi-repository campaign.
+      description: The report describes periodic C2 retrieval through cron and a
+        multi-repository campaign.
       kind: impact
       source_urls: *a1
   edges:
@@ -71,3 +74,12 @@ atlas_techniques:
   - id: AML.T0055
     rationale: The stealer searches local AI credential stores.
     source_urls: *a1
+category: attacks-on-ai
+attribution:
+  actor_name: GhostAction
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in GhostAction Stage 2 stealer (AI
+      credential theft). Refer to sources for specific IOCs and TTPs.

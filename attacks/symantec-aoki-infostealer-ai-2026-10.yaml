@@ -1,0 +1,102 @@
+id: symantec-aoki-infostealer-ai-2026-10
+name: Aoki infostealer targets Claude Code, ChatGPT, Codex, Cursor tokens
+date_reported: 2026-10-15
+researcher: Symantec Threat Hunter Team, Check Point Research
+org: Broadcom (Symantec), Check Point
+sources:
+  - url: https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials
+    title: "Aoki: Infostealer Targets AI Coding Assistant Credentials"
+  - url: https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+    title: Symantec Aoki AI targeting
+  - url: https://research.checkpoint.com/2026/infostealer-riding-the-ai-train/
+    title: "Check Point: Infostealer riding the AI Train"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: "Recent Aoki/Aokigahara infostealer builds steal AI coding assistant credentials, session files, and tokens"
+technique_summary: "Aoki (aka Aokigahara) infostealer added AI credential theft in 2026. Targets: .claude.json, Claude desktop cookies, ChatGPT cookies, Codex config.toml/.env (github.com/openai/codex-cli), GitHub Copilot tokens (github.com/features/copilot), Cursor state.vscdb/storage.json (github.com/getcursor/cursor), Gemini CLI, JetBrains AI Assistant, Kiro, Windsurf, Codeium (github.com/Exafunction/codeium.vim), AWS credentials/SSO, Amazon Q, Git credentials, SSH keys. Cursor local state caches chat/code. Stolen keys allow acting under developer identity/quota, expose repos/cloud/CI-CD, bypass safeguards. Capable of LLMjacking. Earlier 2026 versions didn't target AI; capability recently added/expanding. Detection: monitor AI credential file access (.claude.json, .codex/auth.json, Cursor globalStorage), C2 domains (dobeqnesmot.cc, hjazfioe.surf), API usage anomalies from unexpected geolocations."
+initial_access: "Infostealer distribution (method not disclosed); likely traditional vectors"
+ai_tooling_and_models:
+  - Claude Code
+  - Claude Desktop
+  - ChatGPT Desktop
+  - OpenAI Codex
+  - Cursor
+  - GitHub Copilot
+  - Google Gemini CLI
+  - JetBrains AI Assistant
+  - Kiro IDE
+  - Windsurf
+  - Codeium
+  - Amazon Q
+other_tooling:
+  - Aoki/Aokigahara infostealer
+  - AWS CLI/SSO
+  - Git
+  - SSH
+victims_and_sectors: "Developers using AI coding assistants; scale not disclosed"
+regions:
+  - unknown
+attribution_or_cluster: "Unknown; no links to existing families; new stealer first seen earlier 2026"
+scale_and_metrics: "Capability added 2026, expanding; no victim count"
+prevention_angle: "Rotate AI API keys after compromise; scope keys narrowly; monitor unusual API usage; endpoint protection; credential managers; monitor Aoki C2 domains; file integrity monitoring for AI credential files"
+related_magicsword_projects: []
+source_notes: "OS not specified; other targets suggest Windows; macOS/Linux not confirmed. Detection guidance: monitor AI credential file access, C2 communication (dobeqnesmot.cc, hjazfioe.surf), API usage anomalies from unexpected locations, unauthorized reads of .claude.json, .codex/auth.json, Cursor globalStorage, .copilot/config.json, .gemini/config.json, .aws/credentials, SSH keys."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - dobeqnesmot.cc
+    - hjazfioe.surf
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0055
+    rationale: "Credential theft targeting AI development tools and cloud credentials"
+    source_urls:
+      - https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials
+attack_flow:
+  nodes:
+    - id: deploy
+      title: Deploy infostealer
+      description: "Aoki/Aokigahara deployed (distribution method not disclosed)"
+      kind: access
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials
+    - id: ai-theft
+      title: AI credential harvesting
+      description: "Steals .claude.json, Claude/ChatGPT cookies, Codex config, Copilot/Cursor/Gemini/JetBrains/Kiro/Windsurf/Codeium tokens, AWS creds, Git creds, SSH keys; Cursor state caches chat/code"
+      kind: ai
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials
+        - https://research.checkpoint.com/2026/infostealer-riding-the-ai-train/
+    - id: traditional
+      title: Traditional targets
+      description: "Browsers, crypto wallets, password managers, messaging/gaming, VPN/FTP, email"
+      kind: execution
+      source_urls:
+        - https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+    - id: exfil
+      title: C2 exfiltration
+      description: "Sends data to C2 (dobeqnesmot.cc, hjazfioe.surf); no backdoor commands"
+      kind: impact
+      source_urls:
+        - https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting
+    - id: abuse
+      title: Credential abuse
+      description: "Stolen keys enable acting as developer, LLMjacking, accessing repos/cloud/CI-CD, resale"
+      kind: impact
+      source_urls:
+        - https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials
+  edges:
+    - source: deploy
+      target: ai-theft
+    - source: deploy
+      target: traditional
+    - source: ai-theft
+      target: exfil
+    - source: traditional
+      target: exfil
+    - source: exfil
+      target: abuse

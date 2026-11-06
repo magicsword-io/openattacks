@@ -1,0 +1,64 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: ToolEntry
+type: object
+required:
+  - id
+  - name
+  - type
+  - description
+  - sources
+additionalProperties: false
+properties:
+  id:
+    type: string
+    pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  name:
+    type: string
+    minLength: 1
+  type:
+    type: string
+    enum:
+      - agentic-offensive-framework
+      - ai-pentest-tool
+      - ai-malware-generator
+      - ai-c2-framework
+      - other
+  github_url:
+    type:
+      - string
+      - "null"
+    format: uri
+  project_url:
+    type:
+      - string
+      - "null"
+    format: uri
+  description:
+    type: string
+    minLength: 1
+  sources:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - url
+      additionalProperties: false
+      properties:
+        url:
+          type: string
+          format: uri
+        title:
+          type: string
+        publisher:
+          type: string
+  linked_attacks:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  linked_actors:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$

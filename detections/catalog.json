@@ -1,0 +1,1200 @@
+{
+  "version": 1,
+  "profiles": {
+    "agent-input": {
+      "id": "agent-input",
+      "title": "Untrusted content enters an agent session",
+      "hypothesis": "An agent ingests external content or an untrusted session identifier before a tool action or configuration change outside the approved task.",
+      "visibility": "Application / agent audit records",
+      "telemetry": [
+        "Input provenance, source type and request/session identifier",
+        "Captured tool responses or retrieved content where collection is approved",
+        "Subsequent tool calls, configuration changes and approval decisions"
+      ],
+      "investigate": [
+        "Join the ingested input to later actions by session or request ID; preserve the original content as evidence.",
+        "Compare the resulting action with the approved task and baseline. Receiving suspicious text alone is not successful injection."
+      ],
+      "limitation": "Requires application instrumentation and a custom field mapping. Input exposure does not prove that the model followed instructions, executed a tool or bypassed approval. Avoid collecting sensitive prompt bodies unless authorized.",
+      "search": [
+        "\"prompt injection\"",
+        "\"MCP\" AND \"tool\"",
+        "\"agent\" AND \"session\""
+      ],
+      "reviewed": "2026-11-04",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidate for input exposure only. Map agent.input.ingest and agent.session.resume to your application request and session logs. CorrelationId must link subsequent actions. EventType values are proposed normalization names, not native vendor events.",
+      "queries": {
+        "sigma": "title: Hunt - Untrusted content enters an agent session\nid: 2d89d7ae-9d44-4dc6-a95b-f9c8de7b8352\nstatus: experimental\ndescription: An agent ingests external content or an untrusted session\n  identifier before a tool action or configuration change outside the approved\n  task.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-04\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - agent.input.ingest\n      - agent.session.resume\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"agent.input.ingest\", \"agent.session.resume\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"agent.input.ingest\", \"agent.session.resume\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "agent-tools": {
+      "id": "agent-tools",
+      "title": "Unexpected agent tool use",
+      "hypothesis": "Untrusted content or a changed tool definition precedes a file read, command, or remote call outside the user's intended task.",
+      "telemetry": [
+        "Agent tool-call audit records with session / tool / destination",
+        "Tool-definition and approval changes",
+        "Endpoint process, file-access and network evidence where available"
+      ],
+      "investigate": [
+        "Join input provenance, tool descriptions and calls by session ID and compare the action to the approved task.",
+        "Inspect child processes and destinations; record whether execution was in-process, local, or through a remote SaaS connector."
+      ],
+      "limitation": "Process logs cannot recover model intent. Remote connectors and in-process interpreters may produce no local child process. Prompt content alone is not a reliable signature.",
+      "search": [
+        "\"MCP\"",
+        "\"prompt injection\"",
+        "\"agent\" AND \"tool\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Unexpected agent tool use\nid: c709e384-0e11-479e-ab4d-3a06e2431e4b\nstatus: experimental\ndescription: Untrusted content or a changed tool definition precedes a file\n  read, command, or remote call outside the user's intended task.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - agent.tool.call\n      - agent.tool.definition.change\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"agent.tool.call\", \"agent.tool.definition.change\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"agent.tool.call\", \"agent.tool.definition.change\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "analysis-review": {
+      "id": "analysis-review",
+      "title": "Independent malware-analysis validation",
+      "visibility": "Review / research workflow",
+      "hypothesis": "Instructions inside a sample influence an LLM analysis result, or obfuscation changes a model's classification without changing malicious behavior.",
+      "telemetry": [
+        "Sample hashes and static / dynamic analysis results",
+        "Model verdicts with prompt provenance",
+        "Independent analyst and deterministic scanner verdicts"
+      ],
+      "investigate": [
+        "Compare model conclusions with independent behavioral evidence and a controlled evaluation set.",
+        "Treat sample comments as data; measure disagreement and false negatives without following embedded instructions."
+      ],
+      "limitation": "This evaluates analysis robustness, not victim endpoint compromise. Side behaviors mentioned elsewhere in a report do not establish edges in this flow.",
+      "search": [
+        "\"prompt injection\"",
+        "\"obfuscation\" AND \"javascript\""
+      ],
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Independent malware-analysis validation\nid: aa44bd2e-f46c-4884-a6db-e6b370a12c50\nstatus: experimental\ndescription: Instructions inside a sample influence an LLM analysis result, or\n  obfuscation changes a model's classification without changing malicious\n  behavior.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - analysis.verdict\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"analysis.verdict\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"analysis.verdict\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "android": {
+      "id": "android",
+      "title": "Unapproved Android package / sensitive access",
+      "hypothesis": "A sideloaded AI-branded APK obtains sensitive capabilities and performs unexpected SMS, credential or remote-access actions.",
+      "telemetry": [
+        "Android enterprise / mobile threat-defense package inventory",
+        "Install source, signer and permission changes",
+        "SMS, accessibility and network telemetry where available"
+      ],
+      "investigate": [
+        "Compare package ID and signing certificate with the approved source.",
+        "Correlate new permissions and outbound or SMS behavior; apply mobile platform controls rather than Windows policies."
+      ],
+      "limitation": "Standard Windows EDR tables do not provide Android app events. Device-management and mobile telemetry are required.",
+      "search": [
+        "\"android\" AND \"malware\"",
+        "\"SMS\" AND \"fraud\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Unapproved Android package / sensitive access\nid: 4bedc57c-a921-4078-ae94-213465e0b46b\nstatus: experimental\ndescription: A sideloaded AI-branded APK obtains sensitive capabilities and\n  performs unexpected SMS, credential or remote-access actions.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - android.package.install\n      - android.permission.change\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"android.package.install\", \"android.permission.change\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"android.package.install\", \"android.permission.change\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "bedrock": {
+      "id": "bedrock",
+      "title": "Bedrock discovery / key testing",
+      "hypothesis": "A key enumerates Bedrock models from an unfamiliar origin, followed by unexpected model access or usage.",
+      "telemetry": [
+        "AWS CloudTrail management events",
+        "Bedrock invocation logging / relevant data events when explicitly enabled",
+        "Key inventory and inference usage"
+      ],
+      "investigate": [
+        "Group ListFoundationModels / GetFoundationModel calls by key, source IP and user agent; compare against normal application identities.",
+        "Correlate with invocation logs and cost. Discovery alone does not establish a stolen key or successful inference."
+      ],
+      "limitation": "The starter queries cover discovery only. Do not assume default CloudTrail management logs contain InvokeModel / Converse requests or prompt content.",
+      "search": [
+        "\"bedrock\"",
+        "\"ListFoundationModels\"",
+        "\"LLMjacking\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "AWS discovery candidates: Sigma CloudTrail, Sentinel AWSCloudTrail, and Splunk aws:cloudtrail. Invocation logging is a separate prerequisite.",
+      "queries": {
+        "sigma": "title: Hunt - Bedrock discovery / key testing\nid: 89e0e836-0c7b-44b4-a9d4-3524f68318b2\nstatus: experimental\ndescription: A key enumerates Bedrock models from an unfamiliar origin, followed\n  by unexpected model access or usage.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  product: aws\n  service: cloudtrail\ndetection:\n  selection:\n    eventSource: bedrock.amazonaws.com\n    eventName:\n      - ListFoundationModels\n      - GetFoundationModel\n  condition: selection\n",
+        "kql": "// Discovery only; correlate with principal inventory and enabled invocation logs.\nAWSCloudTrail\n| where TimeGenerated > ago(7d)\n| where EventSource == \"bedrock.amazonaws.com\"\n| where EventName in (\"ListFoundationModels\", \"GetFoundationModel\")\n| summarize Requests=count() by UserIdentityArn, SourceIpAddress, UserAgent, EventName, bin(TimeGenerated, 1h)\n| order by Requests desc",
+        "spl": "sourcetype=\"aws:cloudtrail\" eventSource=\"bedrock.amazonaws.com\"\neventName IN (\"ListFoundationModels\", \"GetFoundationModel\")\n| bin _time span=1h\n| stats count by _time userIdentity.arn sourceIPAddress userAgent eventName\n| sort - count"
+      }
+    },
+    "cloud": {
+      "id": "cloud",
+      "title": "Unexpected cloud / inference identity use",
+      "hypothesis": "A service key or role is used from an unfamiliar origin, gains broader access or causes inference usage outside its established baseline.",
+      "telemetry": [
+        "Cloud control-plane and identity audit",
+        "AI-service invocation / diagnostic logs when enabled",
+        "Usage, quotas, cost and key inventory"
+      ],
+      "investigate": [
+        "Pivot on key ID / principal, source network and user agent, then inspect role changes, token minting and service pivots.",
+        "Join inference usage and billing anomalies to the same principal; verify whether the behavior was authorized."
+      ],
+      "limitation": "Cloud control-plane logs alone may not include model prompts or inference calls. No endpoint policy is claimed to stop cloud-only key misuse.",
+      "search": [
+        "\"LLMjacking\"",
+        "\"Bedrock\"",
+        "\"Azure OpenAI\"",
+        "\"service account\" AND \"token\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Unexpected cloud / inference identity use\nid: afac2e65-c838-485b-a26f-7f175d422f61\nstatus: experimental\ndescription: A service key or role is used from an unfamiliar origin, gains\n  broader access or causes inference usage outside its established baseline.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - cloud.credential.use\n      - cloud.role.change\n      - model.invoke\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"cloud.credential.use\", \"cloud.role.change\", \"model.invoke\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"cloud.credential.use\", \"cloud.role.change\", \"model.invoke\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "credentials": {
+      "id": "credentials",
+      "title": "Sensitive store access → credential use",
+      "hypothesis": "An unexpected process or tool accesses credential stores and is followed by token use or outbound transfer inconsistent with the owner.",
+      "telemetry": [
+        "File-read / API access telemetry for relevant secret stores",
+        "Process identity and command lines",
+        "Identity, token and outbound-network audit logs"
+      ],
+      "investigate": [
+        "Identify the actor, process and exact store touched, then pivot to token use from new devices or infrastructure.",
+        "Correlate reads with egress and rotate affected credentials after confirming exposure."
+      ],
+      "limitation": "Defender DeviceFileEvents is not a general file-read audit trail. Collect suitable object-access, EDR or application logs; legitimate developer tools also read secrets.",
+      "search": [
+        "\"credential\" AND \"stealer\"",
+        "\"browser\" AND \"cookie\"",
+        "\"SSH\" AND \"private key\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Sensitive store access → credential use\nid: 46c46c62-2d83-4198-a8bf-d6637094527b\nstatus: experimental\ndescription: An unexpected process or tool accesses credential stores and is\n  followed by token use or outbound transfer inconsistent with the owner.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - secret.read\n      - credential.store.read\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"secret.read\", \"credential.store.read\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"secret.read\", \"credential.store.read\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "exfil": {
+      "id": "exfil",
+      "title": "Sensitive data → unusual destination",
+      "hypothesis": "Sensitive reads are followed by outbound transfer, a public artifact, or a tool call to a destination outside the approved workflow.",
+      "telemetry": [
+        "Sensitive resource access / DLP records",
+        "Proxy, egress and cloud upload events",
+        "Agent / SaaS audit with correlation IDs"
+      ],
+      "investigate": [
+        "Join the resource read and outbound action by session, identity or process, preserving a bounded time window.",
+        "Inspect destination ownership, payload classification and the user's intended action; baseline sanctioned sharing."
+      ],
+      "limitation": "An outbound connection or high byte count alone is not exfiltration. Encrypted traffic may hide content, and bulk legitimate exports are common.",
+      "search": [
+        "\"exfiltration\"",
+        "\"webhook\"",
+        "\"sensitive\" AND \"upload\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Sensitive data → unusual destination\nid: 04b60968-3179-4b1f-ae13-6f57c2446077\nstatus: experimental\ndescription: Sensitive reads are followed by outbound transfer, a public\n  artifact, or a tool call to a destination outside the approved workflow.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - data.export\n      - agent.external.send\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"data.export\", \"agent.external.send\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"data.export\", \"agent.external.send\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "extension": {
+      "id": "extension",
+      "title": "Browser extension change / data access",
+      "hypothesis": "A new or updated extension gains sensitive permissions and accesses conversation, cookie, or browsing data before unusual egress.",
+      "telemetry": [
+        "Managed-browser extension inventory and update history",
+        "Extension ID, permissions and provenance",
+        "Browser / proxy / DLP evidence"
+      ],
+      "investigate": [
+        "Diff extension versions and permissions, compare the extension ID against the allowlist, and inspect its update origin.",
+        "Correlate access to conversations or credentials with destinations; enforce browser extension policy separately."
+      ],
+      "limitation": "Extension installation does not prove theft. Endpoint application control is not a substitute for browser extension allowlisting.",
+      "search": [
+        "\"chrome\" AND \"extension\"",
+        "\"browser extension\" AND \"stealer\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Browser extension change / data access\nid: 0dd8a9d2-e0c8-4768-a49d-5fc2f09a6d7c\nstatus: experimental\ndescription: A new or updated extension gains sensitive permissions and accesses\n  conversation, cookie, or browsing data before unusual egress.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - browser.extension.install\n      - browser.extension.update\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"browser.extension.install\", \"browser.extension.update\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"browser.extension.install\", \"browser.extension.update\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "identity": {
+      "id": "identity",
+      "title": "Credential / session use outside baseline",
+      "hypothesis": "Repeated credential attempts or a stolen session are followed by a successful login or resource access inconsistent with the owner.",
+      "telemetry": [
+        "Identity / service authentication logs",
+        "Device, source-IP and session context",
+        "Resource access and token issuance audit"
+      ],
+      "investigate": [
+        "Compare failures, successes and session reuse by account and source; inspect access to new resources.",
+        "Check device registration, MFA and credential changes; do not equate travel anomalies with confirmed compromise."
+      ],
+      "limitation": "Shared infrastructure and legitimate travel create noise. IoT, SharePoint and cloud identity require their own collectors and field mappings.",
+      "search": [
+        "\"credential stuffing\"",
+        "\"stolen token\"",
+        "\"session\" AND \"anomaly\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Credential / session use outside baseline\nid: 7d73d919-e785-4d40-ab0b-f12949adfaf5\nstatus: experimental\ndescription: Repeated credential attempts or a stolen session are followed by a\n  successful login or resource access inconsistent with the owner.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - identity.login\n      - identity.token.use\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"identity.login\", \"identity.token.use\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"identity.login\", \"identity.token.use\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "impact": {
+      "id": "impact",
+      "title": "Collection / encryption behavior",
+      "hypothesis": "A process rapidly enumerates or modifies sensitive files and is followed by encryption, export or a ransom-related artifact.",
+      "telemetry": [
+        "File-operation rates and process attribution",
+        "Ransomware / DLP behavior alerts",
+        "Canary files and recovery / backup audit"
+      ],
+      "investigate": [
+        "Correlate file bursts, extension changes and outbound transfer to the same process and identity.",
+        "Validate against bulk backup / archiving activity and preserve the research-only qualification of a PoC."
+      ],
+      "limitation": "A file-write burst is not proof of ransomware; in-process interpreters may not spawn a separate executable.",
+      "search": [
+        "\"ransomware\" AND \"file\"",
+        "\"mass\" AND \"file modification\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Collection / encryption behavior\nid: 0b1098da-0957-4f77-a2a4-e89a5a2e1a36\nstatus: experimental\ndescription: A process rapidly enumerates or modifies sensitive files and is\n  followed by encryption, export or a ransom-related artifact.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - file.bulk.modify\n      - data.export\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"file.bulk.modify\", \"data.export\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"file.bulk.modify\", \"data.export\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "linux-fileless-execution": {
+      "id": "linux-fileless-execution",
+      "title": "Linux fileless or anonymous-file execution",
+      "hypothesis": "A Linux process executes from a memfd or /proc file-descriptor path, or stages an executable in a transient directory, consistent with fileless payload or miner execution.",
+      "telemetry": [
+        "Linux process creation with executable paths and command lines",
+        "Audit or EDR telemetry for memfd_create and execve where available",
+        "Network and persistence activity from the resulting process"
+      ],
+      "investigate": [
+        "Capture the process memory or recovered executable, parent tree, user, container, and destination.",
+        "Correlate the execution with downloads, persistence changes, mining traffic, or reverse shells."
+      ],
+      "limitation": "Updaters, runtimes, and security tools can legitimately execute anonymous files. Process collectors differ in how they represent memfd paths, so absence of a match is not proof of absence.",
+      "search": [
+        "\"memfd_create\"",
+        "\"/proc/self/fd\"",
+        "\"fileless\" AND \"Linux\""
+      ],
+      "visibility": "Linux process and audit telemetry where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Linux process candidates whose image or command line exposes a memfd or procfs descriptor. Tune known runtimes and require supporting behavior before alerting.",
+      "upstream_matches": [
+        {
+          "name": "Potential Fileless Execution via Unusual memfd Create Call",
+          "id": "42663c0e-572e-4459-bf61-476a81d6aab1",
+          "source": "Elastic detection-rules",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_fileless_execution_via_unusual_memfd_create.toml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Linux Anonymous File Execution\nid: afc1e20b-3eae-46fd-b736-e14b639f3a66\nstatus: experimental\ndescription: Detects process paths or command lines associated with memfd and procfs file-descriptor execution.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_fileless_execution_via_unusual_memfd_create.toml\nfalsepositives:\n  - Legitimate runtimes, updaters, and security software using anonymous files\nlevel: medium\nlogsource:\n  category: process_creation\n  product: linux\ndetection:\n  selection_image:\n    Image|contains:\n      - /memfd:\n      - /proc/self/fd/\n      - /proc/thread-self/fd/\n  selection_command:\n    CommandLine|contains:\n      - memfd:\n      - /proc/self/fd/\n      - /proc/thread-self/fd/\n  condition: 1 of selection_*\n",
+        "kql": "DeviceProcessEvents\n| where Timestamp > ago(7d)\n| where OSPlatform =~ \"Linux\"\n| where FolderPath has_any (\"/memfd:\", \"/proc/self/fd/\", \"/proc/thread-self/fd/\")\n    or ProcessCommandLine has_any (\"memfd:\", \"/proc/self/fd/\", \"/proc/thread-self/fd/\")\n| project Timestamp, DeviceName, AccountName, FolderPath, FileName, ProcessCommandLine,\n    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "| tstats count min(_time) as firstTime max(_time) as lastTime\n  from datamodel=Endpoint.Processes\n  where Processes.process IN (\"*memfd:*\", \"*/proc/self/fd/*\", \"*/proc/thread-self/fd/*\")\n  by Processes.dest Processes.user Processes.process_name Processes.process\n     Processes.parent_process_name Processes.parent_process\n| `drop_dm_object_name(Processes)`\n| sort - lastTime"
+      }
+    },
+    "linux-ssh-persistence": {
+      "id": "linux-ssh-persistence",
+      "title": "Linux SSH authorized-key persistence",
+      "hypothesis": "A shell or file utility modifies an SSH authorized_keys file and is followed by an SSH session or outbound tunnel that is not part of approved administration.",
+      "telemetry": [
+        "Linux process creation with complete command lines",
+        "File modification telemetry for user and root SSH directories",
+        "SSH authentication and network connection logs"
+      ],
+      "investigate": [
+        "Recover the added key and identify the process, user, package, or script that changed the file.",
+        "Correlate the change with new SSH sessions, reverse tunnels, and other persistence artifacts."
+      ],
+      "limitation": "Administrators and configuration-management tools legitimately rotate SSH keys. Process-only telemetry can miss direct file writes, and a matching command does not prove that the write succeeded.",
+      "search": [
+        "\"authorized_keys\"",
+        "\"reverse SSH\""
+      ],
+      "visibility": "Linux endpoint and SSH logs where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Linux process candidates that reference authorized_keys. The queries require process command lines; correlate with file and SSH telemetry before alerting.",
+      "upstream_matches": [
+        {
+          "name": "Linux SSH Authorized Keys Modification",
+          "id": "f5ab595e-28e5-4327-8077-5008ba97c850",
+          "source": "Splunk Security Content",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Linux SSH Authorized Key Modification\nid: ba847b8a-0dd7-4062-a6ba-bc923654f22a\nstatus: experimental\ndescription: Detects shell and file utilities referencing SSH authorized_keys files.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml\nfalsepositives:\n  - Approved SSH key rotation and configuration management\nlevel: medium\nlogsource:\n  category: process_creation\n  product: linux\ndetection:\n  selection_image:\n    Image|endswith:\n      - /bash\n      - /sh\n      - /zsh\n      - /cat\n      - /tee\n      - /sed\n      - /cp\n  selection_target:\n    CommandLine|contains: authorized_keys\n  condition: all of selection_*\n",
+        "kql": "DeviceProcessEvents\n| where Timestamp > ago(7d)\n| where OSPlatform =~ \"Linux\"\n| where ProcessCommandLine contains \"authorized_keys\"\n| where FileName in~ (\"bash\", \"sh\", \"zsh\", \"cat\", \"tee\", \"sed\", \"cp\")\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,\n    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "| tstats count min(_time) as firstTime max(_time) as lastTime\n  from datamodel=Endpoint.Processes\n  where Processes.process=\"*authorized_keys*\"\n  by Processes.dest Processes.user Processes.process_name Processes.process\n     Processes.parent_process_name Processes.parent_process\n| `drop_dm_object_name(Processes)`\n| sort - lastTime"
+      }
+    },
+    "linux-webshell": {
+      "id": "linux-webshell",
+      "title": "Linux web worker → shell / interpreter",
+      "hypothesis": "A PHP or web-server worker launches a shell, interpreter, or reconnaissance utility outside its normal baseline.",
+      "telemetry": [
+        "Linux process creation (EDR / auditd normalized to process fields)",
+        "PHP / web access logs",
+        "File changes to web roots and PHP configuration"
+      ],
+      "investigate": [
+        "Trace the worker's children and correlate them with inbound requests.",
+        "Review auto_prepend_file, .bashrc changes, /dev/shm execution, and outbound tunnels where the report describes them."
+      ],
+      "limitation": "Legitimate CGI, maintenance, and deployment scripts can match. The query is a process-tree starter, not a complete web-shell detector.",
+      "search": [
+        "\"linux\" AND \"web shell\"",
+        "\"auto_prepend_file\"",
+        "\"php\" AND \"shell\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "linux process candidates. Sigma needs normalized process events; KQL needs Defender coverage for that OS; SPL uses a custom openattacks:process sourcetype with Sysmon-style Image / ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.",
+      "queries": {
+        "sigma": "title: Hunt - Linux web worker → shell / interpreter\nid: 068e005a-876e-4ba3-a414-791f9a1c2330\nstatus: experimental\ndescription: A PHP or web-server worker launches a shell, interpreter, or\n  reconnaissance utility outside its normal baseline.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: process_creation\n  product: linux\ndetection:\n  selection:\n    Image|endswith:\n      - /sh\n      - /bash\n      - /python\n      - /python3\n      - /curl\n      - /wget\n    ParentImage|endswith:\n      - /php-fpm\n      - /php-fpm8.2\n      - /apache2\n      - /httpd\n      - /nginx\n  condition: selection\n",
+        "kql": "// Draft hunt; requires Defender for Endpoint process telemetry for this OS.\nDeviceProcessEvents\n| where Timestamp > ago(7d)\n| where FileName in~ (\"sh\", \"bash\", \"python\", \"python3\", \"curl\", \"wget\")\n| where InitiatingProcessFileName in~ (\"php-fpm\", \"php-fpm8.2\", \"apache2\", \"httpd\", \"nginx\")\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"openattacks:process\"\nImage IN (\"*/sh\", \"*/bash\", \"*/python\", \"*/python3\", \"*/curl\", \"*/wget\")\nParentImage IN (\"*/php-fpm\", \"*/php-fpm8.2\", \"*/apache2\", \"*/httpd\", \"*/nginx\")\n| table _time host User Image CommandLine ParentImage ParentCommandLine\n| sort - _time"
+      }
+    },
+    "mac-shell": {
+      "id": "mac-shell",
+      "title": "macOS download → shell execution",
+      "hypothesis": "A shell command references remote content or decoding steps, followed by an unexpected download or launched program.",
+      "telemetry": [
+        "macOS process events (EDR / Endpoint Security)",
+        "Browser download and proxy records",
+        "LaunchAgent / LaunchDaemon changes"
+      ],
+      "investigate": [
+        "Inspect the copied command as evidence, including decoding and pipe-to-shell stages.",
+        "Join shell children, downloaded artifacts and persistence to the originating user session."
+      ],
+      "limitation": "Developer install scripts commonly match. Windows application-control coverage is not claimed for this macOS branch.",
+      "search": [
+        "\"macos\" AND \"curl\"",
+        "\"zsh\" AND \"base64\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "macos process candidates. Sigma needs normalized process events; KQL needs Defender coverage for that OS; SPL uses a custom openattacks:process sourcetype with Sysmon-style Image / ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.",
+      "queries": {
+        "sigma": "title: Hunt - macOS download → shell execution\nid: 66552a7a-b48c-416c-a6a0-d2d3b66a8918\nstatus: experimental\ndescription: A shell command references remote content or decoding steps,\n  followed by an unexpected download or launched program.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: process_creation\n  product: macos\ndetection:\n  selection:\n    Image|endswith:\n      - /zsh\n      - /bash\n      - /sh\n      - /curl\n    CommandLine|contains:\n      - http\n      - base64\n  condition: selection\n",
+        "kql": "// Draft hunt; requires Defender for Endpoint process telemetry for this OS.\nDeviceProcessEvents\n| where Timestamp > ago(7d)\n| where FileName in~ (\"zsh\", \"bash\", \"sh\", \"curl\")\n| where ProcessCommandLine contains \"http\" or ProcessCommandLine contains \"base64\"\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"openattacks:process\"\nImage IN (\"*/zsh\", \"*/bash\", \"*/sh\", \"*/curl\")\nCommandLine IN (\"*http*\", \"*base64*\")\n| table _time host User Image CommandLine ParentImage ParentCommandLine\n| sort - _time"
+      }
+    },
+    "mcp-config": {
+      "id": "mcp-config",
+      "title": "Agent trust / configuration changes",
+      "hypothesis": "A repository, dependency or agent changes MCP commands, automatic-task settings, tool approval or model-routing configuration before new execution.",
+      "telemetry": [
+        "File changes and before/after content for MCP / IDE configuration",
+        "Repository audit / pull-request history",
+        "Agent startup and tool-invocation logs"
+      ],
+      "investigate": [
+        "Diff command, args, environment, origin, autoApprove and task settings against the previously approved version.",
+        "Correlate the author and change with the next agent launch; inspect path canonicalization and trailing-dot variants where relevant."
+      ],
+      "limitation": "A file-write event alone cannot establish what changed. Legitimate setup also changes these files; obtain a diff and authorization context.",
+      "search": [
+        "\"mcp.json\"",
+        "\"tasks.json\"",
+        "\"autoApprove\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Agent trust / configuration changes\nid: 2dfc8034-d66b-42a7-a699-a76b2ef872ac\nstatus: experimental\ndescription: A repository, dependency or agent changes MCP commands,\n  automatic-task settings, tool approval or model-routing configuration before\n  new execution.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - agent.config.write\n      - agent.approval.change\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"agent.config.write\", \"agent.approval.change\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"agent.config.write\", \"agent.approval.change\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "metadata": {
+      "id": "metadata",
+      "title": "Agent tool access to cloud metadata",
+      "hypothesis": "An agent tool reaches a metadata endpoint and the resulting role identity is used outside its intended task or resource scope.",
+      "telemetry": [
+        "Agent HTTP / shell tool audit",
+        "Workload egress / metadata access instrumentation",
+        "Role-session and downstream cloud audit"
+      ],
+      "investigate": [
+        "Look for metadata destination access from the agent's execution context and determine which credentials were available.",
+        "Trace that role session into agent memory, secrets and other resources; review the permissions boundary."
+      ],
+      "limitation": "Metadata traffic may stay on the host and be absent from ordinary proxy logs. IMDS access can be legitimate; correlate the role and task.",
+      "search": [
+        "\"169.254.169.254\"",
+        "\"metadata\" AND \"credentials\"",
+        "\"SSRF\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Agent tool access to cloud metadata\nid: c88eca38-d2f7-4e6a-aabf-6a58f5787823\nstatus: experimental\ndescription: An agent tool reaches a metadata endpoint and the resulting role\n  identity is used outside its intended task or resource scope.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - agent.metadata.request\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"agent.metadata.request\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"agent.metadata.request\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "model-network": {
+      "id": "model-network",
+      "title": "Unexpected process → model service",
+      "hypothesis": "An unexpected script, implant or local model client communicates with a model service near command execution, collection or file modification.",
+      "telemetry": [
+        "Per-process network / DNS records",
+        "AI-service request logs where available",
+        "Process and file behavior on the calling host"
+      ],
+      "investigate": [
+        "Join the network connection to the process tree and the actions before and after the response.",
+        "Compare with approved AI integrations; inspect local model listeners for PoCs that do not use a hosted API."
+      ],
+      "limitation": "Connecting to a legitimate model domain does not establish malicious use or reveal returned code. Local / in-process models can evade network-only hunts.",
+      "search": [
+        "\"Gemini\" AND \"malware\"",
+        "\"Hugging Face\"",
+        "\"LLM\" AND \"command\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Unexpected process → model service\nid: 8560daf7-ecd1-4f2b-ad09-b794bb56a394\nstatus: experimental\ndescription: An unexpected script, implant or local model client communicates\n  with a model service near command execution, collection or file modification.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - model.connection\n      - model.invoke\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"model.connection\", \"model.invoke\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"model.connection\", \"model.invoke\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "package-install-execution": {
+      "id": "package-install-execution",
+      "title": "Package installation spawns a shell or downloader",
+      "hypothesis": "A package-manager install or lifecycle script launches a shell, downloader, or script interpreter that retrieves or executes an unexpected second stage.",
+      "telemetry": [
+        "Process creation with ancestry and complete command lines",
+        "Package-manager, CI, and installation logs",
+        "Download, file creation, signature, and network telemetry"
+      ],
+      "investigate": [
+        "Identify the package, version, publisher, lifecycle hook, resolved source, and parent process.",
+        "Recover downloaded content and correlate credential access, persistence, or outbound traffic."
+      ],
+      "limitation": "Build and install scripts commonly invoke shells and download dependencies. Require package provenance and destination context; this hunt does not by itself prove supply-chain compromise.",
+      "search": [
+        "\"postinstall\"",
+        "\"npm\" AND \"PowerShell\"",
+        "\"package manager\" AND \"curl\""
+      ],
+      "visibility": "Endpoint process telemetry where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Process candidates with package-manager ancestry that launch shells or downloaders. Tune known build tooling and correlate with network/file telemetry.",
+      "upstream_matches": [
+        {
+          "name": "Curl Download Activity from npm Package Install",
+          "id": "7a3c9e21-5d84-4b16-9f02-1e8c6a4d0b73",
+          "source": "Elastic detection-rules",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml"
+        },
+        {
+          "name": "Suspicious PowerShell from npm Package Install",
+          "id": "c4e8a1d7-2b6f-4e93-8a15-7d0c3f9b6e42",
+          "source": "Elastic detection-rules",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/execution_suspicious_powershell_from_npm_install.toml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Shell or Downloader Spawned by Package Installation\nid: c83f22aa-d07c-4f3c-a67f-6d5512818133\nstatus: experimental\ndescription: Detects package-manager processes spawning common shells, interpreters, or downloaders.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml\nfalsepositives:\n  - Legitimate package build and installation scripts\nlevel: medium\nlogsource:\n  category: process_creation\ndetection:\n  selection_parent:\n    ParentCommandLine|contains:\n      - npm-cli.js\n      - npx-cli.js\n      - yarn\n      - pnpm\n      - pip install\n      - python -m pip\n      - gem install\n  selection_child:\n    Image|endswith:\n      - \\powershell.exe\n      - \\pwsh.exe\n      - /sh\n      - /bash\n      - /zsh\n      - /curl\n      - /wget\n      - /python\n      - /node\n  condition: all of selection_*\n",
+        "kql": "DeviceProcessEvents\n| where Timestamp > ago(7d)\n| where InitiatingProcessCommandLine has_any (\"npm-cli.js\", \"npx-cli.js\", \"yarn\", \"pnpm\",\n    \"pip install\", \"python -m pip\", \"gem install\")\n| where FileName in~ (\"powershell.exe\", \"pwsh.exe\", \"sh\", \"bash\", \"zsh\", \"curl\", \"wget\", \"python\", \"node\")\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,\n    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "| tstats count min(_time) as firstTime max(_time) as lastTime\n  from datamodel=Endpoint.Processes\n  where Processes.parent_process IN (\"*npm-cli.js*\", \"*npx-cli.js*\", \"*yarn*\", \"*pnpm*\",\n    \"*pip install*\", \"*python -m pip*\", \"*gem install*\")\n  Processes.process_name IN (\"powershell.exe\", \"pwsh.exe\", \"sh\", \"bash\", \"zsh\", \"curl\", \"wget\", \"python\", \"node\")\n  by Processes.dest Processes.user Processes.process_name Processes.process\n     Processes.parent_process_name Processes.parent_process\n| `drop_dm_object_name(Processes)`\n| sort - lastTime"
+      }
+    },
+    "package": {
+      "id": "package",
+      "title": "Dependency / CI trust boundary",
+      "hypothesis": "A package or workflow change introduces a lifecycle hook, remote dependency or new command that accesses secrets or external services.",
+      "telemetry": [
+        "Package-manager and CI job logs",
+        "Lockfile / manifest / workflow diffs",
+        "Runner process trees, secret access and egress"
+      ],
+      "investigate": [
+        "Compare package provenance, publish identity, lifecycle scripts and resolved dependency URLs with the approved version.",
+        "Correlate the install or workflow to secret reads and subsequent token use; distinguish exposure from confirmed compromise."
+      ],
+      "limitation": "Package installation and unfamiliar names are not malicious by themselves. Dependency resolution and CI audit records are required.",
+      "search": [
+        "\"npm\" AND \"postinstall\"",
+        "\"supply chain\"",
+        "\"GitHub Actions\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Dependency / CI trust boundary\nid: 5fa9c45a-ac1c-4666-a598-e80626320997\nstatus: experimental\ndescription: A package or workflow change introduces a lifecycle hook, remote\n  dependency or new command that accesses secrets or external services.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - package.install\n      - ci.workflow.change\n      - package.lifecycle.exec\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"package.install\", \"ci.workflow.change\", \"package.lifecycle.exec\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"package.install\", \"ci.workflow.change\", \"package.lifecycle.exec\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "payload": {
+      "id": "payload",
+      "title": "Unexpected payload / remote-access behavior",
+      "hypothesis": "A program delivered by the reported lure executes, establishes access or contacts infrastructure outside the approved software baseline.",
+      "telemetry": [
+        "Platform-specific process and file provenance",
+        "Signer / hash and software inventory",
+        "Per-process network and remote-session records"
+      ],
+      "investigate": [
+        "Confirm the payload's operating system, origin and execution context before choosing a platform-specific rule.",
+        "Correlate the launched program with child processes, persistence and network activity; verify authorization."
+      ],
+      "limitation": "A program name alone is not a signature. This normalized template requires the relevant platform collector and does not assert Windows-only policy coverage.",
+      "search": [
+        "\"trojan\" AND \"remote access\"",
+        "\"malicious\" AND \"installer\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Unexpected payload / remote-access behavior\nid: 998d4263-6e73-4472-a74d-cb4d61c28544\nstatus: experimental\ndescription: A program delivered by the reported lure executes, establishes\n  access or contacts infrastructure outside the approved software baseline.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - process.unapproved.exec\n      - remote.session.start\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"process.unapproved.exec\", \"remote.session.start\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"process.unapproved.exec\", \"remote.session.start\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "payment": {
+      "id": "payment",
+      "title": "Out-of-band payment verification",
+      "hypothesis": "A meeting or message requests a new beneficiary, split transfers or an override of normal payment approval.",
+      "telemetry": [
+        "Treasury / payment approval and beneficiary-change audit",
+        "Meeting and communication metadata",
+        "Independent callback / dual-approval records"
+      ],
+      "investigate": [
+        "Review new payees, transfer bursts and approval overrides against established payment policy.",
+        "Verify the request using a known contact channel; preserve the meeting record and authorization history."
+      ],
+      "limitation": "A video call's apparent identity is not authentication. Endpoint application control and malware hunts do not detect a pure business-process fraud.",
+      "search": [
+        "\"business email compromise\"",
+        "\"payment\" AND \"fraud\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Out-of-band payment verification\nid: 813e417f-8751-4479-ad17-0f3d146ff036\nstatus: experimental\ndescription: A meeting or message requests a new beneficiary, split transfers or\n  an override of normal payment approval.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - payment.beneficiary.change\n      - payment.approval.override\n      - payment.transfer\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"payment.beneficiary.change\", \"payment.approval.override\", \"payment.transfer\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"payment.beneficiary.change\", \"payment.approval.override\", \"payment.transfer\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "persistence": {
+      "id": "persistence",
+      "title": "New persistence → recurring execution",
+      "hypothesis": "A task, Run key, cron entry, shell profile, or startup file is changed and later launches the same unexpected program.",
+      "telemetry": [
+        "Platform-specific registry, scheduled-task, cron and startup-file changes",
+        "Process creation and file provenance",
+        "User / administrative change records"
+      ],
+      "investigate": [
+        "Diff the persistence artifact and identify the creating process / principal.",
+        "Correlate the subsequent launch and network behavior; baseline deployment and management agents."
+      ],
+      "limitation": "Windows and Unix persistence require different collectors. A configuration change without a subsequent launch is not proof that persistence ran.",
+      "search": [
+        "\"scheduled task\"",
+        "\"Run key\"",
+        "\"crontab\"",
+        "\"bashrc\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - New persistence → recurring execution\nid: 6154ff56-2978-45fa-aecd-86d91557f32e\nstatus: experimental\ndescription: A task, Run key, cron entry, shell profile, or startup file is\n  changed and later launches the same unexpected program.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - persistence.create\n      - persistence.modify\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"persistence.create\", \"persistence.modify\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"persistence.create\", \"persistence.modify\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "phishing": {
+      "id": "phishing",
+      "title": "Lure → user action / delivery",
+      "hypothesis": "An impersonating message, ad or website leads to a suspicious download, consent request, pasted command or payment instruction.",
+      "telemetry": [
+        "Email / secure-web-gateway records",
+        "Browser redirects, downloads and URL reputation",
+        "User reports and downstream execution / identity events"
+      ],
+      "investigate": [
+        "Reconstruct redirect and delivery provenance using original report indicators, without visiting payload URLs.",
+        "Correlate the click with the actual download, consent or execution; verify the sender through an independent channel."
+      ],
+      "limitation": "Polished text, AI branding and a novel domain do not prove maliciousness or AI generation. Follow-on evidence matters.",
+      "search": [
+        "\"phishing\"",
+        "\"ClickFix\"",
+        "\"impersonation\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Lure → user action / delivery\nid: e0056b49-9905-485b-ac12-2aa076a7bc82\nstatus: experimental\ndescription: An impersonating message, ad or website leads to a suspicious\n  download, consent request, pasted command or payment instruction.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - message.link.click\n      - web.download\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"message.link.click\", \"web.download\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"message.link.click\", \"web.download\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "privileged-container": {
+      "id": "privileged-container",
+      "title": "Privileged container or pod with host access",
+      "hypothesis": "A container or Kubernetes pod is created with privileged execution or a host-directory mount that can expose the underlying node and enable container escape.",
+      "telemetry": [
+        "Kubernetes API audit or Docker daemon events",
+        "Container runtime process and mount telemetry",
+        "Cloud control-plane identity and admission-controller decisions"
+      ],
+      "investigate": [
+        "Identify the creating principal, image digest, namespace, security context, host mounts, and admission result.",
+        "Compare with approved workloads, then inspect node-level file access, processes, and credentials."
+      ],
+      "limitation": "Infrastructure, storage, observability, and security workloads may legitimately require elevated access. Docker and Kubernetes use different audit schemas, and creation does not prove escape.",
+      "search": [
+        "\"privileged container\"",
+        "\"hostPath\"",
+        "\"docker\" AND \"--privileged\""
+      ],
+      "visibility": "Container orchestration and runtime audit logs where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Kubernetes audit candidates for privileged pods or hostPath volumes. The KQL and SPL examples need the respective Kubernetes audit sources and local field extraction.",
+      "upstream_matches": [
+        {
+          "name": "Privileged Container Deployed",
+          "id": "c5cd1b20-36bb-488d-8c05-486be3d0cb97",
+          "source": "SigmaHQ",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_privileged_pod_creation.yml"
+        },
+        {
+          "name": "Linux Suspicious Privileged Container Execution",
+          "id": "29b888db-d6e7-4286-bbf5-39d9f260444c",
+          "source": "Splunk Security Content",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_suspicious_privileged_container_execution.yml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Privileged Kubernetes Pod or Host Mount\nid: 5a3e19f4-3f1f-46e9-974f-4985b4692d30\nstatus: experimental\ndescription: Detects pod creation requests containing privileged containers or hostPath volumes.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_privileged_pod_creation.yml\nfalsepositives:\n  - Approved infrastructure, storage, observability, and security workloads\nlevel: high\nlogsource:\n  category: application\n  product: kubernetes\n  service: audit\ndetection:\n  selection_create:\n    verb: create\n    objectRef.resource: pods\n  selection_privileged:\n    requestObject.spec.containers.securityContext.privileged: true\n  selection_hostpath:\n    requestObject.spec.volumes.hostPath.path|startswith: /\n  condition: selection_create and 1 of selection_privileged, selection_hostpath\n",
+        "kql": "AzureDiagnostics\n| where TimeGenerated > ago(7d)\n| where Category in (\"kube-audit\", \"kube-audit-admin\")\n| where log_s has '\"verb\":\"create\"' and log_s has '\"resource\":\"pods\"'\n| where log_s has '\"privileged\":true' or log_s has '\"hostPath\"'\n| project TimeGenerated, Resource, ResourceGroup, SubscriptionId, log_s\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"kube:apiserver-audit\" verb=create objectRef.resource=pods\n(requestObject.spec.containers{}.securityContext.privileged=true\n  OR requestObject.spec.volumes{}.hostPath.path=\"*\")\n| table _time user.username sourceIPs{} objectRef.namespace objectRef.name\n    requestObject.spec.containers{}.image requestObject.spec.volumes{}.hostPath.path\n| sort - _time"
+      }
+    },
+    "provider": {
+      "id": "provider",
+      "title": "Provider-side abuse investigation",
+      "visibility": "Provider / operator records",
+      "hypothesis": "A model-provider investigation correlates related accounts, repeated offensive requests and shared infrastructure or exposed operator sessions.",
+      "telemetry": [
+        "Provider-owned account / request audit",
+        "Abuse-review findings and linked-account context",
+        "Lawfully available exposed operator-session evidence"
+      ],
+      "investigate": [
+        "Correlate accounts, request rates, infrastructure and source-described behavior in provider-owned records.",
+        "For victim-side defense, pivot to the reported execution or access stage rather than trying to detect attacker-side prompts."
+      ],
+      "limitation": "Attacker-side planning is generally absent from victim SIEM logs. These templates require provider-owned audit data and do not identify AI use from a victim process alone.",
+      "search": [
+        "\"AI\" AND \"abuse\"",
+        "\"agentic\""
+      ],
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Provider-side abuse investigation\nid: c8c1edc0-c79a-4644-a876-2c1a6cb9a438\nstatus: experimental\ndescription: A model-provider investigation correlates related accounts,\n  repeated offensive requests and shared infrastructure or exposed operator\n  sessions.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - model.request\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"model.request\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"model.request\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "python-startup-persistence": {
+      "id": "python-startup-persistence",
+      "title": "Python startup-hook persistence",
+      "hypothesis": "A package or installer creates sitecustomize.py, usercustomize.py, or a .pth startup hook in a Python environment, causing code to run during later interpreter starts.",
+      "telemetry": [
+        "File creation and modification events for Python library directories",
+        "Package-manager and installer process trees",
+        "Subsequent Python process and network activity"
+      ],
+      "investigate": [
+        "Inspect the hook contents, owner, package provenance, and creating process.",
+        "Correlate later Python launches with child processes, credential access, or unexpected egress."
+      ],
+      "limitation": "Legitimate packages use .pth files and customization hooks. File telemetry must cover the relevant environment, and the rule does not establish that the hook later executed.",
+      "search": [
+        "\"sitecustomize.py\"",
+        "\"usercustomize.py\"",
+        "\".pth\" AND \"site-packages\""
+      ],
+      "visibility": "Endpoint file telemetry where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Python startup-hook file candidates. Tune approved packages and environments, then correlate the file event with interpreter execution.",
+      "upstream_matches": [
+        {
+          "name": "Python Site or User Customize File Creation",
+          "id": "d788313c-9e0b-4c5a-8c4b-c3f05a47d5a8",
+          "source": "Elastic detection-rules",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_site_and_user_customize_file_creation.toml"
+        },
+        {
+          "name": "Python Site Hooks Creation During Package Installation",
+          "id": "efaf40f5-779f-4b48-a941-b7d1a7c931ed",
+          "source": "Splunk Security Content",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/python_site_hooks_creation_during_package_installation.yml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Python Startup Hook Creation\nid: e229b088-94e8-4254-8bfb-fc1e03173def\nstatus: experimental\ndescription: Detects creation of Python customization or path startup hooks.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_site_and_user_customize_file_creation.toml\n  - https://github.com/splunk/security_content/blob/develop/detections/endpoint/python_site_hooks_creation_during_package_installation.yml\nfalsepositives:\n  - Legitimate Python package installation and environment management\nlevel: medium\nlogsource:\n  category: file_event\ndetection:\n  selection_named_hook:\n    TargetFilename|endswith:\n      - /sitecustomize.py\n      - /usercustomize.py\n  selection_pth:\n    TargetFilename|contains:\n      - /site-packages/\n      - /dist-packages/\n    TargetFilename|endswith: .pth\n  condition: 1 of selection_*\n",
+        "kql": "DeviceFileEvents\n| where Timestamp > ago(7d)\n| where ActionType in (\"FileCreated\", \"FileModified\", \"FileRenamed\")\n| where FileName in~ (\"sitecustomize.py\", \"usercustomize.py\")\n    or (FileName endswith \".pth\" and FolderPath has_any (\"/site-packages/\", \"/dist-packages/\", \"\\\\site-packages\\\\\"))\n| project Timestamp, DeviceName, InitiatingProcessAccountName, FolderPath, FileName,\n    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=11\n(TargetFilename=\"*\\\\sitecustomize.py\" OR TargetFilename=\"*\\\\usercustomize.py\"\n  OR TargetFilename=\"*\\\\site-packages\\\\*.pth\")\n| table _time host User Image TargetFilename ProcessGuid\n| sort - _time"
+      }
+    },
+    "repository": {
+      "id": "repository",
+      "title": "Private access → public repository artifact",
+      "hypothesis": "A token or agent reads private material and creates a public issue, repository, commit or visibility change inconsistent with the approved task.",
+      "telemetry": [
+        "Git-provider organization / enterprise audit",
+        "Repository and token permission inventory",
+        "Agent tool and secret-scanning / DLP records"
+      ],
+      "investigate": [
+        "Join access and public-write actions by actor / token and time; inspect visibility changes and newly created repositories.",
+        "Verify whether the artifact contains sensitive data using approved scanning, retaining original source qualifications."
+      ],
+      "limitation": "Git-provider audit completeness depends on product and plan. Not every file read or issue body is present in organization audit logs.",
+      "search": [
+        "\"GitHub\" AND \"exfiltration\"",
+        "\"repository\" AND \"visibility\"",
+        "\"s1ngularity\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Private access → public repository artifact\nid: b7b2d3f0-8170-4225-accb-c20633364ef4\nstatus: experimental\ndescription: A token or agent reads private material and creates a public issue,\n  repository, commit or visibility change inconsistent with the approved task.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - repository.public.write\n      - repository.visibility.change\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"repository.public.write\", \"repository.visibility.change\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"repository.public.write\", \"repository.visibility.change\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "skill-review": {
+      "id": "skill-review",
+      "title": "Skill bundle provenance / review",
+      "visibility": "Review / research workflow",
+      "hypothesis": "A skill bundle introduces new network, execution or secret-access instructions, including instructions distributed across non-Markdown files.",
+      "telemetry": [
+        "Complete skill-bundle inventory and hashes",
+        "Scanner results, extracted attachments and review history",
+        "Agent load / tool logs if execution is actually observed"
+      ],
+      "investigate": [
+        "Review the entire bundle, including images and referenced files, in an isolated static-analysis workflow.",
+        "Compare requested capabilities with the skill's purpose; record scanner disagreement and avoid treating a finding as proof of execution."
+      ],
+      "limitation": "Scanner findings and evasion results are research evidence, not a runtime compromise detector. Do not execute embedded commands or invent a victim chain.",
+      "search": [
+        "\"SKILL.md\"",
+        "\"prompt injection\" AND \"skill\""
+      ],
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Skill bundle provenance / review\nid: 4941aba2-b392-4f04-ad39-6f0201811d26\nstatus: experimental\ndescription: A skill bundle introduces new network, execution or secret-access\n  instructions, including instructions distributed across non-Markdown files.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - skill.bundle.load\n      - skill.bundle.change\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"skill.bundle.load\", \"skill.bundle.change\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"skill.bundle.load\", \"skill.bundle.change\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "social": {
+      "id": "social",
+      "title": "Coordinated messaging / propagation",
+      "visibility": "Platform / application records",
+      "hypothesis": "Related accounts or assistants repeat correlated posting, forwarding or tool actions beyond the expected user workflow.",
+      "telemetry": [
+        "Platform account and posting audit",
+        "Agent session and message-provenance records",
+        "Rate, recipient and content-similarity features"
+      ],
+      "investigate": [
+        "Group actions by linked account, session, recipient and time rather than judging writing style.",
+        "Compare propagation with legitimate campaigns and preserve whether the source describes a lab demonstration or observed abuse."
+      ],
+      "limitation": "Requires platform-side visibility. Similar content and synchronized activity can have legitimate explanations.",
+      "search": [
+        "\"coordinated\" AND \"accounts\"",
+        "\"email\" AND \"propagation\""
+      ],
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Coordinated messaging / propagation\nid: c4001568-b68b-4887-a86f-6f05807640f6\nstatus: experimental\ndescription: Related accounts or assistants repeat correlated posting,\n  forwarding or tool actions beyond the expected user workflow.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - social.post\n      - message.forward\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"social.post\", \"message.forward\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"social.post\", \"message.forward\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "unassessed": {
+      "id": "unassessed",
+      "title": "Stage hunt not mapped yet",
+      "visibility": "Not assessed",
+      "hypothesis": "A stage-specific hunt has not been reviewed for this part of the source account.",
+      "telemetry": [],
+      "investigate": [
+        "Review the cited behavior, identify the observing party and available logs, then propose and test a hunt."
+      ],
+      "limitation": "An unmapped stage does not mean it is undetectable or that no behavior occurred. It means this catalog has not supplied a reviewed hunt for it.",
+      "search": [],
+      "reviewed": null,
+      "origin": "catalog_authored",
+      "query_kind": "gap",
+      "query_scope": "No query has been reviewed for this stage yet.",
+      "queries": null
+    },
+    "unobserved": {
+      "id": "unobserved",
+      "title": "No source-backed runtime hunt yet",
+      "visibility": "Not established",
+      "hypothesis": "The supplied account does not establish a deployed victim-side behavior for this stage.",
+      "telemetry": [],
+      "investigate": [
+        "Obtain a source-backed procedure and identify which party could observe it before drafting a detection."
+      ],
+      "limitation": "Marketing claims, unknown steps and unconfirmed deployments are not detection coverage. No rule is generated for this stage.",
+      "search": [],
+      "reviewed": null,
+      "origin": "catalog_authored",
+      "query_kind": "gap",
+      "query_scope": "No runtime query: the available evidence does not establish one.",
+      "queries": null
+    },
+    "web": {
+      "id": "web",
+      "title": "Web exploitation → host activity",
+      "hypothesis": "Repeated exploit or upload requests are followed by an unexpected server process, file, or outbound connection.",
+      "telemetry": [
+        "Reverse-proxy / WAF request logs",
+        "Server process and file events",
+        "Outbound DNS / proxy records"
+      ],
+      "investigate": [
+        "Join requests to the affected host and process tree by time and request ID.",
+        "Inspect uploaded files and server-spawned shells; distinguish authorized testing from exploitation."
+      ],
+      "limitation": "A scan or high request rate alone does not prove compromise or AI use. Host telemetry is needed to confirm execution.",
+      "search": [
+        "\"web shell\"",
+        "\"web server\" AND \"child process\"",
+        "\"file upload\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "custom_schema",
+      "query_scope": "Custom-schema candidates, not out-of-box detectors. Map your application / cloud / platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization names, not native vendor event names. Correlation and environment-specific alert logic remain to be built.",
+      "queries": {
+        "sigma": "title: Hunt - Web exploitation → host activity\nid: 04d900b5-0c04-46f2-a13a-91f5574fae98\nstatus: experimental\ndescription: Repeated exploit or upload requests are followed by an unexpected\n  server process, file, or outbound connection.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: application\n  product: openattacks_audit\n  definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,\n    Target and CorrelationId from the required source logs first.\ndetection:\n  selection:\n    EventType:\n      - web.exploit_candidate\n      - web.upload\n  condition: selection\n",
+        "kql": "// SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.\n// OpenAttacksAudit_CL: TimeGenerated(datetime), EventType/Actor/Asset/Action/Target/CorrelationId(string).\n// Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.\nOpenAttacksAudit_CL\n| where TimeGenerated > ago(7d)\n| where EventType in (\"web.exploit_candidate\", \"web.upload\")\n| project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"openattacks:audit\"\nEventType IN (\"web.exploit_candidate\", \"web.upload\")\n| table _time EventType Actor Asset Action Target CorrelationId\n| sort - _time"
+      }
+    },
+    "windows-credential-dump": {
+      "id": "windows-credential-dump",
+      "title": "Windows credential dumping with system utilities",
+      "hypothesis": "A Windows utility accesses or dumps LSASS memory using comsvcs.dll or a similar system-binary technique, followed by credential use or lateral movement.",
+      "telemetry": [
+        "Windows process creation with complete command lines",
+        "Process-access telemetry for LSASS",
+        "Authentication and lateral-movement logs"
+      ],
+      "investigate": [
+        "Recover the dump path, process ancestry, account, and initiating remote session or scheduled task.",
+        "Correlate the event with new logons, DCSync, ticket creation, and credential use from other hosts."
+      ],
+      "limitation": "Diagnostic and security tools can dump processes. The command-line hunt covers the common comsvcs pattern and does not detect every in-memory or kernel-assisted credential-dumping method.",
+      "search": [
+        "\"comsvcs.dll\" AND \"MiniDump\"",
+        "\"LSASS\" AND \"dump\""
+      ],
+      "visibility": "Windows process and process-access telemetry where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Windows rundll32/comsvcs MiniDump command candidates. Correlate with process-access telemetry and confirm the target PID belongs to LSASS.",
+      "upstream_matches": [
+        {
+          "name": "Process Memory Dump Via Comsvcs.DLL",
+          "id": "646ea171-dded-4578-8a4d-65e9822892e3",
+          "source": "SigmaHQ",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml"
+        },
+        {
+          "name": "Dump LSASS via comsvcs DLL",
+          "id": "8943b567-f14d-4ee8-a0bb-2121d4ce3184",
+          "source": "Splunk Security Content",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/dump_lsass_via_comsvcs_dll.yml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Process Dump Via Comsvcs DLL\nid: 1c658574-7d21-4fc8-b272-d6b1508d0aad\nstatus: experimental\ndescription: Detects rundll32 invoking the comsvcs MiniDump export.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml\nfalsepositives:\n  - Authorized diagnostics or incident-response collection\nlevel: high\nlogsource:\n  category: process_creation\n  product: windows\ndetection:\n  selection_image:\n    Image|endswith: \\rundll32.exe\n  selection_command:\n    CommandLine|contains|all:\n      - comsvcs.dll\n      - MiniDump\n  condition: all of selection_*\n",
+        "kql": "DeviceProcessEvents\n| where Timestamp > ago(7d)\n| where FileName =~ \"rundll32.exe\"\n| where ProcessCommandLine contains \"comsvcs.dll\" and ProcessCommandLine contains \"MiniDump\"\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,\n    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=1\nImage=\"*\\\\rundll32.exe\" CommandLine=\"*comsvcs.dll*\" CommandLine=\"*MiniDump*\"\n| table _time host User Image CommandLine ParentImage ParentCommandLine ProcessGuid\n| sort - _time"
+      }
+    },
+    "windows-dcsync": {
+      "id": "windows-dcsync",
+      "title": "Active Directory replication from an unexpected account",
+      "hypothesis": "A non-domain-controller or non-machine account requests directory replication rights consistent with DCSync, enabling extraction of domain credential material.",
+      "telemetry": [
+        "Domain-controller Security Event 4662 with Directory Service Access auditing",
+        "Identity and endpoint telemetry for the requesting account and source host",
+        "Kerberos ticket and subsequent authentication activity"
+      ],
+      "investigate": [
+        "Confirm the subject account, source workstation, object, and replication-right GUIDs.",
+        "Compare with approved directory synchronization, then rotate exposed credentials and inspect ticket use."
+      ],
+      "limitation": "Event 4662 is high-volume and requires appropriate SACL/audit configuration. Backup, identity, migration, and synchronization products can legitimately use replication rights.",
+      "search": [
+        "\"DCSync\"",
+        "\"Directory Replication Service\""
+      ],
+      "visibility": "Domain-controller Security logs where configured",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Security Event 4662 candidates containing directory-replication extended-right GUIDs and a non-machine subject account. Tune approved synchronization identities.",
+      "upstream_matches": [
+        {
+          "name": "Active Directory Replication from Non Machine Account - DcSync Indicator",
+          "id": "17d619c1-e020-4347-957e-1d1207455c93",
+          "source": "SigmaHQ",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_ad_replication_non_machine_account.yml"
+        },
+        {
+          "name": "First Time Seen Account Performing DCSync",
+          "id": "5c6f4c58-b381-452a-8976-f1b1c6aa0def",
+          "source": "Elastic detection-rules",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - Directory Replication From Non-Machine Account\nid: cc0c6803-2f24-420f-b206-f0b081bb6f9d\nstatus: experimental\ndescription: Detects Directory Service Access events with replication-right GUIDs from a non-machine account.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nreferences:\n  - https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_ad_replication_non_machine_account.yml\nfalsepositives:\n  - Approved directory synchronization, backup, migration, and identity services\nlevel: high\nlogsource:\n  product: windows\n  service: security\ndetection:\n  selection:\n    EventID: 4662\n    Properties|contains:\n      - 1131f6aa-9c07-11d1-f79f-00c04fc2dcd2\n      - 1131f6ad-9c07-11d1-f79f-00c04fc2dcd2\n      - 89e95b76-444d-4c62-991a-0facbeda640c\n  filter_machine:\n    SubjectUserName|endswith: $\n  condition: selection and not filter_machine\n",
+        "kql": "SecurityEvent\n| where TimeGenerated > ago(7d)\n| where EventID == 4662\n| where Properties has_any (\"1131f6aa-9c07-11d1-f79f-00c04fc2dcd2\",\n    \"1131f6ad-9c07-11d1-f79f-00c04fc2dcd2\", \"89e95b76-444d-4c62-991a-0facbeda640c\")\n| where Account !endswith \"$\"\n| project TimeGenerated, Computer, Account, SubjectAccount, ObjectName, Properties, Activity\n| order by TimeGenerated desc",
+        "spl": "sourcetype=\"WinEventLog:Security\" EventCode=4662\n(Properties=\"*1131f6aa-9c07-11d1-f79f-00c04fc2dcd2*\"\n  OR Properties=\"*1131f6ad-9c07-11d1-f79f-00c04fc2dcd2*\"\n  OR Properties=\"*89e95b76-444d-4c62-991a-0facbeda640c*\")\nNOT SubjectUserName=\"*$\"\n| table _time host SubjectDomainName SubjectUserName ObjectName Properties\n| sort - _time"
+      }
+    },
+    "windows-dll-sideload": {
+      "id": "windows-dll-sideload",
+      "title": "DLL loaded from a user-writable location",
+      "hypothesis": "A signed or trusted Windows executable loads an unexpected DLL from an archive, download, temp, or other user-writable directory, consistent with DLL search-order hijacking.",
+      "telemetry": [
+        "Windows image-load events such as Sysmon Event 7 or EDR equivalents",
+        "File provenance, signature, and process ancestry",
+        "Subsequent network and payload activity"
+      ],
+      "investigate": [
+        "Verify the executable and DLL signatures, original archive or installer, hashes, and load path.",
+        "Compare the DLL name/location with the vendor's expected installation and correlate child activity."
+      ],
+      "limitation": "Portable and self-updating applications legitimately load DLLs from user paths. This broad hunt requires signer, prevalence, and application-specific tuning and will not cover in-memory modules.",
+      "search": [
+        "\"DLL sideload\"",
+        "\"DLL search order hijacking\""
+      ],
+      "visibility": "Windows image-load telemetry where collected",
+      "reviewed": "2026-11-06",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "DLL image loads from common user-writable paths. Confirm the initiating executable is trusted and the loaded module is unexpected before treating the event as sideloading.",
+      "upstream_matches": [
+        {
+          "name": "Microsoft Defender Blocked from Loading Unsigned DLL",
+          "id": "0b0ea3cc-99c8-4730-9c53-45deee2a4c86",
+          "source": "SigmaHQ",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security_mitigations/win_security_mitigations_defender_load_unsigned_dll.yml"
+        }
+      ],
+      "queries": {
+        "sigma": "title: Hunt - DLL Load From User-Writable Location\nid: a5e6a4a2-be30-4a0a-8559-5f9a2623403e\nstatus: experimental\ndescription: Detects DLL image loads from common user-writable Windows paths.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-11-06\nfalsepositives:\n  - Portable, development, and self-updating applications\nlevel: medium\nlogsource:\n  category: image_load\n  product: windows\ndetection:\n  selection_path:\n    ImageLoaded|contains:\n      - \\Downloads\\\n      - \\AppData\\Local\\Temp\\\n      - \\Windows\\Temp\\\n      - \\Users\\Public\\\n  selection_dll:\n    ImageLoaded|endswith: .dll\n  condition: all of selection_*\n",
+        "kql": "DeviceImageLoadEvents\n| where Timestamp > ago(7d)\n| where FileName endswith \".dll\"\n| where FolderPath has_any (\"\\\\Downloads\\\\\", \"\\\\AppData\\\\Local\\\\Temp\\\\\", \"\\\\Windows\\\\Temp\\\\\", \"\\\\Users\\\\Public\\\\\")\n| project Timestamp, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName,\n    InitiatingProcessFolderPath, FolderPath, FileName, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=7\nImageLoaded=\"*.dll\"\n(ImageLoaded=\"*\\\\Downloads\\\\*\" OR ImageLoaded=\"*\\\\AppData\\\\Local\\\\Temp\\\\*\"\n  OR ImageLoaded=\"*\\\\Windows\\\\Temp\\\\*\" OR ImageLoaded=\"*\\\\Users\\\\Public\\\\*\")\n| table _time host User Image ImageLoaded Signed SignatureStatus Hashes ProcessGuid\n| sort - _time"
+      }
+    },
+    "windows-install": {
+      "id": "windows-install",
+      "title": "Unapproved Windows program execution",
+      "hypothesis": "A newly downloaded or staged executable runs from a user-writable location and exhibits the reported follow-on behavior.",
+      "telemetry": [
+        "Windows process creation",
+        "Download provenance and file hashes",
+        "File certificate information and application-control audit / block events"
+      ],
+      "investigate": [
+        "Verify publisher, hash, origin, prevalence and local approval rather than trusting a product name or signature.",
+        "Trace child processes and related credential, network or persistence events."
+      ],
+      "limitation": "Many approved installers run from user-writable folders. These events are hunt candidates, not proof of malware or an enforced block.",
+      "search": [
+        "\"suspicious\" AND \"installer\"",
+        "\"user writable\" AND \"execution\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Windows process candidates. Sigma uses normalized process_creation fields; KQL requires Defender for Endpoint; SPL requires the Sysmon XML sourcetype. Tune collectors, fields and baselines before use.",
+      "queries": {
+        "sigma": "title: Hunt - Unapproved Windows program execution\nid: e217e948-e57c-48b8-a331-66006de42ae1\nstatus: experimental\ndescription: A newly downloaded or staged executable runs from a user-writable\n  location and exhibits the reported follow-on behavior.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: process_creation\n  product: windows\ndetection:\n  selection:\n    Image|contains:\n      - \\Downloads\\\n      - \\AppData\\Local\\Temp\\\n      - \\AppData\\Roaming\\\n  condition: selection\n",
+        "kql": "// Draft hunt; requires Defender for Endpoint process telemetry for this OS.\nDeviceProcessEvents\n| where Timestamp > ago(7d)\n| where FolderPath contains \"\\\\Downloads\\\\\" or FolderPath contains \"\\\\AppData\\\\Local\\\\Temp\\\\\" or FolderPath contains \"\\\\AppData\\\\Roaming\\\\\"\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=1\nImage IN (\"*\\\\Downloads\\\\*\", \"*\\\\AppData\\\\Local\\\\Temp\\\\*\", \"*\\\\AppData\\\\Roaming\\\\*\")\n| table _time host User Image CommandLine ParentImage ParentCommandLine\n| sort - _time"
+      }
+    },
+    "windows-shell": {
+      "id": "windows-shell",
+      "title": "Suspicious Windows script execution",
+      "hypothesis": "A script host or shell runs encoded content, a remote URL, or inline script syntax, then downloads or launches a payload.",
+      "telemetry": [
+        "Windows process creation: Sysmon Event 1 or Defender DeviceProcessEvents",
+        "PowerShell script-block logging when enabled",
+        "Download / network and installer events"
+      ],
+      "investigate": [
+        "Follow the parent and child process tree and recover the script or URL from logs without executing it.",
+        "Correlate the payload's signer/hash, persistence, and network activity; baseline approved automation."
+      ],
+      "limitation": "Encoded commands and remote administration can be legitimate. This does not cover every script host, in-process execution, or non-Windows branch.",
+      "search": [
+        "\"mshta\"",
+        "\"wscript\" AND \"powershell\"",
+        "\"EncodedCommand\""
+      ],
+      "visibility": "Defender-side logs where collected",
+      "reviewed": "2026-10-23",
+      "origin": "catalog_authored",
+      "query_kind": "native",
+      "query_scope": "Windows process candidates. Sigma uses normalized process_creation fields; KQL requires Defender for Endpoint; SPL requires the Sysmon XML sourcetype. Tune collectors, fields and baselines before use.",
+      "queries": {
+        "sigma": "title: Hunt - Suspicious Windows script execution\nid: 2bb88802-9f03-4d99-a192-fe44c9484e8b\nstatus: experimental\ndescription: A script host or shell runs encoded content, a remote URL, or\n  inline script syntax, then downloads or launches a payload.\nauthor: MagicSword OpenAttacks catalog\ndate: 2026-10-23\nfalsepositives:\n  - Authorized activity matching this broad hunt; baseline and investigate\n    before alerting.\nlevel: low\nlogsource:\n  category: process_creation\n  product: windows\ndetection:\n  selection:\n    Image|endswith:\n      - \\powershell.exe\n      - \\pwsh.exe\n      - \\mshta.exe\n      - \\wscript.exe\n      - \\cscript.exe\n    CommandLine|contains:\n      - -enc\n      - http\n      - FromBase64String\n      - \"javascript:\"\n      - \"vbscript:\"\n  condition: selection\n",
+        "kql": "// Draft hunt; requires Defender for Endpoint process telemetry for this OS.\nDeviceProcessEvents\n| where Timestamp > ago(7d)\n| where FileName in~ (\"powershell.exe\", \"pwsh.exe\", \"mshta.exe\", \"wscript.exe\", \"cscript.exe\")\n| where ProcessCommandLine contains \"-enc\" or ProcessCommandLine contains \"http\" or ProcessCommandLine contains \"FromBase64String\" or ProcessCommandLine contains \"javascript:\" or ProcessCommandLine contains \"vbscript:\"\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1\n| order by Timestamp desc",
+        "spl": "sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=1\nImage IN (\"*\\\\powershell.exe\", \"*\\\\pwsh.exe\", \"*\\\\mshta.exe\", \"*\\\\wscript.exe\", \"*\\\\cscript.exe\")\nCommandLine IN (\"*-enc*\", \"*http*\", \"*FromBase64String*\", \"*javascript:*\", \"*vbscript:*\")\n| table _time host User Image CommandLine ParentImage ParentCommandLine\n| sort - _time"
+      }
+    }
+  }
+}

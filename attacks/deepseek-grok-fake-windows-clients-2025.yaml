@@ -13,9 +13,10 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: No official DeepSeek Windows desktop client; fake DeepSeek/Grok installers
-  delivered Python stealers, SSH backdoors, Vidar, BrowserVenom (browser traffic proxying), and
-  Chinese-language trojanized installers including Gh0stRAT variants.
+technique_summary: No official DeepSeek Windows desktop client; fake
+  DeepSeek/Grok installers delivered Python stealers, SSH backdoors, Vidar,
+  BrowserVenom (browser traffic proxying), and Chinese-language trojanized
+  installers including Gh0stRAT variants.
 initial_access: Users download fake AI desktop clients from unofficial sites/ads
 ai_tooling_and_models:
   - Fake DeepSeek / Grok branded installers
@@ -29,7 +30,8 @@ regions:
   - Multiple regions
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: Only official web apps; block unsigned AI installers; MagicSword prevent unexpected stealers
+prevention_angle: Only official web apps; block unsigned AI installers;
+  MagicSword prevent unexpected stealers
 related_magicsword_projects:
   - LOLBAS
 source_notes: null
@@ -38,7 +40,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: User finds an unofficial AI client
-      description: Fake DeepSeek or Grok desktop downloads are promoted through sites and ads.
+      description: Fake DeepSeek or Grok desktop downloads are promoted through sites
+        and ads.
       kind: access
       source_urls: &a1
         - https://securelist.com/backdoors-and-stealers-prey-on-deepseek-and-grok/115801/
@@ -66,5 +69,13 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-region_notes: The source describes global distribution. Chinese-language installers do not establish
-  victims in China.
+region_notes: The source describes global distribution. Chinese-language
+  installers do not establish victims in China.
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Fake DeepSeek / Grok Windows
+      clients deliver stealers and backdoors. Refer to sources for specific IOCs
+      and TTPs.

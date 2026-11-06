@@ -1,0 +1,45 @@
+---
+import { toolingSegments } from "../lib/tool-projects.mjs";
+
+interface Props {
+  tools: string[];
+}
+const { tools } = Astro.props;
+---
+
+<ul class="technical-tool-list">
+  {tools.map((tool) => {
+    const segments = toolingSegments(tool);
+    const notes = [
+      ...new Set(
+        segments.flatMap(({ project }) =>
+          project?.note ? [project.note] : [],
+        ),
+      ),
+    ];
+    return (
+      <li>
+        <span class="tool-reported-label">
+          {segments.map(({ text, project }) =>
+            project ? (
+              <a
+                class="tool-project-link"
+                href={project.url}
+                title={`${project.name} — ${new URL(project.url).hostname === "github.com" ? "GitHub" : "project website"}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {text}
+              </a>
+            ) : (
+              text
+            ),
+          )}
+        </span>
+        {notes.map((note) => (
+          <small class="tool-project-note">{note}</small>
+        ))}
+      </li>
+    );
+  })}
+</ul>

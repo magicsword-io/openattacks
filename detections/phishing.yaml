@@ -1,0 +1,77 @@
+id: phishing
+title: Lure → user action / delivery
+hypothesis:
+  An impersonating message, ad or website leads to a suspicious download, consent request,
+  pasted command or payment instruction.
+telemetry:
+  - Email / secure-web-gateway records
+  - Browser redirects, downloads and URL reputation
+  - User reports and downstream execution / identity events
+investigate:
+  - Reconstruct redirect and delivery provenance using original report indicators, without visiting
+    payload URLs.
+  - Correlate the click with the actual download, consent or execution; verify the sender through an
+    independent channel.
+limitation:
+  Polished text, AI branding and a novel domain do not prove maliciousness or AI
+  generation. Follow-on evidence matters.
+search:
+  - '"phishing"'
+  - '"ClickFix"'
+  - '"impersonation"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Lure → user action / delivery
+    id: e0056b49-9905-485b-ac12-2aa076a7bc82
+    status: experimental
+    description: An impersonating message, ad or website leads to a suspicious
+      download, consent request, pasted command or payment instruction.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - message.link.click
+          - web.download
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("message.link.click", "web.download")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("message.link.click", "web.download")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

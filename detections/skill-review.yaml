@@ -1,0 +1,76 @@
+id: skill-review
+title: Skill bundle provenance / review
+visibility: Review / research workflow
+hypothesis:
+  A skill bundle introduces new network, execution or secret-access instructions,
+  including instructions distributed across non-Markdown files.
+telemetry:
+  - Complete skill-bundle inventory and hashes
+  - Scanner results, extracted attachments and review history
+  - Agent load / tool logs if execution is actually observed
+investigate:
+  - Review the entire bundle, including images and referenced files, in an isolated static-analysis
+    workflow.
+  - Compare requested capabilities with the skill's purpose; record scanner disagreement and avoid
+    treating a finding as proof of execution.
+limitation:
+  Scanner findings and evasion results are research evidence, not a runtime compromise
+  detector. Do not execute embedded commands or invent a victim chain.
+search:
+  - '"SKILL.md"'
+  - '"prompt injection" AND "skill"'
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Skill bundle provenance / review
+    id: 4941aba2-b392-4f04-ad39-6f0201811d26
+    status: experimental
+    description: A skill bundle introduces new network, execution or secret-access
+      instructions, including instructions distributed across non-Markdown files.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - skill.bundle.load
+          - skill.bundle.change
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("skill.bundle.load", "skill.bundle.change")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("skill.bundle.load", "skill.bundle.change")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

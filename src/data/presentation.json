@@ -335,12 +335,6 @@
     "environments": ["unspecified"],
     "evidence": "analysis"
   },
-  "talos-yuri-agent-attacks-2026-10": {
-    "title": "Talos: today's AI agent attacks look like loud pentests",
-    "summary": "A framework post arguing public AI-agent attacks are noisy pentests for now, with real risk arriving once agents are prompted for stealth. It summarizes public cases, not one intrusion.",
-    "environments": ["unspecified"],
-    "evidence": "concept"
-  },
   "temp-zagros-gemini-malware-dev-2025": {
     "title": "TEMP.Zagros / MuddyWater use Gemini for custom malware",
     "summary": "Iranian MuddyWater used 'student project' pretexts to get Gemini's help with web shells and C2. Pasting in a C2 domain and key exposed their infrastructure and aided disruption.",
@@ -400,11 +394,5 @@
     "summary": "A malicious agent action could expose a victim's SharePoint token through a connector SSRF flaw, enabling impersonation across affected Microsoft services.",
     "environments": ["agents"],
     "evidence": "vulnerability"
-  },
-  "zenity-mcp-supply-chain-2026-draft": {
-    "title": "Zenity: MCP server supply-chain risk (conceptual)",
-    "summary": "A conceptual post arguing a poisoned shared MCP server could hijack a deployment agent while monitoring looks clean. It is not a named intrusion.",
-    "environments": ["agents"],
-    "evidence": "concept"
   }
 }

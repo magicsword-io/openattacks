@@ -93,9 +93,6 @@
 .home-timeline .dot-chart {
   max-height: 240px;
 }
-.home-timeline .chart-legend {
-  padding-block: 10px;
-}
 .home-timeline .timeline-context {
   margin-top: 10px;
 }

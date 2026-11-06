@@ -1,0 +1,156 @@
+---
+import Icon from "./Icon.astro";
+import "../styles/detections.css";
+import { href, type Attack } from "../lib/catalog";
+import { attackFlow } from "../lib/attack-flow";
+import { stageGuidance, type QueryFormat } from "../lib/stage-guidance";
+
+const { attack, simulationStages = [] } = Astro.props as {
+  attack: Attack;
+  simulationStages?: string[];
+};
+const stages = attackFlow(attack).nodes
+  .map((node, index) => ({
+    node,
+    number: index + 1,
+    guidance: stageGuidance(attack, node),
+  }))
+  .filter(({ guidance }) => guidance.queries);
+const formats: { id: QueryFormat; label: string; extension: string }[] = [
+  { id: "sigma", label: "Sigma", extension: "sigma.yml" },
+  { id: "kql", label: "KQL", extension: "kql" },
+  { id: "spl", label: "SPL", extension: "spl" },
+];
+---
+
+{stages.length > 0 && <section class="detection-section entry-detections" id="detections" aria-labelledby="detection-heading">
+  <div class="detection-section-heading">
+    <div>
+      <span class="eyebrow">Investigate each phase</span>
+      <h3 id="detection-heading">Detection queries</h3>
+      <p>Draft query starters grouped by the attack stages where they apply.</p>
+    </div>
+    <a class="detection-download entry-download" href={href(`api/defenses/${attack.id}.json`)} download={`${attack.id}-detections.json`}>
+      <Icon name="download" size={14} /> Download stage pack
+    </a>
+  </div>
+  <p class="detection-intro">
+    Start with the logs you collect. Each hunt identifies its required visibility,
+    field mapping and limits. Queries are catalog-authored drafts using reusable
+    behavior profiles; test with known activity and your normal baseline before alerting.
+  </p>
+  <nav class="detection-stage-nav" aria-label="Detection stages">
+    {stages.map(({ node, number }) => (
+      <a href={`#detection-${node.id}`} title={node.title}>Stage {String(number).padStart(2, "0")}</a>
+    ))}
+  </nav>
+  {stages.map(({ node, number, guidance }, index) => (
+    <details class="detection-stage" id={`detection-${node.id}`} data-detection-stage={node.id} open={index === 0}>
+      <summary>
+        <span class="detection-stage-number">{String(number).padStart(2, "0")}</span>
+        <span class="detection-stage-title">
+          <strong>{node.title}</strong>
+          <span>{guidance.title}</span>
+        </span>
+        <span class="detection-status">
+          {guidance.query_kind === "custom_schema"
+            ? "Custom schema · Draft"
+            : "Native logs · Draft"}
+        </span>
+        <Icon name="down" size={15} />
+      </summary>
+      <div class="detection-stage-body">
+        <p class="detection-behavior">{node.description}</p>
+        <div class="detection-context">
+          <div>
+            <h3>What to look for</h3>
+            <p>{guidance.hypothesis}</p>
+            {guidance.note && <p class="detection-stage-note">{guidance.note}</p>}
+            <p class="detection-visibility"><strong>Visibility:</strong> {guidance.visibility}</p>
+          </div>
+          <div>
+            <h3>Required logs</h3>
+            {guidance.telemetry.length ? (
+              <ul>{guidance.telemetry.map((source) => <li>{source}</li>)}</ul>
+            ) : <p>No source-backed runtime log requirement is established for this stage.</p>}
+          </div>
+        </div>
+        <p class="detection-limit"><strong>Coverage limit.</strong> {guidance.limitation}</p>
+        <div class="detection-query-list">
+          <p class="detection-query-scope">{guidance.query_scope}</p>
+          {guidance.upstream_matches.length > 0 && (
+            <p class="detection-upstream-matches">
+              <strong>MCP reference matches:</strong>{" "}
+              {guidance.upstream_matches.map((match, index) => (
+                <>
+                  {index > 0 && ", "}
+                  <a href={match.url} target="_blank" rel="noopener noreferrer">
+                    {match.name} ({match.source})
+                  </a>
+                </>
+              ))}. The query below is a catalog adaptation, not a verbatim upstream rule.
+            </p>
+          )}
+          {formats.map((format) => (
+            <details class="detection-query-format" open={format.id === "kql"}>
+              <summary>{format.label}<Icon name="down" size={13} /></summary>
+              <div class="detection-copy-block">
+                <div class="detection-copy-actions">
+                  <span>Draft {format.label}</span>
+                  <button type="button" data-detection-copy>Copy {format.label}</button>
+                  <a href={guidance.query_downloads![format.id]} download={`${guidance.profile}.${format.extension}`}>Download {format.label}</a>
+                  <span role="status" data-detection-copy-status></span>
+                </div>
+                <pre tabindex="0" role="region" aria-label={`Stage ${number} ${format.label} query`}><code>{guidance.queries![format.id]}</code></pre>
+              </div>
+            </details>
+          ))}
+        </div>
+        <details class="detection-investigation">
+          <summary>Investigation steps<Icon name="down" size={13} /></summary>
+          <ol>{guidance.investigate.map((step) => <li>{step}</li>)}</ol>
+        </details>
+        <div class="detection-stage-footer">
+          <span>
+            Catalog-authored · Draft
+            {guidance.reviewed ? ` · Reviewed ${guidance.reviewed}` : ""}
+          </span>
+          <div>
+            <a href={`?stage=${encodeURIComponent(node.id)}&view=evidence#attack-flow`}>View attack stage {number}</a>
+            <a href={guidance.definition_url} target="_blank" rel="noopener noreferrer">Query definition</a>
+            {node.source_urls.map((url, index) => <a href={url} target="_blank" rel="noopener noreferrer">Evidence{node.source_urls.length > 1 ? ` ${index + 1}` : ""}</a>)}
+            {simulationStages.includes(node.id) && <a href="#simulation">Test this stage <Icon name="terminal" size={12} /></a>}
+          </div>
+        </div>
+      </div>
+    </details>
+  ))}
+</section>}
+
+<script>
+  const revealDetection = () => {
+    let id: string;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (target instanceof HTMLDetailsElement && target.matches(".detection-stage")) {
+      target.open = true;
+      requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+    }
+  };
+  revealDetection();
+  window.addEventListener("hashchange", revealDetection);
+  document.querySelectorAll<HTMLButtonElement>("[data-detection-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const block = button.closest(".detection-copy-block");
+      const text = block?.querySelector("code")?.textContent;
+      const status = block?.querySelector("[data-detection-copy-status]");
+      if (!text || !status) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        status.textContent = "Copied";
+      } catch {
+        status.textContent = "Select the text below to copy";
+      }
+    });
+  });
+</script>

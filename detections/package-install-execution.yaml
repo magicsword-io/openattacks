@@ -1,0 +1,91 @@
+id: package-install-execution
+title: Package installation spawns a shell or downloader
+hypothesis:
+  A package-manager install or lifecycle script launches a shell, downloader, or script interpreter
+  that retrieves or executes an unexpected second stage.
+telemetry:
+  - Process creation with ancestry and complete command lines
+  - Package-manager, CI, and installation logs
+  - Download, file creation, signature, and network telemetry
+investigate:
+  - Identify the package, version, publisher, lifecycle hook, resolved source, and parent process.
+  - Recover downloaded content and correlate credential access, persistence, or outbound traffic.
+limitation:
+  Build and install scripts commonly invoke shells and download dependencies. Require package
+  provenance and destination context; this hunt does not by itself prove supply-chain compromise.
+search:
+  - '"postinstall"'
+  - '"npm" AND "PowerShell"'
+  - '"package manager" AND "curl"'
+visibility: Endpoint process telemetry where collected
+reviewed: 2026-11-06
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Process candidates with package-manager ancestry that launch shells or downloaders. Tune known build
+  tooling and correlate with network/file telemetry.
+upstream_matches:
+  - name: Curl Download Activity from npm Package Install
+    id: 7a3c9e21-5d84-4b16-9f02-1e8c6a4d0b73
+    source: Elastic detection-rules
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml
+  - name: Suspicious PowerShell from npm Package Install
+    id: c4e8a1d7-2b6f-4e93-8a15-7d0c3f9b6e42
+    source: Elastic detection-rules
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/execution_suspicious_powershell_from_npm_install.toml
+queries:
+  sigma: |
+    title: Hunt - Shell or Downloader Spawned by Package Installation
+    id: c83f22aa-d07c-4f3c-a67f-6d5512818133
+    status: experimental
+    description: Detects package-manager processes spawning common shells, interpreters, or downloaders.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-06
+    references:
+      - https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml
+    falsepositives:
+      - Legitimate package build and installation scripts
+    level: medium
+    logsource:
+      category: process_creation
+    detection:
+      selection_parent:
+        ParentCommandLine|contains:
+          - npm-cli.js
+          - npx-cli.js
+          - yarn
+          - pnpm
+          - pip install
+          - python -m pip
+          - gem install
+      selection_child:
+        Image|endswith:
+          - \powershell.exe
+          - \pwsh.exe
+          - /sh
+          - /bash
+          - /zsh
+          - /curl
+          - /wget
+          - /python
+          - /node
+      condition: all of selection_*
+  kql: |-
+    DeviceProcessEvents
+    | where Timestamp > ago(7d)
+    | where InitiatingProcessCommandLine has_any ("npm-cli.js", "npx-cli.js", "yarn", "pnpm",
+        "pip install", "python -m pip", "gem install")
+    | where FileName in~ ("powershell.exe", "pwsh.exe", "sh", "bash", "zsh", "curl", "wget", "python", "node")
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+        InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+    | order by Timestamp desc
+  spl: |-
+    | tstats count min(_time) as firstTime max(_time) as lastTime
+      from datamodel=Endpoint.Processes
+      where Processes.parent_process IN ("*npm-cli.js*", "*npx-cli.js*", "*yarn*", "*pnpm*",
+        "*pip install*", "*python -m pip*", "*gem install*")
+      Processes.process_name IN ("powershell.exe", "pwsh.exe", "sh", "bash", "zsh", "curl", "wget", "python", "node")
+      by Processes.dest Processes.user Processes.process_name Processes.process
+         Processes.parent_process_name Processes.parent_process
+    | `drop_dm_object_name(Processes)`
+    | sort - lastTime

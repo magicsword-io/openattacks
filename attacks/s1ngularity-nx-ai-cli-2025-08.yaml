@@ -5,20 +5,22 @@ researcher: Wiz; Nx; Snyk; JFrog
 org: Wiz / Nx
 sources:
   - url: https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+    title: "Wiz: s1ngularity Supply Chain Attack"
   - url: https://www.wiz.io/blog/s1ngularitys-aftermath
+    title: "Wiz: s1ngularity's Aftermath"
   - url: https://nx.dev/blog/s1ngularity-postmortem
+    title: "Nx: s1ngularity Postmortem"
   - url: https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/
+    title: "Snyk: Weaponizing AI Coding Agents for Malware in Nx"
+  - url: https://www.mandiant.com/resources/blog/hijacked-coding-assistant-shai-hulud
+    title: "Mandiant: Hijacked Coding-Assistant Session Spreads Shai-Hulud"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Attackers stole Nx npm publish token via GitHub Actions injection and published
-  malicious Nx packages. Postinstall harvested env/GitHub/npm/SSH/crypto wallet data and invoked
-  local Claude, Gemini, and Amazon Q CLIs with dangerous flags to inventory sensitive files, then
-  pushed loot to public GitHub repos named s1ngularity-repository*. Phase 2 used stolen tokens to
-  make 5500+ private repos public.
+technique_summary: "Attackers stole an Nx npm publish token via GitHub Actions injection and published malicious Nx packages. Postinstall harvested environment, GitHub, npm, SSH, and wallet data and invoked local Claude, Gemini, and Amazon Q CLIs with dangerous flags to inventory sensitive files, then pushed loot to public GitHub repos named s1ngularity-repository*. Phase 2 used stolen tokens to make 5,500+ private repos public. Later Mandiant reporting described a hijacked coding-assistant session spreading Shai-Hulud through malicious package recommendations."
 initial_access: Malicious npm postinstall on nx/@nx packages (versions around 20.9–21.8)
 ai_tooling_and_models:
   - claude CLI
@@ -29,14 +31,16 @@ other_tooling:
   - GitHub CLI
   - npm postinstall
   - GitHub Actions webhook token theft
-victims_and_sectors: Nx ecosystem developers (~4M weekly downloads cited); 400+ users/orgs in phase 2
+victims_and_sectors: Nx ecosystem developers (~4M weekly downloads cited); 400+
+  users/orgs in phase 2
 regions:
   - unknown
 attribution_or_cluster: s1ngularity / UNC6426 (industry)
-scale_and_metrics: "Malicious packages live ~4–5 hours; phase 2 >5500 private repos exposed; Wiz: AI
-  path succeeded in <25% of cases; <100 unique valid secrets across 20k files"
-prevention_angle: Pin npm provenance; gate AI CLIs; app control on unexpected gh/cli from node
-  postinstall; rotate tokens
+scale_and_metrics: "Malicious packages live ~4–5 hours; phase 2 >5500 private
+  repos exposed; Wiz: AI path succeeded in <25% of cases; <100 unique valid
+  secrets across 20k files"
+prevention_angle: Pin npm provenance; gate AI CLIs; app control on unexpected
+  gh/cli from node postinstall; rotate tokens
 related_magicsword_projects:
   - LOLSkills
   - LOLBAS
@@ -65,8 +69,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Loot and private repositories become public
-      description: Collected data is pushed to public repositories; later token abuse exposes additional
-        private repositories.
+      description: Collected data is pushed to public repositories; later token abuse
+        exposes additional private repositories.
       kind: impact
       source_urls: *a1
   edges:
@@ -78,5 +82,15 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0055
-    rationale: Postinstall malware harvests tokens and uses AI CLIs to locate sensitive files.
+    rationale: Postinstall malware harvests tokens and uses AI CLIs to locate
+      sensitive files.
     source_urls: *a1
+category: adversary-use-of-ai
+attribution:
+  actor_name: s1ngularity
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in s1ngularity Nx npm supply chain
+      abusing AI CLIs. Refer to sources for specific IOCs and TTPs.

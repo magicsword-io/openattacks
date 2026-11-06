@@ -11,9 +11,9 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: AITOPIA-impersonating Chrome extensions stole ChatGPT and DeepSeek conversation
-  content plus browsing URLs. Reported impact over 900,000 users for related malicious AI-themed
-  extensions in the campaign cluster.
+technique_summary: AITOPIA-impersonating Chrome extensions stole ChatGPT and
+  DeepSeek conversation content plus browsing URLs. Reported impact over 900,000
+  users for related malicious AI-themed extensions in the campaign cluster.
 initial_access: Victims install malicious Chrome Web Store extensions
 ai_tooling_and_models:
   - Fake AI productivity Chrome extensions
@@ -61,3 +61,10 @@ atlas_techniques:
   - id: AML.T0085
     rationale: Malicious extensions collect conversation content from AI services.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Malicious Chrome extensions steal
+      ChatGPT and DeepSeek chats. Refer to sources for specific IOCs and TTPs.

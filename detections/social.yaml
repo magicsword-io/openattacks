@@ -1,0 +1,75 @@
+id: social
+title: Coordinated messaging / propagation
+visibility: Platform / application records
+hypothesis:
+  Related accounts or assistants repeat correlated posting, forwarding or tool actions
+  beyond the expected user workflow.
+telemetry:
+  - Platform account and posting audit
+  - Agent session and message-provenance records
+  - Rate, recipient and content-similarity features
+investigate:
+  - Group actions by linked account, session, recipient and time rather than judging writing style.
+  - Compare propagation with legitimate campaigns and preserve whether the source describes a lab
+    demonstration or observed abuse.
+limitation:
+  Requires platform-side visibility. Similar content and synchronized activity can have
+  legitimate explanations.
+search:
+  - '"coordinated" AND "accounts"'
+  - '"email" AND "propagation"'
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Coordinated messaging / propagation
+    id: c4001568-b68b-4887-a86f-6f05807640f6
+    status: experimental
+    description: Related accounts or assistants repeat correlated posting,
+      forwarding or tool actions beyond the expected user workflow.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - social.post
+          - message.forward
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("social.post", "message.forward")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("social.post", "message.forward")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

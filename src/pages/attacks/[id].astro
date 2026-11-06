@@ -1,10 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import SimulationPreview from "../../components/SimulationPreview.astro";
+import AttackRelevance from "../../components/AttackRelevance.astro";
+import AttackActions from "../../components/AttackActions.astro";
+import { attackFlow } from "../../lib/attack-flow";
+import { stageGuidance } from "../../lib/stage-guidance";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
+import ToolingList from "../../components/ToolingList.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
 import atlas from "../../data/atlas-techniques.json";
+import { getCollection } from "astro:content";
 import {
   getAttacks,
   href,
@@ -26,8 +31,27 @@ export async function getStaticPaths() {
   }));
 }
 const { attack } = Astro.props as { attack: Attack };
+const linkedActors = attack.linked_actors
+  ? await Promise.all(
+      attack.linked_actors.map(async (id) => {
+        const allActors = await getCollection("actors");
+        return allActors.find((a) => a.id === id);
+      }),
+    ).then((actors) => actors.filter(Boolean))
+  : [];
+const linkedTools = attack.linked_tools
+  ? await Promise.all(
+      attack.linked_tools.map(async (id) => {
+        const allTools = await getCollection("tools");
+        return allTools.find((t) => t.id === id);
+      }),
+    ).then((tools) => tools.filter(Boolean))
+  : [];
 const display = present(attack);
 const simulations = simulationsFor(attack.id);
+const hasDetections = attackFlow(attack).nodes.some(
+  (node) => stageGuidance(attack, node).queries,
+);
 const techniques = atlas.techniques as Record<
   string,
   { name: string; url: string }
@@ -54,6 +78,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     </nav>
     <header class="entry-heading">
       <div class="entry-evidence">
+        {hasDetections && (
+          <a class="detection-available" href="#detections">
+            <Icon name="search" size={13} /> Detection queries{" "}
+            <Icon name="down" size={11} />
+          </a>
+        )}
         {simulations.length > 0 && (
           <a class="simulation-available" href="#simulation">
             <Icon name="terminal" size={13} /> Simulation available{" "}
@@ -83,7 +113,13 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           </time>
           {attack.date_reported.length === 7 && " (month only)"}
         </span>
-        <a href="#sources">Source: {attack.org}</a>
+        <a
+          href={attack.sources[0].url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Source: {attack.org}
+        </a>
       </div>
       {attack.borderline_note && (
         <aside class="entry-qualification">
@@ -92,13 +128,31 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
         </aside>
       )}
     </header>
+    <nav class="entry-section-nav" aria-label="On this page">
+      <a href="#what-happened">What happened</a>
+      <a href="#attack-flow">How it happened</a>
+      <a href="#why-it-matters">Why it matters</a>
+      <a href="#what-you-can-do">What you can do</a>
+    </nav>
     <section class="entry-story" aria-labelledby="what-happened">
       <h2 id="what-happened">What happened</h2>
       <p>{attack.technique_summary}</p>
       {attack.ai_role_detail && <p>{attack.ai_role_detail}</p>}
-      <a class="text-link" href="#sources">
-        Read the original sources
-      </a>
+      <div class="entry-original-sources">
+        {attack.sources.map((source, index) => (
+          <a
+            class="text-link"
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {index === 0
+              ? "Read the original source"
+              : `Additional source: ${source.title || source.publisher || new URL(source.url).hostname.replace(/^www\./, "")}`}
+            <Icon name="arrow" size={13} />
+          </a>
+        ))}
+      </div>
     </section>
     <AttackFlowSection
       attack={attack}
@@ -113,7 +167,8 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
           : undefined
       }
     />
-    {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
+    <AttackRelevance attack={attack} />
+    <AttackActions attack={attack} />
     <div class="entry-supporting">
       <details class="technical-details" id="technical-details">
         <summary>
@@ -151,21 +206,13 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               {attack.ai_tooling_and_models.length > 0 && (
                 <>
                   <h3>AI products, models and artifacts</h3>
-                  <ul class="technical-tool-list">
-                    {attack.ai_tooling_and_models.map((tool) => (
-                      <li>{tool}</li>
-                    ))}
-                  </ul>
+                  <ToolingList tools={attack.ai_tooling_and_models} />
                 </>
               )}
               {attack.other_tooling.length > 0 && (
                 <>
                   <h3>Other tooling</h3>
-                  <ul class="technical-tool-list">
-                    {attack.other_tooling.map((tool) => (
-                      <li>{tool}</li>
-                    ))}
-                  </ul>
+                  <ToolingList tools={attack.other_tooling} />
                 </>
               )}
             </section>
@@ -205,6 +252,129 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             <section>
               <h2>Reported attribution</h2>
               <p>{attack.attribution_or_cluster}</p>
+            </section>
+          )}
+          {attack.attribution && (
+            <section id="structured-attribution">
+              <h2>Structured attribution</h2>
+              <dl class="technical-facts">
+                {attack.attribution.actor_name && (
+                  <>
+                    <dt>Actor</dt>
+                    <dd>
+                      {attack.attribution.actor_name}
+                      {attack.attribution.actor_id && ` (${attack.attribution.actor_id})`}
+                    </dd>
+                  </>
+                )}
+                {attack.attribution.aliases && attack.attribution.aliases.length > 0 && (
+                  <>
+                    <dt>Aliases</dt>
+                    <dd>{attack.attribution.aliases.join(" · ")}</dd>
+                  </>
+                )}
+                {attack.attribution.country && (
+                  <>
+                    <dt>Country</dt>
+                    <dd>{attack.attribution.country}</dd>
+                  </>
+                )}
+                {attack.attribution.motivation && (
+                  <>
+                    <dt>Motivation</dt>
+                    <dd>{attack.attribution.motivation}</dd>
+                  </>
+                )}
+                {attack.attribution.attributed_by && (
+                  <>
+                    <dt>Attributed by</dt>
+                    <dd>{attack.attribution.attributed_by}</dd>
+                  </>
+                )}
+                {attack.attribution.confidence && (
+                  <>
+                    <dt>Attribution confidence</dt>
+                    <dd>{attack.attribution.confidence}</dd>
+                  </>
+                )}
+              </dl>
+            </section>
+          )}
+          {attack.detections && attack.detections.length > 0 && (
+            <section id="detection-rules">
+              <h2>Detection rules</h2>
+              <ul class="detection-list">
+                {attack.detections.map((detection) => (
+                  <li>
+                    <strong>{detection.name}</strong>
+                    <span class="detection-format">{detection.format.toUpperCase()}</span>
+                    {detection.url && (
+                      <a href={detection.url} target="_blank" rel="noopener noreferrer">
+                        View rule
+                      </a>
+                    )}
+                    {detection.notes && <p class="detection-notes">{detection.notes}</p>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {attack.timeline && (
+            <section id="timeline">
+              <h2>Activity timeline</h2>
+              <dl class="technical-facts">
+                {attack.timeline.first_seen && (
+                  <>
+                    <dt>First seen</dt>
+                    <dd>{attack.timeline.first_seen}</dd>
+                  </>
+                )}
+                {attack.timeline.last_updated && (
+                  <>
+                    <dt>Last updated</dt>
+                    <dd>{attack.timeline.last_updated}</dd>
+                  </>
+                )}
+              </dl>
+              {attack.timeline.updates && attack.timeline.updates.length > 0 && (
+                <>
+                  <h3>Updates</h3>
+                  <ul class="timeline-updates">
+                    {attack.timeline.updates.map((update) => (
+                      <li>
+                        <strong>{update.date}</strong> — {update.source}
+                        {update.summary && <p>{update.summary}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </section>
+          )}
+          {linkedActors.length > 0 && (
+            <section id="linked-actors">
+              <h2>Linked threat actors</h2>
+              <ul class="linked-list">
+                {linkedActors.map((actor) => actor && (
+                  <li>
+                    <a href={href(`actors/${actor.id}/`)}>{actor.data.name}</a>
+                    {actor.data.country && ` — ${actor.data.country}`}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {linkedTools.length > 0 && (
+            <section id="linked-tools">
+              <h2>Linked tools</h2>
+              <ul class="linked-list">
+                {linkedTools.map((tool) => tool && (
+                  <li>
+                    <a href={href(`tools/${tool.id}/`)}>{tool.data.name}</a>
+                    {` — ${tool.data.type}`}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
           {meaningful(attack.prevention_angle) && (
@@ -333,6 +503,18 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
               <dd>{attack.confidence}</dd>
             </>
           )}
+          {attack.category && (
+            <>
+              <dt>Category</dt>
+              <dd>{attack.category}</dd>
+            </>
+          )}
+          {attack.ai_involvement_confidence && (
+            <>
+              <dt>AI involvement confidence</dt>
+              <dd>{attack.ai_involvement_confidence}</dd>
+            </>
+          )}
           {!!attack.aliases?.length && (
             <>
               <dt>Aliases</dt>
@@ -365,7 +547,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
 </Layout>
 
 <script>
-  // Preserve deep links to technical sections without expanding the whole record by default.
+  // Reveal linked detection or technical details while keeping other sections collapsed.
   function revealLinkedSection() {
     let id: string;
     try {
@@ -375,6 +557,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
     }
     if (!id) return;
     const target = document.getElementById(id);
+    if (target instanceof HTMLDetailsElement) target.open = true;
     let ancestor = target?.parentElement;
     while (ancestor) {
       if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
@@ -384,4 +567,12 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
   }
   revealLinkedSection();
   window.addEventListener("hashchange", revealLinkedSection);
+  document.addEventListener("click", (event) => {
+    const link =
+      event.target instanceof Element
+        ? event.target.closest<HTMLAnchorElement>('a[href^="#"]')
+        : null;
+    // Selecting the same fragment again does not emit a hashchange event.
+    if (link?.hash && link.hash === location.hash) revealLinkedSection();
+  });
 </script>

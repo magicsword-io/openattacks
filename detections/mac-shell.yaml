@@ -1,0 +1,74 @@
+id: mac-shell
+title: macOS download → shell execution
+hypothesis:
+  A shell command references remote content or decoding steps, followed by an unexpected
+  download or launched program.
+telemetry:
+  - macOS process events (EDR / Endpoint Security)
+  - Browser download and proxy records
+  - LaunchAgent / LaunchDaemon changes
+investigate:
+  - Inspect the copied command as evidence, including decoding and pipe-to-shell stages.
+  - Join shell children, downloaded artifacts and persistence to the originating user session.
+limitation:
+  Developer install scripts commonly match. Windows application-control coverage is not
+  claimed for this macOS branch.
+search:
+  - '"macos" AND "curl"'
+  - '"zsh" AND "base64"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: native
+query_scope:
+  macos process candidates. Sigma needs normalized process events; KQL needs Defender
+  coverage for that OS; SPL uses a custom openattacks:process sourcetype with Sysmon-style Image /
+  ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.
+queries:
+  sigma: |
+    title: Hunt - macOS download → shell execution
+    id: 66552a7a-b48c-416c-a6a0-d2d3b66a8918
+    status: experimental
+    description: A shell command references remote content or decoding steps,
+      followed by an unexpected download or launched program.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: process_creation
+      product: macos
+    detection:
+      selection:
+        Image|endswith:
+          - /zsh
+          - /bash
+          - /sh
+          - /curl
+        CommandLine|contains:
+          - http
+          - base64
+      condition: selection
+  kql: >-
+    // Draft hunt; requires Defender for Endpoint process telemetry for this OS.
+
+    DeviceProcessEvents
+
+    | where Timestamp > ago(7d)
+
+    | where FileName in~ ("zsh", "bash", "sh", "curl")
+
+    | where ProcessCommandLine contains "http" or ProcessCommandLine contains "base64"
+
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+
+    | order by Timestamp desc
+  spl: |-
+    sourcetype="openattacks:process"
+    Image IN ("*/zsh", "*/bash", "*/sh", "*/curl")
+    CommandLine IN ("*http*", "*base64*")
+    | table _time host User Image CommandLine ParentImage ParentCommandLine
+    | sort - _time

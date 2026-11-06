@@ -27,6 +27,14 @@ scale_and_metrics: unknown
 prevention_angle: Standard APT41 detections; AI assistance does not change post-exploitation signals
 related_magicsword_projects: []
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  actor_name: APT41
+  country: China
+  motivation: nation-state
+  attributed_by: Google GTIG
+  confidence: high
+ai_involvement_confidence: confirmed
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:
@@ -58,8 +66,12 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+linked_actors:
+  - apt41
+linked_tools: []
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

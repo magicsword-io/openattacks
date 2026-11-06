@@ -2,9 +2,16 @@ import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { entryLinks, sourceUrlError } from "./source-urls.mjs";
 
 export const schema = parse(
   readFileSync(new URL("../../schema.yaml", import.meta.url), "utf8"),
+);
+export const actorSchema = parse(
+  readFileSync(new URL("../../actor-schema.yaml", import.meta.url), "utf8"),
+);
+export const toolSchema = parse(
+  readFileSync(new URL("../../tool-schema.yaml", import.meta.url), "utf8"),
 );
 const ajv = new Ajv2020({ allErrors: true, strict: true });
 addFormats(ajv);
@@ -21,6 +28,8 @@ ajv.addFormat("report-date", {
   },
 });
 export const validateEntry = ajv.compile(schema);
+export const validateActor = ajv.compile(actorSchema);
+export const validateTool = ajv.compile(toolSchema);
 export function entryErrors(data, filename) {
   const errors = [];
   if (!validateEntry(data)) {
@@ -34,6 +43,12 @@ export function entryErrors(data, filename) {
   }
   if (data?.id && filename !== `${data.id}.yaml`)
     errors.push(`${filename}: id must match the filename (${data.id}.yaml)`);
+  for (const { field, url } of entryLinks(data)) {
+    const issue = sourceUrlError(url);
+    if (issue) errors.push(`${filename}${field}: ${issue}`);
+  }
+  if (new Set(data.sources.map(({ url }) => url)).size !== data.sources.length)
+    errors.push(`${filename}/sources: source URLs must be unique`);
   if (data?.attack_flow?.nodes && data?.attack_flow?.edges) {
     const ids = data.attack_flow.nodes.map((node) => node.id);
     if (new Set(ids).size !== ids.length)
@@ -77,5 +92,37 @@ export function entryErrors(data, filename) {
     data.date_activity_start > data.date_activity_end
   )
     errors.push(`${filename}: activity start must precede activity end`);
+  return errors;
+}
+
+export function actorErrors(data, filename) {
+  const errors = [];
+  if (!validateActor(data)) {
+    errors.push(
+      ...validateActor.errors.map(
+        (error) =>
+          `${filename}${error.instancePath || "/"}: ${error.message}${error.params.additionalProperty ? ` (${error.params.additionalProperty})` : ""}`,
+      ),
+    );
+    return errors;
+  }
+  if (data?.id && filename !== `${data.id}.yaml`)
+    errors.push(`${filename}: id must match the filename (${data.id}.yaml)`);
+  return errors;
+}
+
+export function toolErrors(data, filename) {
+  const errors = [];
+  if (!validateTool(data)) {
+    errors.push(
+      ...validateTool.errors.map(
+        (error) =>
+          `${filename}${error.instancePath || "/"}: ${error.message}${error.params.additionalProperty ? ` (${error.params.additionalProperty})` : ""}`,
+      ),
+    );
+    return errors;
+  }
+  if (data?.id && filename !== `${data.id}.yaml`)
+    errors.push(`${filename}: id must match the filename (${data.id}.yaml)`);
   return errors;
 }

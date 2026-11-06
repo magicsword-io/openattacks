@@ -1,0 +1,88 @@
+id: windows-shell
+title: Suspicious Windows script execution
+hypothesis:
+  A script host or shell runs encoded content, a remote URL, or inline script syntax, then
+  downloads or launches a payload.
+telemetry:
+  - 'Windows process creation: Sysmon Event 1 or Defender DeviceProcessEvents'
+  - PowerShell script-block logging when enabled
+  - Download / network and installer events
+investigate:
+  - Follow the parent and child process tree and recover the script or URL from logs without
+    executing it.
+  - Correlate the payload's signer/hash, persistence, and network activity; baseline approved
+    automation.
+limitation:
+  Encoded commands and remote administration can be legitimate. This does not cover every
+  script host, in-process execution, or non-Windows branch.
+search:
+  - '"mshta"'
+  - '"wscript" AND "powershell"'
+  - '"EncodedCommand"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Windows process candidates. Sigma uses normalized process_creation fields; KQL requires
+  Defender for Endpoint; SPL requires the Sysmon XML sourcetype. Tune collectors, fields and
+  baselines before use.
+queries:
+  sigma: |
+    title: Hunt - Suspicious Windows script execution
+    id: 2bb88802-9f03-4d99-a192-fe44c9484e8b
+    status: experimental
+    description: A script host or shell runs encoded content, a remote URL, or
+      inline script syntax, then downloads or launches a payload.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: process_creation
+      product: windows
+    detection:
+      selection:
+        Image|endswith:
+          - \powershell.exe
+          - \pwsh.exe
+          - \mshta.exe
+          - \wscript.exe
+          - \cscript.exe
+        CommandLine|contains:
+          - -enc
+          - http
+          - FromBase64String
+          - "javascript:"
+          - "vbscript:"
+      condition: selection
+  kql: >-
+    // Draft hunt; requires Defender for Endpoint process telemetry for this OS.
+
+    DeviceProcessEvents
+
+    | where Timestamp > ago(7d)
+
+    | where FileName in~ ("powershell.exe", "pwsh.exe", "mshta.exe", "wscript.exe", "cscript.exe")
+
+    | where ProcessCommandLine contains "-enc" or ProcessCommandLine contains "http" or
+    ProcessCommandLine contains "FromBase64String" or ProcessCommandLine contains "javascript:" or
+    ProcessCommandLine contains "vbscript:"
+
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+
+    | order by Timestamp desc
+  spl: >-
+    sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
+
+    Image IN ("*\\powershell.exe", "*\\pwsh.exe", "*\\mshta.exe", "*\\wscript.exe",
+    "*\\cscript.exe")
+
+    CommandLine IN ("*-enc*", "*http*", "*FromBase64String*", "*javascript:*", "*vbscript:*")
+
+    | table _time host User Image CommandLine ParentImage ParentCommandLine
+
+    | sort - _time

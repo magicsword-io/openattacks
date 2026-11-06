@@ -1,0 +1,81 @@
+id: linux-webshell
+title: Linux web worker → shell / interpreter
+hypothesis:
+  A PHP or web-server worker launches a shell, interpreter, or reconnaissance utility
+  outside its normal baseline.
+telemetry:
+  - Linux process creation (EDR / auditd normalized to process fields)
+  - PHP / web access logs
+  - File changes to web roots and PHP configuration
+investigate:
+  - Trace the worker's children and correlate them with inbound requests.
+  - Review auto_prepend_file, .bashrc changes, /dev/shm execution, and outbound tunnels where the
+    report describes them.
+limitation:
+  Legitimate CGI, maintenance, and deployment scripts can match. The query is a
+  process-tree starter, not a complete web-shell detector.
+search:
+  - '"linux" AND "web shell"'
+  - '"auto_prepend_file"'
+  - '"php" AND "shell"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: native
+query_scope:
+  linux process candidates. Sigma needs normalized process events; KQL needs Defender
+  coverage for that OS; SPL uses a custom openattacks:process sourcetype with Sysmon-style Image /
+  ParentImage / CommandLine fields. Map raw auditd or Endpoint Security data first.
+queries:
+  sigma: |
+    title: Hunt - Linux web worker → shell / interpreter
+    id: 068e005a-876e-4ba3-a414-791f9a1c2330
+    status: experimental
+    description: A PHP or web-server worker launches a shell, interpreter, or
+      reconnaissance utility outside its normal baseline.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: process_creation
+      product: linux
+    detection:
+      selection:
+        Image|endswith:
+          - /sh
+          - /bash
+          - /python
+          - /python3
+          - /curl
+          - /wget
+        ParentImage|endswith:
+          - /php-fpm
+          - /php-fpm8.2
+          - /apache2
+          - /httpd
+          - /nginx
+      condition: selection
+  kql: >-
+    // Draft hunt; requires Defender for Endpoint process telemetry for this OS.
+
+    DeviceProcessEvents
+
+    | where Timestamp > ago(7d)
+
+    | where FileName in~ ("sh", "bash", "python", "python3", "curl", "wget")
+
+    | where InitiatingProcessFileName in~ ("php-fpm", "php-fpm8.2", "apache2", "httpd", "nginx")
+
+    | project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine,
+    InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+
+    | order by Timestamp desc
+  spl: |-
+    sourcetype="openattacks:process"
+    Image IN ("*/sh", "*/bash", "*/python", "*/python3", "*/curl", "*/wget")
+    ParentImage IN ("*/php-fpm", "*/php-fpm8.2", "*/apache2", "*/httpd", "*/nginx")
+    | table _time host User Image CommandLine ParentImage ParentCommandLine
+    | sort - _time

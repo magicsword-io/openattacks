@@ -1,0 +1,177 @@
+id: badbyte-artex-backdoor-docker-2026-11
+name: BadByte - Backdoored ARTEX Docker images tomicdd/artex & congdonglinux/artex
+date_reported: 2026-11-04
+researcher: Dan Tentler (Viss), analyzed by BadByte
+org: BadByte
+sources:
+  - url: https://badbyte.io/artex-backdoor-docker-image/
+    title: Backdoored Docker Image for ARTEX AI Offensive Agent
+    publisher: BadByte
+  - url: https://thehackernews.com/2026/11/backdoored-docker-image-for-artex-ai.html
+    title: Backdoored Docker Image for ARTEX AI Offensive Agent Exposes Operators' Secrets
+    publisher: The Hacker News
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: Supply-chain backdoor injected into prebuilt Docker image of ARTEX
+  autonomous offensive AI agent platform; operators deploying backdoored image expose
+  their LLM API keys, MCP configurations, prompts, and harvested target credentials
+technique_summary: "After Autumn-27 closed ARTEX source on Oct 8, 2026, unknown operator
+  controlling Docker Hub accounts tomicdd and congdonglinux (mirror) pushed backdoored
+  ARTEX images while maintaining deleted GitHub bait repository trhhubsd/ARTEX (formerly
+  ptasm) with swapped docker-compose.yml pulling backdoored tomicdd/artex. Prebuilt
+  /app/artex binary adds verifyCaptcha function: unauthenticated POST to /api/auth/login
+  with marked captcha field executes arbitrary sh -c commands as root before password
+  verification, bypassing authentication entirely. Backdoor exposes ARTEX operator's
+  LLM API keys (OpenAI, Anthropic, DeepSeek), MCP server configurations, autonomous
+  agent prompts, and credentials harvested from targets during offensive operations.
+  BadByte analysis (Nov 4, 2026) confirmed /app/artex SHA-256 d5070f52262effe216b840711343bff8f2787f39208d887d8dfd9c673f8d1573,
+  image index digest sha256:ce85d8369ccc1a85423f1f75d2f3afaa2fab759e580da37a6891af2f7392745e,
+  UI build ID 3aC1db3gGU08O4UHbAt4J. Docker Hub removed tomicdd/artex on Nov 5, 2026.
+  Backdoor demonstrates supply-chain risk in offensive AI agent tooling where operators'
+  own credentials become attack surface."
+initial_access: ARTEX operators pull backdoored tomicdd/artex or congdonglinux/artex
+  Docker image via compromised docker-compose.yml in deleted trhhubsd/ARTEX repository
+ai_tooling_and_models:
+  - ARTEX autonomous offensive agent (clean source at https://github.com/RuoJi6/ARTEX)
+  - Backdoored ARTEX Docker image (tomicdd/artex, congdonglinux/artex - now removed
+    from Docker Hub)
+other_tooling:
+  - Docker / Docker Compose
+  - Unauthenticated /api/auth/login backdoor endpoint
+victims_and_sectors: "ARTEX operators conducting offensive security operations; exposed:
+  operator LLM API keys, MCP configurations, autonomous agent prompts, harvested target
+  credentials"
+regions:
+  - Multiple regions
+attribution_or_cluster: Unknown operator controlling Docker Hub tomicdd (primary)
+  and congdonglinux (mirror) accounts; deleted GitHub repository trhhubsd/ARTEX (formerly
+  ptasm); initially surfaced by Dan Tentler (Viss) on Nov 2, 2026; analyzed by BadByte
+scale_and_metrics: tomicdd/artex available on Docker Hub Oct 8 - Nov 5, 2026; unknown
+  number of pulls before takedown; backdoor active approximately 4 weeks
+prevention_angle: Verify Docker image integrity via official repository sources and
+  signed images; audit docker-compose.yml for unexpected image sources; use Docker
+  Content Trust / Notary v2 for image verification; scan container images for suspicious
+  network listeners and authentication bypasses; monitor container logs for unauthenticated
+  command execution attempts; never deploy offensive tooling images from unverified
+  third-party Docker Hub accounts; build ARTEX from official source (github.com/RuoJi6/ARTEX)
+  rather than pulling prebuilt images; implement network segmentation for offensive
+  security infrastructure
+related_magicsword_projects: []
+source_notes: "BadByte analysis (Nov 4, 2026, updated Nov 5 on Docker Hub takedown)
+  primary source; Dan Tentler (Viss) initial disclosure Nov 2, 2026; all hashes and
+  IOCs verified from BadByte post: /app/artex SHA-256 d5070f52262effe216b840711343bff8f2787f39208d887d8dfd9c673f8d1573,
+  image index digest sha256:ce85d8369ccc1a85423f1f75d2f3afaa2fab759e580da37a6891af2f7392745e,
+  UI build ID 3aC1db3gGU08O4UHbAt4J"
+last_reviewed: 2026-11-06
+iocs:
+  domains: []
+  ips: []
+  hashes:
+    - d5070f52262effe216b840711343bff8f2787f39208d887d8dfd9c673f8d1573
+  urls:
+    - https://hub.docker.com/r/tomicdd/artex (removed Nov 5, 2026)
+    - https://hub.docker.com/r/congdonglinux/artex (mirror, removed)
+atlas_techniques:
+  - id: AML.T0000
+    rationale: Supply-chain attack targeting AI offensive agent infrastructure; backdoor
+      in ARTEX Docker image allows attacker to compromise operators' LLM API keys and
+      MCP configurations
+    source_urls:
+      - https://badbyte.io/artex-backdoor-docker-image/
+attack_flow:
+  nodes:
+    - id: close-source
+      kind: execution
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: ARTEX source closed Oct 8, 2026
+      description: ARTEX source closed Oct 8, 2026
+    - id: push-backdoor
+      kind: execution
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: Push backdoored tomicdd/artex to Docker Hub
+      description: Push backdoored tomicdd/artex to Docker Hub
+    - id: swap-compose
+      kind: execution
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: trhhubsd/ARTEX swaps docker-compose.yml to pull tomicdd/artex
+      description: trhhubsd/ARTEX swaps docker-compose.yml to pull tomicdd/artex
+    - id: operator-pull
+      kind: execution
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: ARTEX operators pull backdoored image
+      description: ARTEX operators pull backdoored image
+    - id: backdoor-access
+      kind: execution
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: Unauthenticated POST /api/auth/login executes sh -c as root
+      description: Unauthenticated POST /api/auth/login executes sh -c as root
+    - id: credential-theft
+      kind: impact
+      source_urls:
+        - https://badbyte.io/artex-backdoor-docker-image/
+      title: Steal LLM API keys, MCP configs, prompts, target credentials
+      description: Steal LLM API keys, MCP configs, prompts, target credentials
+  edges:
+    - source: close-source
+      target: push-backdoor
+    - source: push-backdoor
+      target: swap-compose
+    - source: swap-compose
+      target: operator-pull
+    - source: operator-pull
+      target: backdoor-access
+    - source: backdoor-access
+      target: credential-theft
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown (tomicdd/congdonglinux Docker Hub operator)
+  country: Unknown
+  motivation: cybercrime
+  attributed_by: BadByte
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Antivirus - Web Shell Detection Signature
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/category/antivirus/av_webshell.yml
+    notes: General web shell detection; backdoored ARTEX /api/auth/login endpoint exhibits
+      web shell characteristics (unauthenticated command execution)
+  - name: Container command execution monitoring
+    format: guidance
+    notes: Monitor Docker containers for unauthenticated API endpoints executing shell
+      commands; alert on /api/auth/login POST requests with captcha fields invoking
+      sh -c; audit docker-compose.yml for non-official ARTEX image sources (tomicdd/artex,
+      congdonglinux/artex); verify ARTEX image digest against official builds; scan
+      container filesystem for modified /app/artex binary (SHA-256 d5070f52262effe216b840711343bff8f2787f39208d887d8dfd9c673f8d1573);
+      detect suspicious outbound connections from ARTEX containers to non-target infrastructure
+  - name: Docker image integrity validation
+    format: guidance
+    notes: Implement Docker Content Trust; verify image signatures before deployment;
+      scan images with Trivy/Clair for malicious binaries; audit container network listeners
+      for unexpected authentication bypasses; build offensive tooling from verified
+      source repositories rather than pulling prebuilt images
+timeline:
+  first_seen: "2026-10-08"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-10-08"
+      source: Unknown
+      summary: Autumn-27 closes ARTEX source; tomicdd/artex backdoored image appears
+        on Docker Hub
+    - date: "2026-11-02"
+      source: Dan Tentler (Viss)
+      summary: Dan Tentler (Viss) publicly surfaces backdoored ARTEX Docker image
+    - date: "2026-11-04"
+      source: BadByte
+      summary: BadByte publishes detailed analysis with hashes and backdoor mechanism
+    - date: "2026-11-05"
+      source: Docker Hub
+      summary: Docker Hub removes tomicdd/artex and congdonglinux/artex images

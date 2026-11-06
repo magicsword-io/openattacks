@@ -1,0 +1,98 @@
+id: sapphire-sleet-mastra-npm-2026-06
+name: Sapphire Sleet (DPRK) backdoors 140+ Mastra AI framework npm packages
+date_reported: 2026-06-17
+researcher: Microsoft Threat Intelligence
+org: Microsoft
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+    title: "Microsoft: North Korea's Sapphire Sleet targets AI developers with Mastra supply chain attack"
+  - url: https://github.com/mastra-ai/mastra
+    title: "Mastra - AI Framework for TypeScript"
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: ai_tool_as_lure
+ai_role_detail: "DPRK Sapphire Sleet backdoored 140+ Mastra AI framework npm packages via malicious postinstall scripts to steal credentials from AI developers"
+technique_summary: "Jun 17, 2026: Microsoft attributes to DPRK Sapphire Sleet (aka BlueNoroff, APT38, Stardust Chollima): compromised Mastra AI framework maintainer account and published 140+ backdoored npm packages between May 29-Jun 15, 2026. Mastra is TypeScript AI agent framework (github.com/mastra-ai/mastra). Malicious postinstall scripts deployed obfuscated Node.js payload targeting: OpenAI keys, Anthropic keys, Azure OpenAI endpoints, AWS credentials, GitHub tokens, npm tokens, SSH keys, Docker configs, Kubernetes service accounts. Payload POSTed to DPRK C2 hxxps://mastra-telemetry[.]com (posing as legitimate telemetry endpoint). npm removed packages Jun 16-17; Microsoft estimates 8,000-12,000 downloads across compromised versions. Sapphire Sleet previously linked to crypto exchange attacks, IT worker schemes, and supply chain operations. Detection: monitor npm installs of Mastra@* between May 29-Jun 15 2026; check for mastra-telemetry[.]com egress; review postinstall scripts for obfuscation/eval; scan for credential file access from npm scripts."
+initial_access: "npm install of backdoored @mastra/* packages (140+ packages, versions published May 29-Jun 15 2026) via compromised maintainer account"
+ai_tooling_and_models:
+  - Mastra AI framework
+  - OpenAI API
+  - Anthropic Claude API
+  - Azure OpenAI Service
+other_tooling:
+  - npm supply chain attack
+  - Node.js postinstall scripts
+  - mastra-telemetry[.]com C2 (DPRK infrastructure)
+victims_and_sectors: "8,000-12,000 downloads across compromised versions; AI/ML developers using Mastra framework; TypeScript/JavaScript AI application developers"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Sapphire Sleet (DPRK, aka BlueNoroff, APT38, Stardust Chollima); Microsoft high-confidence attribution; part of DPRK revenue generation and intelligence collection operations"
+scale_and_metrics: "140+ npm packages backdoored over 18-day window (May 29-Jun 15); 8,000-12,000 estimated downloads; packages removed Jun 16-17, 2026"
+prevention_angle: "Verify npm package integrity; use package lock files with checksums; review postinstall scripts before install; monitor for unexpected network egress from npm scripts; rotate credentials after suspected exposure; use npm audit; implement SCA tools; prefer packages from verified maintainers; check npm package publish dates and maintainer history"
+related_magicsword_projects: []
+source_notes: "Microsoft Threat Intelligence attribution to Sapphire Sleet (DPRK APT); Mastra GitHub github.com/mastra-ai/mastra. Sapphire Sleet focus on revenue generation (crypto theft) and AI/technology intelligence collection. Detection: alert on npm packages with postinstall scripts accessing credential files, check for mastra-telemetry[.]com domain, monitor base64/eval in npm scripts, review Mastra package versions installed in environment against compromise window (May 29-Jun 15)."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - mastra-telemetry.com
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "DPRK APT supply chain compromise of AI framework to steal AI service credentials for intelligence collection and revenue generation"
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+attack_flow:
+  nodes:
+    - id: compromise-maintainer
+      title: Compromise Mastra maintainer
+      description: "Sapphire Sleet (DPRK) compromised Mastra maintainer's npm account via targeted phishing or credential theft; gained publish access to @mastra scope"
+      kind: access
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+    - id: publish-backdoored
+      title: Publish 140+ backdoored packages
+      description: "Published 140+ malicious @mastra packages between May 29-Jun 15 with obfuscated postinstall scripts; maintained functional AI framework features to avoid immediate detection"
+      kind: ai
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+    - id: harvest-credentials
+      title: Harvest AI and cloud credentials
+      description: "Postinstall script executes obfuscated Node.js: scans env vars (OPENAI_API_KEY, ANTHROPIC_API_KEY, AZURE_OPENAI_*), filesystem (~/.config, ~/.aws, ~/.ssh, ~/.docker, ~/.kube), npm config; base64-encodes findings"
+      kind: execution
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+    - id: exfiltrate-dprk
+      title: Exfiltrate to DPRK C2
+      description: "POSTs harvested credentials to hxxps://mastra-telemetry[.]com (DPRK infrastructure masquerading as telemetry); credentials support DPRK intelligence collection and revenue generation (AI service resale, crypto exchange targeting); 8,000-12,000 affected installs"
+      kind: impact
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+  edges:
+    - source: compromise-maintainer
+      target: publish-backdoored
+    - source: publish-backdoored
+      target: harvest-credentials
+    - source: harvest-credentials
+      target: exfiltrate-dprk
+category: attacks-on-ai
+attribution:
+  actor_name: Sapphire Sleet (DPRK)
+  country: DPRK
+  motivation: financially-motivated
+  attributed_by: Microsoft
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Supply chain monitoring
+    format: guidance
+    notes: "Monitor package installations, verify publisher authenticity, scan for malicious code patterns"
+timeline:
+  first_seen: "2026-06-17"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-06-17"
+      source: Microsoft
+      summary: "Initial discovery and analysis"

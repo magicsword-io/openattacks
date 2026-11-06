@@ -1,0 +1,78 @@
+id: package
+title: Dependency / CI trust boundary
+hypothesis:
+  A package or workflow change introduces a lifecycle hook, remote dependency or new
+  command that accesses secrets or external services.
+telemetry:
+  - Package-manager and CI job logs
+  - Lockfile / manifest / workflow diffs
+  - Runner process trees, secret access and egress
+investigate:
+  - Compare package provenance, publish identity, lifecycle scripts and resolved dependency URLs
+    with the approved version.
+  - Correlate the install or workflow to secret reads and subsequent token use; distinguish exposure
+    from confirmed compromise.
+limitation:
+  Package installation and unfamiliar names are not malicious by themselves. Dependency
+  resolution and CI audit records are required.
+search:
+  - '"npm" AND "postinstall"'
+  - '"supply chain"'
+  - '"GitHub Actions"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Dependency / CI trust boundary
+    id: 5fa9c45a-ac1c-4666-a598-e80626320997
+    status: experimental
+    description: A package or workflow change introduces a lifecycle hook, remote
+      dependency or new command that accesses secrets or external services.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - package.install
+          - ci.workflow.change
+          - package.lifecycle.exec
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("package.install", "ci.workflow.change", "package.lifecycle.exec")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("package.install", "ci.workflow.change", "package.lifecycle.exec")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

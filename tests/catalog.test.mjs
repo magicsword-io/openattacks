@@ -95,6 +95,7 @@ test("browse annotations preserve raw evidence and use valid, consistent categor
     readFileSync(new URL("../dist/api/catalog.json", import.meta.url), "utf8"),
   );
   assert.equal(index.entries.length, seeds.length);
+  assert.ok(!("concept" in index.evidence_types));
   assert.equal(
     new Set(index.entries.map((entry) => entry.id)).size,
     seeds.length,
@@ -279,13 +280,16 @@ test("geography excludes actor and infrastructure labels; ATLAS mappings use off
 test("stage defense annotations resolve to real attacks and nodes; exports preserve evidence and scope", () => {
   const annotations = JSON.parse(
     readFileSync(
-      new URL("../src/data/stage-guidance.json", import.meta.url),
+      new URL("../detections/stages.json", import.meta.url),
       "utf8",
     ),
   );
   const packs = JSON.parse(
     readFileSync(new URL("../dist/api/defenses.json", import.meta.url), "utf8"),
   );
+  assert.equal(packs.schema_version, 2);
+  assert.equal(Object.hasOwn(packs, "detection_mcp"), false);
+  assert.equal(Object.hasOwn(packs, "integration"), false);
   assert.equal(packs.entries.length, seeds.length);
   for (const [id, stages] of Object.entries(annotations)) {
     const attack = seeds.find((a) => a.id === id);
@@ -322,11 +326,8 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
       );
       if (stage.validation === "not_assessed")
         assert.equal(stage.reviewed, null);
-      assert.match(
-        stage.mcp_prompt,
-        /Sigma, Microsoft Defender \/ Sentinel KQL, and Splunk SPL/,
-      );
-      assert.match(stage.mcp_prompt, /Do not invent matches/);
+      assert.equal(Object.hasOwn(stage, "mcp_prompt"), false);
+      assert.equal(Object.hasOwn(stage, "mcp_searches"), false);
       if (stage.control) {
         assert.match(stage.control.scope, /Windows/);
         assert.match(stage.control.limitation, /not tested incident coverage/);
@@ -338,8 +339,11 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
         const rule = parse(stage.queries.sigma);
         assert.equal(rule.status, "experimental");
         assert.ok(rule.logsource);
-        assert.ok(Object.keys(rule.detection.selection).length);
-        assert.equal(rule.detection.condition, "selection");
+        assert.ok(
+          Object.keys(rule.detection).some((key) => key !== "condition"),
+        );
+        assert.equal(typeof rule.detection.condition, "string");
+        assert.ok(rule.detection.condition.length);
         assert.ok(stage.queries.kql.length && stage.queries.spl.length);
       } else
         assert.ok(

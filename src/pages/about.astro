@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AgentAccess from "../components/AgentAccess.astro";
-import { href, repo, roles } from "../lib/catalog";
+import { getAttacks, href, repo, roles } from "../lib/catalog";
 import { magicswordURL } from "../lib/magicsword-links.mjs";
+const attacks = await getAttacks();
 ---
 
 <Layout title="About & Methodology — OpenAttacks" active="about">
@@ -25,11 +26,24 @@ import { magicswordURL } from "../lib/magicsword-links.mjs";
         credit, and every entry links back to its sources.
       </p>
       <p>
-        The initial catalog contains 68 entries spanning 2023–2026. It includes
+        The catalog contains {attacks.length} entries spanning 2023–2026. It includes
         observed campaigns, research demonstrations, vulnerability reports, and
         uncertain marketplace claims. Research and borderline entries are
         labeled individually. This is a curated record of reports, rather than a
         complete measurement of attack prevalence.
+      </p>
+      <h2 id="inclusion">Documented cases only</h2>
+      <p>
+        Entries must describe attacks observed in the wild or concrete cases
+        documented in public reporting, such as original researcher reports,
+        vendor advisories, or news coverage. Conceptual scenarios, hypothetical
+        attack chains, and general threat frameworks are excluded.
+      </p>
+      <p>
+        Published vulnerability demonstrations and research proofs of concept
+        qualify when they document concrete behavior. They remain labeled as
+        research; publication does not establish exploitation in the wild.
+        Reported marketplace claims retain their uncertainty labels.
       </p>
       <h2>What counts as AI involvement?</h2>
       <p>

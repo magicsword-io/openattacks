@@ -11,11 +11,12 @@ borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Operators distribute fake AI/productivity apps (PDF editors, browsers, recipe
-  tools, etc.) with realistic UIs, working features, and code-signing. Steal browser data,
-  fingerprint systems, disable some security tools, AES-encrypted C2. Trend notes
-  AI-generated-looking clean code aiding evasion. Names include App Suite, Epi Browser,
-  JustAskJacky, Tampered Chef, et al.
+technique_summary: Operators distribute fake AI/productivity apps (PDF editors,
+  browsers, recipe tools, etc.) with realistic UIs, working features, and
+  code-signing. Steal browser data, fingerprint systems, disable some security
+  tools, AES-encrypted C2. Trend notes AI-generated-looking clean code aiding
+  evasion. Names include App Suite, Epi Browser, JustAskJacky, Tampered Chef, et
+  al.
 initial_access: Users install fake AI/productivity apps
 ai_tooling_and_models:
   - Fake AI-branded applications
@@ -28,7 +29,8 @@ regions:
   - unknown
 attribution_or_cluster: unknown
 scale_and_metrics: unknown
-prevention_angle: Allowlist apps; block unexpected signed-but-unknown publishers; MagicSword default-deny
+prevention_angle: Allowlist apps; block unexpected signed-but-unknown
+  publishers; MagicSword default-deny
 related_magicsword_projects:
   - LOLBAS
 source_notes: null
@@ -37,23 +39,27 @@ attack_flow:
   nodes:
     - id: step-1
       title: User installs a productivity app
-      description: Realistic AI and productivity applications offer working-looking interfaces.
+      description: Realistic AI and productivity applications offer working-looking
+        interfaces.
       kind: access
       source_urls: &a1
         - https://www.trendmicro.com/en/research/25/i/evilai.html
     - id: step-2
       title: AI-themed functionality lends credibility
-      description: The research also notes code characteristics consistent with AI assistance.
+      description: The research also notes code characteristics consistent with AI
+        assistance.
       kind: ai
       source_urls: *a1
     - id: step-3
       title: Application performs hidden actions
-      description: The installed app fingerprints the host and communicates with encrypted C2.
+      description: The installed app fingerprints the host and communicates with
+        encrypted C2.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Browser data theft
-      description: The reported operation steals information and attempts to disable some security tools.
+      description: The reported operation steals information and attempts to disable
+        some security tools.
       kind: impact
       source_urls: *a1
   edges:
@@ -63,3 +69,10 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in EvilAI fake AI/productivity apps
+      with AI-generated code. Refer to sources for specific IOCs and TTPs.

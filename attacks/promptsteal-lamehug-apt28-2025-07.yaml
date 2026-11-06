@@ -34,6 +34,27 @@ prevention_angle: Block unexpected Hugging Face API from endpoints; detect PyIns
 related_magicsword_projects:
   - LOLBAS
 source_notes: null
+category: adversary-use-of-ai
+attribution:
+  actor_name: APT28
+  aliases:
+    - FROZENLAKE
+  country: Russia
+  motivation: nation-state
+  attributed_by: Google GTIG, CERT-UA
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Detect Hugging Face API connections from endpoints
+    format: guidance
+    notes:
+      Monitor outbound HTTPS connections to Hugging Face API endpoints (api-inference.huggingface.co)
+      from workstations and servers. Legitimate developer activity is expected; focus on unexpected
+      or unauthorized hosts.
+  - name: PyInstaller executable masquerading as image tools
+    format: guidance
+    notes: Detect PyInstaller-packaged executables with image generation or graphics tool names
+      that make unexpected network connections to AI model APIs.
 last_reviewed: 2026-10-20
 attack_flow:
   nodes:
@@ -67,6 +88,9 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+linked_actors:
+  - apt28
+linked_tools: []
 atlas_techniques:
   - id: AML.T0102
     rationale: The miner generates collection commands using a hosted Qwen model.

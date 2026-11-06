@@ -1,0 +1,76 @@
+id: extension
+title: Browser extension change / data access
+hypothesis:
+  A new or updated extension gains sensitive permissions and accesses conversation,
+  cookie, or browsing data before unusual egress.
+telemetry:
+  - Managed-browser extension inventory and update history
+  - Extension ID, permissions and provenance
+  - Browser / proxy / DLP evidence
+investigate:
+  - Diff extension versions and permissions, compare the extension ID against the allowlist, and
+    inspect its update origin.
+  - Correlate access to conversations or credentials with destinations; enforce browser extension
+    policy separately.
+limitation:
+  Extension installation does not prove theft. Endpoint application control is not a
+  substitute for browser extension allowlisting.
+search:
+  - '"chrome" AND "extension"'
+  - '"browser extension" AND "stealer"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Browser extension change / data access
+    id: 0dd8a9d2-e0c8-4768-a49d-5fc2f09a6d7c
+    status: experimental
+    description: A new or updated extension gains sensitive permissions and accesses
+      conversation, cookie, or browsing data before unusual egress.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - browser.extension.install
+          - browser.extension.update
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("browser.extension.install", "browser.extension.update")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("browser.extension.install", "browser.extension.update")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

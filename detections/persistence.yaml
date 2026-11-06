@@ -1,0 +1,76 @@
+id: persistence
+title: New persistence → recurring execution
+hypothesis:
+  A task, Run key, cron entry, shell profile, or startup file is changed and later
+  launches the same unexpected program.
+telemetry:
+  - Platform-specific registry, scheduled-task, cron and startup-file changes
+  - Process creation and file provenance
+  - User / administrative change records
+investigate:
+  - Diff the persistence artifact and identify the creating process / principal.
+  - Correlate the subsequent launch and network behavior; baseline deployment and management agents.
+limitation:
+  Windows and Unix persistence require different collectors. A configuration change
+  without a subsequent launch is not proof that persistence ran.
+search:
+  - '"scheduled task"'
+  - '"Run key"'
+  - '"crontab"'
+  - '"bashrc"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - New persistence → recurring execution
+    id: 6154ff56-2978-45fa-aecd-86d91557f32e
+    status: experimental
+    description: A task, Run key, cron entry, shell profile, or startup file is
+      changed and later launches the same unexpected program.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - persistence.create
+          - persistence.modify
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("persistence.create", "persistence.modify")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("persistence.create", "persistence.modify")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

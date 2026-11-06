@@ -21,6 +21,11 @@ required:
   - related_magicsword_projects
   - borderline
 additionalProperties: false
+$defs:
+  http-url:
+    type: string
+    format: uri
+    pattern: ^https?://
 properties:
   id:
     type: string
@@ -64,8 +69,7 @@ properties:
       additionalProperties: false
       properties:
         url:
-          type: string
-          format: uri
+          $ref: "#/$defs/http-url"
         title:
           type: string
         publisher:
@@ -114,8 +118,7 @@ properties:
   magicsword_coverage:
     type: array
     items:
-      type: string
-      format: uri
+      $ref: "#/$defs/http-url"
   ai_role:
     type: string
     enum:
@@ -374,6 +377,134 @@ properties:
     type:
       - string
       - "null"
+  category:
+    type:
+      - string
+      - "null"
+    enum:
+      - adversary-use-of-ai
+      - attacks-on-ai
+      - null
+  attribution:
+    type:
+      - object
+      - "null"
+    additionalProperties: false
+    properties:
+      actor_id:
+        type:
+          - string
+          - "null"
+      actor_name:
+        type:
+          - string
+          - "null"
+      aliases:
+        type: array
+        items:
+          type: string
+      country:
+        type:
+          - string
+          - "null"
+      motivation:
+        type:
+          - string
+          - "null"
+        enum:
+          - nation-state
+          - cybercrime
+          - financially-motivated
+          - hacktivism
+          - unknown
+          - null
+      attributed_by:
+        type:
+          - string
+          - "null"
+      confidence:
+        type:
+          - string
+          - "null"
+        enum:
+          - high
+          - medium
+          - low
+          - null
+  ai_involvement_confidence:
+    type:
+      - string
+      - "null"
+    enum:
+      - confirmed
+      - vendor-asserted
+      - unverified
+      - null
+  detections:
+    type:
+      - array
+      - "null"
+    items:
+      type: object
+      required:
+        - name
+        - format
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+        format:
+          type: string
+          enum:
+            - sigma
+            - splunk
+            - elastic
+            - kql
+            - lolbas
+            - guidance
+        url:
+          type:
+            - string
+            - "null"
+          format: uri
+        notes:
+          type:
+            - string
+            - "null"
+  timeline:
+    type:
+      - object
+      - "null"
+    additionalProperties: false
+    properties:
+      first_seen:
+        type:
+          - string
+          - "null"
+      last_updated:
+        type:
+          - string
+          - "null"
+      updates:
+        type:
+          - array
+          - "null"
+        items:
+          type: object
+          required:
+            - date
+            - source
+          additionalProperties: false
+          properties:
+            date:
+              type: string
+            source:
+              type: string
+            summary:
+              type:
+                - string
+                - "null"
   iocs:
     type: object
     additionalProperties: false
@@ -398,6 +529,16 @@ properties:
     type: array
     items:
       type: string
+  linked_actors:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
+  linked_tools:
+    type: array
+    items:
+      type: string
+      pattern: ^[a-z0-9]+(-[a-z0-9]+)*$
   confidence:
     type: string
     enum:
@@ -600,8 +741,7 @@ properties:
           minItems: 1
           uniqueItems: true
           items:
-            type: string
-            format: uri
+            $ref: "#/$defs/http-url"
   attack_flow:
     type: object
     additionalProperties: false
@@ -646,8 +786,7 @@ properties:
               minItems: 1
               uniqueItems: true
               items:
-                type: string
-                format: uri
+                $ref: "#/$defs/http-url"
       edges:
         type: array
         minItems: 1

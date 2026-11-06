@@ -1,0 +1,12 @@
+id: cyberstrikeai
+name: CyberStrikeAI
+type: ai-pentest-tool
+github_url: null
+project_url: null
+description: AI-powered cybersecurity tool focused on automated threat detection and penetration testing capabilities. Leverages machine learning models to assist security operations and vulnerability assessment.
+sources:
+  - url: https://github.com/topics/pentest-ai
+    title: AI Penetration Testing Tools
+    publisher: GitHub
+linked_attacks: []
+linked_actors: []

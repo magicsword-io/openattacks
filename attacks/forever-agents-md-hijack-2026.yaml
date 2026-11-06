@@ -1,0 +1,96 @@
+id: forever-agents-md-hijack-2026
+name: Malicious AGENTS.md hijacking coding agents via Downloads
+date_reported: 2026-11-04
+researcher: Gal Weizman, Omer Samet
+org: Forever Security
+sources:
+  - url: https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+    title: Hijacking AI Agents via Downloads Folder
+    publisher: Forever Security
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: Malicious AGENTS.md file dropped into ~/Downloads by website. When coding agent launches in Downloads directory, it reads and follows the malicious instructions. AGENTS.md variant edits ~/.codex/config.toml and runs npm install function-color (MALFEX downloader). CLAUDE.md variant steals OAuth tokens. Attack leverages agent instruction file priority and common workflow of developers launching agents in Downloads after downloading code samples or projects.
+initial_access: User visits malicious website that drops AGENTS.md into ~/Downloads
+ai_tooling_and_models:
+  - Coding agents (Codex, Claude, others)
+  - Agent instruction files (AGENTS.md, CLAUDE.md)
+  - ~/.codex/config.toml
+other_tooling:
+  - function-color npm package (MALFEX downloader)
+  - OAuth token theft
+victims_and_sectors: Software developers using AI coding agents
+regions:
+  - Multiple regions
+attribution_or_cluster: unknown
+scale_and_metrics: Proof of concept demonstrating attack vector; actual deployment scale unknown
+prevention_angle: Review Downloads folder before launching agents; scan for unexpected .md instruction files; monitor ~/.codex/config.toml and other agent config modifications; detect npm install from unusual locations; restrict agent instruction file precedence; alert on OAuth token access from unexpected processes
+related_magicsword_projects:
+  - LOLSkills
+source_notes: |
+  Relevant detection rules:
+  - Monitor file creation in ~/Downloads directory for unexpected .md instruction files (AGENTS.md, CLAUDE.md)
+  - Detect modifications to ~/.codex/config.toml and similar agent configuration files
+  - Monitor npm install executions from non-standard directories (Downloads, temp folders)
+  - Alert on OAuth token access from unexpected processes
+  - Note: No direct Sigma rules for agent instruction file manipulation; requires custom file integrity monitoring for agent config directories and process monitoring for agent launches from untrusted paths.
+last_reviewed: 2026-11-04
+confidence: high
+region_notes: Multiple regions reflects global developer population using coding agents
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: Malicious instruction file manipulates agent behavior by exploiting instruction file loading priority
+    source_urls:
+      - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+  - id: AML.T0081
+    rationale: AGENTS.md contains malicious instructions that modify agent configuration and install malware
+    source_urls:
+      - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+  - id: AML.T0053
+    rationale: Attack exfiltrates OAuth tokens via CLAUDE.md variant
+    source_urls:
+      - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+  - id: AML.T0011.001
+    rationale: Malicious instructions modify agent configuration files for persistence
+    source_urls:
+      - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+attack_flow:
+  nodes:
+    - id: drop
+      title: Malicious instruction file dropped to Downloads
+      description: Website drops AGENTS.md or CLAUDE.md into ~/Downloads folder
+      kind: access
+      source_urls: &a1
+        - https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/
+    - id: launch
+      title: Developer launches agent in Downloads
+      description: User starts coding agent in Downloads directory following common workflow for testing downloaded projects
+      kind: ai
+      source_urls: *a1
+    - id: read
+      title: Agent reads malicious instruction file
+      description: Agent discovers and loads AGENTS.md or CLAUDE.md based on instruction file precedence
+      kind: ai
+      source_urls: *a1
+    - id: execute
+      title: Malicious instructions executed
+      description: AGENTS.md variant edits ~/.codex/config.toml and runs npm install function-color; CLAUDE.md variant steals OAuth token
+      kind: execution
+      source_urls: *a1
+    - id: impact
+      title: Malware installed or credentials stolen
+      description: function-color MALFEX downloader installed or OAuth tokens exfiltrated
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: drop
+      target: launch
+    - source: launch
+      target: read
+    - source: read
+      target: execute
+    - source: execute
+      target: impact

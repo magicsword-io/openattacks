@@ -1,0 +1,13 @@
+id: artex
+name: ARTEX
+type: agentic-offensive-framework
+github_url: null
+project_url: null
+description: Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation.
+sources:
+  - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
+    title: Unknown Threat Actor Uses ARTEX to Target South Korean Finance
+    publisher: CrowdStrike
+linked_attacks:
+  - crowdstrike-artex-sk-finance-2026-10
+linked_actors: []

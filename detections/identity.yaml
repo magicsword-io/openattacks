@@ -1,0 +1,77 @@
+id: identity
+title: Credential / session use outside baseline
+hypothesis:
+  Repeated credential attempts or a stolen session are followed by a successful login or
+  resource access inconsistent with the owner.
+telemetry:
+  - Identity / service authentication logs
+  - Device, source-IP and session context
+  - Resource access and token issuance audit
+investigate:
+  - Compare failures, successes and session reuse by account and source; inspect access to new
+    resources.
+  - Check device registration, MFA and credential changes; do not equate travel anomalies with
+    confirmed compromise.
+limitation:
+  Shared infrastructure and legitimate travel create noise. IoT, SharePoint and cloud
+  identity require their own collectors and field mappings.
+search:
+  - '"credential stuffing"'
+  - '"stolen token"'
+  - '"session" AND "anomaly"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Credential / session use outside baseline
+    id: 7d73d919-e785-4d40-ab0b-f12949adfaf5
+    status: experimental
+    description: Repeated credential attempts or a stolen session are followed by a
+      successful login or resource access inconsistent with the owner.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - identity.login
+          - identity.token.use
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("identity.login", "identity.token.use")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("identity.login", "identity.token.use")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

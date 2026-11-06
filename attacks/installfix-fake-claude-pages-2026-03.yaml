@@ -1,0 +1,98 @@
+id: installfix-fake-claude-pages-2026-03
+name: InstallFix fake Claude Code installation pages
+date_reported: 2026-03-06
+researcher: Push Security Research
+org: Push Security
+sources:
+  - url: https://pushsecurity.com/blog/installfix/
+    title: "Push Security: InstallFix Campaign - Fake Claude Code Installation Pages"
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: ai_credential_theft
+ai_role_detail: "InstallFix campaign creates fake Claude Code installation pages via SEO poisoning to distribute trojanized installers and credential stealers"
+technique_summary: "Mar 6, 2026: Push Security identified 'InstallFix' campaign: 120+ fake websites impersonating official Claude Code installation pages (claude-code-download[.]com, get-claude-code[.]net, etc.). Sites rank highly in search results via SEO poisoning (typosquat domains, keyword stuffing, fake reviews). Offer trojanized Claude Code installers for Windows/macOS/Linux. Windows: NSIS installer bundles Claude Code with AMOS infostealer. macOS: DMG contains Claude Code.app + hidden LaunchAgent installing Atomic Stealer. Linux: .deb/.rpm with postinstall script deploying XMRig miner + credential harvester. All variants harvest: Anthropic API keys, OpenAI keys, GitHub tokens, AWS credentials, crypto wallets, browser cookies, SSH keys. Push Security tracked 8,900+ downloads Mar-May 2026. Average user dwell time before detection: 23 days. Detection: verify Claude Code install source (official anthropic.com only); check installer signatures; monitor for unexpected LaunchAgents (macOS) or startup tasks (Windows); scan for AMOS/Atomic Stealer/XMRig indicators."
+initial_access: "User searches 'download Claude Code', finds fake site via SEO poisoning, downloads trojanized installer"
+ai_tooling_and_models:
+  - Claude Code (impersonated)
+  - Anthropic Claude API
+  - OpenAI API
+other_tooling:
+  - AMOS infostealer (Windows)
+  - Atomic Stealer (macOS)
+  - XMRig cryptocurrency miner (Linux)
+  - Credential harvesters
+  - SEO poisoning and typosquat domains
+victims_and_sectors: "8,900+ downloads Mar-May 2026; AI developers, data scientists, software engineers seeking Claude Code"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unknown actor; 'InstallFix' campaign; sophisticated SEO manipulation and multi-platform malware development"
+scale_and_metrics: "120+ fake installation websites, 8,900+ downloads Mar-May 2026; avg 23-day dwell time before detection"
+prevention_angle: "Only download Claude Code from official anthropic.com; verify installer signatures; check domain spelling before download; use bookmark for official site; educate users on SEO poisoning risks; implement endpoint security detecting AMOS/Atomic/XMRig; monitor for unexpected startup persistence mechanisms"
+related_magicsword_projects: []
+source_notes: "Push Security analysis. InstallFix represents evolution of software supply chain attacks: instead of compromising legitimate distribution, adversary creates parallel fake distribution network optimized for search discovery. Detection: alert on Claude Code installs from domains other than anthropic.com, scan for AMOS/Atomic Stealer/XMRig, monitor LaunchAgents and startup tasks created during install, check installer code signing (unsigned/wrong signature = malicious)."
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - claude-code-download.com
+    - get-claude-code.net
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0000
+    rationale: "Adversary uses SEO poisoning and fake installation pages to distribute trojanized AI coding assistant installers stealing credentials"
+    source_urls:
+      - https://pushsecurity.com/blog/installfix/
+attack_flow:
+  nodes:
+    - id: seo-poisoning
+      title: Create fake install sites with SEO
+      description: "Adversary creates 120+ fake Claude Code installation websites (claude-code-download[.]com, get-claude-code[.]net, etc.); uses SEO poisoning (typosquats, keyword stuffing, fake reviews) to rank highly in search results for 'download Claude Code'"
+      kind: access
+      source_urls:
+        - https://pushsecurity.com/blog/installfix/
+    - id: user-downloads
+      title: User downloads trojanized installer
+      description: "User searches for Claude Code, finds fake site, downloads installer; sites appear legitimate with screenshots, documentation, fake testimonials; multi-platform support (Windows NSIS, macOS DMG, Linux deb/rpm)"
+      kind: ai
+      source_urls:
+        - https://pushsecurity.com/blog/installfix/
+    - id: install-malware
+      title: Install malware with legitimate app
+      description: "Installer deploys functional Claude Code plus malware: Windows (AMOS infostealer), macOS (LaunchAgent → Atomic Stealer), Linux (postinstall → XMRig + harvester). Malware harvests Anthropic keys, OpenAI keys, GitHub tokens, AWS creds, crypto wallets, SSH keys"
+      kind: execution
+      source_urls:
+        - https://pushsecurity.com/blog/installfix/
+    - id: exfiltrate-mine
+      title: Credential theft and crypto mining
+      description: "Malware exfiltrates credentials to attacker C2; XMRig mines Monero on Linux systems; persistence via LaunchAgents/startup tasks; 8,900+ affected installations Mar-May 2026; avg 23-day dwell time"
+      kind: impact
+      source_urls:
+        - https://pushsecurity.com/blog/installfix/
+  edges:
+    - source: seo-poisoning
+      target: user-downloads
+    - source: user-downloads
+      target: install-malware
+    - source: install-malware
+      target: exfiltrate-mine
+category: attacks-on-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Push Security
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Behavioral monitoring
+    format: guidance
+    notes: "Monitor for malicious patterns in IDE extensions, skills, and installation pages; verify publisher authenticity"
+timeline:
+  first_seen: "2026-03-06"
+  last_updated: "2026-11-04"
+  updates:
+    - date: "2026-03-06"
+      source: Push Security
+      summary: "Campaign discovered and analyzed"

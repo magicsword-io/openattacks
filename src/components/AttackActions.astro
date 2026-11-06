@@ -1,0 +1,124 @@
+---
+import Icon from "./Icon.astro";
+import DetectionSection from "./DetectionSection.astro";
+import SimulationPreview from "./SimulationPreview.astro";
+import { type Attack } from "../lib/catalog";
+import { attackFlow } from "../lib/attack-flow";
+import { stageGuidance } from "../lib/stage-guidance";
+import { applicabilityFor } from "../lib/stack-data";
+import { meaningful } from "../lib/presentation";
+import { simulationsFor } from "../lib/simulation-preview.mjs";
+
+const { attack } = Astro.props as { attack: Attack };
+const relevance = applicabilityFor(attack);
+const stages = attackFlow(attack).nodes.map((node) => ({
+  node,
+  guidance: stageGuidance(attack, node),
+}));
+const policies = stages.filter(({ guidance }) => guidance.control);
+const resources = [
+  ...new Map(
+    stages.flatMap(({ guidance }) =>
+      guidance.resource
+        ? [[guidance.resource.url, guidance.resource] as const]
+        : [],
+    ),
+  ).values(),
+];
+const simulations = simulationsFor(attack.id);
+const simulationStages = [
+  ...new Set(simulations.flatMap((simulation: any) => simulation.stage_ids)),
+];
+---
+
+<section class="entry-actions" aria-labelledby="what-you-can-do">
+  <h2 id="what-you-can-do">What you can do</h2>
+  <section class="entry-protection" aria-labelledby="protection-prevention">
+    <h3 id="protection-prevention">
+      <Icon name="shield" size={19} /> Protection & prevention
+    </h3>
+    {relevance.action && (
+      <div class="entry-first-action">
+        <strong class="entry-fact-label">Start here</strong>
+        <p>{relevance.action}</p>
+      </div>
+    )}
+    {meaningful(attack.prevention_angle) ? (
+      <p>{attack.prevention_angle}</p>
+    ) : (
+      !relevance.action && (
+        <p>
+          Prevention guidance has not been recorded for this entry. Review the
+          original report for available mitigations.
+        </p>
+      )
+    )}
+    <p class="entry-editorial-note">
+      Catalog defensive guidance based on the reported behavior. Confirm scope
+      and current mitigations in the original source.
+    </p>
+    <div class="entry-protection-links">
+      {attack.sources.map((source, index) => (
+        <a
+          class="text-link"
+          href={source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {index === 0
+            ? "Review the original guidance"
+            : `Additional source ${index + 1}`}{" "}
+          <Icon name="arrow" size={12} />
+        </a>
+      ))}
+      {resources.map((resource) => (
+        <a
+          class="text-link"
+          href={resource.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {resource.name} <Icon name="arrow" size={12} />
+        </a>
+      ))}
+    </div>
+    {policies.length > 0 && (
+      <details class="entry-policy-options">
+        <summary>
+          Explore scoped MagicSword policy options{" "}
+          <Icon name="down" size={14} />
+        </summary>
+        <p>
+          Requires an enforced Windows policy covering the actual executable.
+          Audit mode records events without blocking.
+        </p>
+        {policies.map(({ node, guidance }) => (
+          <div class="entry-policy-option">
+            <h4>{guidance.control!.title}</h4>
+            <p>{guidance.control!.action}</p>
+            <p>
+              <strong>Applies to:</strong> {guidance.control!.scope}
+            </p>
+            <p class="entry-editorial-note">{guidance.control!.limitation}</p>
+            <a
+              class="text-link"
+              href={guidance.control!.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore the policy control <Icon name="arrow" size={12} />
+            </a>
+            <a
+              class="text-link"
+              href={`?stage=${encodeURIComponent(node.id)}&view=prevent#attack-flow`}
+            >
+              View mapped attack stage <Icon name="arrow" size={12} />
+            </a>
+          </div>
+        ))}
+      </details>
+    )}
+  </section>
+  <DetectionSection attack={attack} simulationStages={simulationStages} />
+  {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
+</section>

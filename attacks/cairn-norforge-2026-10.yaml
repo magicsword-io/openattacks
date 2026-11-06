@@ -5,16 +5,16 @@ researcher: Snorre Fagerland
 org: NorForge
 sources:
   - url: https://norforge.com/blog/inside_cairn
+    title: "NorForge: Inside Cairn - Exposed AI Agent Panels (AIA0001-AIA0003)"
+  - url: https://norforge.com/blog/automated-subversion-attempted-takeover
+    title: "NorForge: Cairn Panels Hijacked - AIA0009/AIA0010 Deploy Poseidon RAT"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Operators run open-source Cairn harnesses that loop AI coding agents toward
-  intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose
-  binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did
-  not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal).
+technique_summary: "Operators run open-source Cairn harnesses that loop AI coding agents toward intrusion goals (unauthenticated RCE, uploader shells). Panels ship with no login and Compose binds 0.0.0.0:8000, so NorForge and scanners could read task text, tooling, and secrets. AI did not invent new exploits; it made patient web exploitation cheap (~10% success, ~23h to goal). Oct 26 update: NorForge discovered threat actors AIA0009/AIA0010 hijacking exposed Cairn panels themselves, harvesting SSH keys and operator secrets from compromised panels, deploying Poseidon RAT to take over panel infrastructure and pivot to operators' own systems."
 initial_access: Unauthenticated web RCE / upload / deserialization / SQLi-to-RCE chains against
   e-commerce and payment sites (task-driven); CVE-2026-75650 Magento lab tooling observed on workers
 ai_tooling_and_models:
@@ -57,7 +57,36 @@ related_magicsword_projects:
   - LOLSkills
 source_notes: Jose post credits Reuters for the 100+ sites figure; exact Reuters article URL not
   captured in Typefully text.
-last_reviewed: 2026-10-20
+category: adversary-use-of-ai
+attribution:
+  actor_id: AIA0001
+  actor_name: NorForge AIA0001
+  country: China
+  motivation: financially-motivated
+  attributed_by: NorForge
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Detect unexpected binaries on web servers
+    format: guidance
+    notes: Monitor execution of nmap, python, php, openssl, and other recon/development
+      tools on web servers that typically serve HTTP/HTTPS only. Default-deny or application
+      control policies are recommended.
+  - name: Detect agent harness panel exposure
+    format: guidance
+    notes: Scan for exposed Cairn or similar AI agent harness panels (default port 8000, no auth).
+      Look for /api/*, /tasks, or panel-specific endpoints accessible without authentication.
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-10-19"
+      source: NorForge
+      summary: "Initial disclosure of exposed Cairn panels AIA0001-AIA0003; operators using AI agents for web exploitation"
+    - date: "2026-10-26"
+      source: NorForge
+      summary: "AIA0009/AIA0010 discovered hijacking exposed Cairn panels; harvesting SSH keys, deploying Poseidon RAT to compromise panel operators"
+last_reviewed: 2026-11-05
 attack_flow:
   nodes:
     - id: step-1
@@ -78,7 +107,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Some tasks obtain access
-      description: The research reports roughly 10% success; exposed harness panels also revealed operator
+      description:
+        The research reports roughly 10% success; exposed harness panels also revealed operator
         tasks and secrets.
       kind: impact
       source_urls: *a1
@@ -92,8 +122,13 @@ attack_flow:
 region_notes: Reported target geography includes the United States, Japan and Australia. Canada
   appeared in task text and African commerce was suggested by hints; those unconfirmed locations are
   excluded from country counts.
+linked_actors:
+  - norforge-aia0001
+linked_tools:
+  - cairn
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

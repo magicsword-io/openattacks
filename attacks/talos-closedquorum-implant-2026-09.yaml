@@ -1,0 +1,113 @@
+id: talos-closedquorum-implant-2026-09
+name: CLOSEDQUORUM implant - 4 LLMs vote on next action
+date_reported: 2026-09-22
+researcher: Ryan Fetterman
+org: Cisco Talos
+sources:
+  - url: https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    title: "The Closed Quorum: Inside the first reported autonomous AI C2 implant"
+borderline: true
+borderline_note: "Public distribution build contains dummy API keys and webhook; Talos has not observed end-to-end run or confirmed in-the-wild deployment; binary artifacts connect developer to carding forum postings dating to 2025"
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_infra_as_c2
+ai_role_detail: "First publicly documented Windows implant to delegate C2 decisions to LLM panel; 4 models vote on next action via plurality voting"
+technique_summary: "CLOSEDQUORUM is a Go-based Windows implant that queries DeepSeek, Qwen (via OpenRouter), Mistral, and Gemini in sequence for post-compromise decisions. Each model receives system info (hostname, Windows version, admin status) and a constrained JSON prompt with 4 actions: steal (credentials/browsers/wallets), inject (process hollowing), persist (registry/startup), or move (no handler in the public build). Models vote; plurality wins; ties favor DeepSeek > Qwen > Mistral > Gemini. Decisions are posted to a Discord webhook with reasoning. No human operator commands are needed after deployment. The public build uses dummy keys and a dummy webhook, so Talos did not observe end-to-end execution. Talos discovered it via CAIRN, its open-source AI-malware hunting toolkit. Developer artifacts link to carding forums dating to 2025."
+initial_access: "Not established in public sample; deployment method unknown"
+ai_tooling_and_models:
+  - DeepSeek (api.deepseek.com, deepseek-chat)
+  - Qwen (via OpenRouter, qwen/qwen-2.5-72b-instruct)
+  - Mistral (api.mistral.ai, mistral-large-latest)
+  - Google Gemini (gemini-2.0-flash-exp)
+other_tooling:
+  - Discord webhook for decision logging and exfiltration
+  - CAIRN (Talos AI-malware hunting tool, used for discovery)
+  - Go-based implant
+  - Windows process injection primitives (CreateProcessW, CREATE_SUSPENDED)
+victims_and_sectors: "No confirmed in-the-wild deployment; public sample analysis only"
+regions:
+  - unknown
+attribution_or_cluster: "Developer artifacts link to carding forum postings dating to 2025; no confirmed threat actor attribution"
+scale_and_metrics: "First publicly documented autonomous AI C2 implant; analysis dated Jun 17, 2026; disclosed Sep 22, 2026; public build non-functional (dummy keys)"
+prevention_angle: "AI API key monitoring; Discord webhook traffic from unexpected processes; plurality voting pattern detection; LLM query patterns with system enumeration; CAIRN tool for AI-malware hunting"
+related_magicsword_projects: []
+source_notes: "Cisco Talos first public documentation; discovered via CAIRN. Talos reports that the public distribution binary is inert because it contains dummy API keys and a dummy webhook. Static analysis confirms plurality voting and deterministic tie-breaking, not a minimum 3-of-4 quorum; if every provider fails, an unhandled consensus value causes the loop to sleep and retry."
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  motivation: unknown
+  attributed_by: Cisco Talos
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Correlated LLM-provider and Discord traffic
+    format: guidance
+    notes: "Alert on unexpected Windows processes contacting several LLM providers and Discord webhooks within the same execution window."
+  - name: Autonomous implant behavior correlation
+    format: guidance
+    notes: "Correlate LLM API traffic with LSASS access, process injection, persistence creation, or repeated execution at randomized intervals."
+timeline:
+  first_seen: "2026-06-17"
+  last_updated: "2026-09-22"
+  updates:
+    - date: "2026-09-22"
+      source: Cisco Talos
+      summary: "Talos published its static analysis and stated that it had no confirmation of in-the-wild deployment."
+last_reviewed: 2026-11-06
+iocs:
+  domains:
+    - api.deepseek.com
+    - openrouter.ai
+    - api.mistral.ai
+    - generativelanguage.googleapis.com
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "First documented Windows implant using LLM panel voting for autonomous C2 decisions; represents shift where expanding portions of attack chain execute without operator involvement"
+    source_urls:
+      - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+attack_flow:
+  nodes:
+    - id: deployment
+      title: Implant deployment
+      description: "Go-based Windows implant deployed (method unknown in public sample); no confirmed in-the-wild deployment"
+      kind: access
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: system-enum
+      title: System enumeration
+      description: "Collects hostname, Windows version, administrator status for LLM query context"
+      kind: execution
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: llm-vote
+      title: LLM panel voting
+      description: "Queries 4 LLM providers in sequence: DeepSeek, Qwen (OpenRouter), Mistral, Gemini; sends system info and constrained JSON prompt with 4 actions (steal, inject, persist, move); each model votes; plurality wins; ties favor DeepSeek > Qwen > Mistral > Gemini; no quorum threshold"
+      kind: ai
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: discord-log
+      title: Decision logging to Discord
+      description: "Posts winning decision and model's stated reasoning to Discord webhook before execution; stolen data also sent to same webhook"
+      kind: execution
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+    - id: execute
+      title: Execute decision
+      description: "Executes winning action: steal (credentials, browsers, wallets), inject (process hollowing via CreateProcessW CREATE_SUSPENDED), persist (registry/startup), or move (no handler); public build injection reaches primitives but demonstrates no successful execution"
+      kind: impact
+      source_urls:
+        - https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/
+  edges:
+    - source: deployment
+      target: system-enum
+    - source: system-enum
+      target: llm-vote
+    - source: llm-vote
+      target: discord-log
+    - source: discord-log
+      target: execute
+    - source: execute
+      target: system-enum
+      loop: true

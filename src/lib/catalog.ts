@@ -26,12 +26,40 @@ export interface Attack {
   confidence?: "high" | "medium" | "low";
   last_reviewed?: string;
   source_notes?: string | null;
+  category?: "adversary-use-of-ai" | "attacks-on-ai" | null;
+  attribution?: {
+    actor_id?: string | null;
+    actor_name?: string | null;
+    aliases?: string[];
+    country?: string | null;
+    motivation?: "nation-state" | "cybercrime" | "financially-motivated" | "hacktivism" | "unknown" | null;
+    attributed_by?: string | null;
+    confidence?: "high" | "medium" | "low" | null;
+  } | null;
+  ai_involvement_confidence?: "confirmed" | "vendor-asserted" | "unverified" | null;
+  detections?: Array<{
+    name: string;
+    format: "sigma" | "splunk" | "elastic" | "kql" | "lolbas" | "guidance";
+    url?: string | null;
+    notes?: string | null;
+  }> | null;
+  timeline?: {
+    first_seen?: string | null;
+    last_updated?: string | null;
+    updates?: Array<{
+      date: string;
+      source: string;
+      summary?: string | null;
+    }> | null;
+  } | null;
   magicsword_coverage?: string[];
   atlas_techniques?: { id: string; rationale: string; source_urls: string[] }[];
   attack_flow?: AttackFlow;
   iocs?: Record<string, string[]>;
   tags?: string[];
   aliases?: string[];
+  linked_actors?: string[];
+  linked_tools?: string[];
 }
 export interface AttackFlowNode {
   id: string;
@@ -232,9 +260,16 @@ export function toCSV(attacks: Attack[]) {
     "attack_flow",
     "region_notes",
     "source_notes",
+    "category",
+    "attribution",
+    "ai_involvement_confidence",
+    "detections",
+    "timeline",
     "iocs",
     "tags",
     "aliases",
+    "linked_actors",
+    "linked_tools",
   ];
   const quote = (value: unknown) => {
     let text =

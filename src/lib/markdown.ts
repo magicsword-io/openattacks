@@ -5,8 +5,9 @@ import { stageGuidance } from "./stage-guidance";
 import { present, environments, evidenceTypes } from "./presentation";
 import { applicabilityFor } from "./stack-data";
 import atlas from "../data/atlas-techniques.json";
+import { toolingSegments } from "./tool-projects.mjs";
 
-// Treat catalog content as quoted data. Only explicit http(s) source URLs become Markdown links.
+// Treat catalog content as quoted data. Project links come only from the reviewed registry.
 const plain = (value: string) =>
   value.replace(/[\r\n]+/g, " ").replace(/[\\`*_{}\[\]<>#|]/g, "\\$&");
 export function attackMarkdown(
@@ -16,6 +17,27 @@ export function attackMarkdown(
   const list = (items: string[]) =>
     items.length
       ? items.map((value) => `- ${plain(value)}`).join("\n")
+      : "- unknown";
+  const toolingList = (items: string[]) =>
+    items.length
+      ? items
+          .map((value) => {
+            const segments = toolingSegments(value);
+            const label = segments
+              .map(({ text, project }) =>
+                project ? `[${plain(text)}](${project.url})` : plain(text),
+              )
+              .join("");
+            const notes = [
+              ...new Set(
+                segments.flatMap(({ project }) =>
+                  project?.note ? [project.note] : [],
+                ),
+              ),
+            ];
+            return `- ${label}${notes.length ? ` — ${notes.map(plain).join(" ")}` : ""}`;
+          })
+          .join("\n")
       : "- unknown";
   const flow = attackFlow(attack);
   const display = present(attack);
@@ -67,10 +89,10 @@ export function attackMarkdown(
     plain(attack.initial_access),
     "",
     "## AI tooling and models",
-    list(attack.ai_tooling_and_models),
+    toolingList(attack.ai_tooling_and_models),
     "",
     "## Other tooling",
-    list(attack.other_tooling),
+    toolingList(attack.other_tooling),
     "",
     "## Victims and sectors",
     plain(attack.victims_and_sectors),
@@ -102,12 +124,19 @@ export function attackMarkdown(
     ),
     "",
     "## Stage defense and hunting recommendations",
-    "Editorial recommendations, not validated coverage. Query starters are drafts. Custom-schema examples require telemetry collection and field mapping; absence of a mapping means not assessed. MagicSword policy opportunities require managed Windows scope and enforcement. Upstream detection MCP searches are not run by this site.",
+    "Editorial recommendations, not validated coverage. Source-controlled query starters are drafts. Custom-schema examples require telemetry collection and field mapping; absence of a mapping means not assessed. MagicSword policy opportunities require managed Windows scope and enforcement.",
     ...flow.nodes.flatMap((node) => {
       const guidance = stageGuidance(attack, node);
       return [
         `### ${node.id}: ${plain(guidance.title)}`,
         `- Visibility: ${plain(guidance.visibility)}`,
+        `- Query origin: ${guidance.origin}; status: ${guidance.validation}; log scope: ${guidance.query_kind}`,
+        ...(guidance.query_downloads
+          ? Object.entries(guidance.query_downloads).map(
+              ([format, url]) =>
+                `- ${format.toUpperCase()} query download: ${url}`,
+            )
+          : []),
         `- Hunt hypothesis: ${plain(guidance.hypothesis)}`,
         `- Required telemetry: ${guidance.telemetry.map(plain).join("; ") || "not assessed"}`,
         ...guidance.investigate.map((step) => `- Investigate: ${plain(step)}`),

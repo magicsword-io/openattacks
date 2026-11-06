@@ -7,14 +7,14 @@ sources:
   - url: https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025
 magicsword_coverage: []
 borderline: true
-borderline_note: AI used for language sanitization of scam content; successful victim compromise not
-  confirmed by Anthropic.
+borderline_note: AI used for language sanitization of scam content; successful
+  victim compromise not confirmed by Anthropic.
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Recruitment fraud impersonating hiring managers used Claude for real-time
-  language refinement, native-English polishing, interview scripts, and more legitimate-looking
-  formatting.
+technique_summary: Recruitment fraud impersonating hiring managers used Claude
+  for real-time language refinement, native-English polishing, interview
+  scripts, and more legitimate-looking formatting.
 initial_access: unknown
 ai_tooling_and_models:
   - Claude
@@ -58,9 +58,18 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-region_notes: The source describes job seekers in Eastern Europe without naming individual countries.
+region_notes: The source describes job seekers in Eastern Europe without naming
+  individual countries.
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
-      activity; this mapping does not establish additional autonomy or victim impact.
+    rationale: The supplied source explicitly describes generative-model tooling
+      assisting the reported activity; this mapping does not establish
+      additional autonomy or victim impact.
     source_urls: *a1
+category: adversary-use-of-ai
+ai_involvement_confidence: unverified
+detections:
+  - name: Review attack-specific indicators
+    format: guidance
+    notes: Monitor for the techniques described in Claude-polished Eastern Europe
+      recruitment fraud. Refer to sources for specific IOCs and TTPs.

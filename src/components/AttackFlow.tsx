@@ -45,6 +45,56 @@ const profileIcons: Record<string, FlowIconName> = {
   "mcp-config": "network",
 };
 type SimulationLink = { stageIds: string[]; href: string };
+type StageCapability = {
+  id: "detection" | "prevention" | "simulation";
+  label: string;
+  icon: FlowIconName;
+};
+
+function stageCapabilities(
+  guidance: StageGuidance,
+  simulation: boolean,
+): StageCapability[] {
+  return [
+    guidance.queries
+      ? { id: "detection", label: "Detection available", icon: "search" }
+      : null,
+    guidance.control
+      ? { id: "prevention", label: "Prevention available", icon: "shield" }
+      : null,
+    simulation
+      ? { id: "simulation", label: "Simulation available", icon: "terminal" }
+      : null,
+  ].filter((item): item is StageCapability => item !== null);
+}
+
+function StageCapabilityIcons({
+  guidance,
+  simulation = false,
+  className,
+}: {
+  guidance: StageGuidance;
+  simulation?: boolean;
+  className: string;
+}) {
+  const capabilities = stageCapabilities(guidance, simulation);
+  if (capabilities.length === 0) return null;
+  return (
+    <span className={className} aria-hidden="true">
+      {capabilities.map((capability) => (
+        <span
+          className="stage-capability-icon"
+          data-capability={capability.id}
+          title={capability.label}
+          key={capability.id}
+        >
+          <FlowIcon name={capability.icon} size={11} />
+        </span>
+      ))}
+    </span>
+  );
+}
+
 type StepNode = Node<
   AttackFlowNode &
     Record<string, unknown> & {
@@ -74,11 +124,17 @@ function Step({ data }: NodeProps<StepNode>) {
       <button
         type="button"
         className="network-stage nodrag nopan"
+        data-stage-id={data.id}
         aria-label={`Inspect stage ${data.number}: ${data.title}`}
         aria-pressed={data.active}
         onClick={() => data.inspect(data.id)}
       >
         <span className="network-orb">
+          <StageCapabilityIcons
+            className="network-stage-capabilities"
+            guidance={data.guidance}
+            simulation={!!data.simulation}
+          />
           <FlowIcon
             name={profileIcons[data.guidance.profile] || kinds[data.kind].icon}
             size={27}
@@ -101,6 +157,15 @@ function Step({ data }: NodeProps<StepNode>) {
           aria-label={`MagicSword policy opportunity for stage ${data.number}. ${data.guidance.control.scope}`}
         >
           <FlowIcon name="shield" size={12} /> MagicSword
+        </a>
+      )}
+      {data.guidance.queries && (
+        <a
+          className="network-detection-link nodrag nopan"
+          href={`#detection-${data.id}`}
+          aria-label={`Detect this stage: ${data.title}`}
+        >
+          <FlowIcon name="search" size={12} /> Detect this stage
         </a>
       )}
       {data.simulation && (
@@ -167,7 +232,7 @@ function positions(flow: FlowData, mobile: boolean) {
     ).length;
     return mobile
       ? { x: lane * 245, y: depth * 275 }
-      : { x: depth * 255, y: lane * 280 + (maxLane - count) * 140 };
+      : { x: depth * 255, y: lane * 320 + (maxLane - count) * 160 };
   });
 }
 
@@ -244,7 +309,7 @@ export default function AttackFlow({
       loopOut: flow.edges.some((e) => e.loop && e.source === node.id),
     },
     width: 182,
-    height: 220,
+    height: 255,
     draggable: false,
     selectable: false,
     focusable: false,
@@ -317,6 +382,7 @@ export default function AttackFlow({
                 <button
                   type="button"
                   className={`mobile-network-stage kind-${node.kind}${activeId === node.id ? " is-active" : ""}`}
+                  data-stage-id={node.id}
                   aria-label={`Inspect stage ${i + 1}: ${node.title}`}
                   aria-pressed={activeId === node.id && inspectorOpen}
                   onClick={() => inspect(node.id)}
@@ -336,9 +402,11 @@ export default function AttackFlow({
                     </small>
                     <strong>{node.title}</strong>
                   </span>
-                  {guidance[node.id]?.control && (
-                    <FlowIcon name="shield" size={14} />
-                  )}
+                  <StageCapabilityIcons
+                    className="mobile-stage-capabilities"
+                    guidance={guidance[node.id]}
+                    simulation={!!simulation?.stageIds.includes(node.id)}
+                  />
                 </button>
                 {guidance[node.id]?.control && (
                   <a
@@ -349,6 +417,15 @@ export default function AttackFlow({
                   >
                     <FlowIcon name="shield" size={13} /> MagicSword policy
                     opportunity
+                  </a>
+                )}
+                {guidance[node.id]?.queries && (
+                  <a
+                    className="mobile-detection-link"
+                    href={`#detection-${node.id}`}
+                    aria-label={`Detect this stage: ${node.title}`}
+                  >
+                    <FlowIcon name="search" size={13} /> Detect this stage
                   </a>
                 )}
                 {simulation?.stageIds.includes(node.id) && (
@@ -394,7 +471,7 @@ export default function AttackFlow({
             panOnScroll={false}
             fitView={!mobile}
             fitViewOptions={{ padding: 0.18, maxZoom: 1.15 }}
-            proOptions={{ hideAttribution: false }}
+            proOptions={{ hideAttribution: true }}
           >
             <Background
               color="var(--line)"
@@ -422,7 +499,11 @@ export default function AttackFlow({
           >
             <span>{String(i + 1).padStart(2, "0")}</span>
             <span>{kinds[n.kind].label}</span>
-            {guidance[n.id]?.control && <FlowIcon name="shield" size={11} />}
+            <StageCapabilityIcons
+              className="stage-picker-capabilities"
+              guidance={guidance[n.id]}
+              simulation={!!simulation?.stageIds.includes(n.id)}
+            />
           </button>
         ))}
       </div>

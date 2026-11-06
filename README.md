@@ -2,6 +2,8 @@
 
 The open catalog of AI attacks. How attackers actually use AI, sourced and mapped to prevention. A community-maintained MagicSword catalog built with Astro, one YAML file per entry, and static JSON/CSV exports.
 
+**Documented cases only:** attacks observed in the wild or concrete cases documented in public reporting. No conceptual scenarios, hypothetical attack chains, or general threat frameworks. Published vulnerability demonstrations and research PoCs retain their evidence labels and do not imply exploitation in the wild.
+
 **Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [GitHub](https://github.com/magicsword-io/openattacks)
 
 `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai` permanently redirect to `https://openattacks.ai`, preserving paths and query strings. The rules live in `vercel.json`; the domains must also be attached to the Vercel project and have valid DNS before they can serve or redirect traffic.
@@ -37,7 +39,7 @@ Read the [sourcing and privacy rules](CONTRIBUTING.md) before submitting. Includ
 
 ## Structure
 
-- `attacks/*.yaml`: 68 seed entries; the source of truth for the public catalog.
+- `attacks/*.yaml`: 66 entries; the source of truth for the public catalog.
 - `schema.yaml`: strict JSON Schema, validated with Ajv both in CI and the Astro content loader.
 - `src/content.config.ts`: YAML content collection; strips internal `typefully` data.
 - `src/pages/`: home, searchable catalog, animated dot timeline, target-geography map, entry flows, methodology, and editable `patterns.md`.
@@ -51,7 +53,7 @@ Model/platform and sector groups match words explicitly present in the reported 
 
 ## Reading and browsing
 
-The homepage opens with a short introduction and the interactive dot timeline, followed by the searchable catalog grouped by report month. Each dot opens a sourced entry; role highlighting, pause controls and reduced-motion support remain available. The Browse the catalog link jumps directly to search and filters. Each entry shows its report date, title, summary, evidence class, environment and AI role. Counts in month headings describe the current page of results, not attack prevalence. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually. `/catalog/` preserves existing links and filters, with the homepage as its canonical URL.
+The homepage opens with a short introduction and the interactive dot timeline, followed by the searchable catalog grouped by report month. Each dot opens a sourced entry. Prominent category buttons show role labels and counts and highlight matching reports; pause controls and reduced-motion support remain available. The Browse the catalog link jumps directly to search and filters. Each entry shows its report date, title, summary, evidence class, environment and AI role. Counts in month headings describe the current page of results, not attack prevalence. Search, environment, attack pattern and evidence are primary filters; normalized products, sectors, year and geography are under More filters. Active filters can be removed individually. `/catalog/` preserves existing links and filters, with the homepage as its canonical URL.
 
 **Find attacks relevant to my stack** opens `/stack/`, where visitors select multiple tools, optional operating systems, and whether they connect to MCP servers. Matching reports explain why they apply, the conditions to check, a first action, and direct links to the relevant diagram stage or draft hunt. Old homepage links with stack parameters or `#your-stack` forward to the new page, preserving the selection. The full timeline view remains on `/timeline/`; `/catalog/` opens the list directly without the homepage chart, and geography remains on `/regions/`. AI-readable resources are available in the footer and About page.
 
@@ -59,13 +61,13 @@ The shared visual theme follows LOLSkills and MagicSword: near-black surfaces, n
 
 Stack selections stay in shareable URL parameters (`tools=cursor,claude-code`, `os=windows`, `mcp=yes|no|unknown`). Matching runs locally without an account or an inventory upload. Tools are ORed; selected operating systems narrow rules with an explicit OS scope. MCP=no excludes rules requiring an existing MCP connection, while a reported attack that installs a new rogue server can still match. An unanswered or unknown MCP setting retains product-specific matches with an explicit condition to confirm. MCP=yes alone matches reviewed generic MCP workflows, without assuming a particular product. Ordering groups product/integration reports, credential exposure, workflows, lures and broader host patterns, then report date; it is not a risk ranking.
 
-`src/data/applicability.json` holds reviewed victim-side applicability rules, source references, version/configuration conditions and first actions. A product being used by an attacker does not establish relevance to users of that product. The initial mapping covers 43 of 68 entries; unmapped records remain available in the full catalog. Newly merged entries automatically receive an explicit `not_assessed` fallback until reviewed, with no inferred matches. `api/relevance.json` exposes every entry and the same rules, coverage counts and category definitions. Missing matches do not establish safety.
+`src/data/applicability.json` holds reviewed victim-side applicability rules, source references, version/configuration conditions and first actions. A product being used by an attacker does not establish relevance to users of that product. The reviewed mapping covers 42 of 66 entries; unmapped records remain available in the full catalog. Newly merged entries automatically receive an explicit `not_assessed` fallback until reviewed, with no inferred matches. `api/relevance.json` exposes every entry and the same rules, coverage counts and category definitions. Missing matches do not establish safety.
 
 The inventory handoff links to MagicSword's software-inventory page; visitors review MCP connections and permissions in their AI client settings. The separate **Connect MagicSword MCP** link uses the supplied setup-page preview and states its Enterprise requirement. Set `MAGICSWORD_MCP_SETUP_URL` at build time when that page has its final URL; `MAGICSWORD_INVENTORY_URL` can also override the inventory destination. The current MCP default is `https://magic-portal-git-josehelps-mcp-server-m-a9b665-d1vious-projects.vercel.app/mcp#connect`.
 
 All outbound MagicSword navigation, inventory, MCP and policy links carry `utm_source=openattacks` and `utm_medium=referral`; `utm_content` identifies the placement. Query parameters and fragments such as `#connect` are preserved. Attribution does not add an analytics script or alter source-evidence URLs in raw catalog exports.
 
-Entry pages lead with the takeaway and an expanded **What happened** account before the attack diagram. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Tooling, impact, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
+Entry pages lead with the takeaway and an expanded **What happened** account before the attack diagram. Original-source links open the reported articles directly, with every source available beside the account. Selecting a stage opens **Evidence**, **Prevent** and **Hunt** tabs; evidence is the initial view, and draft hunt status stays visible. Tooling, impact, ATLAS mappings and record/download utilities are disclosures below the flow. Mobile stages use ordinary page scrolling and preserve the graph's explicit branch and loop relationships.
 
 `src/data/presentation.json` contains reviewed editorial titles, summaries, source-stated environments and evidence classes. These are browse annotations, not independent incident verification or changes to the original YAML. `api/catalog.json` publishes this index alongside its category definitions and links to the source evidence; `api/attacks.json` retains exact public YAML parity. New entries without editorial annotations still generate a page, index record and all exports automatically, using their source title/summary and explicit unclassified/unspecified labels instead of inferred certainty.
 
@@ -73,6 +75,8 @@ Entry pages lead with the takeaway and an expanded **What happened** account bef
 
 ```sh
 npm run validate
+npm run test:validation
+npm run check:links -- --all
 npm run check
 npm run build
 npm test
@@ -87,7 +91,9 @@ npm run test:browser
 
 The test suite checks all seed records, unknown-field rejection, dates, source URL validation, role enums, and exact build output parity with public YAML data. Build before running `npm test`.
 
-The seed has no confidence assessments, so the empty confidence filter and labels are hidden. Sixteen entries carry research or other evidence qualifications, which remain visible before their diagrams. Seed review dates reflect the supplied October 20, 2026 research snapshot; they do not represent independent verification by the site builder. Internal publication status and Typefully draft/scheduled links were removed during import. Published social post URLs were retained where provided.
+PRs also check live source/coverage links in added or modified records; a weekly audit checks the full catalog. Confirmed HTTP 404/410 responses fail; bot blocking, rate limits and temporary network failures are reported for review. See [CI and merge checks](docs/CI.md) for required checks and merge queue configuration.
+
+The seed has no confidence assessments, so the empty confidence filter and labels are hidden. Fourteen entries carry research or other evidence qualifications, which remain visible before their diagrams. Seed review dates reflect the supplied October 20, 2026 research snapshot; they do not represent independent verification by the site builder. Internal publication status and Typefully draft/scheduled links were removed during import. Published social post URLs were retained where provided.
 
 ## Vercel
 
@@ -159,11 +165,13 @@ These are **Astro build routes, not manually maintained files**. A merged attack
 
 ## Flows, maps and mappings
 
-All 68 seed entries now contain source-linked attack-flow graphs. React Flow renders desktop diagrams on demand with zoom, pan and fit controls; mobile uses a scrollable stage list with explicit graph connections; a server-rendered text version remains available to readers and crawlers. New entries without a curated graph receive a factual summary diagram. Unknowns, PoCs, conceptual findings and separately reported branches retain their qualifications.
+All 111 entries contain source-linked attack-flow graphs. React Flow renders desktop diagrams on demand with zoom, pan and fit controls; mobile uses a scrollable stage list with explicit graph connections; a server-rendered text version remains available to readers and crawlers. New entries without a curated graph receive a factual summary diagram. Unknowns, published PoCs and separately reported branches retain their qualifications.
 
-The flows use selectable icon nodes. Each stage can show its original evidence, a hunt hypothesis, required telemetry, investigation steps, query starters in Sigma / KQL / SPL, and a copyable research brief for [Security Detections MCP](https://github.com/MHaggis/Security-Detections-MCP). The site does not connect to that server or claim to have searched its rule index. Native process and Bedrock discovery starters identify their collectors; application / platform examples declare a custom audit schema and require field mapping. All are drafts, with no claimed validation against production telemetry.
+The flows use selectable icon nodes. Each stage can show its original evidence, a hunt hypothesis, required telemetry, investigation steps, and the source-controlled Sigma / KQL / SPL query itself. Native process and Bedrock discovery starters identify their collectors; application / platform examples declare a custom audit schema and require field mapping. All are drafts, with no claimed validation against production telemetry.
 
-Stage annotations live in `src/data/stage-guidance.json`, keyed by attack ID and flow-node ID; reusable hypotheses, query templates and control definitions live in `src/lib/stage-guidance.ts`. Adding an entry automatically creates its `api/defenses/<id>.json` pack and an item in `api/defenses.json`. Stages without annotations explicitly display “not mapped”; unknown or unconfirmed runtime claims do not receive invented rules. CI checks annotation references and export parity.
+Attack pages show a **Detection queries** section when at least one stage has an applicable detection, with copyable Sigma / KQL / SPL drafts, raw query downloads, investigation steps, and a downloadable JSON stage pack. Only query-bearing phases appear in the section or receive “Detect this stage” links and a Hunt tab. This includes attacks without simulations.
+
+Canonical query text and hunt metadata live in `detections/*.yaml`; stage mappings live in `detections/stages.json`, keyed by attack ID and flow-node ID. `npm run detections:build` generates the shared `detections/catalog.json`; `npm run detections:check` rejects drift. The site, raw `api/detections/<profile>.sigma.yml` / `.kql` / `.spl` downloads and existing defense APIs use the same definitions. Add explicit mappings or gap entries when adding an attack. Conditional policy controls remain in `src/lib/stage-guidance.ts`. See [the detection guide](detections/README.md) for schema requirements, research provenance and validation limits.
 
 Green MagicSword links mark conditional **Windows execution-policy opportunities**, with the exact branch and prerequisites in the stage detail. They are editorial recommendations based on [MagicSword's documented application-control capabilities](https://www.magicsword.io/use-cases/application-control?utm_source=openattacks&utm_medium=referral&utm_content=readme-control), not verified incident prevention. Audit mode does not block; an enforced policy must cover the actual executable. Cloud-only, social, browser-extension, macOS and Linux activities are not presented as covered Windows execution paths. Community research links are context, not enforcement products. These annotations are also included in generated LLM Markdown.
 

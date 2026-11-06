@@ -95,7 +95,7 @@ test("environment and evidence filters use the browse index and can be removed s
   await page.getByRole("button", { name: "More filters" }).click();
   await expect(
     page.getByRole("combobox", { name: "Filter by confidence" }),
-  ).toHaveCount(0);
+  ).toHaveCount(attacks.some((attack) => attack.confidence) ? 1 : 0);
   await expect(page.getByLabel("Related project")).toHaveCount(0);
   expect(
     await page
@@ -300,6 +300,7 @@ test("entry flows render with sources and controls; removed sections stay absent
 }) => {
   await page.goto("/attacks/cairn-norforge-2026-10/");
   await expect(page.locator(".attack-flow-node")).toHaveCount(4);
+  await expect(page.locator(".react-flow__attribution")).toHaveCount(0);
   const viewport = page.locator(".react-flow__viewport");
   const before = await viewport.getAttribute("style");
   await page.getByRole("button", { name: "Zoom In", exact: true }).click();
@@ -322,6 +323,28 @@ test("entry flows render with sources and controls; removed sections stay absent
   await expect(
     page.getByRole("heading", { name: "Related community projects" }),
   ).toHaveCount(0);
+});
+
+test("original-source links open the articles directly for single and multiple sources", async ({
+  page,
+}) => {
+  for (const attack of [
+    attacks.find((attack) => attack.sources.length === 1)!,
+    attacks.find((attack) => attack.sources.length > 1)!,
+  ]) {
+    await page.goto(`/attacks/${attack.id}/`);
+    const links = page.locator(".entry-original-sources a");
+    await expect(links).toHaveCount(attack.sources.length);
+    await expect(links.first()).toHaveText("Read the original source");
+    for (const [index, source] of attack.sources.entries()) {
+      await expect(links.nth(index)).toHaveAttribute("href", source.url);
+      await expect(links.nth(index)).toHaveAttribute("target", "_blank");
+    }
+    await expect(page.locator(".entry-meta a")).toHaveAttribute(
+      "href",
+      attack.sources[0].url,
+    );
+  }
 });
 
 test("LLM entry points are discoverable on the landing page", async ({
@@ -352,7 +375,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
 }) => {
   await page.goto("/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
-  await expect(page.locator(".network-orb svg")).toHaveCount(4);
+  await expect(page.locator(".network-orb > svg")).toHaveCount(4);
   await page
     .getByRole("button", {
       name: "Inspect stage 3: PowerShell launches the payload chain",
@@ -383,15 +406,16 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     "enforced Windows policy",
   );
   await page.getByRole("tab", { name: /Hunt/ }).click();
-  await page
-    .getByText("Explore Sigma, KQL & SPL starters", { exact: false })
-    .click();
+  await expect(page.locator(".stage-inspector")).not.toContainText(
+    "Detection MCP",
+  );
+  await expect(page.locator(".stage-query-details")).toHaveAttribute("open", "");
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "DeviceProcessEvents",
   );
-  await page.locator(".hunt-code:not(.mcp-brief)").focus();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toBeFocused();
+  await page.locator(".hunt-code").focus();
+  await expect(page.locator(".hunt-code")).toBeFocused();
   for (const theme of ["dark", "light"]) {
     if (theme === "light")
       await page.getByRole("button", { name: "Switch to light mode" }).click();
@@ -402,14 +426,14 @@ test("network stages expose scoped policy opportunities and all three hunt forma
   }
   await page.getByRole("button", { name: "Switch to dark mode" }).click();
   await page.getByRole("tab", { name: "SPL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "EventCode=1",
   );
   await page.getByRole("tab", { name: "SPL", exact: true }).press("ArrowRight");
   await expect(
     page.getByRole("tab", { name: "Sigma", exact: true }),
   ).toBeFocused();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "status: experimental",
   );
   await page
@@ -475,10 +499,7 @@ test("mobile stage navigation and unmapped evidence remain usable", async ({
   await page.goto("/attacks/wormgpt-underground-2023/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
   await page.locator(".network-stage-picker button").first().click();
-  await page.getByRole("tab", { name: /Hunt/ }).click();
-  await expect(page.locator(".stage-hunt")).toContainText(
-    "No source-backed runtime hunt yet",
-  );
+  await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveCount(0);
   await expect(page.locator(".stage-query-details")).toHaveCount(0);
   await page.goto("/attacks/c2agent-unit42-2026-10/");
   await page.locator("#attack-flow").scrollIntoViewIfNeeded();
@@ -560,9 +581,9 @@ test("qualifications stay before the diagram and custom schema guidance stays ex
   await expect(page.locator(".stage-query-details > summary")).toContainText(
     "Requires log collection and field mapping",
   );
-  await page.locator(".stage-query-details > summary").click();
+  await expect(page.locator(".stage-query-details")).toHaveAttribute("open", "");
   await page.getByRole("tab", { name: "KQL", exact: true }).click();
-  await expect(page.locator(".hunt-code:not(.mcp-brief)")).toContainText(
+  await expect(page.locator(".hunt-code")).toContainText(
     "OpenAttacksAudit_CL",
   );
   for (const name of ["Evidence", "Prevent", "Hunt"]) {

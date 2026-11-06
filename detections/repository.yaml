@@ -1,0 +1,77 @@
+id: repository
+title: Private access → public repository artifact
+hypothesis:
+  A token or agent reads private material and creates a public issue, repository, commit
+  or visibility change inconsistent with the approved task.
+telemetry:
+  - Git-provider organization / enterprise audit
+  - Repository and token permission inventory
+  - Agent tool and secret-scanning / DLP records
+investigate:
+  - Join access and public-write actions by actor / token and time; inspect visibility changes and
+    newly created repositories.
+  - Verify whether the artifact contains sensitive data using approved scanning, retaining original
+    source qualifications.
+limitation:
+  Git-provider audit completeness depends on product and plan. Not every file read or
+  issue body is present in organization audit logs.
+search:
+  - '"GitHub" AND "exfiltration"'
+  - '"repository" AND "visibility"'
+  - '"s1ngularity"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Private access → public repository artifact
+    id: b7b2d3f0-8170-4225-accb-c20633364ef4
+    status: experimental
+    description: A token or agent reads private material and creates a public issue,
+      repository, commit or visibility change inconsistent with the approved task.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - repository.public.write
+          - repository.visibility.change
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("repository.public.write", "repository.visibility.change")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("repository.public.write", "repository.visibility.change")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

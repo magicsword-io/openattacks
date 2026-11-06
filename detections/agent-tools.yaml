@@ -1,0 +1,77 @@
+id: agent-tools
+title: Unexpected agent tool use
+hypothesis:
+  Untrusted content or a changed tool definition precedes a file read, command, or remote
+  call outside the user's intended task.
+telemetry:
+  - Agent tool-call audit records with session / tool / destination
+  - Tool-definition and approval changes
+  - Endpoint process, file-access and network evidence where available
+investigate:
+  - Join input provenance, tool descriptions and calls by session ID and compare the action to the
+    approved task.
+  - Inspect child processes and destinations; record whether execution was in-process, local, or
+    through a remote SaaS connector.
+limitation:
+  Process logs cannot recover model intent. Remote connectors and in-process interpreters
+  may produce no local child process. Prompt content alone is not a reliable signature.
+search:
+  - '"MCP"'
+  - '"prompt injection"'
+  - '"agent" AND "tool"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Unexpected agent tool use
+    id: c709e384-0e11-479e-ab4d-3a06e2431e4b
+    status: experimental
+    description: Untrusted content or a changed tool definition precedes a file
+      read, command, or remote call outside the user's intended task.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - agent.tool.call
+          - agent.tool.definition.change
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("agent.tool.call", "agent.tool.definition.change")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("agent.tool.call", "agent.tool.definition.change")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

@@ -1,0 +1,77 @@
+id: python-startup-persistence
+title: Python startup-hook persistence
+hypothesis:
+  A package or installer creates sitecustomize.py, usercustomize.py, or a .pth startup hook in a
+  Python environment, causing code to run during later interpreter starts.
+telemetry:
+  - File creation and modification events for Python library directories
+  - Package-manager and installer process trees
+  - Subsequent Python process and network activity
+investigate:
+  - Inspect the hook contents, owner, package provenance, and creating process.
+  - Correlate later Python launches with child processes, credential access, or unexpected egress.
+limitation:
+  Legitimate packages use .pth files and customization hooks. File telemetry must cover the relevant
+  environment, and the rule does not establish that the hook later executed.
+search:
+  - '"sitecustomize.py"'
+  - '"usercustomize.py"'
+  - '".pth" AND "site-packages"'
+visibility: Endpoint file telemetry where collected
+reviewed: 2026-11-06
+origin: catalog_authored
+query_kind: native
+query_scope:
+  Python startup-hook file candidates. Tune approved packages and environments, then correlate the
+  file event with interpreter execution.
+upstream_matches:
+  - name: Python Site or User Customize File Creation
+    id: d788313c-9e0b-4c5a-8c4b-c3f05a47d5a8
+    source: Elastic detection-rules
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_site_and_user_customize_file_creation.toml
+  - name: Python Site Hooks Creation During Package Installation
+    id: efaf40f5-779f-4b48-a941-b7d1a7c931ed
+    source: Splunk Security Content
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/python_site_hooks_creation_during_package_installation.yml
+queries:
+  sigma: |
+    title: Hunt - Python Startup Hook Creation
+    id: e229b088-94e8-4254-8bfb-fc1e03173def
+    status: experimental
+    description: Detects creation of Python customization or path startup hooks.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-11-06
+    references:
+      - https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_site_and_user_customize_file_creation.toml
+      - https://github.com/splunk/security_content/blob/develop/detections/endpoint/python_site_hooks_creation_during_package_installation.yml
+    falsepositives:
+      - Legitimate Python package installation and environment management
+    level: medium
+    logsource:
+      category: file_event
+    detection:
+      selection_named_hook:
+        TargetFilename|endswith:
+          - /sitecustomize.py
+          - /usercustomize.py
+      selection_pth:
+        TargetFilename|contains:
+          - /site-packages/
+          - /dist-packages/
+        TargetFilename|endswith: .pth
+      condition: 1 of selection_*
+  kql: |-
+    DeviceFileEvents
+    | where Timestamp > ago(7d)
+    | where ActionType in ("FileCreated", "FileModified", "FileRenamed")
+    | where FileName in~ ("sitecustomize.py", "usercustomize.py")
+        or (FileName endswith ".pth" and FolderPath has_any ("/site-packages/", "/dist-packages/", "\\site-packages\\"))
+    | project Timestamp, DeviceName, InitiatingProcessAccountName, FolderPath, FileName,
+        InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+    | order by Timestamp desc
+  spl: |-
+    sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=11
+    (TargetFilename="*\\sitecustomize.py" OR TargetFilename="*\\usercustomize.py"
+      OR TargetFilename="*\\site-packages\\*.pth")
+    | table _time host User Image TargetFilename ProcessGuid
+    | sort - _time

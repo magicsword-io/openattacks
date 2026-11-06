@@ -1,0 +1,325 @@
+{
+  "reviewed_on": "2026-11-04",
+  "projects": [
+    {
+      "name": "Amass",
+      "url": "https://github.com/owasp-amass/amass",
+      "aliases": ["Amass"]
+    },
+    {
+      "name": "Amazon Bedrock",
+      "url": "https://aws.amazon.com/bedrock/",
+      "aliases": ["Amazon Bedrock", "AWS Bedrock"]
+    },
+    {
+      "name": "Amazon Bedrock AgentCore",
+      "url": "https://aws.amazon.com/bedrock/agentcore/",
+      "aliases": ["AWS Bedrock AgentCore"]
+    },
+    {
+      "name": "Amazon ECR",
+      "url": "https://aws.amazon.com/ecr/",
+      "aliases": ["ECR"]
+    },
+    {
+      "name": "Amazon Q CLI",
+      "url": "https://github.com/aws/amazon-q-developer-cli",
+      "aliases": ["Amazon Q CLI"]
+    },
+    {
+      "name": "ARTEX",
+      "url": "https://github.com/RuoJi6/ARTEX",
+      "aliases": ["ARTEX"],
+      "note": "Community-maintained fork; the original repository is unavailable.",
+      "source_urls": [
+        "https://github.com/RuoJi6/ARTEX",
+        "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/"
+      ]
+    },
+    {
+      "name": "AWS Secrets Manager",
+      "url": "https://aws.amazon.com/secrets-manager/",
+      "aliases": ["AWS Secrets Manager"]
+    },
+    {
+      "name": "AWS Systems Manager",
+      "url": "https://aws.amazon.com/systems-manager/",
+      "aliases": ["SSM"]
+    },
+    {
+      "name": "Azure OpenAI",
+      "url": "https://azure.microsoft.com/en-us/products/ai-foundry/models/openai/",
+      "aliases": ["Azure OpenAI"]
+    },
+    {
+      "name": "Cairn",
+      "url": "https://github.com/oritera/Cairn",
+      "aliases": ["Cairn"],
+      "source_urls": [
+        "https://github.com/oritera/Cairn",
+        "https://norforge.com/blog/inside_cairn"
+      ]
+    },
+    {
+      "name": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "aliases": ["ChatGPT", "ChatGPT-4"]
+    },
+    {
+      "name": "Claude",
+      "url": "https://claude.com/product/overview",
+      "aliases": ["Claude", "Claude Desktop"]
+    },
+    {
+      "name": "Claude Agent SDK for Python",
+      "url": "https://github.com/anthropics/claude-agent-sdk-python",
+      "aliases": ["claude-agent-sdk"],
+      "source_urls": ["https://github.com/advisories/GHSA-h4mw-j7qp-8mwm"]
+    },
+    {
+      "name": "Claude Code",
+      "url": "https://github.com/anthropics/claude-code",
+      "aliases": ["Claude Code", "Claude Code CLI", "Claude CLI"]
+    },
+    {
+      "name": "Cobalt Strike",
+      "url": "https://www.cobaltstrike.com/",
+      "aliases": ["Cobalt Strike"]
+    },
+    {
+      "name": "Cursor",
+      "url": "https://cursor.com/",
+      "aliases": ["Cursor", "Cursor IDE"]
+    },
+    {
+      "name": "DeepSeek projects",
+      "url": "https://github.com/deepseek-ai",
+      "aliases": ["DeepSeek"]
+    },
+    {
+      "name": "dnsrecon",
+      "url": "https://github.com/darkoperator/dnsrecon",
+      "aliases": ["dnsrecon"]
+    },
+    {
+      "name": "Docker Engine (Moby)",
+      "url": "https://github.com/moby/moby",
+      "aliases": ["Docker"]
+    },
+    {
+      "name": "ffuf",
+      "url": "https://github.com/ffuf/ffuf",
+      "aliases": ["ffuf"]
+    },
+    {
+      "name": "Firecrawl MCP server",
+      "url": "https://github.com/firecrawl/firecrawl-mcp-server",
+      "aliases": ["mcp.firecrawl.dev"]
+    },
+    {
+      "name": "Gemini",
+      "url": "https://gemini.google.com/",
+      "aliases": ["Gemini", "Gemini Pro"]
+    },
+    {
+      "name": "Gemini API",
+      "url": "https://ai.google.dev/",
+      "aliases": ["Google Gemini API", "gemini-1.5-flash-latest"]
+    },
+    {
+      "name": "Gemini CLI",
+      "url": "https://github.com/google-gemini/gemini-cli",
+      "aliases": ["Gemini CLI"]
+    },
+    {
+      "name": "GitHub Actions",
+      "url": "https://github.com/features/actions",
+      "aliases": ["GitHub Actions"]
+    },
+    {
+      "name": "GitHub CLI",
+      "url": "https://github.com/cli/cli",
+      "aliases": ["GitHub CLI"]
+    },
+    {
+      "name": "GitHub Copilot",
+      "url": "https://github.com/features/copilot",
+      "aliases": ["GitHub Copilot"]
+    },
+    {
+      "name": "GitHub MCP server",
+      "url": "https://github.com/github/github-mcp-server",
+      "aliases": ["GitHub MCP server"]
+    },
+    {
+      "name": "GLM model projects",
+      "url": "https://github.com/zai-org",
+      "aliases": ["GLM-5.3"]
+    },
+    { "name": "Go", "url": "https://github.com/golang/go", "aliases": ["Go"] },
+    {
+      "name": "gpt-oss",
+      "url": "https://github.com/openai/gpt-oss",
+      "aliases": ["gpt-oss:20b"]
+    },
+    { "name": "Grok", "url": "https://x.ai/grok", "aliases": ["Grok"] },
+    {
+      "name": "GSocket",
+      "url": "https://github.com/hackerschoice/gsocket",
+      "aliases": ["GSocket/gs-netcat", "GSocket", "gs-netcat"]
+    },
+    {
+      "name": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "aliases": ["Hugging Face", "Hugging Face API"]
+    },
+    {
+      "name": "LinPEAS",
+      "url": "https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS",
+      "aliases": ["LinPEAS"]
+    },
+    {
+      "name": "LLaVA",
+      "url": "https://github.com/haotian-liu/LLaVA",
+      "aliases": ["LLaVA"]
+    },
+    {
+      "name": "Magento Open Source",
+      "url": "https://github.com/magento/magento2",
+      "aliases": ["Magento Open Source"],
+      "note": "Links to Magento upstream; the reported lab repository is not identified."
+    },
+    {
+      "name": "mcp-remote",
+      "url": "https://github.com/punkpeye/mcp-remote",
+      "aliases": ["mcp-remote"]
+    },
+    {
+      "name": "Meterpreter (Metasploit Framework)",
+      "url": "https://github.com/rapid7/metasploit-framework",
+      "aliases": ["Meterpreter"]
+    },
+    {
+      "name": "Microsoft Copilot Studio",
+      "url": "https://www.microsoft.com/en-us/copilot/products/copilot-studio",
+      "aliases": ["Microsoft Copilot Studio"]
+    },
+    {
+      "name": "Node.js",
+      "url": "https://github.com/nodejs/node",
+      "aliases": ["node", "Node.js"]
+    },
+    {
+      "name": "Nmap",
+      "url": "https://github.com/nmap/nmap",
+      "aliases": ["Nmap"]
+    },
+    {
+      "name": "NVIDIA SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "aliases": ["NVIDIA SkillSpector"]
+    },
+    {
+      "name": "Oh My Pi",
+      "url": "https://github.com/can1357/oh-my-pi",
+      "aliases": ["Oh My Pi"]
+    },
+    {
+      "name": "Ollama",
+      "url": "https://github.com/ollama/ollama",
+      "aliases": ["Ollama"]
+    },
+    {
+      "name": "open (npm)",
+      "url": "https://github.com/sindresorhus/open",
+      "aliases": ["npm open", "npm open@10.1.2", "open()"]
+    },
+    {
+      "name": "OpenCode",
+      "url": "https://github.com/anomalyco/opencode",
+      "aliases": ["opencode", "opencode-ai"]
+    },
+    {
+      "name": "openmcp-client",
+      "url": "https://github.com/LSTM-Kirigaya/openmcp-client",
+      "aliases": ["openmcp-client"]
+    },
+    {
+      "name": "OpenSSL",
+      "url": "https://github.com/openssl/openssl",
+      "aliases": ["OpenSSL"]
+    },
+    {
+      "name": "PHP",
+      "url": "https://github.com/php/php-src",
+      "aliases": ["PHP"]
+    },
+    {
+      "name": "PHPGGC",
+      "url": "https://github.com/ambionics/phpggc",
+      "aliases": ["PHPGGC"]
+    },
+    {
+      "name": "Playwright",
+      "url": "https://github.com/microsoft/playwright",
+      "aliases": ["Playwright"]
+    },
+    {
+      "name": "PowerShell",
+      "url": "https://github.com/PowerShell/PowerShell",
+      "aliases": ["PowerShell"]
+    },
+    {
+      "name": "PyInstaller",
+      "url": "https://github.com/pyinstaller/pyinstaller",
+      "aliases": ["PyInstaller"]
+    },
+    {
+      "name": "pysoxy",
+      "url": "https://github.com/MisterDaneel/pysoxy",
+      "aliases": ["pysoxy"]
+    },
+    {
+      "name": "Python",
+      "url": "https://github.com/python/cpython",
+      "aliases": ["Python"]
+    },
+    {
+      "name": "Qwen2.5-Coder-32B-Instruct",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+      "aliases": ["Qwen2.5-Coder-32B-Instruct"],
+      "source_urls": ["https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct"],
+      "note": "Official model page; the former GitHub repository redirects to a newer model family."
+    },
+    {
+      "name": "revsocks",
+      "url": "https://github.com/kost/revsocks",
+      "aliases": ["revsocks"]
+    },
+    {
+      "name": "sequa-mcp",
+      "url": "https://github.com/sequa-ai/sequa-mcp",
+      "aliases": ["sequa-mcp"]
+    },
+    {
+      "name": "UACME",
+      "url": "https://github.com/hfiref0x/UACME",
+      "aliases": ["UACME"]
+    },
+    {
+      "name": "Vertex AI",
+      "url": "https://cloud.google.com/vertex-ai",
+      "aliases": ["Vertex AI"]
+    },
+    {
+      "name": "Visual Studio Code",
+      "url": "https://github.com/microsoft/vscode",
+      "aliases": ["VS Code"]
+    },
+    {
+      "name": "webhook.site",
+      "url": "https://github.com/webhooksite/webhook.site",
+      "aliases": ["webhook.site"]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+id: payment
+title: Out-of-band payment verification
+hypothesis:
+  A meeting or message requests a new beneficiary, split transfers or an override of
+  normal payment approval.
+telemetry:
+  - Treasury / payment approval and beneficiary-change audit
+  - Meeting and communication metadata
+  - Independent callback / dual-approval records
+investigate:
+  - Review new payees, transfer bursts and approval overrides against established payment policy.
+  - Verify the request using a known contact channel; preserve the meeting record and authorization
+    history.
+limitation:
+  A video call's apparent identity is not authentication. Endpoint application control and
+  malware hunts do not detect a pure business-process fraud.
+search:
+  - '"business email compromise"'
+  - '"payment" AND "fraud"'
+visibility: Defender-side logs where collected
+reviewed: 2026-10-23
+origin: catalog_authored
+query_kind: custom_schema
+query_scope:
+  Custom-schema candidates, not out-of-box detectors. Map your application / cloud /
+  platform logs to EventType, Actor, Asset, Action, Target and CorrelationId. KQL uses a custom
+  OpenAttacksAudit_CL table; SPL uses openattacks:audit. EventType values are proposed normalization
+  names, not native vendor event names. Correlation and environment-specific alert logic remain to
+  be built.
+queries:
+  sigma: |
+    title: Hunt - Out-of-band payment verification
+    id: 813e417f-8751-4479-ad17-0f3d146ff036
+    status: experimental
+    description: A meeting or message requests a new beneficiary, split transfers or
+      an override of normal payment approval.
+    author: MagicSword OpenAttacks catalog
+    date: 2026-10-23
+    falsepositives:
+      - Authorized activity matching this broad hunt; baseline and investigate
+        before alerting.
+    level: low
+    logsource:
+      category: application
+      product: openattacks_audit
+      definition: Custom normalized audit schema; map EventType, Actor, Asset, Action,
+        Target and CorrelationId from the required source logs first.
+    detection:
+      selection:
+        EventType:
+          - payment.beneficiary.change
+          - payment.approval.override
+          - payment.transfer
+      condition: selection
+  kql: >-
+    // SCHEMA TEMPLATE: create/map this custom table before use; not a built-in Sentinel table.
+
+    // OpenAttacksAudit_CL: TimeGenerated(datetime),
+    EventType/Actor/Asset/Action/Target/CorrelationId(string).
+
+    // Selects candidates only. Apply the stage hypothesis and correlation steps before alerting.
+
+    OpenAttacksAudit_CL
+
+    | where TimeGenerated > ago(7d)
+
+    | where EventType in ("payment.beneficiary.change", "payment.approval.override",
+    "payment.transfer")
+
+    | project TimeGenerated, EventType, Actor, Asset, Action, Target, CorrelationId
+
+    | order by TimeGenerated desc
+  spl: |-
+    sourcetype="openattacks:audit"
+    EventType IN ("payment.beneficiary.change", "payment.approval.override", "payment.transfer")
+    | table _time EventType Actor Asset Action Target CorrelationId
+    | sort - _time

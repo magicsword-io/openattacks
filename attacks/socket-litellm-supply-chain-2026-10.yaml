@@ -1,0 +1,110 @@
+id: socket-litellm-supply-chain-2026-10
+name: LiteLLM 1.107.0 backdoor steals cloud and AI credentials
+date_reported: 2026-10-21
+researcher: Socket Research Team
+org: Socket
+sources:
+  - url: https://socket.dev/blog/litellm-compromise
+    title: LiteLLM PyPI Package and Docker Images Compromised to Steal Cloud and AI Credentials
+borderline: false
+borderline_note: null
+ai_role: ai_credential_theft
+ai_role_secondary: ai_agent_or_mcp_as_target
+ai_role_detail: Supply chain attack targeting AI gateway, steals cloud/AI-tool/gateway credentials via Python startup hooks
+technique_summary: "LiteLLM version 1.107.0 on PyPI and GHCR delivered malware through Python startup hooks (cook.pth, cook.py, sitecustomize.py). The payload collects: AWS/Azure/GCP/K8s credentials, GitHub CLI tokens, SSH/GPG keys, AI tool credentials (Codex, Claude, Gemini, Cursor MCP, Copilot, etc.), browser data, LiteLLM proxy database credentials, and environment variables. Collector encrypts data with AES-256-CBC and exfiltrates to www.litellm.dev/healthcheck. A second loader downloads Python from GitHub-controlled domain for remote execution. Docker provenance showed lookalike repository Berri-AI/litellm (hyphenated) instead of legitimate BerriAI/litellm."
+initial_access: "Supply chain compromise: malicious wheels published to PyPI and Docker images to GHCR; project release workflow used lookalike source repository (Berri-AI/litellm with hyphen)"
+ai_tooling_and_models:
+  - LiteLLM (legitimate proxy for LLM providers, compromised version)
+other_tooling:
+  - Python startup hooks (cook.pth for import cook, sitecustomize.py)
+  - Base64-encoded zlib-compressed credential collector
+  - Maturin build with data directory
+  - RSA-4096 encryption for exfiltration
+  - GitHub domain.txt pointer for remote code loader
+victims_and_sectors: "LiteLLM users across ~23M weekly downloads; affects AI development, cloud deployments, CI/CD pipelines"
+regions:
+  - unknown
+attribution_or_cluster: "unknown; lookalike repository and release workflow compromise suggest targeted supply chain operation"
+scale_and_metrics: "LiteLLM receives ~23M weekly downloads; 7 platform-specific wheels published Oct 21, 2026 11:39:51 UTC, flagged by Socket AI scanner at 11:46:30 UTC; multiple GHCR/Docker Hub image tags affected"
+prevention_angle: "Block litellm==1.107.0 and affected image digests; Python startup hook monitoring; dependency pinning and artifact verification; registry tag floating risks; separate release credentials from installation environments; audit cloud/AI credentials"
+related_magicsword_projects: []
+source_notes: "Socket Research Team detected via AI scanner 7 minutes after publication; Upwind provided independent container investigation; Docker provenance recorded malicious source-owner override; loader GitHub pointer returned empty response at 13:01:44 UTC Oct 21"
+last_reviewed: 2026-11-04
+iocs:
+  domains:
+    - www.litellm.dev
+  ips: []
+  hashes:
+    - "7598727f209d717041db37f7dca271d3a7d328a279890e0e1d55375729aeb86d"
+    - "0aaf7ba346d41ef2f40390436738b001180d5a1c03aa093f121078a9969d9a1a"
+    - "668169d35b87bf51324080390b1b1c5ab12bd335cfe5f1a99e3689abd5e02ae6"
+    - "462d0c9f67ca522d9e0e4acd245e90b36ce0d5353604a66bb7c43a1ec4a6fcf7"
+    - "c2e32d0ce2548aa662c18bf5001911a79fe5b30cf8357132275add02fdcde054"
+    - "1bbce8caa94f01c0aaa0b7ddae51553a8a32e1ce53d96d44fe583272aff7ad00"
+    - "12d4ccc5c6f8d35cf4f2cf233b7f3e418e863e657d81ff5f5fc9e210005b9484"
+    - "9dd0a3926f96a37eb86cf1ee2310d9be93139cc4ebef3ef9e2efe9531390be25"
+    - "34bef04fe88ac9d0aae0475630b1738681d15b94f233ac8aa46eacf5968305fa"
+  urls:
+    - http://www.litellm.dev/healthcheck
+    - https://raw.githubusercontent.com/letters9813/pythonclient-test/main/domain.txt
+atlas_techniques:
+  - id: AML.T0010.001
+    rationale: "Supply chain compromise of LiteLLM package specifically targeting AI/ML infrastructure and gateway credentials"
+    source_urls:
+      - https://socket.dev/blog/litellm-compromise
+  - id: AML.T0055
+    rationale: "Credential theft specifically targets AI development tools (Codex, Claude, Gemini, Cursor, Copilot) and LiteLLM proxy database"
+    source_urls:
+      - https://socket.dev/blog/litellm-compromise
+attack_flow:
+  nodes:
+    - id: supply-chain
+      title: Compromised release workflow
+      description: "Project release workflow used lookalike repository Berri-AI/litellm (hyphenated) instead of legitimate BerriAI/litellm; malicious commit added Maturin data directory; build provenance recorded source-owner override"
+      kind: access
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+    - id: distribution
+      title: Malicious package distribution
+      description: "Published litellm 1.107.0 to PyPI (7 wheels across macOS/Linux/Windows) and Docker images to GHCR with floating tags (latest, main-latest, main-stable)"
+      kind: execution
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+    - id: installation
+      title: Python startup hook installation
+      description: "Wheels install cook.pth, cook.py, sitecustomize.py to environment's Python library directory; triggered automatically on any Python startup"
+      kind: execution
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+    - id: collection
+      title: Credential collection
+      description: "Collects AWS/Azure/GCP/K8s, AI tools (Codex/Claude/Gemini/Cursor/Copilot/Windsurf), SSH/GPG keys, browser data, LiteLLM proxy DB credentials, environment variables; 16 collection modules with individual error handling"
+      kind: ai
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+    - id: exfiltration
+      title: Encrypted exfiltration
+      description: "Data encrypted with AES-256-CBC, key wrapped with RSA-4096 public key, packaged in gzip tar; POSTed to www.litellm.dev/healthcheck with X-Token header; up to 4 retry attempts"
+      kind: impact
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+    - id: persistence
+      title: Remote code loader
+      description: "sitecustomize.py forks detached process; downloads domain.txt from GitHub repo letters9813/pythonclient-test; if domain resolves, downloads and executes Python from /codepy endpoint; 1-hour loop"
+      kind: execution
+      source_urls:
+        - https://socket.dev/blog/litellm-compromise
+  edges:
+    - source: supply-chain
+      target: distribution
+    - source: distribution
+      target: installation
+    - source: installation
+      target: collection
+    - source: collection
+      target: exfiltration
+    - source: installation
+      target: persistence
+    - source: persistence
+      target: collection
+      loop: true
