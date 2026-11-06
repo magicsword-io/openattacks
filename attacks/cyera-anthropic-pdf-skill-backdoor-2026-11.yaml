@@ -5,9 +5,9 @@ date_reported: 2026-11-03
 researcher: Assaf Morag
 org: Cyera Research
 sources:
-- url: https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-  title: Malicious Copy of Anthropic's PDF Skill Carries Linux Backdoor
-  publisher: Cyera Research
+  - url: https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+    title: Malicious Copy of Anthropic's PDF Skill Carries Linux Backdoor
+    publisher: Cyera Research
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -34,15 +34,15 @@ technique_summary: Cyera Research (Nov 3, 2026) discovered six skill archives im
 initial_access: Developers install tampered PDF skill archive from unknown distribution
   channel (not Anthropic's official Skills repository)
 ai_tooling_and_models:
-- Anthropic Claude Skills (impersonated; official repo https://github.com/anthropics/skills)
-- garble Go obfuscator (https://github.com/burrowers/garble)
+  - Anthropic Claude Skills (impersonated; official repo https://github.com/anthropics/skills)
+  - garble Go obfuscator (https://github.com/burrowers/garble)
 other_tooling:
-- system_linux Go backdoor (5.1 MB ELF64, AES-256-GCM + 0xAA XOR config)
-- /bin/bash reverse shell over TCP
+  - system_linux Go backdoor (5.1 MB ELF64, AES-256-GCM + 0xAA XOR config)
+  - /bin/bash reverse shell over TCP
 victims_and_sectors: AI developers using Claude Skills; targets include AI/ML engineering
   teams, research labs, and organizations deploying Anthropic skills
 regions:
-- Multiple regions
+  - Multiple regions
 attribution_or_cluster: Unknown actor; UTC+8 archive timestamps; Simplified Chinese
   strings in binary; scan.100tal.com hostname (TAL Education Group-linked); Cyera
   notes attribution unknown and could be targeted attack or security exercise
@@ -57,79 +57,79 @@ prevention_angle: Only install skills from Anthropic's official Skills repositor
   truncated or modified Quick Start sections referencing external domains; educate
   developers on skill supply-chain risks
 related_magicsword_projects: []
-source_notes: 'Cyera Research (Assaf Morag, Nov 3, 2026) primary source; all hashes
+source_notes: "Cyera Research (Assaf Morag, Nov 3, 2026) primary source; all hashes
   from Cyera IoC table: system_linux SHA-256 50cb53704f318e4fc9a9cd8f6d32eb98d8c666501c720d63c2c701caeb6fa946,
   SKILL.md SHA-256 d0d4144609825ee7480f7889ee04d97f4b1d9eaa8a46c2a0d46d81ab5aa83827,
   plus archive hashes; network IOCs 81.70.101.115 and scan.100tal.com verified from
   Cyera; Cyera explicitly states archives were analyzed but system_linux was not observed
-  executing'
+  executing"
 last_reviewed: 2026-11-06
 iocs:
   domains:
-  - scan.100tal.com
+    - scan.100tal.com
   ips:
-  - 81.70.101.115
+    - 81.70.101.115
   hashes:
-  - 50cb53704f318e4fc9a9cd8f6d32eb98d8c666501c720d63c2c701caeb6fa946
-  - d0d4144609825ee7480f7889ee04d97f4b1d9eaa8a46c2a0d46d81ab5aa83827
+    - 50cb53704f318e4fc9a9cd8f6d32eb98d8c666501c720d63c2c701caeb6fa946
+    - d0d4144609825ee7480f7889ee04d97f4b1d9eaa8a46c2a0d46d81ab5aa83827
   urls:
-  - https://scan.100tal.com (TAL Education Group-linked hostname)
+    - https://scan.100tal.com (TAL Education Group-linked hostname)
 atlas_techniques:
-- id: AML.T0000
-  rationale: Supply-chain attack targeting AI skill distribution; tampered Anthropic
-    PDF skill delivers Linux backdoor to developer workstations in AI/ML development
-    environments
-  source_urls:
-  - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+  - id: AML.T0000
+    rationale: Supply-chain attack targeting AI skill distribution; tampered Anthropic
+      PDF skill delivers Linux backdoor to developer workstations in AI/ML development
+      environments
+    source_urls:
+      - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
 attack_flow:
   nodes:
-  - id: create-tampered-skill
-    kind: execution
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: Create tampered PDF skill with system_linux backdoor
-    description: Create tampered PDF skill with system_linux backdoor
-  - id: truncate-skill-md
-    kind: execution
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: Truncate SKILL.md (315→19 lines), add curl scan.100tal.com
-    description: Truncate SKILL.md (315→19 lines), add curl scan.100tal.com
-  - id: obfuscate-backdoor
-    kind: execution
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: garble-obfuscate system_linux Go binary
-    description: garble-obfuscate system_linux Go binary
-  - id: distribute-skill
-    kind: execution
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: Distribute tampered skill via unknown channel
-    description: Distribute tampered skill via unknown channel
-  - id: developer-install
-    kind: execution
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: Developer installs tampered PDF skill
-    description: Developer installs tampered PDF skill
-  - id: backdoor-execution
-    kind: impact
-    source_urls:
-    - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
-    title: system_linux connects 81.70.101.115:2345, attaches /bin/bash
-    description: system_linux connects 81.70.101.115:2345, attaches /bin/bash
+    - id: create-tampered-skill
+      kind: execution
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: Create tampered PDF skill with system_linux backdoor
+      description: Create tampered PDF skill with system_linux backdoor
+    - id: truncate-skill-md
+      kind: execution
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: Truncate SKILL.md (315→19 lines), add curl scan.100tal.com
+      description: Truncate SKILL.md (315→19 lines), add curl scan.100tal.com
+    - id: obfuscate-backdoor
+      kind: execution
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: garble-obfuscate system_linux Go binary
+      description: garble-obfuscate system_linux Go binary
+    - id: distribute-skill
+      kind: execution
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: Distribute tampered skill via unknown channel
+      description: Distribute tampered skill via unknown channel
+    - id: developer-install
+      kind: execution
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: Developer installs tampered PDF skill
+      description: Developer installs tampered PDF skill
+    - id: backdoor-execution
+      kind: impact
+      source_urls:
+        - https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor
+      title: system_linux connects 81.70.101.115:2345, attaches /bin/bash
+      description: system_linux connects 81.70.101.115:2345, attaches /bin/bash
   edges:
-  - source: create-tampered-skill
-    target: truncate-skill-md
-  - source: truncate-skill-md
-    target: obfuscate-backdoor
-  - source: obfuscate-backdoor
-    target: distribute-skill
-  - source: distribute-skill
-    target: developer-install
-  - source: developer-install
-    target: backdoor-execution
+    - source: create-tampered-skill
+      target: truncate-skill-md
+    - source: truncate-skill-md
+      target: obfuscate-backdoor
+    - source: obfuscate-backdoor
+      target: distribute-skill
+    - source: distribute-skill
+      target: developer-install
+    - source: developer-install
+      target: backdoor-execution
 category: attacks-on-ai
 attribution:
   actor_name: Unknown
@@ -139,42 +139,43 @@ attribution:
   confidence: low
 ai_involvement_confidence: confirmed
 detections:
-- name: Linux Shell Pipe to Shell
-  format: sigma
-  url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_susp_pipe_shell.yml
-  notes: Detects suspicious shell pipes; relevant for detecting /bin/bash reverse
-    shell execution from system_linux backdoor
-- name: Bash Interactive Shell
-  format: sigma
-  url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_bash_interactive_shell.yml
-  notes: Detects bash interactive shell spawning; directly applicable to system_linux
-    attaching /bin/bash to TCP socket
-- name: Skill supply-chain integrity monitoring
-  format: guidance
-  notes: Verify skill archives against official Anthropic Skills repository (github.com/anthropics/skills);
-    alert on unexpected binaries in skill directories (system_linux, system_darwin);
-    scan SKILL.md for modified Quick Start sections referencing external domains (scan.100tal.com);
-    monitor skill installation for outbound TCP connections to non-Anthropic infrastructure
-    (81.70.101.115:2345); detect garble-obfuscated Go binaries via string entropy
-    analysis; flag skill archives with UTC+8 timestamps and Simplified Chinese strings
-    when organization is not China-based
-- name: Network egress filtering
-  format: guidance
-  notes: Block outbound connections from skill execution environments to unknown IPs;
-    alert on raw TCP connections to port 2345; monitor for /bin/bash processes with
-    network sockets; detect AES-256-GCM encrypted config files in skill directories
+  - name: Linux Shell Pipe to Shell
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_susp_pipe_shell.yml
+    notes: Detects suspicious shell pipes; relevant for detecting /bin/bash reverse
+      shell execution from system_linux backdoor
+  - name: Bash Interactive Shell
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_bash_interactive_shell.yml
+    notes: Detects bash interactive shell spawning; directly applicable to system_linux
+      attaching /bin/bash to TCP socket
+  - name: Skill supply-chain integrity monitoring
+    format: guidance
+    notes:
+      Verify skill archives against official Anthropic Skills repository (github.com/anthropics/skills);
+      alert on unexpected binaries in skill directories (system_linux, system_darwin);
+      scan SKILL.md for modified Quick Start sections referencing external domains (scan.100tal.com);
+      monitor skill installation for outbound TCP connections to non-Anthropic infrastructure
+      (81.70.101.115:2345); detect garble-obfuscated Go binaries via string entropy
+      analysis; flag skill archives with UTC+8 timestamps and Simplified Chinese strings
+      when organization is not China-based
+  - name: Network egress filtering
+    format: guidance
+    notes: Block outbound connections from skill execution environments to unknown IPs;
+      alert on raw TCP connections to port 2345; monitor for /bin/bash processes with
+      network sockets; detect AES-256-GCM encrypted config files in skill directories
 timeline:
-  first_seen: '2026-05-23'
-  last_updated: '2026-11-03'
+  first_seen: "2026-05-23"
+  last_updated: "2026-11-03"
   updates:
-  - date: '2026-05-23'
-    source: Cyera Research
-    summary: Earliest observed tampered PDF skill archive with system_linux backdoor
-  - date: '2026-07-14'
-    source: Cyera Research
-    summary: Latest observed tampered PDF skill archive (six total observed May 23
-      - Jul 14)
-  - date: '2026-11-03'
-    source: Cyera Research
-    summary: Cyera publishes analysis with IOCs and backdoor mechanism; notes attribution
-      unknown and system_linux was not observed executing
+    - date: "2026-05-23"
+      source: Cyera Research
+      summary: Earliest observed tampered PDF skill archive with system_linux backdoor
+    - date: "2026-07-14"
+      source: Cyera Research
+      summary: Latest observed tampered PDF skill archive (six total observed May 23
+        - Jul 14)
+    - date: "2026-11-03"
+      source: Cyera Research
+      summary: Cyera publishes analysis with IOCs and backdoor mechanism; notes attribution
+        unknown and system_linux was not observed executing

@@ -22,7 +22,9 @@
     "simulations:check": "node scripts/build-simulations.mjs --check",
     "detections:build": "node scripts/build-detections.mjs",
     "detections:check": "node scripts/build-detections.mjs --check",
-    "labs:bundle": "node scripts/build-lab-bundle.mjs"
+    "labs:bundle": "node scripts/build-lab-bundle.mjs",
+    "format:data": "prettier --write \"attacks/*.yaml\" schema.yaml",
+    "format:data:check": "prettier --check \"attacks/*.yaml\" schema.yaml"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.0",

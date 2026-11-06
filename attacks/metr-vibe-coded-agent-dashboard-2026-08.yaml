@@ -56,7 +56,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Exposed API key in AI agent dashboard leads to theft of AI inference credits"
     source_urls:
-    - https://metr.org/blog/2026-08-31-security-update/
+      - https://metr.org/blog/2026-08-31-security-update/
 attack_flow:
   nodes:
     - id: discover-key

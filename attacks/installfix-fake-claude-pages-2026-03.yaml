@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Adversary uses SEO poisoning and fake installation pages to distribute trojanized AI coding assistant installers stealing credentials"
     source_urls:
-    - https://pushsecurity.com/blog/installfix/
+      - https://pushsecurity.com/blog/installfix/
 attack_flow:
   nodes:
     - id: seo-poisoning

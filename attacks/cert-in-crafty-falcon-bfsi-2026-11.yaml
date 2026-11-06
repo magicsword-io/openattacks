@@ -4,13 +4,13 @@ date_reported: 2026-11-04
 researcher: CERT-In / CSIRT-Fin
 org: CERT-In (Indian Computer Emergency Response Team)
 sources:
-- url: https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-  title: 'CERT-In Advisory CIAD-2026-0058: CRAFTY FALCON Campaign Against Indian Financial
-    Sector'
-  publisher: CERT-In
-- url: https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
-  title: CERT-In warns of AI-driven hacking campaign targeting Indian fintech sector
-  publisher: Indian Express
+  - url: https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+    title: "CERT-In Advisory CIAD-2026-0058: CRAFTY FALCON Campaign Against Indian Financial
+      Sector"
+    publisher: CERT-In
+  - url: https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
+    title: CERT-In warns of AI-driven hacking campaign targeting Indian fintech sector
+    publisher: Indian Express
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -19,7 +19,7 @@ ai_role_secondary: null
 ai_role_detail: Financially motivated threat actors chaining public agentic offensive
   AI frameworks (ARTEX, PentAGI, Cairn, CyberStrikeAI) with on-the-fly AI script generation
   for intrusion automation against Indian BFSI sector
-technique_summary: 'CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) warns of CRAFTY
+technique_summary: "CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) warns of CRAFTY
   FALCON campaign targeting Indian non-banking financial companies (NBFCs), fintechs,
   payment aggregators, and cryptocurrency exchanges. Attackers chain multiple open-source
   agentic offensive AI frameworks: ARTEX (autonomous penetration testing), PentAGI
@@ -31,26 +31,26 @@ technique_summary: 'CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) warns of CRAFT
   retargeting during festive windows when transaction volumes are high and security
   teams are reduced. CERT-In notes campaign exploits trust in cloud infrastructure
   and leverages AI agent autonomy to accelerate intrusion timelines from weeks to
-  hours.'
+  hours."
 initial_access: Cloud service exploitation, exposed APIs, compromised AWS Lambda functions,
   credential stuffing against fintech portals
 ai_tooling_and_models:
-- ARTEX (https://github.com/RuoJi6/ARTEX)
-- PentAGI (https://github.com/vxcontrol/pentagi)
-- CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)
-- Cairn (AI web exploitation harness)
-- On-the-fly AI script generation
+  - ARTEX (https://github.com/RuoJi6/ARTEX)
+  - PentAGI (https://github.com/vxcontrol/pentagi)
+  - CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)
+  - Cairn (AI web exploitation harness)
+  - On-the-fly AI script generation
 other_tooling:
-- AWS Lambda for staging-to-production pivots
-- Custom payment API invocation scripts
-- Log deletion tools
+  - AWS Lambda for staging-to-production pivots
+  - Custom payment API invocation scripts
+  - Log deletion tools
 victims_and_sectors: Indian non-banking financial companies (NBFCs), fintechs, payment
   aggregators, cryptocurrency exchanges; festive-season targeting (Diwali, year-end)
 regions:
-- India
-attribution_or_cluster: 'CERT-In: CRAFTY FALCON financially motivated campaign; Indian
+  - India
+attribution_or_cluster: "CERT-In: CRAFTY FALCON financially motivated campaign; Indian
   press notes Chinese-linked offensive AI frameworks; no confirmed state nexus in
-  CERT-In advisory'
+  CERT-In advisory"
 scale_and_metrics: Active since at least Oct 2026; Rs. 1 test transfers followed by
   large payouts; multiple NBFCs and fintechs compromised; festive-window retargeting
   pattern
@@ -73,71 +73,71 @@ iocs:
   hashes: []
   urls: []
 atlas_techniques:
-- id: AML.T0000
-  rationale: Attackers deploy multiple autonomous AI agent frameworks (ARTEX, PentAGI,
-    Cairn, CyberStrikeAI) as operators to automate intrusion lifecycle from reconnaissance
-    through payment API exploitation and fund exfiltration
-  source_urls:
-  - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+  - id: AML.T0000
+    rationale: Attackers deploy multiple autonomous AI agent frameworks (ARTEX, PentAGI,
+      Cairn, CyberStrikeAI) as operators to automate intrusion lifecycle from reconnaissance
+      through payment API exploitation and fund exfiltration
+    source_urls:
+      - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
 attack_flow:
   nodes:
-  - id: initial-recon
-    kind: execution
-    source_urls:
-    - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-    title: AI agent reconnaissance
-    description: AI agent reconnaissance
-  - id: cloud-pivot
-    kind: execution
-    source_urls:
-    - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-    title: AWS Lambda staging-to-production pivot
-    description: AWS Lambda staging-to-production pivot
-  - id: api-abuse
-    kind: execution
-    source_urls:
-    - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-    title: Payment/merchant API invocation
-    description: Payment/merchant API invocation
-  - id: test-transfer
-    kind: execution
-    source_urls:
-    - https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
-    title: Rs. 1 test transfer
-    description: Rs. 1 test transfer
-  - id: fund-theft
-    kind: impact
-    source_urls:
-    - https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
-    title: Large mule payouts
-    description: Large mule payouts
-  - id: crypto-theft
-    kind: impact
-    source_urls:
-    - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-    title: Cryptocurrency wallet-key theft
-    description: Cryptocurrency wallet-key theft
-  - id: log-deletion
-    kind: execution
-    source_urls:
-    - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
-    title: Comprehensive log deletion
-    description: Comprehensive log deletion
+    - id: initial-recon
+      kind: execution
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+      title: AI agent reconnaissance
+      description: AI agent reconnaissance
+    - id: cloud-pivot
+      kind: execution
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+      title: AWS Lambda staging-to-production pivot
+      description: AWS Lambda staging-to-production pivot
+    - id: api-abuse
+      kind: execution
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+      title: Payment/merchant API invocation
+      description: Payment/merchant API invocation
+    - id: test-transfer
+      kind: execution
+      source_urls:
+        - https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
+      title: Rs. 1 test transfer
+      description: Rs. 1 test transfer
+    - id: fund-theft
+      kind: impact
+      source_urls:
+        - https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
+      title: Large mule payouts
+      description: Large mule payouts
+    - id: crypto-theft
+      kind: impact
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+      title: Cryptocurrency wallet-key theft
+      description: Cryptocurrency wallet-key theft
+    - id: log-deletion
+      kind: execution
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+      title: Comprehensive log deletion
+      description: Comprehensive log deletion
   edges:
-  - source: initial-recon
-    target: cloud-pivot
-  - source: cloud-pivot
-    target: api-abuse
-  - source: api-abuse
-    target: test-transfer
-  - source: test-transfer
-    target: fund-theft
-  - source: api-abuse
-    target: crypto-theft
-  - source: fund-theft
-    target: log-deletion
-  - source: crypto-theft
-    target: log-deletion
+    - source: initial-recon
+      target: cloud-pivot
+    - source: cloud-pivot
+      target: api-abuse
+    - source: api-abuse
+      target: test-transfer
+    - source: test-transfer
+      target: fund-theft
+    - source: api-abuse
+      target: crypto-theft
+    - source: fund-theft
+      target: log-deletion
+    - source: crypto-theft
+      target: log-deletion
 category: adversary-use-of-ai
 attribution:
   actor_name: CRAFTY FALCON
@@ -147,29 +147,29 @@ attribution:
   confidence: high
 ai_involvement_confidence: confirmed
 detections:
-- name: AWS Lambda Event Source Mapping Creation
-  format: elastic
-  url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/persistence_lambda_event_source_mapping_created.toml
-  notes: Detects Lambda event source mapping creation; relevant for detecting Lambda-based
-    persistence in CRAFTY FALCON cloud pivots
-- name: AWS New Lambda Layer Attached
-  format: sigma
-  url: https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/aws/cloudtrail/aws_new_lambda_layer_attached.yml
-  notes: Detects Lambda layer attachment; applicable to CRAFTY FALCON staging-to-production
-    pivots via Lambda
-- name: Agentic AI framework detection
-  format: guidance
-  notes: Monitor for ARTEX, PentAGI, Cairn, CyberStrikeAI process execution (Python
-    agent frameworks); alert on autonomous API enumeration patterns; detect rapid
-    payment API invocations from non-standard infrastructure; flag Rs. 1 test transfers
-    followed by large transactions; monitor CloudTrail for Lambda configuration changes
-    and log deletion attempts
+  - name: AWS Lambda Event Source Mapping Creation
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/persistence_lambda_event_source_mapping_created.toml
+    notes: Detects Lambda event source mapping creation; relevant for detecting Lambda-based
+      persistence in CRAFTY FALCON cloud pivots
+  - name: AWS New Lambda Layer Attached
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/aws/cloudtrail/aws_new_lambda_layer_attached.yml
+    notes: Detects Lambda layer attachment; applicable to CRAFTY FALCON staging-to-production
+      pivots via Lambda
+  - name: Agentic AI framework detection
+    format: guidance
+    notes: Monitor for ARTEX, PentAGI, Cairn, CyberStrikeAI process execution (Python
+      agent frameworks); alert on autonomous API enumeration patterns; detect rapid
+      payment API invocations from non-standard infrastructure; flag Rs. 1 test transfers
+      followed by large transactions; monitor CloudTrail for Lambda configuration changes
+      and log deletion attempts
 timeline:
-  first_seen: '2026-10-01'
-  last_updated: '2026-11-04'
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-04"
   updates:
-  - date: '2026-11-04'
-    source: CERT-In
-    summary: CERT-In Advisory CIAD-2026-0058 issued warning Indian BFSI sector on
-      CRAFTY FALCON campaign using ARTEX, PentAGI, Cairn, CyberStrikeAI; festive-window
-      targeting pattern noted
+    - date: "2026-11-04"
+      source: CERT-In
+      summary: CERT-In Advisory CIAD-2026-0058 issued warning Indian BFSI sector on
+        CRAFTY FALCON campaign using ARTEX, PentAGI, Cairn, CyberStrikeAI; festive-window
+        targeting pattern noted

@@ -77,7 +77,7 @@ attack_flow:
       target: hermes-hunt
     - source: hermes-hunt
       target: exfiltrate-mine
-category: attacks-on-ai  
+category: attacks-on-ai
 attribution:
   actor_name: Carbonato botnet operators
   country: Unknown

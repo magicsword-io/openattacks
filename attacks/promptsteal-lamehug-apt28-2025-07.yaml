@@ -47,7 +47,8 @@ ai_involvement_confidence: confirmed
 detections:
   - name: Detect Hugging Face API connections from endpoints
     format: guidance
-    notes: Monitor outbound HTTPS connections to Hugging Face API endpoints (api-inference.huggingface.co)
+    notes:
+      Monitor outbound HTTPS connections to Hugging Face API endpoints (api-inference.huggingface.co)
       from workstations and servers. Legitimate developer activity is expected; focus on unexpected
       or unauthorized hosts.
   - name: PyInstaller executable masquerading as image tools

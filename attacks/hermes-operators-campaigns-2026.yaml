@@ -66,8 +66,8 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Multiple threat actors using Hermes autonomous agent for post-compromise operations"
     source_urls:
-    - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
-    - https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
+      - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
+      - https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
 attack_flow:
   nodes:
     - id: initial-access

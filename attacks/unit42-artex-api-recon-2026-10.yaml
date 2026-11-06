@@ -35,7 +35,7 @@ prevention_angle: Authenticate all API endpoints including development; remove s
 related_magicsword_projects: []
 source_notes: |
   Microsoft tracks related activity as Storm-0940 with Oct 21 observations
-  
+
   Relevant detection rules:
   - Monitor for bulk access to source map files (.map.js, .js.map)
   - Alert on OpenAPI specification downloads (openapi.json, swagger.json, api-docs)

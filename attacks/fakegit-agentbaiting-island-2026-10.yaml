@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Adversary manipulates LLM tool recommendation systems to deliver malicious packages via agent-suggested GitHub repos"
     source_urls:
-    - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
+      - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
 attack_flow:
   nodes:
     - id: create-fakes

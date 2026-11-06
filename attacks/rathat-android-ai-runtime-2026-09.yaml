@@ -57,7 +57,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Android malware uses LLM at runtime to dynamically adapt attack behavior based on device state"
     source_urls:
-    - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
+      - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
 attack_flow:
   nodes:
     - id: install

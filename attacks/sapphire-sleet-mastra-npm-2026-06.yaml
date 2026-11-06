@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "DPRK APT supply chain compromise of AI framework to steal AI service credentials for intelligence collection and revenue generation"
     source_urls:
-    - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
+      - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
 attack_flow:
   nodes:
     - id: compromise-maintainer

@@ -53,13 +53,15 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Agents support financial-sector attacks
-      description: Open directories exposed sessions, configurations and model use tied to South Korean
+      description:
+        Open directories exposed sessions, configurations and model use tied to South Korean
         financial targets.
       kind: execution
       source_urls: *a1
     - id: step-4
       title: Actor discusses selling breach data
-      description: Claude session material includes questions about selling Korean breach data; identities
+      description:
+        Claude session material includes questions about selling Korean breach data; identities
         remain unconfirmed.
       kind: impact
       source_urls: *a1
@@ -76,6 +78,7 @@ linked_tools:
   - artex
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

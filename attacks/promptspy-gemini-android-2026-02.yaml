@@ -57,7 +57,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Spyware uses Gemini API to adaptively determine surveillance targets and data collection priorities"
     source_urls:
-    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
+      - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
 attack_flow:
   nodes:
     - id: install
