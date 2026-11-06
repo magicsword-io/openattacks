@@ -1,6 +1,6 @@
 # Stage detection queries
 
-Every attack phase has an explicit entry in `stages.json`, keyed by attack ID and exact flow-node ID. This includes attacks without simulations, unknown steps, provider-side activity and qualified research. The initial catalog contains 68 attacks and 269 phases.
+Every attack phase has an explicit entry in `stages.json`, keyed by attack ID and exact flow-node ID. This includes attacks without simulations, unknown steps, provider-side activity and qualified research. The catalog currently contains 111 attacks and 471 phases.
 
 `definitions/*.yaml` are the canonical, editable behavior profiles. Each contains its hypothesis, required logs, investigation steps, limits, research search terms, review date and Sigma / KQL / SPL query text. The query origin is `catalog_authored`: these are editorial drafts, not rules retrieved from an upstream detection index. Profiles are reusable; a stage mapping and its note explain how to apply one to the specific reported behavior. Shared Sigma rule IDs remain stable across the move from the former TypeScript generator.
 

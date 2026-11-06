@@ -11,13 +11,13 @@ There is **no database and no runtime backend**. Everything is plain files in gi
 | Attack records | `attacks/<id>.yaml` | YAML, one file per entry | Source of truth for each attack | **Yes** |
 | Record schema | `schema.yaml` | JSON Schema 2020-12, written as YAML | Validates every attack file | Change it only to add fields or enum values |
 | Browse card | `src/data/presentation.json` | JSON keyed by attack ID | Curated title, summary, environments and evidence class | No, but recommended (there's a fallback) |
-| Stage defenses | `src/data/stage-guidance.json` | JSON keyed by attack ID, then flow node ID | Maps flow stages to hunt/telemetry profiles and controls | No, but recommended |
+| Stage defenses | `detections/stages.json` + `detections/definitions/*.yaml` | JSON stage mappings + YAML profiles | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping |
 | Stack relevance | `src/data/applicability.json` | JSON keyed by attack ID | Reviewed "does this affect my stack" rules | No (the default is `not_assessed`) |
 | ATLAS reference | `src/data/atlas-techniques.json` | JSON | Official MITRE ATLAS technique names and URLs (v5.6.0) | Only when new ATLAS IDs are needed |
 | Simulations | `simulations/definitions/*.yaml` + `simulations/fixtures/` → `simulations/catalog.json` | YAML in, generated JSON out | Lab exercises linked to attack stages | No (closed set; see §6) |
 | Editorial patterns | `src/pages/patterns.md` | Markdown | Cross-entry observations | No |
 
-Current coverage: 68 attack files. All 68 have a curated `attack_flow` and entries in all three sidecars. 50 have `atlas_techniques`.
+Current coverage: 111 attack files. All 111 have a curated `attack_flow` and explicit stage-detection mappings; 66 have curated presentation and applicability annotations, and 95 have `atlas_techniques`.
 
 ### Load and validation pipeline
 
@@ -33,9 +33,10 @@ src/content.config.ts ── Astro content collection "attacks"
    ▼
 src/lib/catalog.ts getAttacks()  ── sorted newest first
    │
-   ├── joins src/data/presentation.json   (src/lib/presentation.ts)
-   ├── joins src/data/stage-guidance.json (src/lib/stage-guidance.ts)
-   ├── joins src/data/applicability.json  (src/lib/stack-data.ts)
+   ├── joins src/data/presentation.json    (src/lib/presentation.ts)
+   ├── joins src/data/applicability.json   (src/lib/stack-data.ts)
+   ├── maps detections/stages.json through detections/catalog.json
+   │      (src/lib/stage-guidance.ts)
    └── falls back to an auto-generated flow when attack_flow is absent (src/lib/attack-flow.ts)
    ▼
 Generated at build time (do not edit by hand):
@@ -71,7 +72,7 @@ Generated at build time (do not edit by hand):
 | `scale_and_metrics` | string | Or `unknown`. Never invent counts. |
 | `prevention_angle` | string | Or `unknown`. |
 | `related_magicsword_projects` | enum[] | Any of `GTFOBins`, `HijackLibs`, `LOLBAS`, `LOLDrivers`, `LOLRMM`, `LOLSkills`, `LOTTunnels`. Can be `[]`. |
-| `borderline` | boolean | `true` for PoCs, conceptual findings, marketplace claims and other qualified cases. |
+| `borderline` | boolean | `true` for PoCs, marketplace claims and other qualified concrete reports. Conceptual scenarios are not eligible for the catalog. |
 
 ### 2.2 Optional fields
 
@@ -132,7 +133,7 @@ Custom rules (in `src/lib/schema.mjs`):
 
 If `attack_flow` is omitted, `attackFlow()` builds a three-node summary (`entry` → `activity` ← `ai`) from `initial_access`, `technique_summary` and `ai_role_detail`/`ai_tooling_and_models`.
 
-**Convention:** existing entries use `step-1`…`step-N`. The sidecars in §4 refer to these node IDs, so add a curated flow before annotating stages.
+**Convention:** many entries use `step-1`…`step-N`. The annotations in §4 refer to exact node IDs, so add a curated flow before annotating stages.
 
 YAML anchors (`&a1` / `*a1`) are allowed and widely used to reuse `source_urls` lists.
 
@@ -173,13 +174,13 @@ These cover required fields, types, enums, the `report-date` format (a real cale
 
 - The JSON exports exactly match the public YAML content and leave out `typefully`.
 - Every YAML ID appears in `llms.txt`, `llms-full.txt`, its entry page, and the per-entry `.json`/`.md` exports.
-- **No stale sidecar keys:** every key in `presentation.json`, `stage-guidance.json` and `applicability.json` must be an existing attack ID, and every stage key must be an existing flow node ID.
+- **No stale annotation keys:** every key in `presentation.json`, `applicability.json` and `detections/stages.json` must be an existing attack ID, and every detection stage key must be an existing flow node ID.
 - Presentation values use valid environment and evidence IDs. `summary` is ≤ 210 characters. `unspecified` cannot be combined with other environments.
 - Applicability rules use real tool/OS IDs, a valid stage, and source URLs from the record. Attacker-side Claude/Gemini use never turns into a product-exposure match.
 
-## 4. Sidecar annotations (`src/data/*.json`)
+## 4. Annotations and stage detections
 
-These are keyed by attack ID. A YAML record alone is enough to publish an entry everywhere. The sidecars add curated presentation, defense and relevance data. Without them, the site uses safe fallbacks.
+These files are keyed by attack ID. A YAML record alone is enough to publish an entry, and presentation/relevance use safe fallbacks when their optional annotations are absent. Stage detections are stricter: every flow node must map to a reviewed profile or an explicit gap.
 
 ### 4.1 `presentation.json`: browse card
 
@@ -196,7 +197,7 @@ These are keyed by attack ID. A YAML record alone is enough to publish an entry 
 - `evidence`: `campaign`, `vulnerability`, `research`, `concept`, `claim`, `analysis`, `provider`, `finding`, `qualified`, `unclassified`
 - **Fallback:** `title = name`, the summary is a truncated `technique_summary`, `environments = ["unspecified"]`, and `evidence` is `qualified` if `borderline`, otherwise `unclassified`.
 
-### 4.2 `stage-guidance.json`: per-stage hunt and defense
+### 4.2 `detections/stages.json`: per-stage hunt and defense
 
 ```json
 "<attack-id>": {
@@ -210,10 +211,11 @@ These are keyed by attack ID. A YAML record alone is enough to publish an entry 
 }
 ```
 
-- `profile` (required). Defined in `src/lib/stage-guidance.ts`: `web`, `linux-webshell`, `windows-shell`, `mac-shell`, `windows-install`, `mcp-config`, `agent-tools`, `package`, `credentials`, `exfil`, `cloud`, `bedrock`, `metadata`, `extension`, `persistence`, `phishing`, `payment`, `identity`, `repository`, `model-network`, `provider`, `social`, `skill-review`, `analysis-review`, `android`, `impact`, `payload`, `unobserved`, `unassessed`.
+- `profile` is required and must match a canonical profile in `detections/definitions/*.yaml`. `native` profiles use named vendor/normalized telemetry, `custom_schema` profiles require the documented OpenAttacks audit mapping, and `gap` profiles publish no query.
+- Use `unobserved` when the source does not establish runtime behavior and `unassessed` when no stage-specific hunt has been reviewed. These gaps do not mean the behavior is undetectable or absent.
 - `control` (optional): `script-hosts`, `shell-helper`, `unapproved-code`. These produce the MagicSword policy CTA.
 - `resource` (optional): `LOLSkills`, `GTFOBins`, `HijackLibs`, `LOLDrivers`.
-- Adding a new profile, control or resource means a code change in `stage-guidance.ts`.
+- Add or edit profiles under `detections/definitions/`, then run `npm run detections:build` to regenerate `detections/catalog.json`. Controls and resources remain code-reviewed definitions in `src/lib/stage-guidance.ts`.
 
 ### 4.3 `applicability.json`: "my stack" relevance
 
@@ -273,10 +275,10 @@ These are keyed by attack ID. A YAML record alone is enough to publish an entry 
    ```
 
 3. **Optional enrichment in the YAML:** `confidence`, `borderline_note`, `attack_flow` (use `step-N` IDs, with source URLs taken from `sources`), `atlas_techniques`, `region_notes`, `source_notes`, `iocs` (defanged), `tags`, `aliases`.
-4. **Optional sidecars** (recommended, so the new entry matches the existing 68):
+4. **Add annotations and stage mappings:**
    - `src/data/presentation.json`: title, summary, environments, evidence.
-   - `src/data/stage-guidance.json`: a profile per relevant flow node.
    - `src/data/applicability.json`: `mapped`, `attacker_tool_only` or `not_assessed`.
+   - `detections/stages.json` (**required**): map every flow node to a profile, including explicit `unassessed` or `unobserved` gaps.
 5. **Verify:**
    ```bash
    set -o pipefail
@@ -292,7 +294,7 @@ Contributors without repo access can also open the GitHub issue form at `.github
 - Every factual claim needs a source URL. Prefer primary reports.
 - No live victim data and no unredacted victim IPs. Only include IOCs that were published for defensive use, and defang them.
 - Regions are **target** geography only. Never use actor nationality, hosting location or HQ.
-- Mark PoCs, claims and conceptual work `borderline: true` and give a `borderline_note`.
+- Mark PoCs and uncertain concrete claims `borderline: true` and give a `borderline_note`; do not add conceptual scenarios.
 - `confidence` is about evidence of AI involvement, not about the attack itself.
 - Keep the tone factual. Credit the researcher. Don't make unsupported claims about what a product blocks.
 
@@ -322,4 +324,4 @@ The builder (`scripts/build-simulations.mjs`) is deliberately strict:
 | Need a new stack tool | `stackTools` in `src/lib/stack-matching.mjs` |
 | Need a new platform or sector filter | the regex lists in `src/lib/catalog.ts` |
 | Do a full catalog re-review | the `reviewed` constant in `src/lib/catalog.ts` |
-| Rename or delete an attack or flow node | remove or rename its keys in all three `src/data/*.json` sidecars and in any simulation `attack_mappings` (stale keys fail the tests) |
+| Rename or delete an attack or flow node | update `src/data/presentation.json`, `src/data/applicability.json`, `detections/stages.json`, and any simulation `attack_mappings` (stale keys fail validation/tests) |
