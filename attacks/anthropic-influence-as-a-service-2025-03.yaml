@@ -49,7 +49,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Coordinated influence
-      description: Authentic social accounts encounter the coordinated engagement; state affiliation is
+      description:
+        Authentic social accounts encounter the coordinated engagement; state affiliation is
         unconfirmed.
       kind: impact
       source_urls: *a1
@@ -64,6 +65,7 @@ region_notes: The source identifies clients in multiple countries outside the Un
   individual target countries are not disclosed.
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

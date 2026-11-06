@@ -52,7 +52,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Self-update is commented out
-      description: Startup persistence and removable-drive spread are intended behavior; the analyzed
+      description:
+        Startup persistence and removable-drive spread are intended behavior; the analyzed
         rewrite function was not active.
       kind: unknown
       source_urls: *a1

@@ -45,7 +45,8 @@ attack_flow:
         - https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf
     - id: step-2
       title: Claude Code assists active intrusion
-      description: The actor stores preferences in CLAUDE.md and uses model help for reconnaissance and
+      description:
+        The actor stores preferences in CLAUDE.md and uses model help for reconnaissance and
         credential collection.
       kind: ai
       source_urls: *a1

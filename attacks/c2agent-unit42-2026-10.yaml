@@ -63,7 +63,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Tool results return to the model
-      description: Results feed the next decision in an iterative loop; later versions can delegate to
+      description:
+        Results feed the next decision in an iterative loop; later versions can delegate to
         installed AI CLIs.
       kind: ai
       source_urls: *a1

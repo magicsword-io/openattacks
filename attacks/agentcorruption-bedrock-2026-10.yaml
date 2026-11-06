@@ -52,7 +52,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Broader agent access
-      description: The role can reach other agents, memories and connected services; persistent memory
+      description:
+        The role can reach other agents, memories and connected services; persistent memory
         hijacks are described.
       kind: impact
       source_urls: *a1

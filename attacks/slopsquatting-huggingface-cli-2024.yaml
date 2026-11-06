@@ -53,7 +53,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Downloads do not prove compromise
-      description: The experiment measures exposure; the registered research package does not establish a
+      description:
+        The experiment measures exposure; the registered research package does not establish a
         malicious payload on every user.
       kind: unknown
       source_urls: *a1

@@ -48,7 +48,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Per-key abuse is not quantified
-      description: The supplied entry establishes reconnaissance at scale, rather than a bill or victim
+      description:
+        The supplied entry establishes reconnaissance at scale, rather than a bill or victim
         count for every key.
       kind: unknown
       source_urls: *a1

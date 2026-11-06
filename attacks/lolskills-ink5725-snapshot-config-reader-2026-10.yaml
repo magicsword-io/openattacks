@@ -64,6 +64,7 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0051.001
-    rationale: The flagged skill instructs an agent to recover instructions from image artifacts; actual
+    rationale:
+      The flagged skill instructs an agent to recover instructions from image artifacts; actual
       execution is unconfirmed.
     source_urls: *a1

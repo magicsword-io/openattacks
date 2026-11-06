@@ -65,7 +65,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Loot and private repositories become public
-      description: Collected data is pushed to public repositories; later token abuse exposes additional
+      description:
+        Collected data is pushed to public repositories; later token abuse exposes additional
         private repositories.
       kind: impact
       source_urls: *a1

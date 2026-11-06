@@ -34,7 +34,8 @@ attack_flow:
   nodes:
     - id: step-3
       title: Hallucinated names create an exposure path
-      description: AI package recommendations can direct developers to attacker-owned names; not every
+      description:
+        AI package recommendations can direct developers to attacker-owned names; not every
         install is established as AI-driven.
       kind: ai
       source_urls: &a1

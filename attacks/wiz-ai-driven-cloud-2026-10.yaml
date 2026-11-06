@@ -59,7 +59,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Data leaves through operational channels
-      description: The research describes runner-log exfiltration and abuse of legitimate cloud-management
+      description:
+        The research describes runner-log exfiltration and abuse of legitimate cloud-management
         capabilities.
       kind: impact
       source_urls: *a1
@@ -72,6 +73,7 @@ attack_flow:
       target: step-4
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

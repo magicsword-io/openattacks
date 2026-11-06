@@ -53,7 +53,8 @@ attack_flow:
         - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
     - id: step-2
       title: Bootstrap changes agent settings
-      description: The packages introduce an attacker LLM proxy, rogue MCP configuration and permissive
+      description:
+        The packages introduce an attacker LLM proxy, rogue MCP configuration and permissive
         approvals.
       kind: execution
       source_urls: *a1

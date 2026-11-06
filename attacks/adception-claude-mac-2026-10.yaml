@@ -35,7 +35,8 @@ attack_flow:
   nodes:
     - id: step-1
       title: Search ad redirects
-      description: An ad for Claude on Mac redirects through tracking and a compromised retailer to a fake
+      description:
+        An ad for Claude on Mac redirects through tracking and a compromised retailer to a fake
         download page.
       kind: access
       source_urls: &a1
@@ -47,7 +48,8 @@ attack_flow:
       source_urls: *a1
     - id: step-3
       title: Clipboard command is swapped
-      description: The Copy button substitutes a command that decodes a different download URL and pipes
+      description:
+        The Copy button substitutes a command that decodes a different download URL and pipes
         content to zsh.
       kind: execution
       source_urls: *a1

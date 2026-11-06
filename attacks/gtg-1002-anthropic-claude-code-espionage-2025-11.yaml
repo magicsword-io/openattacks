@@ -61,7 +61,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Data is exfiltrated
-      description: Anthropic reports a handful of validated intrusions and notes that model findings still
+      description:
+        Anthropic reports a handful of validated intrusions and notes that model findings still
         required human validation.
       kind: impact
       source_urls: *a1

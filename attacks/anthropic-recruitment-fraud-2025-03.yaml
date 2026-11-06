@@ -61,6 +61,7 @@ attack_flow:
 region_notes: The source describes job seekers in Eastern Europe without naming individual countries.
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1

@@ -78,7 +78,8 @@ attack_flow:
       source_urls: *a1
     - id: step-4
       title: Some tasks obtain access
-      description: The research reports roughly 10% success; exposed harness panels also revealed operator
+      description:
+        The research reports roughly 10% success; exposed harness panels also revealed operator
         tasks and secrets.
       kind: impact
       source_urls: *a1
@@ -94,6 +95,7 @@ region_notes: Reported target geography includes the United States, Japan and Au
   excluded from country counts.
 atlas_techniques:
   - id: AML.T0016.002
-    rationale: The supplied source explicitly describes generative-model tooling assisting the reported
+    rationale:
+      The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1
