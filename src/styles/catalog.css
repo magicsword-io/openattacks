@@ -71,22 +71,6 @@
   font-size: 13px;
   color: var(--muted);
 }
-.catalog-intro .catalog-scope {
-  max-width: none;
-  padding: 10px 14px;
-  border-left: 2px solid var(--accent);
-  background: var(--panel);
-  font-size: 14px;
-}
-.catalog-scope strong {
-  color: var(--text);
-}
-.catalog-scope a {
-  margin-left: 8px;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 .catalog-intro-meta strong {
   color: var(--text);
   font-weight: 600;
