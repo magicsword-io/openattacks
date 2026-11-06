@@ -5,8 +5,9 @@ import { stageGuidance } from "./stage-guidance";
 import { present, environments, evidenceTypes } from "./presentation";
 import { applicabilityFor } from "./stack-data";
 import atlas from "../data/atlas-techniques.json";
+import { toolingSegments } from "./tool-projects.mjs";
 
-// Treat catalog content as quoted data. Only explicit http(s) source URLs become Markdown links.
+// Treat catalog content as quoted data. Project links come only from the reviewed registry.
 const plain = (value: string) =>
   value.replace(/[\r\n]+/g, " ").replace(/[\\`*_{}\[\]<>#|]/g, "\\$&");
 export function attackMarkdown(
@@ -16,6 +17,27 @@ export function attackMarkdown(
   const list = (items: string[]) =>
     items.length
       ? items.map((value) => `- ${plain(value)}`).join("\n")
+      : "- unknown";
+  const toolingList = (items: string[]) =>
+    items.length
+      ? items
+          .map((value) => {
+            const segments = toolingSegments(value);
+            const label = segments
+              .map(({ text, project }) =>
+                project ? `[${plain(text)}](${project.url})` : plain(text),
+              )
+              .join("");
+            const notes = [
+              ...new Set(
+                segments.flatMap(({ project }) =>
+                  project?.note ? [project.note] : [],
+                ),
+              ),
+            ];
+            return `- ${label}${notes.length ? ` — ${notes.map(plain).join(" ")}` : ""}`;
+          })
+          .join("\n")
       : "- unknown";
   const flow = attackFlow(attack);
   const display = present(attack);
@@ -67,10 +89,10 @@ export function attackMarkdown(
     plain(attack.initial_access),
     "",
     "## AI tooling and models",
-    list(attack.ai_tooling_and_models),
+    toolingList(attack.ai_tooling_and_models),
     "",
     "## Other tooling",
-    list(attack.other_tooling),
+    toolingList(attack.other_tooling),
     "",
     "## Victims and sectors",
     plain(attack.victims_and_sectors),
