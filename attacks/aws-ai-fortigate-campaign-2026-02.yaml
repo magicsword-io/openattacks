@@ -4,7 +4,7 @@ date_reported: 2026-02-20
 researcher: AWS Security
 org: Amazon Web Services
 sources:
-  - url: https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+  - url: https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
     title: "AWS: AI-Augmented Actor Compromising 600+ FortiGate Firewalls"
 borderline: false
 borderline_note: null
@@ -56,7 +56,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "AI-augmented actor uses AI to accelerate post-compromise configuration parsing and credential extraction at scale"
     source_urls:
-      - https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+    - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
 attack_flow:
   nodes:
     - id: exploit
@@ -64,25 +64,25 @@ attack_flow:
       description: "Mass exploitation of FortiGate SSL VPN RCE vulnerability"
       kind: access
       source_urls:
-        - https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
     - id: ai-triage
       title: AI-assisted configuration parsing
       description: "AI rapidly parses FortiGate configurations, extracts credentials, identifies high-value targets"
       kind: ai
       source_urls:
-        - https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
     - id: lateral
       title: Lateral movement via VPN
       description: "Use harvested VPN credentials to access victim networks"
       kind: execution
       source_urls:
-        - https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
     - id: compromise
       title: Compromise internal networks
       description: "Pivot through VPN access to compromise high-value internal systems"
       kind: impact
       source_urls:
-        - https://aws.amazon.com/security/security-bulletins/aws-20260220-fortigate-ai-campaign/
+        - https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/
   edges:
     - source: exploit
       target: ai-triage

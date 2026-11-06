@@ -11,7 +11,7 @@ const { attack, simulationStages = [] } = Astro.props as {
 };
 const stages = attackFlow(attack).nodes.map((node, index) => ({
   node, number: index + 1, guidance: stageGuidance(attack, node),
-})).filter((stage) => stage.guidance.queries);
+}));
 const formats: { id: QueryFormat; label: string; extension: string }[] = [
   { id: "sigma", label: "Sigma", extension: "sigma.yml" },
   { id: "kql", label: "KQL", extension: "kql" },
@@ -19,14 +19,14 @@ const formats: { id: QueryFormat; label: string; extension: string }[] = [
 ];
 ---
 
-{stages.length > 0 && <section class="detection-section" id="detections" aria-labelledby="detection-heading">
+{stages.length > 0 && <section class="detection-section entry-detections" id="detections" aria-labelledby="detection-heading">
   <div class="detection-section-heading">
     <div>
       <span class="eyebrow">Investigate each phase</span>
-      <h2 id="detection-heading">Detection queries</h2>
-      <p>Draft query starters, grouped by attack stage.</p>
+      <h3 id="detection-heading">Detection queries</h3>
+      <p>Draft query starters and explicit coverage gaps, grouped by attack stage.</p>
     </div>
-    <a class="detection-download" href={href(`api/defenses/${attack.id}.json`)} download={`${attack.id}-detections.json`}>
+    <a class="detection-download entry-download" href={href(`api/defenses/${attack.id}.json`)} download={`${attack.id}-detections.json`}>
       <Icon name="download" size={14} /> Download stage pack
     </a>
   </div>
@@ -48,8 +48,14 @@ const formats: { id: QueryFormat; label: string; extension: string }[] = [
           <strong>{node.title}</strong>
           <span>{guidance.title}</span>
         </span>
-        <span class="detection-status">
-          {guidance.query_kind === "custom_schema" ? "Custom schema · Draft" : "Native logs · Draft"}
+        <span class:list={["detection-status", { "is-gap": !guidance.queries }]}>
+          {guidance.queries
+            ? guidance.query_kind === "custom_schema"
+              ? "Custom schema · Draft"
+              : "Native logs · Draft"
+            : guidance.validation === "not_assessed"
+              ? "Not mapped"
+              : "Evidence gap"}
         </span>
         <Icon name="down" size={15} />
       </summary>
@@ -103,8 +109,16 @@ const formats: { id: QueryFormat; label: string; extension: string }[] = [
           </div>
         </details>
         <div class="detection-stage-footer">
-          <span>Catalog-authored · Draft{guidance.reviewed ? ` · Reviewed ${guidance.reviewed}` : ""}</span>
+          <span>
+            Catalog-authored · {guidance.queries
+              ? "Draft"
+              : guidance.validation === "not_assessed"
+                ? "Not mapped"
+                : "Evidence gap"}
+            {guidance.reviewed ? ` · Reviewed ${guidance.reviewed}` : ""}
+          </span>
           <div>
+            <a href={`?stage=${encodeURIComponent(node.id)}&view=evidence#attack-flow`}>View attack stage {number}</a>
             <a href={guidance.definition_url} target="_blank" rel="noopener noreferrer">Query definition</a>
             {node.source_urls.map((url, index) => <a href={url} target="_blank" rel="noopener noreferrer">Evidence{node.source_urls.length > 1 ? ` ${index + 1}` : ""}</a>)}
             {simulationStages.includes(node.id) && <a href="#simulation">Test this stage <Icon name="terminal" size={12} /></a>}

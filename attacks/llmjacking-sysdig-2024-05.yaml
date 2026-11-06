@@ -8,19 +8,15 @@ sources:
     title: "Sysdig: LLMjacking - Stolen Cloud Credentials Used in New AI Attack"
   - url: https://www.sysdig.com/blog/growing-dangers-of-llmjacking
     title: "Sysdig: Growing Dangers of LLMjacking"
-  - url: https://www.fortiguard.com/blog/bedrock-marketplace-abuse-llmjacking
-    title: "FortiGuard: AWS Bedrock Marketplace Abuse in LLMjacking Campaign"
   - url: https://www.pillar.io/blog/bizarre-bazaar-llmjacking-jan-2026
     title: "Pillar Security: Bizarre Bazaar - LLMjacking Campaign Targeting AI Startups"
-  - url: https://sec.okta.com/blog/stolen-ai-session-tokens-llmjacking
-    title: "Okta Security: Stolen AI Session Tokens Enable LLMjacking"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_credential_theft
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "After Laravel CVE-2021-3129 foothold, attackers stole cloud credentials and probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure, ElevenLabs, MakerSuite, Mistral, OpenAI, OpenRouter, GCP Vertex) to resell LLM access via reverse proxies while victims pay inference bills. Later updates showed 85k+ Bedrock requests with Converse API abuse within 30 days of launch. Sep 3, 2026: FortiGuard discovered LLMjacking via AWS Bedrock Marketplace abuse; attackers subscribe victims to high-cost model providers without approval. Jan 28, 2026: Pillar Security Bizarre Bazaar campaign targets AI startups; stolen credentials used for unauthorized inference resale. Sep 9, 2026: Okta disclosed stolen AI session tokens enabling LLMjacking without long-term credentials; session hijacking bypasses MFA and key rotation defenses."
+technique_summary: "After a Laravel CVE-2021-3129 foothold, attackers stole cloud credentials and probed ten AI services (AI21, Anthropic, AWS Bedrock, Azure, ElevenLabs, MakerSuite, Mistral, OpenAI, OpenRouter, and GCP Vertex) to resell LLM access via reverse proxies while victims paid inference bills. Later Sysdig reporting showed 85,000+ Bedrock requests with Converse API abuse within 30 days of launch. Pillar Security separately reported the Bizarre Bazaar campaign targeting AI startups for unauthorized inference resale."
 initial_access: Vulnerable Laravel (CVE-2021-3129) leading to cloud credential theft
 ai_tooling_and_models:
   - AWS Bedrock Claude v2/v3

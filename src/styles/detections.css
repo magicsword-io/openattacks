@@ -21,7 +21,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-.detection-section-heading h2 {
+.detection-section-heading h3 {
   margin: 7px 0;
   font-size: 27px;
   letter-spacing: -0.035em;
@@ -117,6 +117,9 @@
   padding: 5px 8px;
   font: 9px var(--mono);
   white-space: nowrap;
+}
+.detection-status.is-gap {
+  color: var(--muted);
 }
 .detection-stage summary > svg {
   flex-shrink: 0;

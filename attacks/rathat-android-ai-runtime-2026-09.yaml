@@ -4,8 +4,8 @@ date_reported: 2026-09-16
 researcher: Zimperium
 org: Zimperium
 sources:
-  - url: https://www.zimperium.com/blog/rathat-android-ai-runtime/
-    title: "Zimperium: RatHat Android Trojan Uses AI at Runtime"
+  - url: https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
+    title: "BleepingComputer: New RatHat Android malware uses AI to automate device control"
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
@@ -57,7 +57,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Android malware uses LLM at runtime to dynamically adapt attack behavior based on device state"
     source_urls:
-      - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+    - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
 attack_flow:
   nodes:
     - id: install
@@ -65,25 +65,25 @@ attack_flow:
       description: "User installs RatHat via phishing or third-party store"
       kind: access
       source_urls:
-        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+        - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
     - id: collect-state
       title: Collect device state
       description: "Trojan scans installed apps, security tools, screen content"
       kind: execution
       source_urls:
-        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+        - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
     - id: query-llm
       title: Query LLM for strategy
       description: "Send device state to DeepSeek/Qwen with prompt requesting optimal attack approach"
       kind: ai
       source_urls:
-        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+        - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
     - id: execute-attack
       title: Execute LLM-directed attack
       description: "LLM responds with commands; trojan executes credential harvesting, overlay injection, or SMS interception"
       kind: impact
       source_urls:
-        - https://www.zimperium.com/blog/rathat-android-ai-runtime/
+        - https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/
   edges:
     - source: install
       target: collect-state

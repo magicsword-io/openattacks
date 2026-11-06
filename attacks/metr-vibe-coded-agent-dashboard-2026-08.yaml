@@ -4,7 +4,7 @@ date_reported: 2026-08-31
 researcher: METR
 org: METR (Model Evaluation and Threat Research)
 sources:
-  - url: https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
+  - url: https://metr.org/blog/2026-08-31-security-update/
     title: "METR: Exposed Vibe-Coded Agent Dashboard Key Led to ~$600K Credit Theft"
 borderline: false
 borderline_note: null
@@ -56,7 +56,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Exposed API key in AI agent dashboard leads to theft of AI inference credits"
     source_urls:
-      - https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
+    - https://metr.org/blog/2026-08-31-security-update/
 attack_flow:
   nodes:
     - id: discover-key
@@ -64,19 +64,19 @@ attack_flow:
       description: "Actor finds API key exposed in vibe-coded dashboard client-side code"
       kind: access
       source_urls:
-        - https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
+        - https://metr.org/blog/2026-08-31-security-update/
     - id: ai-enumeration
       title: AI-assisted account enumeration
       description: "Use AI tooling to rapidly enumerate cloud AI accounts (AWS Bedrock, Azure OpenAI, GCP Vertex AI); ~10x faster than manual"
       kind: ai
       source_urls:
-        - https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
+        - https://metr.org/blog/2026-08-31-security-update/
     - id: drain-credits
       title: Drain AI inference credits
       description: "Make unauthorized LLM inference calls across enumerated accounts, draining ~$600K in credits"
       kind: impact
       source_urls:
-        - https://metr.org/blog/2026-08-31-vibe-coded-dashboard-exposure/
+        - https://metr.org/blog/2026-08-31-security-update/
   edges:
     - source: discover-key
       target: ai-enumeration

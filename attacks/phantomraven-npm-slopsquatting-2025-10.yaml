@@ -10,15 +10,13 @@ sources:
     title: "Sonatype: PhantomRaven npm Malware Campaign"
   - url: https://www.bleepingcomputer.com/news/security/phantomraven-attack-floods-npm-with-credential-stealing-packages/
     title: "BleepingComputer: PhantomRaven Attack Floods npm"
-  - url: https://www.crowdstrike.com/blog/phantomraven-llm-generated-stealer-jpd/
-    title: "CrowdStrike: PhantomRaven Stealer is LLM-Generated, Operator JPD Identified"
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Flood of malicious npm packages used remote dynamic HTTP dependencies invisible to many scanners and included AI-hallucination-friendly names such as unused-imports. Delivered credential stealers targeting npm/Git/CI tokens. Sep 15, 2026 update: CrowdStrike analysis confirmed stealer code is LLM-generated (characteristic patterns, comments, structure) and attributed operator to \"JPD\" based on code artifacts and infrastructure links."
+technique_summary: "A flood of malicious npm packages used remote dynamic HTTP dependencies invisible to many scanners and included AI-hallucination-friendly names such as unused-imports. The packages delivered credential stealers targeting npm, Git, and CI tokens."
 initial_access: npm install of malicious/slopsquat packages
 ai_tooling_and_models: []
 other_tooling:
@@ -27,7 +25,7 @@ other_tooling:
 victims_and_sectors: unknown
 regions:
   - unknown
-attribution_or_cluster: Operator "JPD" (CrowdStrike, Sep 2026)
+attribution_or_cluster: PhantomRaven; operator unknown
 scale_and_metrics: 126 packages cited in related reporting
 prevention_angle: Block remote HTTP deps; lockfiles; SCA; never trust
   AI-suggested package names blindly

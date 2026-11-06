@@ -88,7 +88,7 @@ for (const width of [1440, 390]) {
 }
 
 for (const width of [1440, 390]) {
-  test(`phases without queries have no detection indicator or card at ${width}px`, async ({
+  test(`phases without queries show explicit gap cards without flow indicators at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -108,14 +108,16 @@ for (const width of [1440, 390]) {
     await expect(
       page.getByRole("tab", { name: "Evidence", exact: true }),
     ).toHaveAttribute("aria-selected", "true");
-    await expect(page.locator('a[href="#detection-step-4"]')).toHaveCount(0);
-    await expect(page.locator("#detection-step-4")).toHaveCount(0);
     await expect(
-      page.getByText(
-        /Detection gap|Evidence gap|Hunt not mapped|What is missing/i,
+      page.locator(
+        '.network-detection-link[href="#detection-step-4"], .mobile-detection-link[href="#detection-step-4"]',
       ),
     ).toHaveCount(0);
-    await expect(page.locator("[data-detection-stage]")).toHaveCount(3);
+    await expect(page.locator("#detection-step-4")).toHaveCount(1);
+    await expect(
+      page.locator("#detection-step-4 .detection-status"),
+    ).toHaveText(/Evidence gap|Not mapped/);
+    await expect(page.locator("[data-detection-stage]")).toHaveCount(4);
 
     await page.goto(
       "/attacks/wormgpt-underground-2023/?stage=step-1&view=hunt#attack-flow",
@@ -127,30 +129,31 @@ for (const width of [1440, 390]) {
     await expect(page.getByRole("tab", { name: /Hunt/ })).toHaveCount(0);
     await expect(links).toHaveCount(0);
     await expect(
-      page.locator(
-        "#detections, .detection-available, .inspector-detection-link",
-      ),
+      page.locator(".detection-available, .inspector-detection-link"),
     ).toHaveCount(0);
+    await expect(page.locator("#detections")).toHaveCount(1);
+    await expect(page.locator("[data-detection-stage]")).toHaveCount(3);
+    await expect(page.locator("#detections")).toContainText("Evidence gap");
   });
 }
 
-test("filtered detection cards retain their original phase numbers", async ({
+test("detection cards retain their original phase numbers", async ({
   page,
 }) => {
   await page.goto("/attacks/cairn-norforge-2026-10/#detections");
   await expect(page.locator(".detection-stage-nav a").first()).toHaveText(
-    "Stage 02",
+    "Stage 01",
   );
   await expect(page.locator(".detection-stage").first()).toHaveAttribute(
     "id",
-    "detection-step-2",
+    "detection-step-1",
   );
   await expect(page.locator(".detection-stage").first()).toHaveAttribute(
     "open",
     "",
   );
   await expect(page.locator(".detection-stage-number").first()).toHaveText(
-    "02",
+    "01",
   );
 });
 

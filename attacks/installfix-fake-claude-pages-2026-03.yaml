@@ -4,7 +4,7 @@ date_reported: 2026-03-06
 researcher: Push Security Research
 org: Push Security
 sources:
-  - url: https://push.security/blog/installfix-fake-claude-code-install-pages
+  - url: https://pushsecurity.com/blog/installfix/
     title: "Push Security: InstallFix Campaign - Fake Claude Code Installation Pages"
 borderline: false
 borderline_note: null
@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Adversary uses SEO poisoning and fake installation pages to distribute trojanized AI coding assistant installers stealing credentials"
     source_urls:
-      - https://push.security/blog/installfix-fake-claude-code-install-pages
+    - https://pushsecurity.com/blog/installfix/
 attack_flow:
   nodes:
     - id: seo-poisoning
@@ -51,25 +51,25 @@ attack_flow:
       description: "Adversary creates 120+ fake Claude Code installation websites (claude-code-download[.]com, get-claude-code[.]net, etc.); uses SEO poisoning (typosquats, keyword stuffing, fake reviews) to rank highly in search results for 'download Claude Code'"
       kind: access
       source_urls:
-        - https://push.security/blog/installfix-fake-claude-code-install-pages
+        - https://pushsecurity.com/blog/installfix/
     - id: user-downloads
       title: User downloads trojanized installer
       description: "User searches for Claude Code, finds fake site, downloads installer; sites appear legitimate with screenshots, documentation, fake testimonials; multi-platform support (Windows NSIS, macOS DMG, Linux deb/rpm)"
       kind: ai
       source_urls:
-        - https://push.security/blog/installfix-fake-claude-code-install-pages
+        - https://pushsecurity.com/blog/installfix/
     - id: install-malware
       title: Install malware with legitimate app
       description: "Installer deploys functional Claude Code plus malware: Windows (AMOS infostealer), macOS (LaunchAgent → Atomic Stealer), Linux (postinstall → XMRig + harvester). Malware harvests Anthropic keys, OpenAI keys, GitHub tokens, AWS creds, crypto wallets, SSH keys"
       kind: execution
       source_urls:
-        - https://push.security/blog/installfix-fake-claude-code-install-pages
+        - https://pushsecurity.com/blog/installfix/
     - id: exfiltrate-mine
       title: Credential theft and crypto mining
       description: "Malware exfiltrates credentials to attacker C2; XMRig mines Monero on Linux systems; persistence via LaunchAgents/startup tasks; 8,900+ affected installations Mar-May 2026; avg 23-day dwell time"
       kind: impact
       source_urls:
-        - https://push.security/blog/installfix-fake-claude-code-install-pages
+        - https://pushsecurity.com/blog/installfix/
   edges:
     - source: seo-poisoning
       target: user-downloads

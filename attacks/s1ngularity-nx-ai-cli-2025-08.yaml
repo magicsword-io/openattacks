@@ -12,8 +12,6 @@ sources:
     title: "Nx: s1ngularity Postmortem"
   - url: https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/
     title: "Snyk: Weaponizing AI Coding Agents for Malware in Nx"
-  - url: https://blog.gitguardian.com/mini-shai-hulud-keyv-wave-aug-2026/
-    title: "GitGuardian: Mini Shai-Hulud keyv Wave Spreads via npm"
   - url: https://www.mandiant.com/resources/blog/hijacked-coding-assistant-shai-hulud
     title: "Mandiant: Hijacked Coding-Assistant Session Spreads Shai-Hulud"
 magicsword_coverage: []
@@ -22,7 +20,7 @@ borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Attackers stole Nx npm publish token via GitHub Actions injection and published malicious Nx packages. Postinstall harvested env/GitHub/npm/SSH/crypto wallet data and invoked local Claude, Gemini, and Amazon Q CLIs with dangerous flags to inventory sensitive files, then pushed loot to public GitHub repos named s1ngularity-repository*. Phase 2 used stolen tokens to make 5500+ private repos public. Aug 7, 2026: GitGuardian discovered \"Mini Shai-Hulud\" variant spreading via keyv npm package; same AI CLI abuse pattern. Sep 16, 2026: Mandiant observed hijacked coding-assistant session (Claude Code) spreading Shai-Hulud stealer; compromised assistant recommends malicious packages during normal development workflow."
+technique_summary: "Attackers stole an Nx npm publish token via GitHub Actions injection and published malicious Nx packages. Postinstall harvested environment, GitHub, npm, SSH, and wallet data and invoked local Claude, Gemini, and Amazon Q CLIs with dangerous flags to inventory sensitive files, then pushed loot to public GitHub repos named s1ngularity-repository*. Phase 2 used stolen tokens to make 5,500+ private repos public. Later Mandiant reporting described a hijacked coding-assistant session spreading Shai-Hulud through malicious package recommendations."
 initial_access: Malicious npm postinstall on nx/@nx packages (versions around 20.9–21.8)
 ai_tooling_and_models:
   - claude CLI

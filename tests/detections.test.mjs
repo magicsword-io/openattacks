@@ -22,19 +22,19 @@ const annotations = JSON.parse(read("detections/stages.json"));
 const compiled = JSON.parse(read("detections/catalog.json"));
 const packs = JSON.parse(read("dist/api/defenses.json")).entries;
 
-test("only phases with queries publish detection cards; packs preserve every phase", () => {
+test("every phase publishes its detection status; headers advertise available queries", () => {
   assert.equal(packs.length, Object.keys(annotations).length);
   for (const pack of packs) {
     const page = read(`dist/attacks/${pack.attack_id}/index.html`);
     const queryStages = pack.stages.filter((stage) => stage.queries);
-    assert.equal(page.includes('id="detections"'), queryStages.length > 0);
+    assert.equal(page.includes('id="detections"'), true);
     assert.equal(
       page.includes('class="detection-available"'),
       queryStages.length > 0,
     );
     assert.equal(
-      (page.match(/data-detection-stage=/g) || []).length,
-      queryStages.length,
+      (page.match(/<details class="detection-stage"/g) || []).length,
+      pack.stages.length,
       pack.attack_id,
     );
     assert.deepEqual(
@@ -44,7 +44,7 @@ test("only phases with queries publish detection cards; packs preserve every pha
     for (const stage of pack.stages) {
       assert.equal(
         page.includes(`id="detection-${stage.node_id}"`),
-        !!stage.queries,
+        true,
         `${pack.attack_id}/${stage.node_id}`,
       );
       assert.equal(stage.origin, "catalog_authored");

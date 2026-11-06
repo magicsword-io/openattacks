@@ -6,7 +6,7 @@ org: Socket
 sources:
   - url: https://socket.dev/blog/tensorlake-compromise
     title: "Socket: AI Sandbox SDK Compromised in Supply Chain Attack"
-  - url: https://github.com/tensorlake/tensorzero
+  - url: https://github.com/tensorzero/tensorzero
     title: "TensorZero - LLM Gateway for Engineering Teams"
 borderline: false
 borderline_note: null

@@ -7,16 +7,13 @@ sources:
   - url: https://securelist.com/cyberstrikeai-attacks/121715/
     title: CyberStrikeAI attacks
     publisher: Kaspersky (Securelist)
-  - url: https://www.trendmicro.com/ja_jp/research/26/10/trendai-cyberstrikeai-japan.html
-    title: "TrendAI - CyberStrikeAI Chinese-Language Operators Target Japan"
-    publisher: Trend Micro
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Financially motivated attacks against schools in Africa and Latin America using open-source CyberStrikeAI implant. Initial access via compromised SQL Server. C2-side LLM using MCP tools autonomously selected attack commands and achieved domain admin privileges in 3-4 days. Techniques include SystemUpdate scheduled task, certutil downloads, comsvcs.dll LSASS memory dump, DCSync, and Golden Ticket generation. C2 infrastructure at fastcdn.bar and 185.186.245.144. Oct 23, 2026: TrendAI reported separate CyberStrikeAI campaign by Chinese-language operators targeting Japan; same implant, different targets and attribution. CyberStrikeAI available at https://github.com/CyberStrikeAI/CyberStrikeAI."
+technique_summary: "Financially motivated attacks against schools in Africa and Latin America used the open-source CyberStrikeAI implant. Initial access was through a compromised SQL Server. A C2-side LLM using MCP tools selected attack commands and achieved domain administrator privileges in three to four days. Techniques included a SystemUpdate scheduled task, certutil downloads, comsvcs.dll LSASS memory dumping, DCSync, and Golden Ticket generation."
 initial_access: Compromised SQL Server
 ai_tooling_and_models:
   - CyberStrikeAI (https://github.com/CyberStrikeAI/CyberStrikeAI)

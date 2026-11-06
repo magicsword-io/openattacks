@@ -31,6 +31,23 @@
       "profile": "cloud"
     }
   },
+  "anthropic-claude-code-trojan-2026-10": {
+    "supply-chain": {
+      "profile": "unassessed"
+    },
+    "distribution": {
+      "profile": "unassessed"
+    },
+    "collection": {
+      "profile": "unassessed"
+    },
+    "backdoor": {
+      "profile": "unassessed"
+    },
+    "persistence": {
+      "profile": "unassessed"
+    }
+  },
   "anthropic-influence-as-a-service-2025-03": {
     "step-1": {
       "profile": "provider",
@@ -190,6 +207,88 @@
       "reviewed": "2026-11-04"
     }
   },
+  "aws-ai-fortigate-campaign-2026-02": {
+    "exploit": {
+      "profile": "unassessed"
+    },
+    "ai-triage": {
+      "profile": "unassessed"
+    },
+    "lateral": {
+      "profile": "unassessed"
+    },
+    "compromise": {
+      "profile": "unassessed"
+    }
+  },
+  "badbyte-artex-backdoor-docker-2026-11": {
+    "close-source": {
+      "profile": "unassessed"
+    },
+    "push-backdoor": {
+      "profile": "unassessed"
+    },
+    "swap-compose": {
+      "profile": "unassessed"
+    },
+    "operator-pull": {
+      "profile": "unassessed"
+    },
+    "backdoor-access": {
+      "profile": "unassessed"
+    },
+    "credential-theft": {
+      "profile": "unassessed"
+    }
+  },
+  "bitdefender-3am-ransomware-ai-2026": {
+    "initial-access": {
+      "profile": "unassessed"
+    },
+    "ai-commands": {
+      "profile": "unassessed"
+    },
+    "iteration": {
+      "profile": "unassessed"
+    },
+    "persistence": {
+      "profile": "unassessed"
+    },
+    "ransomware": {
+      "profile": "unassessed"
+    }
+  },
+  "bossai-12-agent-attack-mesh-2026-11": {
+    "mesh-deploy": {
+      "profile": "unassessed"
+    },
+    "recon": {
+      "profile": "unassessed"
+    },
+    "vuln-scan": {
+      "profile": "unassessed"
+    },
+    "exploit": {
+      "profile": "unassessed"
+    },
+    "exfiltrate": {
+      "profile": "unassessed"
+    }
+  },
+  "bugster-deepseek-hermes-2026-10": {
+    "phishing": {
+      "profile": "unassessed"
+    },
+    "deploy-tools": {
+      "profile": "unassessed"
+    },
+    "autonomous-exploitation": {
+      "profile": "unassessed"
+    },
+    "data-theft-ransom": {
+      "profile": "unassessed"
+    }
+  },
   "c2agent-unit42-2026-10": {
     "step-1": {
       "profile": "windows-install",
@@ -227,6 +326,77 @@
       "note": "Success is reported in aggregate. Confirm a host-side effect for an individual task before treating a probe as successful access."
     }
   },
+  "carbonato-botnet-hermes-2026-10": {
+    "scan-docker": {
+      "profile": "unassessed"
+    },
+    "deploy-container": {
+      "profile": "unassessed"
+    },
+    "hermes-hunt": {
+      "profile": "unassessed"
+    },
+    "exfiltrate-mine": {
+      "profile": "unassessed"
+    }
+  },
+  "cert-in-crafty-falcon-bfsi-2026-11": {
+    "initial-recon": {
+      "profile": "unassessed"
+    },
+    "cloud-pivot": {
+      "profile": "unassessed"
+    },
+    "api-abuse": {
+      "profile": "unassessed"
+    },
+    "test-transfer": {
+      "profile": "unassessed"
+    },
+    "fund-theft": {
+      "profile": "unassessed"
+    },
+    "crypto-theft": {
+      "profile": "unassessed"
+    },
+    "log-deletion": {
+      "profile": "unassessed"
+    }
+  },
+  "checkpoint-haiou-codex-adware-2026": {
+    "distribution": {
+      "profile": "unassessed"
+    },
+    "install": {
+      "profile": "unassessed"
+    },
+    "inject": {
+      "profile": "unassessed"
+    },
+    "adware": {
+      "profile": "unassessed"
+    }
+  },
+  "checkpoint-yoba-fake-ai-2026-10": {
+    "seo-poison": {
+      "profile": "unassessed"
+    },
+    "lure": {
+      "profile": "unassessed"
+    },
+    "sideload": {
+      "profile": "unassessed"
+    },
+    "dropper": {
+      "profile": "unassessed"
+    },
+    "c2": {
+      "profile": "unassessed"
+    },
+    "payload": {
+      "profile": "unassessed"
+    }
+  },
   "cl-unk-1211-unit42-2026-10": {
     "step-1": {
       "profile": "linux-webshell",
@@ -260,6 +430,20 @@
       "profile": "agent-tools"
     }
   },
+  "cline-cli-openclaw-compromise-2026-02": {
+    "compromise-package": {
+      "profile": "unassessed"
+    },
+    "install-skill": {
+      "profile": "unassessed"
+    },
+    "harvest-on-startup": {
+      "profile": "unassessed"
+    },
+    "exfiltrate": {
+      "profile": "unassessed"
+    }
+  },
   "copilot-autoapprove-cve-2025-53773": {
     "step-1": {
       "profile": "agent-input",
@@ -290,6 +474,20 @@
     "step-4": {
       "profile": "provider",
       "note": "The discussion of selling breach data is visible in exposed operator sessions, not inherently in victim endpoint telemetry."
+    }
+  },
+  "crowdstrike-four-claude-actors-2026-10": {
+    "scan-targets": {
+      "profile": "unassessed"
+    },
+    "generate-exploits": {
+      "profile": "unassessed"
+    },
+    "post-exploitation": {
+      "profile": "unassessed"
+    },
+    "exfiltration": {
+      "profile": "unassessed"
     }
   },
   "cursor-curxecute-cve-2025-54135": {
@@ -373,6 +571,40 @@
       "profile": "windows-shell"
     }
   },
+  "cyberxero-iab-ukraine-2026-10": {
+    "initial-compromise": {
+      "profile": "unassessed"
+    },
+    "deploy-swarm": {
+      "profile": "unassessed"
+    },
+    "coordinated-escalation": {
+      "profile": "unassessed"
+    },
+    "sell-access": {
+      "profile": "unassessed"
+    }
+  },
+  "cyera-anthropic-pdf-skill-backdoor-2026-11": {
+    "create-tampered-skill": {
+      "profile": "unassessed"
+    },
+    "truncate-skill-md": {
+      "profile": "unassessed"
+    },
+    "obfuscate-backdoor": {
+      "profile": "unassessed"
+    },
+    "distribute-skill": {
+      "profile": "unassessed"
+    },
+    "developer-install": {
+      "profile": "unassessed"
+    },
+    "backdoor-execution": {
+      "profile": "unassessed"
+    }
+  },
   "datadog-bedrock-key-testing-2025": {
     "step-1": {
       "profile": "unassessed",
@@ -446,6 +678,37 @@
       "reviewed": "2026-11-04"
     }
   },
+  "fakegit-agentbaiting-island-2026-10": {
+    "create-fakes": {
+      "profile": "unassessed"
+    },
+    "agent-recommends": {
+      "profile": "unassessed"
+    },
+    "user-installs": {
+      "profile": "unassessed"
+    },
+    "compromise": {
+      "profile": "unassessed"
+    }
+  },
+  "forever-agents-md-hijack-2026": {
+    "drop": {
+      "profile": "unassessed"
+    },
+    "launch": {
+      "profile": "unassessed"
+    },
+    "read": {
+      "profile": "unassessed"
+    },
+    "execute": {
+      "profile": "unassessed"
+    },
+    "impact": {
+      "profile": "unassessed"
+    }
+  },
   "fraudgpt-underground-2023": {
     "step-1": {
       "profile": "unobserved"
@@ -469,6 +732,20 @@
     },
     "step-4": {
       "profile": "persistence"
+    }
+  },
+  "greynoise-papercut-ai-campaign-2026-09": {
+    "scan-exploit": {
+      "profile": "unassessed"
+    },
+    "deploy-agent": {
+      "profile": "unassessed"
+    },
+    "autonomous-post-exploit": {
+      "profile": "unassessed"
+    },
+    "ransomware-sales": {
+      "profile": "unassessed"
     }
   },
   "gtg-1002-anthropic-claude-code-espionage-2025-11": {
@@ -502,6 +779,51 @@
     "step-4": {
       "profile": "phishing",
       "note": "Investigate extortion communications alongside the preceding data-access evidence; message polish does not prove AI involvement."
+    }
+  },
+  "gtig-llmjacking-unc6993-2026-11": {
+    "initial-access": {
+      "profile": "unassessed"
+    },
+    "lateral-persistence": {
+      "profile": "unassessed"
+    },
+    "llm-abuse": {
+      "profile": "unassessed"
+    },
+    "monetization": {
+      "profile": "unassessed"
+    },
+    "charges": {
+      "profile": "unassessed"
+    }
+  },
+  "hackerbot-claw-github-actions-2026-03": {
+    "scan": {
+      "profile": "unassessed"
+    },
+    "exploit": {
+      "profile": "unassessed"
+    },
+    "harvest": {
+      "profile": "unassessed"
+    },
+    "pivot": {
+      "profile": "unassessed"
+    }
+  },
+  "hermes-operators-campaigns-2026": {
+    "initial-access": {
+      "profile": "unassessed"
+    },
+    "deploy-hermes": {
+      "profile": "unassessed"
+    },
+    "autonomous-ops": {
+      "profile": "unassessed"
+    },
+    "exfiltration": {
+      "profile": "unassessed"
     }
   },
   "hiddenlayer-mcp-param-abuse-2025": {
@@ -554,6 +876,34 @@
       "profile": "exfil"
     }
   },
+  "inc-gentlemen-ransomware-ai-2026-10": {
+    "initial-access": {
+      "profile": "unassessed"
+    },
+    "deploy-agent": {
+      "profile": "unassessed"
+    },
+    "recon-lateral": {
+      "profile": "unassessed"
+    },
+    "exfil-ransomware": {
+      "profile": "unassessed"
+    }
+  },
+  "installfix-fake-claude-pages-2026-03": {
+    "seo-poisoning": {
+      "profile": "unassessed"
+    },
+    "user-downloads": {
+      "profile": "unassessed"
+    },
+    "install-malware": {
+      "profile": "unassessed"
+    },
+    "exfiltrate-mine": {
+      "profile": "unassessed"
+    }
+  },
   "invariant-github-mcp-private-repo-2025-05": {
     "step-1": {
       "profile": "agent-tools"
@@ -585,6 +935,91 @@
     },
     "step-4": {
       "profile": "exfil"
+    }
+  },
+  "jadepuffer-langflow-ransomware-2026-07": {
+    "access": {
+      "profile": "unassessed"
+    },
+    "deploy-agent": {
+      "profile": "unassessed"
+    },
+    "autonomous-ops": {
+      "profile": "unassessed"
+    },
+    "encrypt": {
+      "profile": "unassessed"
+    }
+  },
+  "jfrog-testmetest-worm-2026-10": {
+    "initial-compromise": {
+      "profile": "unassessed"
+    },
+    "repository-poison": {
+      "profile": "unassessed"
+    },
+    "npm-distribution": {
+      "profile": "unassessed"
+    },
+    "evasion": {
+      "profile": "unassessed"
+    },
+    "decrypt-payload": {
+      "profile": "unassessed"
+    },
+    "credential-theft": {
+      "profile": "unassessed"
+    },
+    "c2": {
+      "profile": "unassessed"
+    }
+  },
+  "kaspersky-cyberstrikeai-schools-2026": {
+    "initial-access": {
+      "profile": "unassessed"
+    },
+    "implant": {
+      "profile": "unassessed"
+    },
+    "llm-decision": {
+      "profile": "unassessed"
+    },
+    "privilege-escalation": {
+      "profile": "unassessed"
+    },
+    "domain-admin": {
+      "profile": "unassessed"
+    }
+  },
+  "keyhunter-llm-key-theft-2026-11": {
+    "ai-monitoring": {
+      "profile": "unassessed"
+    },
+    "recon": {
+      "profile": "unassessed"
+    },
+    "harvest": {
+      "profile": "unassessed"
+    },
+    "validate": {
+      "profile": "unassessed"
+    },
+    "monetize": {
+      "profile": "unassessed"
+    }
+  },
+  "langflow-mcp-rce-ghsa-2026": {
+    "auth": {
+      "profile": "unassessed"
+    },
+    "inject-command": {
+      "profile": "unassessed"
+    },
+    "trigger": {
+      "profile": "unassessed"
+    },
+    "rce": {
+      "profile": "unassessed"
     }
   },
   "llmjacking-deepseek-sysdig-2025-02": {
@@ -635,6 +1070,68 @@
       "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
     }
   },
+  "lumen-poellm-botnet-2026-10": {
+    "vuln-exploit": {
+      "profile": "unassessed"
+    },
+    "poem-c2": {
+      "profile": "unassessed"
+    },
+    "deploy-malware": {
+      "profile": "unassessed"
+    },
+    "mining": {
+      "profile": "unassessed"
+    },
+    "expand-botnet": {
+      "profile": "unassessed"
+    }
+  },
+  "macos-gaslight-dprk-2026-06": {
+    "spearphishing": {
+      "profile": "unassessed"
+    },
+    "execute-backdoor": {
+      "profile": "unassessed"
+    },
+    "evade-analysis": {
+      "profile": "unassessed"
+    },
+    "exfiltration": {
+      "profile": "unassessed"
+    }
+  },
+  "malicious-mcp-servers-npm-2026-11": {
+    "publish": {
+      "profile": "unassessed"
+    },
+    "install": {
+      "profile": "unassessed"
+    },
+    "probe": {
+      "profile": "unassessed"
+    },
+    "exfil-files": {
+      "profile": "unassessed"
+    },
+    "exfil-header": {
+      "profile": "unassessed"
+    }
+  },
+  "malicious-openclaw-skills-2026": {
+    "distribute-skills": {
+      "profile": "unassessed"
+    },
+    "user-installs": {
+      "profile": "unassessed"
+    },
+    "execute-payload": {
+      "profile": "unassessed"
+    },
+    "exfiltrate-persist": {
+      "profile": "unassessed"
+    }
+  },
   "malwarebytes-chrome-ai-extensions-2025-01": {
     "step-1": {
       "profile": "extension"
@@ -649,6 +1146,40 @@
     },
     "step-4": {
       "profile": "credentials"
+    }
+  },
+  "metr-vibe-coded-agent-dashboard-2026-08": {
+    "discover-key": {
+      "profile": "unassessed"
+    },
+    "ai-enumeration": {
+      "profile": "unassessed"
+    },
+    "drain-credits": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-artex-github-secrets-keyvault-2026-11": {
+    "github-search": {
+      "profile": "unassessed"
+    },
+    "credential-harvest": {
+      "profile": "unassessed"
+    },
+    "entra-auth": {
+      "profile": "unassessed"
+    },
+    "keyvault-enum": {
+      "profile": "unassessed"
+    },
+    "storage-keys": {
+      "profile": "unassessed"
+    },
+    "aks-creds": {
+      "profile": "unassessed"
+    },
+    "ai-keys": {
+      "profile": "unassessed"
     }
   },
   "morris-ii-ai-worm-poc-2024-03": {
@@ -764,6 +1295,23 @@
       "profile": "credentials"
     }
   },
+  "pluto-loadmine-qwen2-malware-2026": {
+    "upload": {
+      "profile": "unassessed"
+    },
+    "load": {
+      "profile": "unassessed"
+    },
+    "execute": {
+      "profile": "unassessed"
+    },
+    "miner": {
+      "profile": "unassessed"
+    },
+    "escalation": {
+      "profile": "unassessed"
+    }
+  },
   "pretext-skill-scanner-evasion-2026-10": {
     "step-1": {
       "profile": "skill-review",
@@ -815,6 +1363,20 @@
       "profile": "impact"
     }
   },
+  "promptspy-gemini-android-2026-02": {
+    "install": {
+      "profile": "unassessed"
+    },
+    "initial-collection": {
+      "profile": "unassessed"
+    },
+    "gemini-decision": {
+      "profile": "unassessed"
+    },
+    "adaptive-targeting": {
+      "profile": "unassessed"
+    }
+  },
   "promptsteal-lamehug-apt28-2025-07": {
     "step-1": {
       "profile": "phishing"
@@ -845,6 +1407,20 @@
       "profile": "repository"
     }
   },
+  "rathat-android-ai-runtime-2026-09": {
+    "install": {
+      "profile": "unassessed"
+    },
+    "collect-state": {
+      "profile": "unassessed"
+    },
+    "query-llm": {
+      "profile": "unassessed"
+    },
+    "execute-attack": {
+      "profile": "unassessed"
+    }
+  },
   "s1ngularity-nx-ai-cli-2025-08": {
     "step-1": {
       "profile": "package"
@@ -857,6 +1433,20 @@
     },
     "step-4": {
       "profile": "repository"
+    }
+  },
+  "sapphire-sleet-mastra-npm-2026-06": {
+    "compromise-maintainer": {
+      "profile": "unassessed"
+    },
+    "publish-backdoored": {
+      "profile": "unassessed"
+    },
+    "harvest-credentials": {
+      "profile": "unassessed"
+    },
+    "exfiltrate-dprk": {
+      "profile": "unassessed"
     }
   },
   "shareleak-copilot-studio-cve-2026-21520": {
@@ -892,6 +1482,43 @@
       "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
     }
   },
+  "socket-litellm-supply-chain-2026-10": {
+    "supply-chain": {
+      "profile": "unassessed"
+    },
+    "distribution": {
+      "profile": "unassessed"
+    },
+    "installation": {
+      "profile": "unassessed"
+    },
+    "collection": {
+      "profile": "unassessed"
+    },
+    "exfiltration": {
+      "profile": "unassessed"
+    },
+    "persistence": {
+      "profile": "unassessed"
+    }
+  },
+  "socradar-n0n-ransomware-ai-2026-10": {
+    "credential-access": {
+      "profile": "unassessed"
+    },
+    "ai-tooling": {
+      "profile": "unassessed"
+    },
+    "script-generation": {
+      "profile": "unassessed"
+    },
+    "fmc-hijack": {
+      "profile": "unassessed"
+    },
+    "ransomware": {
+      "profile": "unassessed"
+    }
+  },
   "storm-2139-fizzdogg-microsoft-llmjacking-2024-12": {
     "step-1": {
       "profile": "unobserved",
@@ -905,6 +1532,37 @@
     },
     "step-4": {
       "profile": "cloud"
+    }
+  },
+  "symantec-aoki-infostealer-ai-2026-10": {
+    "deploy": {
+      "profile": "unassessed"
+    },
+    "ai-theft": {
+      "profile": "unassessed"
+    },
+    "traditional": {
+      "profile": "unassessed"
+    },
+    "exfil": {
+      "profile": "unassessed"
+    },
+    "abuse": {
+      "profile": "unassessed"
+    }
+  },
+  "symantec-skynet-llmjacking-2026-10": {
+    "hunt-endpoints": {
+      "profile": "unassessed"
+    },
+    "jailbreak": {
+      "profile": "unassessed"
+    },
+    "exploit-frameworks": {
+      "profile": "unassessed"
+    },
+    "deploy-miner": {
+      "profile": "unassessed"
     }
   },
   "talos-a3-ai-analysis-evasion-2026-10": {
@@ -925,21 +1583,21 @@
       "reviewed": "2026-11-04"
     }
   },
-  "talos-yuri-agent-attacks-2026-10": {
-    "step-1": {
-      "profile": "unobserved",
-      "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  "talos-closedquorum-implant-2026-09": {
+    "deployment": {
+      "profile": "unassessed"
     },
-    "step-2": {
-      "profile": "provider"
+    "system-enum": {
+      "profile": "unassessed"
     },
-    "step-3": {
-      "profile": "web",
-      "note": "This is a generalized threat framework; these are prospective hunts, not a reconstructed victim incident."
+    "llm-vote": {
+      "profile": "unassessed"
     },
-    "step-4": {
-      "profile": "unobserved",
-      "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+    "discord-log": {
+      "profile": "unassessed"
+    },
+    "execute": {
+      "profile": "unassessed"
     }
   },
   "temp-zagros-gemini-malware-dev-2025": {
@@ -958,6 +1616,20 @@
       "profile": "provider"
     }
   },
+  "tensorlake-shai-hulud-chaindrop-2026-10": {
+    "phish-maintainer": {
+      "profile": "unassessed"
+    },
+    "publish-malicious": {
+      "profile": "unassessed"
+    },
+    "execute-stealer": {
+      "profile": "unassessed"
+    },
+    "exfiltrate": {
+      "profile": "unassessed"
+    }
+  },
   "trailofbits-mcp-line-jumping-2025-04": {
     "step-1": {
       "profile": "unobserved",
@@ -972,6 +1644,20 @@
     },
     "step-4": {
       "profile": "exfil"
+    }
+  },
+  "uat-10147-pentestgpt-seo-fraud-2026-08": {
+    "cms-exploitation": {
+      "profile": "unassessed"
+    },
+    "deploy-ai-tools": {
+      "profile": "unassessed"
+    },
+    "automate-exploitation": {
+      "profile": "unassessed"
+    },
+    "monetization": {
+      "profile": "unassessed"
     }
   },
   "unc1069-gemini-deepfake-crypto-2025": {
@@ -1022,6 +1708,23 @@
     },
     "step-4": {
       "profile": "android"
+    }
+  },
+  "unit42-artex-api-recon-2026-10": {
+    "recon": {
+      "profile": "unassessed"
+    },
+    "exploit-attempts": {
+      "profile": "unassessed"
+    },
+    "registration": {
+      "profile": "unassessed"
+    },
+    "data-access": {
+      "profile": "unassessed"
+    },
+    "data-write": {
+      "profile": "unassessed"
     }
   },
   "unit42-llm-js-obfuscation-2024": {
@@ -1098,23 +1801,6 @@
     },
     "step-4": {
       "profile": "cloud"
-    }
-  },
-  "zenity-mcp-supply-chain-2026-draft": {
-    "step-1": {
-      "profile": "mcp-config"
-    },
-    "step-2": {
-      "profile": "agent-tools",
-      "resource": "LOLSkills"
-    },
-    "step-3": {
-      "profile": "agent-tools",
-      "note": "A conceptual supply-chain scenario; validate the trust-boundary hypothesis with a controlled fixture."
-    },
-    "step-4": {
-      "profile": "unobserved",
-      "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
     }
   }
 }

@@ -6,7 +6,7 @@ org: Palo Alto Networks Unit 42
 sources:
   - url: https://unit42.paloaltonetworks.com/ai-assisted-cybercrime-analysis/
     title: "Unit 42: BUGSTER - AI-Assisted Cybercrime Analysis"
-  - url: https://github.com/Hermes-Autonomous-Intelligence/hermes
+  - url: https://github.com/NousResearch/hermes-agent
     title: "Hermes - Autonomous AI Agent Framework"
 borderline: false
 borderline_note: null

@@ -6,7 +6,7 @@ org: ThreatDown (formerly Malwarebytes)
 sources:
   - url: https://www.threatdown.com/blog/carbonato/
     title: "ThreatDown: Carbonato Botnet Spreads Via Exposed Docker Hosts"
-  - url: https://github.com/Hermes-Autonomous-Intelligence/hermes
+  - url: https://github.com/NousResearch/hermes-agent
     title: "Hermes - Autonomous AI Agent Framework"
 borderline: false
 borderline_note: null

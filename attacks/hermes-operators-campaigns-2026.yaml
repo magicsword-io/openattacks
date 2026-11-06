@@ -4,9 +4,9 @@ date_reported: 2026-07-30
 researcher: Unit 42, Hunt.io
 org: Palo Alto Networks, Hunt.io
 sources:
-  - url: https://unit42.paloaltonetworks.com/hermes-agent-knaithe-1daynews/
+  - url: https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
     title: "Unit 42: knaithe/KnYuan Using Hermes Agent in 1DayNews Campaign"
-  - url: https://hunt.io/blog/thailand-ministry-finance-hermes-intrusion
+  - url: https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
     title: "Hunt.io: Thailand Ministry of Finance Intrusion Using Hermes Agent"
 borderline: false
 borderline_note: null
@@ -66,8 +66,8 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Multiple threat actors using Hermes autonomous agent for post-compromise operations"
     source_urls:
-      - https://unit42.paloaltonetworks.com/hermes-agent-knaithe-1daynews/
-      - https://hunt.io/blog/thailand-ministry-finance-hermes-intrusion
+    - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
+    - https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
 attack_flow:
   nodes:
     - id: initial-access
@@ -75,25 +75,25 @@ attack_flow:
       description: "knaithe exploits 1-day vulnerabilities; Thailand campaign method unknown"
       kind: access
       source_urls:
-        - https://unit42.paloaltonetworks.com/hermes-agent-knaithe-1daynews/
+        - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
     - id: deploy-hermes
       title: Deploy Hermes agent
       description: "Install Hermes autonomous agent framework with DeepSeek backing"
       kind: ai
       source_urls:
-        - https://unit42.paloaltonetworks.com/hermes-agent-knaithe-1daynews/
+        - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
     - id: autonomous-ops
       title: Autonomous reconnaissance and exploitation
       description: "Hermes conducts autonomous network mapping, vulnerability discovery, lateral movement"
       kind: execution
       source_urls:
-        - https://unit42.paloaltonetworks.com/hermes-agent-knaithe-1daynews/
+        - https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/
     - id: exfiltration
       title: Data exfiltration
       description: "Autonomous data collection and exfiltration; multiple organizations compromised"
       kind: impact
       source_urls:
-        - https://hunt.io/blog/thailand-ministry-finance-hermes-intrusion
+        - https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
   edges:
     - source: initial-access
       target: deploy-hermes

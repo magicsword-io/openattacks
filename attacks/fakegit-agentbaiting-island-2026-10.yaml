@@ -4,7 +4,7 @@ date_reported: 2026-10-30
 researcher: Island Security Research
 org: Island
 sources:
-  - url: https://island.io/blog/fakegit-agentbaiting-supply-chain
+  - url: https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
     title: "Island: FakeGit 'Agentbaiting' Campaign Targets AI Agent Recommendations"
 borderline: false
 borderline_note: null
@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "Adversary manipulates LLM tool recommendation systems to deliver malicious packages via agent-suggested GitHub repos"
     source_urls:
-      - https://island.io/blog/fakegit-agentbaiting-supply-chain
+    - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
 attack_flow:
   nodes:
     - id: create-fakes
@@ -51,25 +51,25 @@ attack_flow:
       description: "Adversary creates 800+ GitHub repos with typosquat/combosquat names mimicking popular AI skills, MCP servers, Cursor rules; optimizes metadata (README, topics, keywords) for LLM search ranking; inflates stars/forks"
       kind: ai
       source_urls:
-        - https://island.io/blog/fakegit-agentbaiting-supply-chain
+        - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
     - id: agent-recommends
       title: Agent recommends malicious repo
       description: "User asks AI agent to find/recommend skill, MCP server, or Cursor rule; agent searches GitHub/web, ranks FakeGit repos highly due to optimized metadata; agent recommends malicious repo to user as legitimate tool"
       kind: ai
       source_urls:
-        - https://island.io/blog/fakegit-agentbaiting-supply-chain
+        - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
     - id: user-installs
       title: User installs per agent recommendation
       description: "User trusts agent recommendation and clones repo or installs package; malicious install script or npm/PyPI postinstall executes; Shai-Hulud stealer, SSH backdoor, or worm payload deploys"
       kind: execution
       source_urls:
-        - https://island.io/blog/fakegit-agentbaiting-supply-chain
+        - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
     - id: compromise
       title: Credential theft and persistence
       description: "Payload harvests AI API keys, GitHub tokens, SSH keys, AWS credentials; establishes persistence (SSH backdoor, cron job); exfiltrates to Discord webhooks or C2; 2,400+ successful compromises tracked Oct-Nov 2026"
       kind: impact
       source_urls:
-        - https://island.io/blog/fakegit-agentbaiting-supply-chain
+        - https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
   edges:
     - source: create-fakes
       target: agent-recommends

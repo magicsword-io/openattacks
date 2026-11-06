@@ -1056,7 +1056,7 @@ p {
 }
 .timeline-year {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 100px minmax(0, 1fr);
   border-top: 1px solid var(--line);
   padding-top: 27px;
   margin-bottom: 30px;
@@ -1073,6 +1073,7 @@ p {
 .timeline-entries {
   border-left: 1px solid var(--line);
   margin-left: 10px;
+  min-width: 0;
 }
 .timeline-entry {
   display: block;
@@ -1108,6 +1109,7 @@ p {
   font-size: 11px;
   max-width: 780px;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 .region-layout {
   display: grid;
@@ -1965,7 +1967,7 @@ p {
     font-size: 12px;
   }
   .timeline-year {
-    grid-template-columns: 60px 1fr;
+    grid-template-columns: 60px minmax(0, 1fr);
   }
   .timeline-year h2 {
     font-size: 19px;

@@ -4,7 +4,7 @@ date_reported: 2026-06-17
 researcher: Microsoft Threat Intelligence
 org: Microsoft
 sources:
-  - url: https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+  - url: https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
     title: "Microsoft: North Korea's Sapphire Sleet targets AI developers with Mastra supply chain attack"
   - url: https://github.com/mastra-ai/mastra
     title: "Mastra - AI Framework for TypeScript"
@@ -43,7 +43,7 @@ atlas_techniques:
   - id: AML.T0000
     rationale: "DPRK APT supply chain compromise of AI framework to steal AI service credentials for intelligence collection and revenue generation"
     source_urls:
-      - https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+    - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
 attack_flow:
   nodes:
     - id: compromise-maintainer
@@ -51,25 +51,25 @@ attack_flow:
       description: "Sapphire Sleet (DPRK) compromised Mastra maintainer's npm account via targeted phishing or credential theft; gained publish access to @mastra scope"
       kind: access
       source_urls:
-        - https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
     - id: publish-backdoored
       title: Publish 140+ backdoored packages
       description: "Published 140+ malicious @mastra packages between May 29-Jun 15 with obfuscated postinstall scripts; maintained functional AI framework features to avoid immediate detection"
       kind: ai
       source_urls:
-        - https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
     - id: harvest-credentials
       title: Harvest AI and cloud credentials
       description: "Postinstall script executes obfuscated Node.js: scans env vars (OPENAI_API_KEY, ANTHROPIC_API_KEY, AZURE_OPENAI_*), filesystem (~/.config, ~/.aws, ~/.ssh, ~/.docker, ~/.kube), npm config; base64-encodes findings"
       kind: execution
       source_urls:
-        - https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
     - id: exfiltrate-dprk
       title: Exfiltrate to DPRK C2
       description: "POSTs harvested credentials to hxxps://mastra-telemetry[.]com (DPRK infrastructure masquerading as telemetry); credentials support DPRK intelligence collection and revenue generation (AI service resale, crypto exchange targeting); 8,000-12,000 affected installs"
       kind: impact
       source_urls:
-        - https://www.microsoft.com/en-us/security/blog/2026/06/17/north-korea-sapphire-sleet-mastra-supply-chain-attack/
+        - https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/
   edges:
     - source: compromise-maintainer
       target: publish-backdoored

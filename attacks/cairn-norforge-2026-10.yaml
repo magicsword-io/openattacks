@@ -6,7 +6,7 @@ org: NorForge
 sources:
   - url: https://norforge.com/blog/inside_cairn
     title: "NorForge: Inside Cairn - Exposed AI Agent Panels (AIA0001-AIA0003)"
-  - url: https://norforge.com/blog/cairn-panels-hijacked-aia0009-aia0010
+  - url: https://norforge.com/blog/automated-subversion-attempted-takeover
     title: "NorForge: Cairn Panels Hijacked - AIA0009/AIA0010 Deploy Poseidon RAT"
 magicsword_coverage: []
 borderline: false

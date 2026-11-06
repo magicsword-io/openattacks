@@ -10,5 +10,4 @@ sources:
   - url: https://www.crowdstrike.com/en-us/blog/vapor-panda-uses-artex-to-scale-global-campaign/
     title: VAPOR PANDA Uses AI-Driven ARTEX to Scale a Global Espionage Campaign
     publisher: CrowdStrike
-linked_attacks:
-  - crowdstrike-artex-sk-finance-2026-10
+linked_attacks: []

@@ -4,7 +4,7 @@ date_reported: 2026-02-19
 researcher: ESET
 org: ESET
 sources:
-  - url: https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+  - url: https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
     title: "ESET: PromptSpy Android Spyware Uses Gemini for C2"
 borderline: false
 borderline_note: null
@@ -57,7 +57,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "Spyware uses Gemini API to adaptively determine surveillance targets and data collection priorities"
     source_urls:
-      - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+    - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
 attack_flow:
   nodes:
     - id: install
@@ -65,25 +65,25 @@ attack_flow:
       description: "Victim installs malicious APK"
       kind: access
       source_urls:
-        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+        - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
     - id: initial-collection
       title: Collect surveillance data
       description: "Gather location, photos, contacts, messages, call logs"
       kind: execution
       source_urls:
-        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+        - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
     - id: gemini-decision
       title: Query Gemini for next targets
       description: "Send data summary to Gemini 1.5 Pro asking what to collect next or which contacts to target"
       kind: ai
       source_urls:
-        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+        - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
     - id: adaptive-targeting
       title: Execute Gemini-directed collection
       description: "Follow Gemini recommendations for high-value contact targeting and additional data gathering"
       kind: impact
       source_urls:
-        - https://www.welivesecurity.com/2026/02/19/promptspy-gemini-android-spyware/
+        - https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/
   edges:
     - source: install
       target: initial-collection

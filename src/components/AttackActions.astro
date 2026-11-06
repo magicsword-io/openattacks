@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import DetectionQueries from "./DetectionQueries.astro";
+import DetectionSection from "./DetectionSection.astro";
 import SimulationPreview from "./SimulationPreview.astro";
 import { type Attack } from "../lib/catalog";
 import { attackFlow } from "../lib/attack-flow";
@@ -26,6 +26,9 @@ const resources = [
   ).values(),
 ];
 const simulations = simulationsFor(attack.id);
+const simulationStages = [
+  ...new Set(simulations.flatMap((simulation: any) => simulation.stage_ids)),
+];
 ---
 
 <section class="entry-actions" aria-labelledby="what-you-can-do">
@@ -116,6 +119,6 @@ const simulations = simulationsFor(attack.id);
       </details>
     )}
   </section>
-  <DetectionQueries attackId={attack.id} stages={stages} />
+  <DetectionSection attack={attack} simulationStages={simulationStages} />
   {simulations.length > 0 && <SimulationPreview simulations={simulations} />}
 </section>

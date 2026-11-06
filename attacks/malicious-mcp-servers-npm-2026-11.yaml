@@ -10,8 +10,8 @@ sources:
   - url: https://www.pillar.io/blog/deadbugz-malicious-mcp-server-aug-2026
     title: "Deadbugz: Malicious MCP Server on npm"
     publisher: Pillar Security
-  - url: https://socket.dev/blog/sandworm-mode-malicious-mcp-server
-    title: "SANDWORM_MODE: Malicious MCP Server Campaign"
+  - url: https://socket.dev/glossary/mcp-security
+    title: "Socket: MCP Security and the SANDWORM_MODE campaign"
     publisher: Socket
   - url: https://github.com/advisories/GHSA-556m-xfwj-7wff
     title: "@ifasn/ms-doc-mcp Malicious Package (MAL-2026-18603)"

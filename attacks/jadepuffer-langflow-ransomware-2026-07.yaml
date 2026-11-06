@@ -4,18 +4,16 @@ date_reported: 2026-07-01
 researcher: Sysdig
 org: Sysdig
 sources:
-  - url: https://sysdig.com/blog/jadepuffer-llm-agent-ransomware-langflow/
+  - url: https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion
     title: "Sysdig: JADEPUFFER - LLM Agent End-to-End Ransomware via Langflow"
-  - url: https://sysdig.com/blog/encforge-variant-encrypts-model-weights/
+  - url: https://www.sysdig.com/blog/jadepuffer-evolves-the-agentic-threat-actor-deploys-ransomware-built-to-destroy-ai-models
     title: "Sysdig: ENCFORGE Variant Encrypts AI Model Weights"
-  - url: https://www.microsoft.com/en-us/security/blog/2026/07/20/storm-3168-jadepuffer-link/
-    title: "Microsoft: Storm-3168 Linked to JADEPUFFER Operations"
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
 ai_role_detail: "JADEPUFFER autonomous LLM agent conducts end-to-end ransomware operations via Langflow; ENCFORGE variant specifically targets and encrypts AI model weights"
-technique_summary: "Jul 1, 2026: Sysdig discovered JADEPUFFER, LLM agent-driven ransomware using Langflow framework (github.com/langflow-ai/langflow). Agent autonomously: (1) Scans network for file servers, backups, databases; (2) Exfiltrates data to attacker cloud storage; (3) Encrypts files; (4) Generates and sends ransom note. ENCFORGE variant (Jul 20) specifically targets AI/ML infrastructure, encrypting model weights (.pt, .ckpt, .safetensors) and training datasets. Microsoft links operations to Storm-3168 actor. Represents first fully autonomous LLM-driven ransomware workflow."
+technique_summary: "Sysdig documented JADEPUFFER, an LLM-driven ransomware operator entering through Langflow and autonomously chaining reconnaissance, credential access, lateral movement, and destructive database extortion. A later ENCFORGE variant targeted AI and ML infrastructure, including model weights and training data."
 initial_access: "Exploits in cloud services, container escapes"
 ai_tooling_and_models:
   - Langflow AI workflow framework
@@ -70,7 +68,7 @@ atlas_techniques:
   - id: AML.T0040
     rationale: "First fully autonomous LLM agent-driven ransomware conducting end-to-end operations via Langflow"
     source_urls:
-      - https://sysdig.com/blog/jadepuffer-llm-agent-ransomware-langflow/
+      - https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion
 attack_flow:
   nodes:
     - id: access
@@ -78,25 +76,25 @@ attack_flow:
       description: "Exploit cloud services or container escape"
       kind: access
       source_urls:
-        - https://sysdig.com/blog/jadepuffer-llm-agent-ransomware-langflow/
+        - https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion
     - id: deploy-agent
       title: Deploy JADEPUFFER Langflow agent
       description: "Install Langflow autonomous agent with ransomware workflow"
       kind: ai
       source_urls:
-        - https://sysdig.com/blog/jadepuffer-llm-agent-ransomware-langflow/
+        - https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion
     - id: autonomous-ops
       title: Autonomous recon and exfiltration
       description: "Agent scans for file servers, backups, databases, AI models; exfiltrates data to attacker cloud"
       kind: execution
       source_urls:
-        - https://sysdig.com/blog/jadepuffer-llm-agent-ransomware-langflow/
+        - https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion
     - id: encrypt
       title: Encrypt files and demand ransom
       description: "Encrypt files (ENCFORGE targets model weights .pt, .ckpt, .safetensors); generate ransom note; send to victims"
       kind: impact
       source_urls:
-        - https://sysdig.com/blog/encforge-variant-encrypts-model-weights/
+        - https://www.sysdig.com/blog/jadepuffer-evolves-the-agentic-threat-actor-deploys-ransomware-built-to-destroy-ai-models
   edges:
     - source: access
       target: deploy-agent

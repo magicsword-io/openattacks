@@ -40,15 +40,18 @@ test("entry pages connect the story, exposure and actions to the existing eviden
     "/api/defenses/invariant-mcp-tool-poisoning-2025-04.json",
   );
   const order = await page.locator(".entry-actions").evaluate((actions) => {
-    return [...actions.children].map(
-      (element) => element.id || element.className,
-    );
+    return [...actions.children].map((element) => ({
+      id: element.id,
+      classes: [...element.classList],
+    }));
   });
-  expect(order.indexOf("entry-protection")).toBeLessThan(
-    order.indexOf("entry-detections"),
+  const indexOf = (value: string) =>
+    order.findIndex(({ id, classes }) => id === value || classes.includes(value));
+  expect(indexOf("entry-protection")).toBeLessThan(
+    indexOf("entry-detections"),
   );
-  expect(order.indexOf("entry-detections")).toBeLessThan(
-    order.indexOf("simulation"),
+  expect(indexOf("entry-detections")).toBeLessThan(
+    indexOf("simulation"),
   );
   await expect(page.locator("#simulation-heading")).toHaveText(
     "Test this behavior",
@@ -74,7 +77,6 @@ for (const width of [1440, 390]) {
     await expect(
       stage.getByText("Required logs", { exact: true }),
     ).toBeVisible();
-    await stage.locator(".detection-query-details > summary").click();
     const pack = await (
       await request.get(
         "/api/defenses/huntress-plus56-custom-gpt-clickfix-2026-09.json",
@@ -84,20 +86,17 @@ for (const width of [1440, 390]) {
       (entry: { node_id: string }) => entry.node_id === "step-3",
     );
     for (const format of ["Sigma", "KQL", "SPL"]) {
-      await stage.getByRole("tab", { name: format, exact: true }).click();
-      await expect(stage.locator(".detection-code:not(.mcp-brief)")).toHaveText(
+      const details = stage
+        .locator(".detection-query-format")
+        .filter({ has: page.locator(`summary:text-is("${format}")`) });
+      if (!(await details.evaluate((element) => (element as HTMLDetailsElement).open))) {
+        await details.locator("summary").click();
+      }
+      await expect(details.locator("code")).toHaveText(
         mapped.queries[format.toLowerCase()],
       );
     }
-    await stage
-      .getByRole("tab", { name: "SPL", exact: true })
-      .press("ArrowRight");
-    await expect(
-      stage.getByRole("tab", { name: "Sigma", exact: true }),
-    ).toBeFocused();
-    await stage
-      .getByRole("button", { name: "Copy Sigma", exact: true })
-      .click();
+    await stage.getByRole("button", { name: "Copy Sigma", exact: true }).click();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
       mapped.queries.sigma,
     );
@@ -193,8 +192,11 @@ test("exposure, prevention and detection evidence can be read without JavaScript
   const stage = page.locator("#detection-step-2");
   await stage.locator(":scope > summary").click();
   await expect(stage.getByText("Required logs", { exact: true })).toBeVisible();
-  await stage.locator(".detection-query-details > summary").click();
-  await expect(stage.locator(".detection-code:not(.mcp-brief)")).toContainText(
+  const sigma = stage
+    .locator(".detection-query-format")
+    .filter({ has: page.locator('summary:text-is("Sigma")') });
+  await sigma.locator("summary").click();
+  await expect(sigma.locator("code")).toContainText(
     "status: experimental",
   );
   await expect(
