@@ -6,12 +6,19 @@ org: Google Threat Intelligence Group (GTIG)
 sources:
   - url: https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
     title: The Rise of LLMJacking - How Threat Actors Monetize Compromised Cloud and Model Resources
+    publisher: Google Threat Intelligence Group
+  - url: https://fireworks.ai/security/bulletins/october-2026-security-incident-update
+    title: "Fireworks AI: October 2026 Security Incident Update"
+    publisher: Fireworks AI
+  - url: https://fireworks.ai/security/bulletins/october-2026-security-incident
+    title: "Fireworks AI: October 2026 Security Incident"
+    publisher: Fireworks AI
 borderline: false
 borderline_note: null
 ai_role: ai_infra_as_c2
 ai_role_secondary: ai_credential_theft
 ai_role_detail: "Threat actors hijack enterprise LLM access, generate $100K-$1M USD fraudulent charges, monetize via LLM Mixers (illicit routing gateways), deploy agentic workloads with Manus framework"
-technique_summary: "Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, LiteLLM CVE-2026-40217 (/key/regenerate endpoint rebind). UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization."
+technique_summary: "Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, LiteLLM CVE-2026-40217 (/key/regenerate endpoint rebind). UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization. Fireworks AI (Nov 9, 2026) reports Oct 23 third-party cloud provider hosting Fireworks R&D breached; Oct 24 attacker entered via provider, ran unauthorized workload; reached account/billing data and, for some customers, secrets, datasets, partly trained model weights. Fireworks attributes to financially motivated LLMjacking group selling access to illicit routing gateways; GTIG/Mandiant report referenced; Unit 42 forensics."
 initial_access: "Misconfigured Service Account keys; session hijacking page masquerading as LLM portal; stolen GitHub PATs + web app vulnerability exploitation; compromised IAM credentials with cloud federation tokens; harvested exposed LLM API keys from public GitHub; LiteLLM CVE-2026-40217 (user ID rebind vulnerability in /key/regenerate endpoint)"
 ai_tooling_and_models:
   - AWS Bedrock
@@ -30,7 +37,7 @@ other_tooling:
   - newapi.pro resale ecosystem
   - Node.js proxy bundles
   - Burn and rotate service account strategy
-victims_and_sectors: "Organizations in North America, South America, Asia Pacific across financial services, retail, technology, transportation sectors"
+victims_and_sectors: "Organizations in North America, South America, Asia Pacific across financial services, retail, technology, transportation sectors; Fireworks AI customers (account/billing data, secrets, datasets, partly trained model weights for some customers)"
 regions:
   - North America
   - South America
@@ -104,3 +111,44 @@ attack_flow:
       target: charges
     - source: monetization
       target: charges
+category: adversary-use-of-ai
+attribution:
+  actor_name: UNC6993, Jet Night operators, D1337-KAIROS
+  country: Global
+  motivation: financially-motivated
+  attributed_by: Google Threat Intelligence Group, Fireworks AI
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Cloud LLM resource abuse monitoring
+    format: guidance
+    notes: "Implement budget alerts and API quotas; monitor for validation sweeps (max_tokens=1); detect rapid GPU provisioning; alert on Pay-As-You-Go subscriptions from service accounts; monitor LiteLLM/new-api/gcli2api gateway deployments; detect Manus agent framework and SearXNG installations; flag burn-and-rotate service account patterns; monitor Jet Night, ai-relay, newapi.pro resale infrastructure connections"
+  - name: Third-party cloud provider security
+    format: guidance
+    notes: "For Fireworks AI incident: audit third-party cloud provider access; implement least-privilege for R&D environments; monitor unauthorized workload execution; detect account/billing data access anomalies; alert on secrets, datasets, model weight access; implement cloud provider security controls"
+atlas_techniques:
+  - id: AML.T0000
+    rationale: Threat actors compromise cloud compute credentials and hijack enterprise access to AWS Bedrock, Azure Cognitive Services, and GCP Gemini to fraudulently monetize through illicit gateways and LLM Mixers
+    source_urls:
+      - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
+  - id: AML.T0034
+    rationale: "Fireworks AI third-party cloud provider breach resulted in unauthorized workload execution and customer data access"
+    source_urls:
+      - https://fireworks.ai/security/bulletins/october-2026-security-incident-update
+  - id: AML.T0025
+    rationale: "Attackers exfiltrated account/billing data, secrets, datasets, and partly trained model weights from Fireworks AI"
+    source_urls:
+      - https://fireworks.ai/security/bulletins/october-2026-security-incident
+timeline:
+  first_seen: "2026-01-01"
+  last_updated: "2026-11-09"
+  updates:
+    - date: "2026-11-02"
+      source: Google Threat Intelligence Group
+      summary: "GTIG reports UNC6993, Jet Night, D1337-KAIROS LLMjacking campaigns; fraudulent charges $100K-$1M per org; LLM Mixer resale via jet-night.com, ai-relay, newapi.pro"
+    - date: "2026-10-24"
+      source: Fireworks AI
+      summary: "Fireworks AI third-party cloud provider breached Oct 23; attacker entered Oct 24, ran unauthorized workload; accessed account/billing data, secrets, datasets, partly trained model weights"
+    - date: "2026-11-09"
+      source: Fireworks AI
+      summary: "Fireworks AI attributes to financially motivated LLMjacking group selling illicit routing gateway access; GTIG/Mandiant report referenced; Unit 42 forensics"
