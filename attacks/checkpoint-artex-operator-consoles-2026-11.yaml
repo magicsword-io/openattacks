@@ -32,7 +32,6 @@ other_tooling:
 victims_and_sectors: "iOS signing shops, cryptocurrency payment sites, Honor of Kings account resale servers, EU institutions (CERT-EU report)"
 regions:
   - Multiple regions
-  - European Union
 attribution_or_cluster: "Chinese-prompting financially motivated operators; attributed by Check Point; confirmed from leaked operator console databases"
 scale_and_metrics: "Three major campaign fleets (iOS signing, crypto payment, game accounts); multiple exposed ARTEX panels with leaked operator databases; infrastructure across AS54600 PEG TECH, AS152918 Liberally Network Thailand, AS36352 HostPapa"
 prevention_angle: "Secure ARTEX deployments against unauthorized access (remove hardcoded passwords, authenticate APIs); patch command injection, SSTI, IDOR vulnerabilities; rotate compromised credentials; monitor for iOS .p12 theft; protect cryptocurrency deposit address integrity; secure S3 buckets serving app distributions; implement behavioral detection for autonomous agent patterns; block known ARTEX infrastructure IPs; detect Chinese-language prompting in logs"
