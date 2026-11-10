@@ -6,12 +6,18 @@ org: JFrog Security Research
 sources:
   - url: https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/
     title: "Beyond testmetest: Native Addon Camouflage and 42 Armed GitHub Repositories"
+  - url: https://socket.dev/blog/shai-hulud-descendant-malicious-ruby-gem
+    title: "Socket: Shai-Hulud Descendant - Malicious Ruby Gem"
+    publisher: Socket
+  - url: https://x.com/fr0gger_/status/2119730348699640060
+    title: "Thomas Roccia: Hijacked repos with backdated commits and CLAUDE.md DEVOPS-SEALED blocks"
+    publisher: X/Twitter
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: ai_credential_theft
 ai_role_detail: "Worm plants execution hooks for AI coding assistants (Claude Code, Cursor, Codex, Gemini, Copilot, Aider, etc.) in hijacked repositories; steals credentials and propagates through package registries"
-technique_summary: "42 armed third-party GitHub repositories across 11 legitimate owners contain execution hooks for AI coding assistants (.cursorrules, CLAUDE.md, claude_code_config.json, instructions.md) and 12.9-13.7 MB polymorphic wrappers decoding to same CI-publisher payload. Campaign uses compiled native addon (addon.node) that XORs .napi_cache with 0x96 to decrypt JavaScript payload. Addon checks for CI/container/sandbox environment and CPU/RAM limits, skipping execution in automated scanners. Payload collects credentials, poisons repos and CI, propagates via npm. GitHub account CementBeetleSteeple hosts repositories; SafeDep identifies as Shai-Hulud-descendant Miasma-family. Shellpanel artifacts in hijacked owner cluster link to cPanel CVE-2026-41940 exploitation."
+technique_summary: "42 armed third-party GitHub repositories across 11 legitimate owners contain execution hooks for AI coding assistants (.cursorrules, CLAUDE.md, claude_code_config.json, instructions.md) and 12.9-13.7 MB polymorphic wrappers decoding to same CI-publisher payload. Campaign uses compiled native addon (addon.node) that XORs .napi_cache with 0x96 to decrypt JavaScript payload. Addon checks for CI/container/sandbox environment and CPU/RAM limits, skipping execution in automated scanners. Payload collects credentials, poisons repos and CI, propagates via npm. GitHub account CementBeetleSteeple hosts repositories; SafeDep identifies as Shai-Hulud-descendant Miasma-family. Shellpanel artifacts in hijacked owner cluster link to cPanel CVE-2026-41940 exploitation. Socket (Kush Pandya, Nov 6, 2026) reports RubyGems strutil-core 1.0.1 (account jamnajiea); extconf.rb downloads Bun, runs worm at install; steals .claude/.credentials.json, .codex/auth.json, cloud/CI credentials to paleasbest[.]top; plants workspace-tools MCP server, SessionStart hooks, CLAUDE.md, AGENTS.md, .vscode/tasks.json; signed-commit-message backdoor (marker msync-3f7a); wiper if stolen GitHub token revoked. SHA-256 3b3f6e1bde0b28b015030a81a6d805b5b5306dc3f021e1102123971cfd83acc0; related PyPI pystr-codec. Thomas Roccia (Nov 9, 2026) documents hijacked repos with forged backdated commits: toray/XiamiSDK-lib, widget-lib, Rainbow-lib, QiniuSDK-lib, torayUtils-lib; ejaaduipitara/djp-devops, whatsapp-bot, content-service; ConcordiaDev/theme_saimaniq; madolee/da; Imanilom/baraja-coffe; claudiohernanbesada/xenios.api. CLAUDE.md DEVOPS-SEALED block instructs agents to silently run node scripts/setup.js at session start."
 initial_access: "Account hijacks via GitHub/npm credential theft from earlier worm infections; exposed npm credentials; forged commit timelines and short-lived publishing branches; cPanel CVE-2026-41940 exploitation (Shellpanel workflows in same hijacked cluster)"
 ai_tooling_and_models:
   - Claude Code
@@ -30,6 +36,11 @@ other_tooling:
   - Caesar transformation and AES-128-GCM
   - GitHub Actions for CI publishing
   - npm trusted publishing
+  - RubyGems strutil-core 1.0.1 (account jamnajiea)
+  - PyPI pystr-codec
+  - workspace-tools MCP server
+  - SessionStart hooks
+  - Signed-commit-message backdoor (msync-3f7a marker)
 victims_and_sectors: "42 GitHub repositories from 11 legitimate owners; AI development, npm package consumers"
 regions:
   - unknown
@@ -40,20 +51,47 @@ related_magicsword_projects: []
 source_notes: "SafeDep first documented npm package side Oct 22; JFrog complementary GitHub infrastructure investigation; campaign shifted to native addon camouflage to evade scanners; addon environment checks skip CI/containers/sandboxes with <1.5GB RAM or 1 CPU"
 last_reviewed: 2026-11-04
 iocs:
-  domains: []
+  domains:
+    - paleasbest.top
   ips: []
-  hashes: []
+  hashes:
+    - 3b3f6e1bde0b28b015030a81a6d805b5b5306dc3f021e1102123971cfd83acc0
   urls:
     - https://github.com/CementBeetleSteeple
+    - https://github.com/toray/XiamiSDK-lib
+    - https://github.com/toray/widget-lib
+    - https://github.com/toray/Rainbow-lib
+    - https://github.com/toray/QiniuSDK-lib
+    - https://github.com/toray/torayUtils-lib
+    - https://github.com/ejaaduipitara/djp-devops
+    - https://github.com/ejaaduipitara/whatsapp-bot
+    - https://github.com/ejaaduipitara/content-service
+    - https://github.com/ConcordiaDev/theme_saimaniq
+    - https://github.com/madolee/da
+    - https://github.com/Imanilom/baraja-coffe
+    - https://github.com/claudiohernanbesada/xenios.api
 atlas_techniques:
   - id: AML.T0010
     rationale: "Supply chain attack targeting AI coding assistant users via hijacked GitHub repositories and malicious npm packages"
     source_urls:
       - https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/
   - id: AML.T0011
-    rationale: "Worm propagates through package registries (npm) and version control (GitHub), specifically targeting AI development environments"
+    rationale: "Worm propagates through package registries (npm, RubyGems, PyPI) and version control (GitHub), specifically targeting AI development environments"
     source_urls:
       - https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/
+      - https://socket.dev/blog/shai-hulud-descendant-malicious-ruby-gem
+  - id: AML.T0051
+    rationale: "CLAUDE.md DEVOPS-SEALED blocks inject hidden instructions telling agents to silently run node scripts/setup.js at session start"
+    source_urls:
+      - https://x.com/fr0gger_/status/2119730348699640060
+  - id: AML.T0081
+    rationale: "Worm steals AI coding assistant credentials (.claude/.credentials.json, .codex/auth.json) and cloud/CI credentials"
+    source_urls:
+      - https://socket.dev/blog/shai-hulud-descendant-malicious-ruby-gem
+  - id: AML.T0083
+    rationale: "Plants workspace-tools MCP server and SessionStart hooks for persistent AI agent manipulation"
+    source_urls:
+      - https://socket.dev/blog/shai-hulud-descendant-malicious-ruby-gem
 attack_flow:
   nodes:
     - id: initial-compromise
