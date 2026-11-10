@@ -59,7 +59,7 @@ iocs:
     - 31.57.201.201
   hashes: []
   urls: []
-  nodes:
+nodes:
     - id: initial-access
       title: Compromised cloud identity and LLM API keys
       description: "Misconfigured Service Account keys; session hijacking page for LLM portal JSON payloads; stolen GitHub PATs + web app vuln; compromised IAM with federation tokens; exposed LLM API keys harvested from public GitHub; stealthy validation sweeps with max_tokens=1"
