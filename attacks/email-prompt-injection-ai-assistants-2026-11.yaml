@@ -129,18 +129,14 @@ attribution:
   confidence: low
 ai_involvement_confidence: confirmed
 detections:
-- name: M365 Exchange Inbox Forwarding Rule Created
-  format: elastic
-  url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/m365/persistence_m365_exchange_inbox_forwarding_rule_created.toml
-  notes: Detects email forwarding rules created by AI assistants manipulated via hidden
-    prompt injection
 - name: Email AI assistant security controls
   format: guidance
   notes: Strip zero-size HTML elements before AI processing; sanitize Unicode Tag
     characters (U+E0000–U+E007F); detect hidden text with display:none, font-size:0,
-    opacity:0; validate AI assistant actions; require human approval for bulk operations;
-    monitor for ap.confirm+ email patterns; alert on mailbox searches for seed phrase,
-    private key, wallet
+    opacity:0; validate AI assistant actions (forwards, searches); require human approval
+    for bulk operations; monitor for ap.confirm+ email patterns; alert on mailbox
+    searches for seed phrase, private key, wallet; log all AI assistant forwarding
+    actions; implement AI output validation
 timeline:
   first_seen: '2026-11-01'
   last_updated: '2026-11-07'
