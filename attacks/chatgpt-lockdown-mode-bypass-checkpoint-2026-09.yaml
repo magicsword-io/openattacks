@@ -1,0 +1,103 @@
+id: chatgpt-lockdown-mode-bypass-checkpoint-2026-09
+name: ChatGPT Lockdown Mode bypass - HTML preview sandbox escape (Check Point)
+date_reported: 2026-09-18
+researcher: Alexey Bukhteyev
+org: Check Point Research
+sources:
+  - url: https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+    title: "Check Point: ChatGPT Lockdown Mode Bypass - Phishing, Malware Delivery and Silent Data Exfiltration"
+    publisher: Check Point
+magicsword_coverage: []
+borderline: true
+borderline_note: "Researcher disclosure; OpenAI fixed Sept 18, 2026; no evidence of in-the-wild exploitation"
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "HTML preview sandbox allowed popups; nested iframe contentWindow.open escaped sandbox; enabled chat history theft, fake-update malware, credential phishing via malicious prompts/GPTs/shared chats"
+technique_summary: "Check Point researcher Alexey Bukhteyev disclosed ChatGPT Lockdown Mode bypass allowing HTML preview sandbox escape via contentWindow.open from nested iframe. Attack vectors: (1) zero-click desktop chat history theft, (2) fake-update malware delivery pages, (3) credential phishing via malicious prompts, custom GPTs, or shared chat links. OpenAI patched vulnerability Sept 18, 2026. No evidence of in-the-wild exploitation; marked borderline as researcher disclosure only."
+initial_access: "Malicious prompt, custom GPT, or shared chat link with HTML preview exploit"
+ai_tooling_and_models:
+  - ChatGPT
+  - ChatGPT Desktop
+  - Custom GPTs
+other_tooling:
+  - HTML preview sandbox
+  - Nested iframe escape
+victims_and_sectors: "ChatGPT users; theoretical risk only (fixed before in-wild use)"
+regions:
+  - unknown
+attribution_or_cluster: "Researcher disclosure (Alexey Bukhteyev, Check Point); no threat actor; OpenAI patched Sept 18"
+scale_and_metrics: "PoC only; patched Sept 18, 2026; no in-wild exploitation documented"
+prevention_angle: "OpenAI patched Sept 18, 2026; users should update ChatGPT Desktop; avoid untrusted shared chat links; review custom GPT permissions; implement sandbox escape monitoring"
+related_magicsword_projects: []
+source_notes: "Check Point blog; researcher disclosure only; OpenAI fixed Sept 18, 2026; no threat actor or in-wild exploitation documented"
+last_reviewed: 2026-11-10
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0051
+    rationale: "Malicious prompts/GPTs/shared chats could deliver HTML preview exploits"
+    source_urls:
+      - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+  - id: AML.T0077
+    rationale: "Sandbox escape enabled chat history theft (zero-click desktop)"
+    source_urls:
+      - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+  - id: AML.T0057
+    rationale: "Credential phishing via escaped sandbox popup windows"
+    source_urls:
+      - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+attack_flow:
+  nodes:
+    - id: craft-exploit
+      title: Craft HTML preview exploit
+      description: "Attacker creates malicious prompt/GPT/shared chat with nested iframe contentWindow.open escape"
+      kind: execution
+      source_urls:
+        - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+    - id: deliver-link
+      title: Deliver via prompt/GPT/shared chat
+      description: "User interacts with malicious prompt, custom GPT, or shared chat link"
+      kind: access
+      source_urls:
+        - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+    - id: escape-sandbox
+      title: Escape HTML preview sandbox
+      description: "Nested iframe contentWindow.open escapes Lockdown Mode sandbox"
+      kind: execution
+      source_urls:
+        - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+    - id: exfil-or-phish
+      title: Chat history theft or credential phishing
+      description: "Zero-click chat history exfiltration (desktop) or credential phishing popup"
+      kind: impact
+      source_urls:
+        - https://research.checkpoint.com/2026/chatgpt-lockdown-mode-bypass-phishing-malware-delivery-and-silent-data-exfiltration/
+  edges:
+    - source: craft-exploit
+      target: deliver-link
+    - source: deliver-link
+      target: escape-sandbox
+    - source: escape-sandbox
+      target: exfil-or-phish
+category: attacks-on-ai
+attribution:
+  actor_name: "Researcher disclosure only"
+  country: Unknown
+  motivation: unknown
+  attributed_by: Check Point
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: ChatGPT security monitoring
+    format: guidance
+    notes: "Update ChatGPT Desktop to post-Sept-18-2026 version; monitor for sandbox escape attempts; review shared chat links before opening; audit custom GPT permissions; implement popup blocker; detect contentWindow.open from nested iframes; educate users on malicious prompt/GPT risks"
+timeline:
+  first_seen: "2026-09-18"
+  last_updated: "2026-09-18"
+  updates:
+    - date: "2026-09-18"
+      source: Check Point / OpenAI
+      summary: "Alexey Bukhteyev discloses Lockdown Mode bypass; OpenAI patches same day; no in-wild exploitation documented"
