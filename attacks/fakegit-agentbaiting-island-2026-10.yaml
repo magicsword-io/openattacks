@@ -134,17 +134,19 @@ attribution:
   confidence: high
 ai_involvement_confidence: confirmed
 detections:
-- name: Shai-Hulud Workflow File Creation or Modification
-  format: splunk
-  url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/shai_hulud_workflow_file_creation_or_modification.yml
-  notes: Detects Shai-Hulud family malware including SmartLoader and StealC variants
+- name: Potential Browser Data Stealing
+  format: sigma
+  url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_susp_copy_browser_data.yml
+  notes: Detects StealC infostealer browser data theft on Windows
+- name: Suspicious File Access to Browser Credential Storage
+  format: sigma
+  url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file/file_access/file_access_win_susp_process_access_browser_cred_files.yml
+  notes: Detects SmartLoader/StealC accessing browser credential files
 - name: Malicious skill and MCP repository detection
   format: guidance
-  notes: Monitor agent-initiated GitHub clones; alert on typosquat repo names (edit
-    distance to popular repos); verify repo authenticity (check org, stars, age, commit
-    history); detect new GitHub accounts with multiple similar repos; review repos
-    with inflated stars/forks but low commit activity; flag repos created after popular
-    tools rise; scan for SmartLoader/StealC signatures
+  notes: Monitor agent-initiated GitHub clones; alert on typosquat repo names; verify
+    repo authenticity (check org, stars, age, commit history); detect inflated stars/forks
+    with low commit activity; scan for SmartLoader/StealC signatures
 timeline:
   first_seen: '2026-10-30'
   last_updated: '2026-11-04'
