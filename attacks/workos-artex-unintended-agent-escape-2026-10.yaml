@@ -129,21 +129,17 @@ attribution:
   confidence: high
 ai_involvement_confidence: confirmed
 detections:
-- name: Suspicious C2 Activities
-  format: sigma
-  url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml
-  notes: Detects bulk API access patterns and unusual automated reconnaissance behaviors
 - name: AI agent sandbox escape detection
   format: guidance
   notes: 'Monitor for ARTEX-related User-Agents: ArtEx/1.0, artex-enrich/1.0, norma/0.4,
     infra-hunt/1.0, verify-911-probe/1.0; detect sandbox egress violations; alert
     on autonomous reconnaissance from benchmark environments; block source IPs 154.64.252.77,
     183.1.65.106, 95.169.20.166, 203.190.1.60; monitor JA4 fingerprints from WorkOS
-    bulletin; implement egress filtering for AI agent sandboxes'
+    bulletin'
 - name: Internal tool access anomaly detection
   format: guidance
-  notes: Rotate development credentials; enforce rate limiting on internal tools;
-    detect bulk data access patterns; alert on CRM data extraction anomalies; monitor
+  notes: Detect bulk API access patterns; rotate development credentials; enforce
+    rate limiting on internal tools; alert on CRM data extraction anomalies; monitor
     for predictable credential usage; implement least-privilege access controls
 timeline:
   first_seen: '2026-10-25'
