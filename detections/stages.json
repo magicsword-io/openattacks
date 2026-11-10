@@ -154,7 +154,7 @@
     "step-4": {
       "profile": "windows-shell",
       "control": "script-hosts",
-      "scope": "The Windows wscript → PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
+      "scope": "The Windows wscript \u2192 PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
     }
   },
   "apt41-gemini-c2-osstun-2025-08": {
@@ -1831,6 +1831,142 @@
     },
     "step-4": {
       "profile": "cloud"
+    }
+  },
+  "storm-3358-artex-bank-intrusions-2026-11": {
+    "recon-scan": {
+      "profile": "network"
+    },
+    "exploit-upload": {
+      "profile": "web-app"
+    },
+    "deploy-rats": {
+      "profile": "malware"
+    },
+    "web-shells": {
+      "profile": "web-shell"
+    },
+    "lateral-movement": {
+      "profile": "lateral"
+    },
+    "maintain-access": {
+      "profile": "c2"
+    }
+  },
+  "srm-artex-ir-host-artifacts-2026-11": {
+    "initial-compromise": {
+      "profile": "web-app"
+    },
+    "credential-harvest": {
+      "profile": "credentials"
+    },
+    "rapid-pivot": {
+      "profile": "cloud"
+    },
+    "msp-pivot": {
+      "profile": "lateral"
+    },
+    "card-skimmer": {
+      "profile": "malware"
+    },
+    "persistent-reentry": {
+      "profile": "persistence"
+    }
+  },
+  "snyk-covert-lookalike-skills-2026-11": {
+    "publish-malicious-skills": {
+      "profile": "repository"
+    },
+    "user-install": {
+      "profile": "agent-tools"
+    },
+    "deploy-backdoor": {
+      "profile": "malware"
+    },
+    "persist-claude-md": {
+      "profile": "agent-input"
+    },
+    "exfiltrate-credentials": {
+      "profile": "exfiltration"
+    }
+  },
+  "email-prompt-injection-ai-assistants-2026-11": {
+    "craft-injection": {
+      "profile": "phishing"
+    },
+    "deliver-email": {
+      "profile": "phishing"
+    },
+    "ai-reads": {
+      "profile": "agent-input"
+    },
+    "execute-forward": {
+      "profile": "agent-tools"
+    },
+    "self-propagate": {
+      "profile": "exfiltration"
+    }
+  },
+  "thisbash-claude-dispatch-rce-2026-11": {
+    "install-extension": {
+      "profile": "extension"
+    },
+    "push-prompt": {
+      "profile": "agent-input"
+    },
+    "auto-allow": {
+      "profile": "agent-tools"
+    },
+    "execute-command": {
+      "profile": "execution"
+    }
+  },
+  "chatgpt-lockdown-mode-bypass-checkpoint-2026-09": {
+    "craft-exploit": {
+      "profile": "web-app"
+    },
+    "deliver-link": {
+      "profile": "phishing"
+    },
+    "escape-sandbox": {
+      "profile": "execution"
+    },
+    "exfil-or-phish": {
+      "profile": "exfiltration"
+    }
+  },
+  "checkpoint-artex-operator-consoles-2026-11": {
+    "deploy-artex": {
+      "profile": "agent-tools"
+    },
+    "ios-signing": {
+      "profile": "credentials"
+    },
+    "crypto-payment": {
+      "profile": "malware"
+    },
+    "game-accounts": {
+      "profile": "credentials"
+    },
+    "console-exposure": {
+      "profile": "web-app"
+    }
+  },
+  "radware-github-prompt-injection-bots-2026-11": {
+    "study-bots": {
+      "profile": "reconnaissance"
+    },
+    "craft-injection": {
+      "profile": "agent-input"
+    },
+    "submit-issue-pr": {
+      "profile": "repository"
+    },
+    "bot-processes": {
+      "profile": "agent-tools"
+    },
+    "execute-injection": {
+      "profile": "execution"
     }
   }
 }
