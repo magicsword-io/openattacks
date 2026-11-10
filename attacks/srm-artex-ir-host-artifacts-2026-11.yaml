@@ -109,9 +109,17 @@ attribution:
   confidence: medium
 ai_involvement_confidence: confirmed
 detections:
+  - name: SQL Injection with Long URLs
+    format: splunk
+    url: "https://github.com/splunk/security_content/blob/develop/detections/web/sql_injection_with_long_urls.yml"
+    notes: "Detects SQL injection patterns including ARTEX UNION SELECT and comment-based injection markers"
+  - name: Suspicious C2 Activities
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml"
+    notes: "Detects Tor usage, curl/wget C2 patterns, and credential reuse behaviors"
   - name: ARTEX forensic artifact detection
     format: guidance
-    notes: "Monitor for /opt/artex/data/task/<task>/i<id>/ directory structures; alert on files and accounts tagged with i<id> patterns; detect SQL injection markers ARTEX' UNION SELECT 1-- and ARTEX'/**/AND/**/2>1--; flag HTTP User-Agent norma/0.4; scan for self-signed certificates with O=ARTEX, C=CN; monitor for Autonomous pentest console branding in web console responses; detect GitHub branches named artex-wtest-*; alert on @example.invalid email addresses in system logs"
+    notes: "Monitor for /opt/artex/data/task/<task>/i<id>/ directory structures; alert on files and accounts tagged with i<id> patterns; flag HTTP User-Agent norma/0.4; scan for self-signed certificates with O=ARTEX, C=CN; monitor for Autonomous pentest console branding; detect GitHub branches named artex-wtest-*; alert on @example.invalid emails"
   - name: Rapid lateral movement detection
     format: guidance
     notes: "Detect identity system pivots within 24-hour window; alert on cloud resource access from newly compromised credentials; monitor code repository access anomalies; flag firewall configuration changes from suspicious sources; detect MSP credential usage across multiple customer tenants; implement EDR behavioral detection for autonomous pivot patterns"

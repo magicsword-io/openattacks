@@ -122,16 +122,24 @@ attribution:
   confidence: high
 ai_involvement_confidence: vendor-asserted
 detections:
-  - name: Antivirus - Web Shell Detection Signature
+  - name: Linux Webshell Indicators
     format: sigma
-    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/category/antivirus/av_webshell.yml"
-    notes: "Detects web shell signatures; directly applicable to Storm-3358 web shell deployment"
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml"
+    notes: "Detects webshell process indicators on Linux; directly applicable to Storm-3358 web shell deployment"
+  - name: Suspicious Reverse Shell Command Line
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/builtin/lnx_shell_susp_rev_shells.yml"
+    notes: "Detects netcat reverse shells and RAT download patterns used by ARTEX agents"
+  - name: Suspicious C2 Activities
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml"
+    notes: "Detects curl/wget downloading payloads and C2 command execution patterns"
   - name: ARTEX console fingerprinting
     format: guidance
-    notes: "Monitor for ARTEX control panel fingerprints: console title starting with ARTEX, Next.js framework signature, port 8787; scan for open directories exposing attack kit configurations and operator prompts; alert on leaked ARTEX server IPs (91.92.240.238, 85.11.168.45, 31.77.229.35)"
-  - name: C2 and RAT detection
+    notes: "Monitor for ARTEX control panel fingerprints: console title starting with ARTEX, Next.js framework signature, port 8787; scan for open directories exposing attack kit configurations; block known ARTEX IPs (91.92.240.238, 85.11.168.45, 31.77.229.35, 178.16.54.129); detect autonomous scanning patterns"
+  - name: Password spraying and brute force
     format: guidance
-    notes: "Block known C2 IPs: WISP RAT 199.19.95.66-68, AdaptixC2 85.11.167.52; monitor netcat/curl downloading executable payloads; detect anomalous brute-force and password-spraying patterns; alert on autonomous scanning behaviors; monitor lateral movement indicators"
+    notes: "Block known C2 IPs: WISP RAT 199.19.95.66-68, AdaptixC2 85.11.167.52; detect anomalous brute-force and password-spraying patterns; monitor lateral movement indicators"
 timeline:
   first_seen: "2026-10-01"
   last_updated: "2026-11-06"

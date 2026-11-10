@@ -115,13 +115,18 @@ attribution:
   actor_name: Push AcSig ClickFix toolkit family
 ai_involvement_confidence: confirmed
 detections:
-  - name: Detect malicious Claude/AI install redirects
+  - name: Suspicious Curl Download
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_curl_susp_download.yml"
+    notes: Detects base64-encoded curl piped to shell (adapt for macOS zsh execution)
+  - name: Potential Persistence Via PlistBuddy
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml"
+    notes: Detects LaunchDaemon creation (com.apple.accountsd.helper, com.apple.metadata.mds.worker)
+  - name: Malicious Claude install redirect and AMOS detection
     format: guidance
-    notes: Monitor for suspicious redirects from search ads to fake AI tool download
-      pages; block domains claude-desktop.com, claude-desk-code.com, promotion-chatgpt.com,
+    notes: Block domains claude-desktop.com, claude-desk-code.com, promotion-chatgpt.com,
       lake-90.com, anchorpost13.com; detect clipboard manipulation on download pages;
-      alert on base64-encoded zsh pipes; monitor beacon traffic to /api/metrics/run?event=;
-      block AMOS C2 152.42.143.45; detect LaunchDaemons com.apple.accountsd.helper
-      and com.apple.metadata.mds.worker; flag Google Ads campaign 24303764142; verify
-      Developer ID OSMAN ASTUR against Apple revocation lists; educate users to download
-      Claude only from claude.ai/anthropic.com
+      monitor beacon traffic to /api/metrics/run?event=pasted|stager; block AMOS C2
+      152.42.143.45; flag Google Ads campaign 24303764142; verify Developer ID OSMAN
+      ASTUR against Apple revocation lists
