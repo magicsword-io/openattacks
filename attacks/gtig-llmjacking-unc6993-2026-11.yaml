@@ -59,11 +59,6 @@ iocs:
     - 31.57.201.201
   hashes: []
   urls: []
-atlas_techniques:
-  - id: AML.T0012
-    rationale: "Threat actors hijack enterprise LLM infrastructure (AWS Bedrock, Azure Cognitive Services, GCP Gemini) to conduct LLMJacking"
-    source_urls:
-      - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
   - id: AML.T0034
     rationale: "Actors exploit LiteLLM gateway CVE-2026-40217 (/key/regenerate endpoint user ID rebind) to escalate Virtual Keys to PROXY_ADMIN master admin credentials"
     source_urls:
