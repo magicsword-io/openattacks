@@ -1,0 +1,127 @@
+id: srm-artex-ir-host-artifacts-2026-11
+name: S-RM ARTEX in the wild - incident response host artifacts and TTPs
+date_reported: 2026-11-06
+researcher: S-RM
+org: S-RM
+sources:
+  - url: https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    title: "S-RM: ARTEX in the Wild - Lessons from Responding to Agentic AI Attacks"
+    publisher: S-RM
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Adversaries deploy ARTEX autonomous agents for full intrusion lifecycle automation, from initial compromise through identity/cloud/code/firewall pivots in under 24 hours, with documented MSP supply-chain pivots and persistent re-entry after containment"
+technique_summary: "S-RM incident response analysis (Nov 6, 2026) documents real-world ARTEX deployment artifacts and TTPs from multiple IR engagements. Initial access via vulnerable web plugins and misconfigured upload endpoints; rapid credential harvesting and reuse; autonomous agents pivot through identity systems, cloud resources, code repositories, and firewall configurations within a single day. One case featured MSP supply-chain pivot; another deployed card skimmers on compromised e-commerce sites. Attackers demonstrated persistent re-entry capability after initial containment, shifting to Tor and VPS infrastructure after IP blocking. Forensic artifacts: /opt/artex/data/task/<task>/i<id>/ directory structure; compromised files and accounts tagged with i<id> markers; SQL injection signatures ARTEX' UNION SELECT 1-- and ARTEX'/**/AND/**/2>1--; HTTP User-Agent norma/0.4; ARTEX web console self-signed certificate (O=ARTEX, C=CN) displaying Autonomous pentest console branding; GitHub branches named artex-wtest-*; fake emails @example.invalid. Actor unnamed; attributed by S-RM incident response; confirmed AI involvement from recovered agent task logs and autonomous pivot patterns."
+initial_access: "Vulnerable web plugins, misconfigured file upload endpoints"
+ai_tooling_and_models:
+  - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
+  - LLM backends for agent decision-making
+other_tooling:
+  - SQL injection tools
+  - Credential harvesting utilities
+  - Card skimmer malware
+  - Tor network
+  - VPS infrastructure
+victims_and_sectors: "Multiple organizations across sectors including e-commerce, MSPs; S-RM IR engagements 2026"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unnamed actors; attributed by S-RM incident response teams; multiple distinct but tactically similar ARTEX deployments"
+scale_and_metrics: "Multiple IR engagements 2026; identity/cloud/code/firewall compromise in under 24 hours; MSP supply-chain pivot in one case; card skimmer deployment in another; persistent re-entry after containment"
+prevention_angle: "Patch vulnerable web plugins promptly; restrict and validate file uploads; implement strict authentication for admin interfaces; monitor for ARTEX forensic indicators (/opt/artex/ directories, i<id> file/account tagging, SQL markers, norma/0.4 UA, self-signed ARTEX certs); block Tor egress where not required; implement network segmentation to limit lateral movement; rotate credentials after suspected compromise; monitor for artex-wtest- GitHub branch patterns; scrutinize @example.invalid emails in logs; deploy EDR to detect autonomous pivot behaviors; implement MSP supply-chain security controls"
+related_magicsword_projects: []
+source_notes: "S-RM blog (Nov 6, 2026) primary source documenting IR artifacts from multiple ARTEX engagements; all forensic indicators (file paths, SQL markers, UA strings, certificate details, GitHub patterns) verified from S-RM analysis; unnamed adversaries due to ongoing investigations"
+last_reviewed: 2026-11-10
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0049
+    rationale: "ARTEX agents autonomously conduct full intrusion lifecycle from initial compromise through multi-system pivots without continuous operator guidance"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  - id: AML.T0012
+    rationale: "AI agents exploit vulnerable web plugins and file upload misconfigurations for initial access"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  - id: AML.T0055
+    rationale: "Agents autonomously harvest and reuse credentials, pivot through identity systems, cloud resources, code repositories, and firewall configurations in under 24 hours"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+attack_flow:
+  nodes:
+    - id: initial-compromise
+      title: Exploit vulnerable web plugins
+      description: "ARTEX agents exploit vulnerable web plugins and misconfigured file upload endpoints for initial access"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: credential-harvest
+      title: Credential harvesting and reuse
+      description: "Rapid credential harvesting from compromised hosts; credentials reused for lateral movement"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: rapid-pivot
+      title: Identity/cloud/code/firewall pivot in <24h
+      description: "Autonomous agents pivot through identity systems, cloud resources, code repositories, and firewall configurations within single day"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: msp-pivot
+      title: MSP supply-chain pivot (one case)
+      description: "In one engagement, ARTEX agents pivoted through compromised MSP to reach additional customer environments"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: card-skimmer
+      title: Card skimmer deployment (one case)
+      description: "In e-commerce compromise, agents deployed card skimmer malware to capture payment data"
+      kind: impact
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: persistent-reentry
+      title: Persistent re-entry after containment
+      description: "Attackers demonstrated re-entry capability after initial containment, shifting to Tor/VPS infrastructure after IP blocking"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  edges:
+    - source: initial-compromise
+      target: credential-harvest
+    - source: credential-harvest
+      target: rapid-pivot
+    - source: rapid-pivot
+      target: msp-pivot
+    - source: rapid-pivot
+      target: card-skimmer
+    - source: rapid-pivot
+      target: persistent-reentry
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unnamed ARTEX operators"
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: S-RM
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: ARTEX forensic artifact detection
+    format: guidance
+    notes: "Monitor for /opt/artex/data/task/<task>/i<id>/ directory structures; alert on files and accounts tagged with i<id> patterns; detect SQL injection markers ARTEX' UNION SELECT 1-- and ARTEX'/**/AND/**/2>1--; flag HTTP User-Agent norma/0.4; scan for self-signed certificates with O=ARTEX, C=CN; monitor for Autonomous pentest console branding in web console responses; detect GitHub branches named artex-wtest-*; alert on @example.invalid email addresses in system logs"
+  - name: Rapid lateral movement detection
+    format: guidance
+    notes: "Detect identity system pivots within 24-hour window; alert on cloud resource access from newly compromised credentials; monitor code repository access anomalies; flag firewall configuration changes from suspicious sources; detect MSP credential usage across multiple customer tenants; implement EDR behavioral detection for autonomous pivot patterns"
+  - name: Card skimmer and payment fraud detection
+    format: guidance
+    notes: "Scan e-commerce sites for injected JavaScript card skimmers; monitor payment form modifications; detect exfiltration of payment data; alert on suspicious checkout flow changes"
+timeline:
+  first_seen: "2026-01-01"
+  last_updated: "2026-11-06"
+  updates:
+    - date: "2026-11-06"
+      source: S-RM
+      summary: "S-RM publishes incident response analysis documenting ARTEX deployment artifacts, TTPs, and forensic indicators from multiple IR engagements; identity/cloud/code/firewall pivots in <24h; MSP supply-chain compromise; card skimmer deployment; persistent re-entry after containment"
