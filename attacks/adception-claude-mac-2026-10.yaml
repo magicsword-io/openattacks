@@ -5,24 +5,40 @@ researcher: Luke Jennings
 org: Push Security
 sources:
   - url: https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results
+    title: "Push Security: Adception Malvertising - Another Search Engine's Search Results"
+    publisher: Push Security
+  - url: https://mate.security/labs/fake-claude-code-ads-are-installing-amos-on-macs
+    title: "Mate Research: Fake Claude Code Ads are Installing AMOS on Macs"
+    publisher: Mate Security
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Google ad for 'claude mac' lists bing.com, Bing
-  click-tracking redirects through compromised retailer to fake Claude download.
-  Page shows real Anthropic install command; Copy button swaps clipboard to
-  decode lake-90.com URL and pipe into zsh (InstallFix). Dual cloaking on
-  referrer.
+technique_summary: Google ad for claude mac lists bing.com, Bing click-tracking
+  redirects through compromised retailer to fake Claude download. Page shows real
+  Anthropic install command; Copy button swaps clipboard to decode lake-90.com URL
+  and pipe into zsh (InstallFix). Dual cloaking on referrer. Mate Research (Nadav
+  Lorber) documents full attack chain - clipboard swap Copy button triggers base64
+  curl pipe to zsh, AES-CTR zsh stager, beacon to /api/metrics/run?event=pasted|stager,
+  AMOS infostealer exfiltration to 152.42.143.45, root backdoor via LaunchDaemons
+  com.apple.accountsd.helper and com.apple.metadata.mds.worker. Signed DMG served
+  from claude-desktop.com as Claude.dmg with Developer ID OSMAN ASTUR; jsDelivr note
+  points to anchorpost13.com. Google Ads campaign 24303764142 served via claude-desk-code.com,
+  promotion-chatgpt.com, lake-90.com. PasteSwitch toolkit family, unattributed.
 initial_access: Malvertising + clipboard swap / paste into Terminal
 ai_tooling_and_models:
   - Fake Claude download / InstallFix lure
 other_tooling:
-  - Google Ads
+  - Google Ads campaign 24303764142
   - Bing ck/a redirect
-  - zsh/curl pipe
+  - zsh/curl pipe with base64 encoding
+  - AES-CTR zsh stager
+  - AMOS infostealer
+  - LaunchDaemons persistence (com.apple.accountsd.helper, com.apple.metadata.mds.worker)
+  - Signed DMG (Developer ID OSMAN ASTUR)
+  - PasteSwitch toolkit
 victims_and_sectors: macOS users searching for Claude
 regions:
   - unknown
@@ -30,8 +46,21 @@ attribution_or_cluster: Push AcSig ClickFix toolkit family
 scale_and_metrics: unknown
 prevention_angle: Check pasted commands; do not pipe remote scripts into shell
 related_magicsword_projects: []
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: Push Security initial disclosure (Oct 9); Mate Research comprehensive
+  analysis adds AMOS payload details, LaunchDaemons persistence, signed DMG distribution,
+  Google Ads campaign ID, full IOC set
+last_reviewed: 2026-11-10
+iocs:
+  domains:
+    - claude-desktop.com
+    - anchorpost13.com
+    - claude-desk-code.com
+    - promotion-chatgpt.com
+    - lake-90.com
+  ips:
+    - 152.42.143.45
+  hashes: []
+  urls: []
 attack_flow:
   nodes:
     - id: step-1
@@ -67,7 +96,20 @@ attack_flow:
 atlas_techniques:
   - id: AML.T0073
     rationale: A fake Claude download impersonates a trusted AI vendor.
-    source_urls: *a1
+    source_urls:
+      - https://pushsecurity.com/blog/adception-malvertising-another-search-engines-search-results
+  - id: AML.T0052
+    rationale: Google Ads malvertising campaign delivers AMOS via fake Claude installer
+    source_urls:
+      - https://mate.security/labs/fake-claude-code-ads-are-installing-amos-on-macs
+  - id: AML.T0074
+    rationale: Clipboard swap technique delivers malicious payload via user paste action
+    source_urls:
+      - https://mate.security/labs/fake-claude-code-ads-are-installing-amos-on-macs
+  - id: AML.T0011
+    rationale: AMOS infostealer establishes persistence via LaunchDaemons
+    source_urls:
+      - https://mate.security/labs/fake-claude-code-ads-are-installing-amos-on-macs
 category: adversary-use-of-ai
 attribution:
   actor_name: Push AcSig ClickFix toolkit family
@@ -76,6 +118,10 @@ detections:
   - name: Detect malicious Claude/AI install redirects
     format: guidance
     notes: Monitor for suspicious redirects from search ads to fake AI tool download
-      pages. Educate users to download Claude and other AI tools only from official
-      sites. Implement browser security extensions that warn about lookalike domains
-      and clipboard manipulation.
+      pages; block domains claude-desktop.com, claude-desk-code.com, promotion-chatgpt.com,
+      lake-90.com, anchorpost13.com; detect clipboard manipulation on download pages;
+      alert on base64-encoded zsh pipes; monitor beacon traffic to /api/metrics/run?event=;
+      block AMOS C2 152.42.143.45; detect LaunchDaemons com.apple.accountsd.helper
+      and com.apple.metadata.mds.worker; flag Google Ads campaign 24303764142; verify
+      Developer ID OSMAN ASTUR against Apple revocation lists; educate users to download
+      Claude only from claude.ai/anthropic.com
