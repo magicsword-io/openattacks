@@ -1,0 +1,144 @@
+id: storm-3358-artex-bank-intrusions-2026-11
+name: Storm-3358 ARTEX autonomous agent bank intrusions (Southeast Asia)
+date_reported: 2026-11-06
+researcher: Microsoft Threat Intelligence, Censys (Silas Cutler)
+org: Microsoft, Censys
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    title: "Microsoft Threat Intelligence: ARTEX Abuse Expands as Cybercriminals Target Financial Sector"
+    publisher: Microsoft
+  - url: https://censys.com/blog/artex-agentic-asbestos/
+    title: "Censys: ARTEX - Agentic Asbestos"
+    publisher: Censys
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Storm-3358 deploys ARTEX autonomous AI agents to automate intrusion lifecycle against Southeast Asian financial institutions, from initial reconnaissance through lateral movement and RAT deployment"
+technique_summary: "Microsoft Threat Intelligence (Nov 6, 2026) reports Storm-3358, Cambodia-based financially motivated actor, targeting Southeast Asian financial sector using ARTEX autonomous offensive agents. Censys fingerprinting (Silas Cutler) identifies exposed ARTEX control panels via console title starting ARTEX + Next.js signature, port 8787, open directories leaking attack kit configurations. Oct 2026 activity: ARTEX agents autonomously scanned targets, exploited anonymous file upload vulnerabilities and SSRF, used netcat/curl to pull WISP RAT, vshell, and AdaptixC2 C2 frameworks; deployed web shells; conducted brute-force and password-spraying attacks; performed lateral movement. C2 infrastructure: WISP C2 199.19.95.66-68, AdaptixC2 85.11.167.52. ARTEX control panel servers: 91.92.240.238, 85.11.168.45, 31.77.229.35, 178.16.54.129 (Microsoft post hunting query lists 178.15.54.129 - note IP discrepancy). Storm-3358 attributed by Microsoft; vendor-asserted AI involvement. Tools: AdaptixC2 (github.com/Adaptix-Framework/AdaptixC2), ARTEX fork (github.com/RuoJi6/ARTEX; original Autumn-27/ARTEX repository down)."
+initial_access: "Anonymous file upload exploitation, SSRF vulnerabilities"
+ai_tooling_and_models:
+  - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
+  - DeepSeek and other LLM backends
+other_tooling:
+  - WISP RAT
+  - vshell
+  - AdaptixC2 C2 framework (https://github.com/Adaptix-Framework/AdaptixC2)
+  - netcat
+  - curl
+  - Web shells
+victims_and_sectors: "Southeast Asian financial institutions; Oct 2026 active campaign"
+regions:
+  - Southeast Asia
+attribution_or_cluster: "Storm-3358, Cambodia-based, financially motivated; attributed by Microsoft Threat Intelligence"
+scale_and_metrics: "Active Oct 2026; multiple financial institutions compromised; Censys identified exposed ARTEX panels on port 8787 with leaked attack kit configurations"
+prevention_angle: "Implement file upload restrictions and validation; patch SSRF vulnerabilities; monitor for ARTEX console fingerprints (title ARTEX + Next.js, port 8787); block known C2 IPs (199.19.95.66-68, 85.11.167.52, 91.92.240.238, 85.11.168.45, 31.77.229.35); detect anomalous autonomous scanning patterns; monitor netcat/curl downloading RATs; implement web application firewalls; enable brute-force protection; segment networks to limit lateral movement"
+related_magicsword_projects: []
+source_notes: "Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post"
+last_reviewed: 2026-11-10
+iocs:
+  domains: []
+  ips:
+    - 199.19.95.66
+    - 199.19.95.67
+    - 199.19.95.68
+    - 85.11.167.52
+    - 91.92.240.238
+    - 85.11.168.45
+    - 31.77.229.35
+    - 178.16.54.129
+    - 178.15.54.129
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0049
+    rationale: "Storm-3358 deploys ARTEX autonomous AI agents to conduct reconnaissance, vulnerability exploitation, and lateral movement without continuous operator input"
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+  - id: AML.T0012
+    rationale: "ARTEX agents autonomously exploit file upload and SSRF vulnerabilities to gain initial access to financial institution networks"
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+  - id: AML.T0016
+    rationale: "Adversaries use AI agents to automate post-exploitation activities including lateral movement and C2 deployment"
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+attack_flow:
+  nodes:
+    - id: recon-scan
+      title: ARTEX autonomous reconnaissance
+      description: "ARTEX agents autonomously scan Southeast Asian financial institution networks for vulnerabilities"
+      kind: ai
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    - id: exploit-upload
+      title: Exploit anonymous file upload and SSRF
+      description: "Agents exploit anonymous file upload vulnerabilities and SSRF to gain initial foothold"
+      kind: execution
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    - id: deploy-rats
+      title: Deploy WISP, vshell, AdaptixC2
+      description: "netcat/curl used to pull WISP RAT, vshell, AdaptixC2 C2 frameworks to compromised hosts"
+      kind: execution
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    - id: web-shells
+      title: Deploy web shells
+      description: "Web shells deployed for persistent access to compromised web servers"
+      kind: execution
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    - id: lateral-movement
+      title: Brute-force, spraying, lateral movement
+      description: "Autonomous password brute-force and spraying attacks; lateral movement across financial institution networks"
+      kind: execution
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+    - id: maintain-access
+      title: Maintain C2 and data access
+      description: "WISP C2 199.19.95.66-68, AdaptixC2 85.11.167.52 maintain persistent access for financial data theft"
+      kind: impact
+      source_urls:
+        - https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/
+  edges:
+    - source: recon-scan
+      target: exploit-upload
+    - source: exploit-upload
+      target: deploy-rats
+    - source: deploy-rats
+      target: web-shells
+    - source: web-shells
+      target: lateral-movement
+    - source: lateral-movement
+      target: maintain-access
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-3358
+  country: Cambodia
+  motivation: financially-motivated
+  attributed_by: Microsoft Threat Intelligence
+  confidence: high
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Antivirus - Web Shell Detection Signature
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/category/antivirus/av_webshell.yml"
+    notes: "Detects web shell signatures; directly applicable to Storm-3358 web shell deployment"
+  - name: ARTEX console fingerprinting
+    format: guidance
+    notes: "Monitor for ARTEX control panel fingerprints: console title starting with ARTEX, Next.js framework signature, port 8787; scan for open directories exposing attack kit configurations and operator prompts; alert on leaked ARTEX server IPs (91.92.240.238, 85.11.168.45, 31.77.229.35)"
+  - name: C2 and RAT detection
+    format: guidance
+    notes: "Block known C2 IPs: WISP RAT 199.19.95.66-68, AdaptixC2 85.11.167.52; monitor netcat/curl downloading executable payloads; detect anomalous brute-force and password-spraying patterns; alert on autonomous scanning behaviors; monitor lateral movement indicators"
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-06"
+  updates:
+    - date: "2026-10-01"
+      source: Microsoft Threat Intelligence
+      summary: "Storm-3358 ARTEX campaign against Southeast Asian financial institutions begins; autonomous agents exploit file upload and SSRF vulnerabilities"
+    - date: "2026-11-06"
+      source: Microsoft Threat Intelligence
+      summary: "Microsoft reports Storm-3358 ARTEX abuse expanding; Censys publishes fingerprinting methodology for exposed ARTEX control panels"
