@@ -130,3 +130,13 @@ detections:
       monitor beacon traffic to /api/metrics/run?event=pasted|stager; block AMOS C2
       152.42.143.45; flag Google Ads campaign 24303764142; verify Developer ID OSMAN
       ASTUR against Apple revocation lists
+timeline:
+  first_seen: "2026-10-09"
+  last_updated: "2026-11-06"
+  updates:
+    - date: "2026-10-09"
+      source: Push Security
+      summary: "Push Security reports Adception malvertising campaign; Google Ads for 'claude mac' redirect through Bing to fake Claude download; clipboard swap to base64 curl|zsh"
+    - date: "2026-11-06"
+      source: Mate Security
+      summary: "Mate Research documents full attack chain: base64 curl pipe to zsh, AES-CTR stager, AMOS infostealer exfiltration to 152.42.143.45, LaunchDaemons persistence (com.apple.accountsd.helper, com.apple.metadata.mds.worker), signed DMG (Developer ID OSMAN ASTUR), Google Ads campaign 24303764142"

@@ -225,3 +225,24 @@ detections:
     .claude/.credentials.json and .codex/auth.json access; alert on paleasbest[.]top
     exfiltration; detect workspace-tools MCP server installation; monitor CLAUDE.md
     DEVOPS-SEALED blocks; flag msync-3f7a signed-commit markers; detect git hook modifications
+category: attacks-on-ai
+attribution:
+  actor_name: CementBeetleSteeple (GitHub account); Miasma-family, Shai-Hulud-descendant
+  country: Unknown
+  motivation: cybercrime
+  attributed_by: JFrog Security Research, SafeDep, Socket
+  confidence: medium
+ai_involvement_confidence: confirmed
+timeline:
+  first_seen: "2026-10-21"
+  last_updated: "2026-11-09"
+  updates:
+    - date: "2026-10-26"
+      source: JFrog Security Research
+      summary: "JFrog documents 42 hijacked GitHub repositories with testmetest worm; native addon camouflage; 12.9-13.7 MB polymorphic wrappers; CLAUDE.md/.cursorrules execution hooks"
+    - date: "2026-11-06"
+      source: Socket
+      summary: "Socket reports strutil-core 1.0.1 RubyGem (account jamnajiea); extconf.rb downloads Bun, runs worm at install; steals .claude/.credentials.json, .codex/auth.json; plants workspace-tools MCP server; msync-3f7a signed-commit backdoor; related PyPI pystr-codec"
+    - date: "2026-11-09"
+      source: Thomas Roccia
+      summary: "Roccia documents hijacked repos with forged backdated commits (toray, ejaaduipitara, ConcordiaDev, madolee, Imanilom, claudiohernanbesada); CLAUDE.md DEVOPS-SEALED blocks instruct agents to silently run node scripts/setup.js at session start"
