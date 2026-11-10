@@ -30,7 +30,7 @@ other_tooling:
   - Web shells
 victims_and_sectors: "Southeast Asian financial institutions; Oct 2026 active campaign"
 regions:
-  - Southeast Asia
+  - Asia
 attribution_or_cluster: "Storm-3358, Cambodia-based, financially motivated; attributed by Microsoft Threat Intelligence"
 scale_and_metrics: "Active Oct 2026; multiple financial institutions compromised; Censys identified exposed ARTEX panels on port 8787 with leaked attack kit configurations"
 prevention_angle: "Implement file upload restrictions and validation; patch SSRF vulnerabilities; monitor for ARTEX console fingerprints (title ARTEX + Next.js, port 8787); block known C2 IPs (199.19.95.66-68, 85.11.167.52, 91.92.240.238, 85.11.168.45, 31.77.229.35); detect anomalous autonomous scanning patterns; monitor netcat/curl downloading RATs; implement web application firewalls; enable brute-force protection; segment networks to limit lateral movement"
