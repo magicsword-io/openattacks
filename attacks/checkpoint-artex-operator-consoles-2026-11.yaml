@@ -1,0 +1,137 @@
+id: checkpoint-artex-operator-consoles-2026-11
+name: Check Point and CERT-EU exposed ARTEX operator consoles leak campaign data
+date_reported: 2026-11-05
+researcher: Check Point Research, CERT-EU
+org: Check Point, CERT-EU
+sources:
+  - url: https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+    title: "Check Point: Hacking on Autopilot - Inside ARTEX Cybercrime Campaigns"
+    publisher: Check Point
+  - url: https://cert.europa.eu/blog/from-penetration-testing-to-cyber-threat-beware-of-artex
+    title: "CERT-EU: From Penetration Testing to Cyber Threat - Beware of ARTEX"
+    publisher: CERT-EU
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Financially motivated operators use ARTEX autonomous agents for automated intrusions; exposed control panels leak operator prompts, model choices, agent decision steps, and target data"
+technique_summary: "Check Point (Nov 5, 2026) and CERT-EU (Nov 5, 2026) document exposed ARTEX operator control panels leaking database dumps containing operator prompts, model selection (primarily DeepSeek Flash and Kimi), autonomous agent decision steps, and campaign targets. Three campaign fleets identified: (1) iOS signing shops - steal .p12 certificates and passwords, check against Apple revocation/expiry lists; (2) Crypto payment sites - drain USDT, swap deposit addresses; overwrite S3 buckets serving iOS IPA landing pages (supply chain); (3) Honor of Kings account tokens from stolen-account resale servers. Access methods: hardcoded admin passwords in JavaScript bundles, unauthenticated APIs, command injection, SSTI, IDOR vulnerabilities. Operator who hit Claude Opus guardrails switched to Chinese LLM models. Version-tag infrastructure clusters: sco-fix2 (38.11.173.0/24, 38.11.221.0/24, 198.200.59.85-89, AS54600 PEG TECH); dev-db-resilience-20261031 (103.122.245.x, AS152918 Liberally Network, Thailand); 0.3.15-pro.* (192.236.172.197, 198.44.123.66, 204.44.66.81, 104.168.112.237, AS36352 HostPapa). Custom framework PZZ referenced. CERT-EU reports ARTEX activity vs EU institutions; original Autumn-27 ARTEX repository down. Chinese-prompting actors, financially motivated; attributed by Check Point; confirmed AI involvement from leaked operator consoles."
+initial_access: "Hardcoded admin passwords, unauthenticated APIs, command injection, SSTI, IDOR"
+ai_tooling_and_models:
+  - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
+  - DeepSeek Flash (primary)
+  - Kimi (Chinese LLM)
+  - Claude Opus (hit guardrails, operator switched)
+  - Custom framework PZZ
+other_tooling:
+  - iOS .p12 certificate theft
+  - USDT cryptocurrency draining
+  - S3 bucket overwrite for supply chain
+  - Honor of Kings account token theft
+victims_and_sectors: "iOS signing shops, cryptocurrency payment sites, Honor of Kings account resale servers, EU institutions (CERT-EU report)"
+regions:
+  - Multiple regions
+  - European Union
+attribution_or_cluster: "Chinese-prompting financially motivated operators; attributed by Check Point; confirmed from leaked operator console databases"
+scale_and_metrics: "Three major campaign fleets (iOS signing, crypto payment, game accounts); multiple exposed ARTEX panels with leaked operator databases; infrastructure across AS54600 PEG TECH, AS152918 Liberally Network Thailand, AS36352 HostPapa"
+prevention_angle: "Secure ARTEX deployments against unauthorized access (remove hardcoded passwords, authenticate APIs); patch command injection, SSTI, IDOR vulnerabilities; rotate compromised credentials; monitor for iOS .p12 theft; protect cryptocurrency deposit address integrity; secure S3 buckets serving app distributions; implement behavioral detection for autonomous agent patterns; block known ARTEX infrastructure IPs; detect Chinese-language prompting in logs"
+related_magicsword_projects: []
+source_notes: "Check Point blog (Nov 5, 2026) primary source with detailed campaign analysis and infrastructure; CERT-EU blog (Nov 5, 2026) reports ARTEX vs EU institutions; all IOCs (IPs, ASNs, version tags) verified from Check Point; links to other ARTEX entries: microsoft-artex-github-secrets-keyvault-2026-11, crowdstrike-artex-sk-finance-2026-10, badbyte-artex-backdoor-docker-2026-11, storm-3358-artex-bank-intrusions-2026-11, srm-artex-ir-host-artifacts-2026-11"
+last_reviewed: 2026-11-10
+iocs:
+  domains: []
+  ips:
+    - 38.11.173.0/24
+    - 38.11.221.0/24
+    - 198.200.59.85
+    - 198.200.59.86
+    - 198.200.59.87
+    - 198.200.59.88
+    - 198.200.59.89
+    - 103.122.245.0/24
+    - 192.236.172.197
+    - 198.44.123.66
+    - 204.44.66.81
+    - 104.168.112.237
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0016
+    rationale: "Exposed ARTEX operator consoles reveal autonomous agent decision-making process and campaign orchestration"
+    source_urls:
+      - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+  - id: AML.T0012
+    rationale: "AI agents autonomously exploit hardcoded passwords, unauthenticated APIs, command injection, SSTI, IDOR"
+    source_urls:
+      - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+  - id: AML.T0010
+    rationale: "S3 bucket overwrite campaign represents AI-driven supply chain attack"
+    source_urls:
+      - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+attack_flow:
+  nodes:
+    - id: deploy-artex
+      title: Deploy ARTEX operator console
+      description: "Financially motivated operators deploy ARTEX consoles for campaign orchestration"
+      kind: ai
+      source_urls:
+        - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+    - id: ios-signing
+      title: iOS signing shop campaign
+      description: "Steal .p12 certificates and passwords; check Apple revocation/expiry"
+      kind: execution
+      source_urls:
+        - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+    - id: crypto-payment
+      title: Crypto payment site campaign
+      description: "Drain USDT, swap deposit addresses; overwrite S3 buckets serving iOS IPA (supply chain)"
+      kind: impact
+      source_urls:
+        - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+    - id: game-accounts
+      title: Honor of Kings account theft
+      description: "Steal account tokens from compromised stolen-account resale servers"
+      kind: impact
+      source_urls:
+        - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+    - id: console-exposure
+      title: ARTEX console exposure
+      description: "Hardcoded passwords, unauthenticated APIs, command injection, SSTI, IDOR expose operator consoles and databases"
+      kind: execution
+      source_urls:
+        - https://research.checkpoint.com/2026/hacking-on-autopilot-inside-artex-cybercrime-campaigns/
+  edges:
+    - source: deploy-artex
+      target: ios-signing
+    - source: deploy-artex
+      target: crypto-payment
+    - source: deploy-artex
+      target: game-accounts
+    - source: console-exposure
+      target: deploy-artex
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Chinese-prompting financially motivated operators"
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: Check Point
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: ARTEX console security monitoring
+    format: guidance
+    notes: "Scan for exposed ARTEX control panels via hardcoded admin passwords in JS bundles; detect unauthenticated ARTEX APIs; patch command injection, SSTI, IDOR in ARTEX deployments; monitor for Chinese-language prompting in agent logs; detect iOS .p12 certificate theft; alert on cryptocurrency deposit address swaps; monitor S3 bucket integrity for iOS IPA distributions; flag Honor of Kings token theft patterns; block known ARTEX infrastructure (AS54600, AS152918, AS36352)"
+  - name: ARTEX infrastructure detection
+    format: guidance
+    notes: "Monitor version-tag clusters: sco-fix2, dev-db-resilience-20261031, 0.3.15-pro.*; detect custom framework PZZ references; alert on DeepSeek Flash and Kimi model usage in offensive contexts; detect operator model switching after guardrail triggers"
+timeline:
+  first_seen: "2026-09-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-11-05"
+      source: Check Point
+      summary: "Check Point publishes analysis of exposed ARTEX operator consoles revealing three campaign fleets (iOS signing, crypto payment, game accounts); operator prompts, model choices, agent steps leaked"
+    - date: "2026-11-05"
+      source: CERT-EU
+      summary: "CERT-EU warns of ARTEX activity vs EU institutions; original Autumn-27 ARTEX repository down"
