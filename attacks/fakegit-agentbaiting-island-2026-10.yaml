@@ -6,12 +6,16 @@ org: Island
 sources:
   - url: https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware
     title: "Island: FakeGit 'Agentbaiting' Campaign Targets AI Agent Recommendations"
+    publisher: Island
+  - url: https://www.securitybreak.io/blog/fake-skill-mcp-repos-smartloader-stealc
+    title: "SecurityBreak/Thomas Roccia: Fake Skill and MCP Repos Delivering SmartLoader and StealC"
+    publisher: SecurityBreak
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: ai_tool_as_lure
 ai_role_detail: "Adversary creates 800+ fake GitHub repos mimicking legitimate AI skills, MCP servers, and Cursor rules; optimizes for LLM recommendation via SEO and naming; agents recommend malicious packages to users"
-technique_summary: "Oct 30, 2026: Island Security identified 'FakeGit' campaign: 800+ fake GitHub repositories impersonating popular AI skills, MCP servers, Cursor rules, and Claude Code extensions. Repos use typosquat/combosquat names (e.g., 'cursor-rules-best-practices', 'mcp-server-github-enhanced', 'claude-code-skills-security'), contain trojanized npm/PyPI packages or malicious install scripts. Adversary optimized repo metadata (README, topics, stars, forks) to rank highly in LLM tool recommendations: when users ask agents 'find me a GitHub MCP server' or 'what Cursor skills should I use?', agents recommend FakeGit repos from search results. Payloads: Shai-Hulud variants, Discord webhook exfiltration, npm/PyPI worms, SSH backdoors. Island tracked 2,400+ installations from agent recommendations Oct-Nov 2026. Attack exploits agent trust in GitHub search ranking and lack of package verification. Detection: verify GitHub repo authenticity (check org, stars, commit history, age); review agent-recommended packages before install; use allowlisted skill/MCP sources; monitor for unexpected GitHub clones initiated by AI agents; check for typosquat patterns in recommended repo names."
+technique_summary: "Oct 30, 2026: Island Security identified 'FakeGit' campaign: 800+ fake GitHub repositories impersonating popular AI skills, MCP servers, Cursor rules, and Claude Code extensions. Repos use typosquat/combosquat names (e.g., cursor-rules-best-practices, mcp-server-github-enhanced, claude-code-skills-security), contain trojanized npm/PyPI packages or malicious install scripts. Adversary optimized repo metadata (README, topics, stars, forks) to rank highly in LLM tool recommendations: when users ask agents find me a GitHub MCP server or what Cursor skills should I use?, agents recommend FakeGit repos from search results. Payloads: Shai-Hulud variants, Discord webhook exfiltration, npm/PyPI worms, SSH backdoors. Island tracked 2,400+ installations from agent recommendations Oct-Nov 2026. SecurityBreak/Thomas Roccia (Nov 4, 2026) reports fake skill and MCP repositories delivering SmartLoader and StealC infostealers; malicious packages hosted on fake GitHub accounts impersonating legitimate skill/MCP providers; SmartLoader drops StealC payload for credential harvesting, browser data theft, cryptocurrency wallet exfiltration. Attack exploits agent trust in GitHub search ranking and lack of package verification."
 initial_access: "AI agent recommends malicious GitHub repo in response to user query; user clones/installs per agent suggestion"
 ai_tooling_and_models:
   - Cursor IDE and Cursor rules
@@ -25,6 +29,8 @@ other_tooling:
   - Shai-Hulud credential stealer variants
   - SSH backdoors
   - Discord webhook exfiltration
+  - SmartLoader dropper
+  - StealC infostealer
 victims_and_sectors: "2,400+ installations tracked Oct-Nov 2026 from agent recommendations; AI developers using agent-assisted package discovery"
 regions:
   - Multiple regions
@@ -32,8 +38,8 @@ attribution_or_cluster: "Unknown actor; 'FakeGit' campaign; sophisticated unders
 scale_and_metrics: "800+ fake GitHub repos created; 2,400+ installations from agent recommendations (Oct-Nov 2026); ongoing campaign as of Nov 2026"
 prevention_angle: "Verify GitHub repos before install (check org, stars, age, commit history); use allowlisted skill/MCP sources; implement agent guardrails to warn on unverified packages; educate users not to blindly trust agent recommendations; review install scripts; use SCA tools; prefer official sources (Anthropic MCP registry, Cursor skills directory); flag typosquat patterns"
 related_magicsword_projects: []
-source_notes: "Island Security analysis. First documented campaign explicitly optimizing malware for LLM recommendation engines ('agentbaiting'). Represents new supply chain threat vector where adversaries target agent search/recommendation behavior rather than direct user search. Detection: monitor agent-initiated GitHub clones, alert on typosquat repo names (edit distance to popular repos), check for new GitHub accounts with multiple similar repos, review repos with inflated stars/forks but low commit activity, flag repos created after popular tool's rise."
-last_reviewed: 2026-11-04
+source_notes: "Island Security analysis (Oct 30); SecurityBreak/Thomas Roccia (Nov 4) adds SmartLoader and StealC payload details. First documented campaign explicitly optimizing malware for LLM recommendation engines (agentbaiting). Represents new supply chain threat vector where adversaries target agent search/recommendation behavior rather than direct user search. Detection: monitor agent-initiated GitHub clones, alert on typosquat repo names (edit distance to popular repos), check for new GitHub accounts with multiple similar repos, review repos with inflated stars/forks but low commit activity, flag repos created after popular tools rise, scan for SmartLoader/StealC signatures."
+last_reviewed: 2026-11-10
 iocs:
   domains: []
   ips: []
