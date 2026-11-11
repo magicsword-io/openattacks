@@ -44,7 +44,9 @@ Generated at build time (do not edit by hand):
   /api/attacks.json, attacks.csv, catalog.json, schema.json, relevance.json,
   defenses.json, atlas.json, simulations.json
   /api/attacks/<id>.json, /api/attacks/<id>.md, /api/defenses/<id>.json
-  /llms.txt, /llms-full.txt, sitemap
+  /llms.txt, /llms-full.txt, /llms/attacks/<id>.md,
+  /llms/by-category/<category>.md, /llms/by-month/<YYYY-MM>.md,
+  /data/attacks.json, /data/attacks.schema.json, sitemap
 ```
 
 ## 2. Attack record: `attacks/<id>.yaml`
@@ -173,7 +175,7 @@ These cover required fields, types, enums, the `report-date` format (a real cale
 ### 3.4 Test-enforced consistency (`tests/*.test.mjs`, run on the built `dist/`)
 
 - The JSON exports exactly match the public YAML content and leave out `typefully`.
-- Every YAML ID appears in `llms.txt`, `llms-full.txt`, its entry page, and the per-entry `.json`/`.md` exports.
+- Every YAML ID appears in `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, one category bundle, one month bundle, `data/attacks.json`, its entry page, and the per-entry `.json`/`.md` exports. The committed LLM files are produced by `scripts/build-llm-exports.mjs`; CI rejects drift.
 - **No stale annotation keys:** every key in `presentation.json`, `applicability.json` and `detections/stages.json` must be an existing attack ID, and every detection stage key must be an existing flow node ID.
 - Presentation values use valid environment and evidence IDs. `summary` is ≤ 210 characters. `unspecified` cannot be combined with other environments.
 - Applicability rules use real tool/OS IDs, a valid stage, and source URLs from the record. Attacker-side Claude/Gemini use never turns into a product-exposure match.

@@ -364,7 +364,7 @@ test("LLM entry points are discoverable on the landing page", async ({
   const guide = await response.text();
   expect(guide).toContain(`${attacks.length} reported`);
   expect(guide).toContain("/llms-full.txt");
-  expect(guide).toContain(`/api/attacks/${attacks[0].id}.md`);
+  expect(guide).toContain(`/llms/attacks/${attacks[0].id}.md`);
   const entry = await request.get(`/api/attacks/${attacks[0].id}.json`);
   expect((await entry.json()).id).toBe(attacks[0].id);
 });

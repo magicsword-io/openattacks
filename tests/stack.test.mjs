@@ -174,7 +174,8 @@ test("relevance reasons and conditions are discoverable in the LLM exports", () 
     "utf8",
   );
   assert.ok(guide.includes("/api/relevance.json"));
-  assert.ok(full.includes("Stack relevance (editorial)"));
+  assert.ok(full.includes("## Prevention"));
+  assert.ok(full.includes("## AI involvement confidence"));
   for (const entry of index.entries) {
     const md = readFileSync(
       new URL(`../dist/api/attacks/${entry.id}.md`, import.meta.url),

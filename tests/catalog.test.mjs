@@ -185,7 +185,7 @@ test("AI discovery, full context and per-entry exports include every YAML record
   assert.ok(full.includes(`${seeds.length} entries`));
   for (const entry of seeds) {
     assert.ok(
-      guide.includes(`/api/attacks/${entry.id}.md`),
+      guide.includes(`/llms/attacks/${entry.id}.md`),
       `Missing guide link for ${entry.id}`,
     );
     assert.ok(
@@ -372,7 +372,15 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
     new URL("../dist/llms-full.txt", import.meta.url),
     "utf8",
   );
-  assert.match(full, /Stage defense and hunting recommendations/);
+  assert.match(full, /## Prevention/);
+  assert.match(full, /## Detections/);
+  assert.match(
+    readFileSync(
+      new URL("../dist/api/attacks/cairn-norforge-2026-10.md", import.meta.url),
+      "utf8",
+    ),
+    /Stage defense and hunting recommendations/,
+  );
 });
 
 test("script execution starters match encoded execution and exclude unrelated benign processes", () => {
