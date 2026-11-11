@@ -159,7 +159,7 @@ The static files are available under the deployment base path at `api/attacks.js
 
 ## AI-readable catalog and automatic updates
 
-The landing page links directly to `llms.txt`, which provides the current entry count, a query guide, and links to every entry. `llms-full.txt` includes the complete Markdown context: source credit, caveats, target geography, flow nodes and edges, ATLAS rationale, and defensive notes. Each entry also has `api/attacks/<id>.json` and `api/attacks/<id>.md`; `api/schema.json` publishes the public schema and `api/atlas.json` describes the referenced MITRE ATLAS definitions.
+[Use OpenAttacks with your LLM](https://openattacks.ai/use/) installs the `skills/openattacks` agent skill and shows chat-sized category and month bundles. The landing page also links to `llms.txt`, which provides the current entry count, a query guide, and links to every entry. `llms-full.txt` includes the complete Markdown context: source credit, caveats, target geography, flow nodes and edges, ATLAS rationale, and defensive notes. Each entry also has `api/attacks/<id>.json` and `api/attacks/<id>.md`; `api/schema.json` publishes the public schema and `api/atlas.json` describes the referenced MITRE ATLAS definitions.
 
 These are **Astro build routes, not manually maintained files**. A merged attack PR pushes to `main`, triggering Vercel's connected Git deployment. The same build validates YAML and regenerates the site, all AI-readable files and all API formats. Tests verify that every YAML record appears in every appropriate output before publishing. No runtime MCP server is needed: assistants can read the discovery guide or download the JSON array and query it locally.
 

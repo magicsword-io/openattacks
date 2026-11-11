@@ -120,8 +120,11 @@ const attacks = await getAttacks();
       </p>
       <h2 id="for-agents">Read with an AI assistant</h2>
       <p>
-        Start with <a href={href("llms.txt")}>llms.txt</a> for an entry index
-        and query guide, or load the{" "}
+        The <a href={href("use/")}>agent skill</a> is the way to use the
+        catalog from Claude, Cursor, and other agents. It reads{" "}
+        <a href={href("llms.txt")}>llms.txt</a> first, then only the attack
+        files it needs. A chat session should paste a category or month bundle
+        rather than the{" "}
         <a href={href("llms-full.txt")}>complete Markdown context</a>.
         Individual records are available as JSON and Markdown under{" "}
         <code>api/attacks/&#123;id&#125;.json</code> and{" "}

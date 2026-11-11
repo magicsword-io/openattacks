@@ -1,0 +1,534 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { formatDate, getAttacks, href, repo, roles } from "../lib/catalog";
+import { buildPromptGroups, catalogSlices } from "../lib/llm-prompts.mjs";
+
+const attacks = await getAttacks();
+const slices = catalogSlices(attacks);
+const groups = buildPromptGroups(attacks);
+const months = slices.months.slice(0, 6);
+const zipUrl = "https://openattacks.ai/downloads/openattacks-skill.zip";
+const llmsUrl = "https://openattacks.ai/llms.txt";
+const install = (directory: string) =>
+  `curl -fsSL ${zipUrl} -o /tmp/openattacks-skill.zip && mkdir -p ${directory} && unzip -o /tmp/openattacks-skill.zip -d ${directory}`;
+const categoryLabel: Record<string, string> = {
+  "adversary-use-of-ai": "Adversary use of AI — attackers using AI in the operation",
+  "attacks-on-ai": "Attacks on AI — the model, agent, or AI tool is the target",
+};
+const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only the entries this question needs at https://openattacks.ai/llms/attacks/<id>.md. For a whole category or month, open https://openattacks.ai/llms/by-category/<category>.md or https://openattacks.ai/llms/by-month/<YYYY-MM>.md instead. Do not load llms-full.txt. Cite the catalog page and the original source URL. Say when attribution or AI involvement is unknown. Do not invent detection rules or MITRE ATLAS mappings.`;
+---
+
+<Layout
+  title="Use OpenAttacks with your LLM — OpenAttacks"
+  description="Install the OpenAttacks skill in Claude, Cursor, Codex, Copilot, Gemini, Windsurf, Cline, or Roo, or paste a category or month bundle into any chat LLM."
+  active=""
+>
+  <div class="container use-page">
+    <header class="page-heading">
+      <span class="eyebrow">ANY MODEL. THE SAME EVIDENCE.</span>
+      <h1>Use OpenAttacks with your LLM</h1>
+      <p>
+        The agent skill is the path for Claude, Cursor, and other coding agents.
+        It reads the slim index, then fetches only the attack files it needs.
+        A chat window should paste one category or one month, not the whole catalog.
+        This page is built from {attacks.length} current entries.
+      </p>
+    </header>
+
+    <section id="install" aria-labelledby="install-title">
+      <h2 id="install-title">Install the openattacks skill</h2>
+      <p>
+        The skill is <a href={`${repo}/blob/main/skills/openattacks/SKILL.md`}><code>skills/openattacks/SKILL.md</code></a>.
+        Its <code>name</code> is <code>openattacks</code>, matching the folder.
+        The zip contains <code>openattacks/SKILL.md</code> and nothing else.
+        After it is installed, ask a question about a reported AI attack. The agent loads the skill when the question matches that description, or you can call it as <code>/openattacks</code> where the product uses slash commands.
+      </p>
+      <p>
+        <a class="button button-primary" href={href("downloads/openattacks-skill.zip")}>
+          Download openattacks-skill.zip
+        </a>
+      </p>
+      <p>
+        Each command downloads that zip and unpacks it so <code>SKILL.md</code> lands in the right folder.
+        Run a project command from the repository root when the team should share the skill. Run the home-directory command when you want it in every project on your machine.
+        On Windows, the same zip unpacks with PowerShell. This one installs it for Claude Code; change the destination for another tool:
+      </p>
+      <div class="snippet">
+        <pre>Invoke-WebRequest {zipUrl} -OutFile $env:TEMP\openattacks-skill.zip; New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.claude\skills" | Out-Null; Expand-Archive -Force $env:TEMP\openattacks-skill.zip "$env:USERPROFILE\.claude\skills"</pre>
+        <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Windows install command">Copy</button>
+      </div>
+
+      <article class="platform" id="claude-code">
+        <h3>Claude Code</h3>
+        <p>
+          Project skills live at <code>.claude/skills/openattacks/SKILL.md</code>.
+          Personal skills live at <code>~/.claude/skills/openattacks/SKILL.md</code> and apply to every project on that machine.
+          {" "}<a href="https://code.claude.com/docs/en/skills">Extend Claude with skills</a> is the directory list and the frontmatter reference.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".claude/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Claude Code project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.claude/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Claude Code user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="claude-apps">
+        <h3>Claude.ai and Claude Desktop</h3>
+        <p>
+          Skills need code execution. Turn on Code execution and file creation under Settings &gt; Capabilities.
+          On Team and Enterprise plans an Owner enables it under organization settings.
+          Then open Customize &gt; Skills, choose +, and upload the zip.
+          {" "}<a href="https://support.claude.com/en/articles/12512180-use-skills-in-claude">Use skills in Claude</a>{" "}
+          documents that flow.
+          The zip must contain the <code>openattacks</code> folder, not a bare <code>SKILL.md</code> at the zip root
+          (<a href="https://support.claude.com/en/articles/12512198-how-to-create-custom-skills">how to package a skill</a>).
+          Turn the skill on. In a chat, type <code>/</code> and select it, or ask a question the description matches.
+        </p>
+        <p>
+          Claude Desktop uses the same Customize &gt; Skills page. A skill you upload there stays on that device
+          (<a href="https://claude.com/docs/skills/overview">Skills overview</a>,
+          <a href="https://claude.com/docs/government/desktop/skills">Skills in Claude Desktop</a>).
+          Uploading it to claude.ai does not install it in Claude Code, and the reverse is also true.
+        </p>
+      </article>
+
+      <article class="platform" id="cursor">
+        <h3>Cursor</h3>
+        <p>
+          Put the folder at <code>.cursor/skills/openattacks/SKILL.md</code> for one project, or <code>~/.cursor/skills/openattacks/SKILL.md</code> for every project on the machine.
+          Cursor also reads <code>.agents/skills/</code>, <code>.claude/skills/</code>, and <code>.codex/skills/</code>.
+          {" "}<a href="https://cursor.com/docs/skills">Agent Skills</a> describes discovery and the <code>/openattacks</code> command.
+          Rules are a different mechanism: they load on every turn
+          (<a href="https://cursor.com/docs/rules">Rules</a>).
+          Use the skill for this catalog. Use a rule only if you want a one-line pointer in every chat.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".cursor/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Cursor project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.cursor/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Cursor user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="codex">
+        <h3>OpenAI Codex CLI and ChatGPT desktop</h3>
+        <p>
+          Install new skills at <code>~/.agents/skills/openattacks/SKILL.md</code>, or <code>.agents/skills/openattacks/SKILL.md</code> inside a repo.
+          {" "}<a href="https://learn.chatgpt.com/docs/build-skills">Build skills</a> is the current location list. The same guide covers ChatGPT desktop, where you can mention a skill with <code>@</code>.
+          <code>~/.codex/skills/</code> is the old path. Codex still reads it, and new installs should use <code>~/.agents/skills/</code>.
+        </p>
+        <p>
+          <code>AGENTS.md</code> is not a skill. Codex adds it to every turn, and the project file is capped
+          (<a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Custom instructions with AGENTS.md</a>).
+          Keep the skill for the catalog procedure. If you want a standing reminder, put the short instructions from the chat section into <code>AGENTS.md</code>.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".agents/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Codex project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.agents/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Codex user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="copilot">
+        <h3>GitHub Copilot</h3>
+        <p>
+          Copilot loads agent skills from <code>.github/skills/openattacks/SKILL.md</code> in a repo, and from <code>~/.copilot/skills/</code> or <code>~/.agents/skills/</code> for you personally.
+          It also reads <code>.claude/skills/</code> and <code>.agents/skills/</code>.
+          {" "}<a href="https://docs.github.com/en/copilot/concepts/agents/about-agent-skills">About agent skills</a>{" "}
+          and <a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills">Adding agent skills</a>{" "}
+          describe when Copilot loads the file.
+        </p>
+        <p>
+          <code>.github/copilot-instructions.md</code> is added to every request in that repository
+          (<a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions">repository custom instructions</a>).
+          Use it for a short pointer. Keep the procedure in the skill.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".github/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Copilot project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.copilot/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Copilot user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="gemini-cli">
+        <h3>Gemini CLI</h3>
+        <p>
+          Workspace skills go in <code>.gemini/skills/openattacks/SKILL.md</code>.
+          User skills go in <code>~/.gemini/skills/openattacks/SKILL.md</code>.
+          <code>.agents/skills/</code> is an alias and takes precedence when both exist.
+          {" "}<a href="https://geminicli.com/docs/cli/skills/">Agent Skills</a> documents the tiers.
+          In the CLI, <code>/skills list</code> should show <code>openattacks</code>. Workspace skills load only in a trusted folder.
+        </p>
+        <p>
+          <code>GEMINI.md</code> is sent on every prompt
+          (<a href="https://geminicli.com/docs/cli/gemini-md/">GEMINI.md files</a>).
+          Put a one-line pointer there if you want it always, and leave the procedure in the skill.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".gemini/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Gemini CLI project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.gemini/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Gemini CLI user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="windsurf">
+        <h3>Windsurf</h3>
+        <p>
+          Cascade reads <code>.windsurf/skills/openattacks/SKILL.md</code> in the project and <code>~/.codeium/windsurf/skills/openattacks/SKILL.md</code> globally.
+          It also discovers <code>.agents/skills/</code>.
+          Mention <code>@openattacks</code> or ask a question that matches the description.
+          The directory list is in the{" "}
+          <a href="https://docs.windsurf.com/fr/windsurf/cascade/skills">Cascade skills article</a>{" "}
+          (the English URL currently redirects away from that article)
+          and in the <a href="https://docs.devin.ai/cli/extensibility/skills/overview">Devin CLI skills overview</a>, which lists <code>.windsurf/skills/</code> as well.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">This project</p>
+          <pre>{install(".windsurf/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Windsurf project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Every project on this machine</p>
+          <pre>{install("~/.codeium/windsurf/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Windsurf user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="cline-roo">
+        <h3>Cline and Roo</h3>
+        <p>
+          Cline reads <code>.cline/skills/openattacks/SKILL.md</code> and <code>~/.cline/skills/openattacks/SKILL.md</code>, and also <code>.claude/skills/</code>
+          (<a href="https://docs.cline.bot/customization/skills">Cline skills</a>).
+          The <code>name</code> in the file must match the folder name.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">Cline, this project</p>
+          <pre>{install(".cline/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Cline project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Cline, every project on this machine</p>
+          <pre>{install("~/.cline/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Cline user install command">Copy</button>
+        </div>
+        <p>
+          Roo reads <code>.roo/skills/openattacks/SKILL.md</code> and <code>~/.roo/skills/openattacks/SKILL.md</code>.
+          Project skills override a global skill of the same name
+          (<a href="https://roocodeinc.github.io/Roo-Code/features/skills/">Roo skills</a>).
+          Roo rules in <code>.roo/rules/</code> are always on
+          (<a href="https://roocodeinc.github.io/Roo-Code/features/custom-instructions/">custom instructions</a>);
+          prefer the skill.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">Roo, this project</p>
+          <pre>{install(".roo/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Roo project install command">Copy</button>
+        </div>
+        <div class="snippet">
+          <p class="snippet-label">Roo, every project on this machine</p>
+          <pre>{install("~/.roo/skills")}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the Roo user install command">Copy</button>
+        </div>
+      </article>
+
+      <article class="platform" id="web">
+        <h3>ChatGPT and Gemini on the web</h3>
+        <p>
+          These chats do not read a skills folder on your computer. Give them the procedure, then one bundle from the next section.
+        </p>
+        <div class="snippet">
+          <p class="snippet-label">Instructions to paste</p>
+          <pre>{chatPrompt}</pre>
+          <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the chat instructions">Copy</button>
+        </div>
+        <ul>
+          <li>
+            <strong>ChatGPT Projects.</strong>
+            Create a project, open the more-options menu, and add the instructions above under Project settings.
+            Upload one category or month file as project knowledge.
+            {" "}<a href="https://help.openai.com/en/articles/10169521-projects-in-chatgpt">Projects in ChatGPT</a>.
+            Custom instructions under Settings &gt; Personalization apply to every chat and are short
+            (<a href="https://help.openai.com/en/articles/8096356-chatgpt-custom-instructions">custom instructions</a>),
+            so a project is the better fit.
+          </li>
+          <li>
+            <strong>Custom GPTs.</strong>
+            If you still have one, paste the same instructions into the GPT instructions field
+            (<a href="https://help.openai.com/en/articles/8554397-creating-and-editing-gpts">creating GPTs</a>).
+            OpenAI is retiring custom GPTs; new creation has already ended for some workspaces, with standard retirement scheduled for December 11, 2026. Prefer a project.
+          </li>
+          <li>
+            <strong>Gemini Apps skills.</strong>
+            On gemini.google.com open Customize &gt; Skills, then Create &gt; Upload.
+            Upload the unzipped <code>openattacks</code> folder so <code>SKILL.md</code> sits in that folder, or upload <code>SKILL.md</code> by itself.
+            {" "}<a href="https://support.google.com/gemini/answer/17094296?hl=en">Create and manage skills for Gemini Apps</a>.
+            Personal accounts are moving Gems to skills
+            (<a href="https://support.google.com/gemini/answer/18560919?hl=en">about the transition</a>).
+            Where Gems remain, paste the instructions into a new Gem and attach one bundle under Knowledge
+            (<a href="https://support.google.com/gemini/answer/15146780?hl=en">Use Gems in Gemini Apps</a>).
+          </li>
+        </ul>
+        <p>
+          Any other agent that accepts a system prompt or a <code>SKILL.md</code> file can use the same folder.
+          The format is the <a href="https://agentskills.io/specification">Agent Skills specification</a>: a directory, YAML <code>name</code> and <code>description</code>, then markdown instructions.
+        </p>
+      </article>
+    </section>
+
+    <section id="chat" aria-labelledby="chat-title">
+      <h2 id="chat-title">Paste a bundle, or point at the index</h2>
+      <p>
+        <code>llms-full.txt</code> and the full JSON catalog are the complete record. They are the wrong first paste for a chat: they crowd out the question.
+        Paste one bundle. The names below are the categories and months in this build. A web-enabled model can fetch the index itself and open only the files it needs.
+      </p>
+
+      <h3>Category bundles</h3>
+      <ul class="bundle-list">
+        {slices.categories.map((category) => (
+          <li>
+            <a href={href(`llms/by-category/${category.id}.md`)}>
+              <code>llms/by-category/{category.id}.md</code>
+            </a>
+            <span>
+              {categoryLabel[category.id] || category.id} · {category.count} entries
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p>
+        {attacks.length - slices.categories.reduce((sum, category) => sum + category.count, 0)} entries have no category. They stay in the index and in their month bundle.
+      </p>
+
+      <h3>Recent month bundles</h3>
+      <ul class="bundle-list">
+        {months.map((month) => (
+          <li>
+            <a href={href(`llms/by-month/${month.id}.md`)}>
+              <code>llms/by-month/{month.id}.md</code>
+            </a>
+            <span>
+              {formatDate(month.id, true)} · {month.count} entries
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p>
+        Older months use the same path, <code>llms/by-month/YYYY-MM.md</code>. One attack is <code>llms/attacks/&lt;id&gt;.md</code>.
+      </p>
+
+      <h3>Structured files</h3>
+      <p>
+        Upload <a href={href("api/attacks.json")}><code>api/attacks.json</code></a> when the model can run code and you want every field.
+        In a git checkout the same records are <code>data/attacks.json</code>.
+        {" "}<a href={href("api/schema.json")}><code>api/schema.json</code></a> is the field list.
+        {" "}<a href={href("llms-full.txt")}><code>llms-full.txt</code></a> remains available for a tool that can hold the entire catalog.
+      </p>
+
+      <h3>Web-enabled models</h3>
+      <p>
+        Give the model this URL and tell it to open the index before it opens any attack. ChatGPT with browsing, Claude with web access, and other tools that can fetch a URL can follow the links inside it.
+      </p>
+      <div class="snippet">
+        <pre>{llmsUrl}</pre>
+        <button type="button" class="copy-snippet" data-label="Copy" aria-label="Copy the llms.txt URL">Copy</button>
+      </div>
+      <p>
+        A question that works with that URL: “Open {llmsUrl}. Which attacks in the latest month targeted finance, and how confident is the attribution? Fetch only those attack files.”
+      </p>
+    </section>
+
+    <section id="prompts" aria-labelledby="prompts-title">
+      <h2 id="prompts-title">Example prompts</h2>
+      <p>
+        These prompts name entries from the current catalog, so the examples move when the YAML changes.
+        They work with the skill, with a pasted bundle, or with the index URL.
+      </p>
+      {groups.map((group) => (
+        <div class="prompt-group">
+          <h3 id={group.id}>{group.title}</h3>
+          <div class="prompt-grid">
+            {group.prompts.map((prompt) => (
+              <div class="snippet">
+                <p class="snippet-label">{prompt.title}</p>
+                <pre>{prompt.prompt}</pre>
+                <button
+                  type="button"
+                  class="copy-snippet"
+                  data-label="Copy"
+                  aria-label={`Copy the ${prompt.title} prompt`}
+                >
+                  Copy
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section id="fields" aria-labelledby="fields-title">
+      <h2 id="fields-title">Fields the skill expects</h2>
+      <p>
+        Every entry has an id, name, report date, sources, and a prevention note.
+        AI involvement is one primary role, plus an optional secondary role:
+      </p>
+      <ul>
+        {Object.entries(roles).map(([id, role]) => (
+          <li>
+            <code>{id}</code> — {role.description}
+          </li>
+        ))}
+      </ul>
+      <p>
+        Attribution confidence and AI-involvement confidence are separate. A missing value is unassessed.
+        Detection formats are <code>sigma</code>, <code>splunk</code>, <code>elastic</code>, <code>kql</code>, <code>lolbas</code>, and <code>guidance</code>.
+        The <a href={href("about/#methodology")}>methodology</a> explains sourcing, geography, and what the catalog refuses to infer.
+      </p>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .use-page {
+    padding-bottom: 64px;
+  }
+  .use-page h2 {
+    font-size: 25px;
+    margin: 48px 0 16px;
+  }
+  .use-page h3 {
+    font-size: 19px;
+    margin: 28px 0 10px;
+  }
+  .use-page p,
+  .use-page li {
+    color: var(--muted);
+    max-width: 760px;
+  }
+  .use-page a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .use-page .button {
+    text-decoration: none;
+    color: var(--on-accent);
+    margin: 8px 0 18px;
+  }
+  .use-page code {
+    font: 12px var(--mono);
+    color: var(--accent);
+  }
+  .platform {
+    border-top: 1px solid var(--line);
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+  .snippet {
+    display: grid;
+    gap: 8px;
+    max-width: 760px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 14px;
+    margin: 12px 0;
+  }
+  .snippet-label {
+    margin: 0;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .snippet pre {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font: 12px/1.65 var(--mono);
+    color: var(--text);
+  }
+  .copy-snippet {
+    justify-self: start;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    color: var(--accent);
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  .copy-snippet:hover {
+    border-color: var(--accent);
+  }
+  .bundle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .bundle-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .prompt-grid {
+    display: grid;
+    gap: 12px;
+  }
+  @media (min-width: 900px) {
+    .prompt-grid {
+      grid-template-columns: 1fr 1fr;
+      max-width: 1100px;
+    }
+    .prompt-grid .snippet {
+      max-width: none;
+    }
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".copy-snippet");
+  for (const button of buttons) {
+    button.addEventListener("click", async () => {
+      const text = button
+        .closest(".snippet")
+        ?.querySelector("pre")
+        ?.textContent?.replace(/\n$/, "");
+      const label = button.dataset.label || "Copy";
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = "Copied";
+      } catch {
+        button.textContent = "Select the text to copy";
+      }
+      window.setTimeout(() => {
+        button.textContent = label;
+      }, 1600);
+    });
+  }
+</script>
