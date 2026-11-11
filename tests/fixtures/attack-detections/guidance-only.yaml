@@ -1,0 +1,40 @@
+id: guidance-only
+name: Fixture with guidance and no detection rule
+date_reported: 2026-11-11
+researcher: Fixture
+org: Fixture
+sources:
+  - url: https://example.org/report
+borderline: false
+ai_role: ai_tool_as_lure
+technique_summary: macOS LaunchAgent persistence (T1543.001) after a fake AI installer.
+  IOC fixture-ioc-9f3a2c.
+initial_access: User runs an installer on macOS
+ai_tooling_and_models: []
+other_tooling:
+  - LaunchAgent
+victims_and_sectors: macOS users
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Review new LaunchAgent plists
+related_magicsword_projects: []
+category: adversary-use-of-ai
+attribution:
+  actor_name: Fixture actor
+ai_involvement_confidence: confirmed
+detections:
+  - name: Review new LaunchAgent plists
+    format: guidance
+    notes: Guidance only. The enrichment step should attach matching rules.
+timeline:
+  first_seen: 2026-11-11
+iocs:
+  domains:
+    - fixture-ioc-9f3a2c.example
+atlas_techniques:
+  - id: AML.T0011
+    rationale: The installer keeps running through a LaunchAgent.
+    source_urls:
+      - https://example.org/report
