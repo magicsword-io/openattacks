@@ -5,13 +5,13 @@ researcher: Harley Halsey, Brandon Murphy, Randy Pargman (Sublime); Merium Khali
   (Barracuda)
 org: Sublime Security, Barracuda Networks
 sources:
-- url: https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-  title: 'Sublime: Invoice Fraud Campaign Adds Prompt Injection Aimed at Email AI
-    Agents'
-  publisher: Sublime Security
-- url: https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
-  title: Phishing Has a New Target - The AI Assistant Reading Your Email
-  publisher: Cybersecurity Insiders
+  - url: https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+    title: "Sublime: Invoice Fraud Campaign Adds Prompt Injection Aimed at Email AI
+      Agents"
+    publisher: Sublime Security
+  - url: https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
+    title: Phishing Has a New Target - The AI Assistant Reading Your Email
+    publisher: Cybersecurity Insiders
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -32,16 +32,16 @@ technique_summary: Sublime Security (Harley Halsey, Brandon Murphy, Randy Pargma
 initial_access: Phishing emails with hidden HTML prompt injection targeting email
   AI assistants
 ai_tooling_and_models:
-- Email AI assistants (unspecified vendors)
-- Mailbox automation agents
+  - Email AI assistants (unspecified vendors)
+  - Mailbox automation agents
 other_tooling:
-- Zero-size HTML span elements
-- Unicode Tag characters
-- HTML playbook instructions
+  - Zero-size HTML span elements
+  - Unicode Tag characters
+  - HTML playbook instructions
 victims_and_sectors: Organizations using email AI assistants; finance teams (invoice
   fraud); general workforce (recruiting fraud)
 regions:
-- Multiple regions
+  - Multiple regions
 attribution_or_cluster: Unattributed campaigns; confirmed active in wild Nov 2026
   by Sublime and Barracuda
 scale_and_metrics: Active Nov 2026; confirmed by two independent security vendors
@@ -62,64 +62,64 @@ iocs:
   hashes: []
   urls: []
 atlas_techniques:
-- id: AML.T0051
-  rationale: Hidden HTML instructions inject prompts into email AI assistant processing
-  source_urls:
-  - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-- id: AML.T0053
-  rationale: Email AI assistants manipulated to forward emails and search mailboxes
-    without user awareness
-  source_urls:
-  - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-- id: AML.T0086
-  rationale: AI assistants instructed to exfiltrate seed phrases, private keys, and
-    wallet data
-  source_urls:
-  - https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
+  - id: AML.T0051
+    rationale: Hidden HTML instructions inject prompts into email AI assistant processing
+    source_urls:
+      - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+  - id: AML.T0053
+    rationale: Email AI assistants manipulated to forward emails and search mailboxes
+      without user awareness
+    source_urls:
+      - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+  - id: AML.T0086
+    rationale: AI assistants instructed to exfiltrate seed phrases, private keys, and
+      wallet data
+    source_urls:
+      - https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
 attack_flow:
   nodes:
-  - id: craft-injection
-    title: Craft hidden prompt injection
-    description: Attacker embeds instructions in zero-size HTML spans and Unicode
-      Tag characters invisible to users
-    kind: execution
-    source_urls:
-    - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-  - id: deliver-email
-    title: Deliver phishing email
-    description: Invoice fraud or recruiting email delivered to target organization
-    kind: access
-    source_urls:
-    - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-  - id: ai-reads
-    title: Email AI assistant processes message
-    description: AI assistant reads email including hidden instructions
-    kind: ai
-    source_urls:
-    - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-  - id: execute-forward
-    title: AI forwards email or searches mailbox
-    description: Assistant follows hidden instructions to forward email with PDF to
-      attacker-controlled address or search for sensitive data
-    kind: execution
-    source_urls:
-    - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
-  - id: self-propagate
-    title: Self-propagate via all-staff forwards
-    description: 'Barracuda case: AI forwards to all-staff lists for organizational
-      spread'
-    kind: impact
-    source_urls:
-    - https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
+    - id: craft-injection
+      title: Craft hidden prompt injection
+      description: Attacker embeds instructions in zero-size HTML spans and Unicode
+        Tag characters invisible to users
+      kind: execution
+      source_urls:
+        - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+    - id: deliver-email
+      title: Deliver phishing email
+      description: Invoice fraud or recruiting email delivered to target organization
+      kind: access
+      source_urls:
+        - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+    - id: ai-reads
+      title: Email AI assistant processes message
+      description: AI assistant reads email including hidden instructions
+      kind: ai
+      source_urls:
+        - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+    - id: execute-forward
+      title: AI forwards email or searches mailbox
+      description: Assistant follows hidden instructions to forward email with PDF to
+        attacker-controlled address or search for sensitive data
+      kind: execution
+      source_urls:
+        - https://sublime.security/blog/invoice-fraud-campaign-adds-prompt-injection-aimed-at-email-ai-agents/
+    - id: self-propagate
+      title: Self-propagate via all-staff forwards
+      description: "Barracuda case: AI forwards to all-staff lists for organizational
+        spread"
+      kind: impact
+      source_urls:
+        - https://www.cybersecurity-insiders.com/phishing-has-a-new-target-the-ai-assistant-reading-your-email/
   edges:
-  - source: craft-injection
-    target: deliver-email
-  - source: deliver-email
-    target: ai-reads
-  - source: ai-reads
-    target: execute-forward
-  - source: execute-forward
-    target: self-propagate
+    - source: craft-injection
+      target: deliver-email
+    - source: deliver-email
+      target: ai-reads
+    - source: ai-reads
+      target: execute-forward
+    - source: execute-forward
+      target: self-propagate
 category: attacks-on-ai
 attribution:
   actor_name: Unattributed campaigns
@@ -129,23 +129,23 @@ attribution:
   confidence: low
 ai_involvement_confidence: confirmed
 detections:
-- name: Email AI assistant security controls
-  format: guidance
-  notes: Strip zero-size HTML elements before AI processing; sanitize Unicode Tag
-    characters (U+E0000–U+E007F); detect hidden text with display:none, font-size:0,
-    opacity:0; validate AI assistant actions (forwards, searches); require human approval
-    for bulk operations; monitor for ap.confirm+ email patterns; alert on mailbox
-    searches for seed phrase, private key, wallet; log all AI assistant forwarding
-    actions; implement AI output validation
+  - name: Email AI assistant security controls
+    format: guidance
+    notes: Strip zero-size HTML elements before AI processing; sanitize Unicode Tag
+      characters (U+E0000–U+E007F); detect hidden text with display:none, font-size:0,
+      opacity:0; validate AI assistant actions (forwards, searches); require human approval
+      for bulk operations; monitor for ap.confirm+ email patterns; alert on mailbox
+      searches for seed phrase, private key, wallet; log all AI assistant forwarding
+      actions; implement AI output validation
 timeline:
-  first_seen: '2026-11-01'
-  last_updated: '2026-11-07'
+  first_seen: "2026-11-01"
+  last_updated: "2026-11-07"
   updates:
-  - date: '2026-11-06'
-    source: Sublime Security
-    summary: Sublime reports invoice fraud campaign using zero-size HTML spans and
-      Unicode Tag characters to inject hidden instructions targeting email AI assistants
-  - date: '2026-11-07'
-    source: Barracuda / Cybersecurity Insiders
-    summary: Barracuda documents recruiting email hiding HTML playbook for all-staff
-      self-propagation and mailbox search for cryptocurrency data
+    - date: "2026-11-06"
+      source: Sublime Security
+      summary: Sublime reports invoice fraud campaign using zero-size HTML spans and
+        Unicode Tag characters to inject hidden instructions targeting email AI assistants
+    - date: "2026-11-07"
+      source: Barracuda / Cybersecurity Insiders
+      summary: Barracuda documents recruiting email hiding HTML playbook for all-staff
+        self-propagation and mailbox search for cryptocurrency data
