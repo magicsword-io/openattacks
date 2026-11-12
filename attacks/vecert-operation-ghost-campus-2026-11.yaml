@@ -1,0 +1,116 @@
+id: vecert-operation-ghost-campus-2026-11
+name: VECERT Operation Ghost Campus - FOFA account farm harvesting OpenAI and DeepSeek keys
+date_reported: 2026-11-08
+researcher: VECERT Threat Research and Intelligence
+org: VECERT
+sources:
+  - url: https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+    title: "VECERT: Operation Ghost-Campus"
+    publisher: VECERT
+  - url: https://cyberpress.org/hackers-weaponize-ai-agents/
+    title: "Cyber Press coverage of Operation Ghost Campus"
+    publisher: Cyber Press
+  - url: https://cybersecuritynews.com/fake-fofa-accounts/
+    title: "Cyber Security News: fake FOFA accounts"
+    publisher: Cyber Security News
+magicsword_coverage: []
+borderline: false
+borderline_note: "Private-research write-up with no government or vendor corroboration. The key-theft and validation steps are shown in the author's screenshots. The autonomous-agent label is not backed by agent internals."
+ai_role: ai_credential_theft
+ai_role_secondary: null
+ai_role_detail: "A catch-all mail domain is used to farm FOFA accounts, search for exposed env files, and validate stolen OpenAI and DeepSeek keys. VECERT calls the automation an autonomous agent; that label is unverified."
+technique_summary: "VECERT (case VECERT-TI-2026-1107-B, Medium, about Nov 8, 2026) describes Operation Ghost Campus. The operator ran a catch-all mail domain, melocc.cc, with mail, api, pop, imap, and smtp subdomains. A script registered FOFA accounts, read the confirmation mail over POP or IMAP, and activated them within seconds. VECERT says it recovered fofa_accounts.csv with at least 1,438 accounts (examples fofaa4x3y145@melocc.cc and fofa6o4vg697@melocc.cc) plus passwords and JWTs. Rotating those free-tier tokens is described as producing tens of thousands of FOFA queries a day for exposed .env files, Docker configs, and Git repos. Hits are regex-parsed for OpenAI sk-proj keys and DeepSeek keys matching sk- followed by 32 hex characters. OpenAI keys are checked against api.openai.com and sorted into valid_no_balance (HTTP 429) or revoked (HTTP 401). DeepSeek balances are queried; the post names keys pulled from labibiyat.com and nyisu.com. The same control server, 134.175.71.194 (Tencent Cloud, Guangzhou), is described as hosting a GoTTY web terminal titled Pi – AI Coding Assistant (https://github.com/yudai/gotty), heartbeat bots that fake student reading time, and a scraper of 5,132 student records from the Fengxian campus of the Shanghai Publishing and Printing College, including campus-card balances and a QR payment-code module. VECERT says the operator is possibly in China and likely tied to Shanghai's academic community. Link keyhunter-llm-key-theft-2026-11, which also uses FOFA to hunt LLM keys."
+initial_access: "Mass FOFA account registration through a private catch-all mail domain, then searches for exposed .env files and git repos"
+ai_tooling_and_models:
+  - "GoTTY web terminal (https://github.com/yudai/gotty), described as Pi – AI Coding Assistant"
+  - "Stolen OpenAI and DeepSeek API keys"
+other_tooling:
+  - "FOFA account farm on melocc.cc"
+  - "fofa_accounts.csv"
+victims_and_sectors: "Holders of exposed OpenAI and DeepSeek keys; VECERT also describes 5,132 student records at a Shanghai college campus"
+regions:
+  - China
+  - Multiple regions
+attribution_or_cluster: "Unnamed. VECERT (VECERT-TI-2026-1107-B) says the operator is possibly in China and likely tied to Shanghai's academic community. No government or vendor attribution."
+scale_and_metrics: "At least 1,438 FOFA accounts. 5,132 student records described. Control server 134.175.71.194."
+prevention_angle: "Do not leave provider keys in .env files, Docker configs, or public git repos. Monitor api.openai.com for bursts of validation calls that return 429 or 401. Treat melocc.cc and the named control IP as suspicious. Rotate any key that appeared in a public env file."
+related_magicsword_projects: []
+source_notes: "Control IP 134.175.71.194, melocc.cc, the 1,438-account count, example mailbox local-parts, labibiyat.com, nyisu.com, and the GoTTY panel name are from the VECERT Medium post. The mail-server IP is not listed. The same post gives 156.251.234.242 in the DNS section (mail, api, pop, imap, and smtp subdomains) and 156.233.234.242 in the infrastructure section (Cognetcloud, ASN 401701). Secondary write-ups disagree about which address is the Cognetcloud mail server, and the embedded screenshots were not independently re-resolved. Both addresses are omitted."
+last_reviewed: 2026-11-12
+iocs:
+  domains:
+    - melocc.cc
+    - labibiyat.com
+    - nyisu.com
+  ips:
+    - 134.175.71.194
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0021
+    rationale: "The operator mass-registers FOFA accounts through its own mail domain"
+    source_urls:
+      - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+  - id: AML.T0055
+    rationale: "FOFA queries are used to find exposed .env files and pull OpenAI and DeepSeek keys"
+    source_urls:
+      - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+  - id: AML.T0034
+    rationale: "Validated keys are checked for remaining balance and described as fuel for the operator's own tools"
+    source_urls:
+      - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+attack_flow:
+  nodes:
+    - id: farm-accounts
+      title: Farm FOFA accounts
+      description: "A script registers FOFA accounts on melocc.cc, reads the confirmation mail, and stores passwords and JWTs in fofa_accounts.csv."
+      kind: access
+      source_urls:
+        - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+    - id: search-env
+      title: Search for exposed keys
+      description: "Rotated free-tier tokens query FOFA for .env files, Docker configs, and git repos."
+      kind: execution
+      source_urls:
+        - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+    - id: validate
+      title: Validate OpenAI and DeepSeek keys
+      description: "Regex hits are checked at api.openai.com or for DeepSeek balance and sorted into valid_no_balance or revoked."
+      kind: ai
+      source_urls:
+        - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+    - id: panel
+      title: Keys land in the GoTTY panel
+      description: "VECERT says working keys feed the Pi AI Coding Assistant terminal on 134.175.71.194."
+      kind: impact
+      source_urls:
+        - https://medium.com/@vecert/investigation-operation-ghost-campus-artificial-intelligence-agents-academic-fraud-and-global-0ea0ded1e688
+  edges:
+    - source: farm-accounts
+      target: search-env
+    - source: search-env
+      target: validate
+    - source: validate
+      target: panel
+category: attacks-on-ai
+attribution:
+  actor_name: "Unnamed operator described by VECERT"
+  country: China
+  motivation: financially-motivated
+  attributed_by: VECERT Threat Research and Intelligence
+  confidence: low
+ai_involvement_confidence: unverified
+detections:
+  - name: FOFA farming and provider-key validation
+    format: guidance
+    notes: "No Sigma, Splunk, or Elastic rule covers FOFA account farming, GoTTY, or OpenAI 429/401 key-validation bursts. On the defender side, alert when a repository or host serves a .env containing sk-proj or DeepSeek sk- keys, and treat outbound queries to fofa.info from build systems as suspicious. Mail IPs 156.251.234.242 and 156.233.234.242 are intentionally not indicators until the VECERT discrepancy is resolved."
+timeline:
+  first_seen: "2026-11-08"
+  last_updated: "2026-11-10"
+  updates:
+    - date: "2026-11-08"
+      source: VECERT
+      summary: "VECERT publishes Operation Ghost Campus (VECERT-TI-2026-1107-B), including fofa_accounts.csv, melocc.cc, and control server 134.175.71.194"
+    - date: "2026-11-10"
+      source: Cyber Press
+      summary: "Secondary coverage repeats the FOFA account farm and the OpenAI and DeepSeek key-validation steps"
