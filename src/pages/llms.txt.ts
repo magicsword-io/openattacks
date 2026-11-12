@@ -20,6 +20,7 @@ export const GET: APIRoute = async ({ site, url }) => {
       `- [Stack relevance rules](${absolute("api/relevance.json")}): reviewed victim-side product / workflow mappings, conditions, first actions and stage links; product mentions or attacker use alone are not applicability evidence.`,
       `- [Public JSON Schema](${absolute("api/schema.json")}): exact fields, types, enums and validation rules.`,
       `- [CSV catalog](${absolute("api/attacks.csv")}): spreadsheet-friendly export.`,
+      `- [RSS feed](${absolute("rss.xml")}): every entry, newest report first, for feed readers.`,
       `- [ATLAS technique index](${absolute("api/atlas.json")}): official technique names and links used by catalog annotations.`,
       `- [Stage defenses and hunt starters](${absolute("api/defenses.json")}): editorial hypotheses, telemetry, source-controlled draft Sigma/KQL/SPL queries, explicit evidence gaps, and conditional Windows policy opportunities. Single-entry packs: api/defenses/{id}.json.`,
       "- Attack pages expose #detections and #detection-{node_id} only for phases with applicable YAML-backed Sigma/KQL/SPL drafts. Phases without queries are omitted from the page. Defense packs retain all stages, including explicit gaps, plus query origin, native/custom-schema/gap classification and raw query download URLs. Canonical definitions live under detections/ in the repository.",

@@ -69,6 +69,12 @@ const imageAlt =
       title="Complete attack catalog"
       href={href("api/attacks.json")}
     />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="OpenAttacks RSS feed"
+      href={href("rss.xml")}
+    />
     <script is:inline>
       try {
         document.documentElement.dataset.theme =
@@ -176,6 +182,7 @@ const imageAlt =
           </a>
           <a href={href("llms.txt")}>llms.txt</a>
           <a href={href("api/attacks.json")}>JSON API</a>
+          <a href={href("rss.xml")}>RSS</a>
         </div>
       </div>
       <div class="footer-bottom">
