@@ -12,7 +12,10 @@ const escape = (value: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;")
     // Characters XML 1.0 forbids would make the whole feed unparseable.
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+    .replace(
+      /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g,
+      "",
+    );
 
 // A partial date is published at noon UTC on the first of its month, matching
 // how the catalog sorts it.
@@ -27,15 +30,20 @@ export const GET: APIRoute = async ({ site, url }) => {
 
   const items = attacks.map((attack) => {
     const link = absolute(`attacks/${attack.id}/`);
+    // Feed readers render <description> as HTML, so build escaped paragraphs
+    // and links rather than plain text whose line breaks would collapse.
     const description = [
-      attack.technique_summary,
+      escape(attack.technique_summary),
       attack.borderline && attack.borderline_note
-        ? `Qualification: ${attack.borderline_note}`
+        ? `Qualification: ${escape(attack.borderline_note)}`
         : "",
-      `Sources: ${attack.sources.map((source) => source.url).join(" ")}`,
+      `Sources: ${attack.sources
+        .map((source) => `<a href="${escape(source.url)}">${escape(source.url)}</a>`)
+        .join(" ")}`,
     ]
       .filter(Boolean)
-      .join("\n\n");
+      .map((paragraph) => `<p>${paragraph}</p>`)
+      .join("");
     const categories = [
       roles[attack.ai_role]?.label ?? attack.ai_role,
       ...(attack.tags ?? []),
@@ -63,16 +71,13 @@ export const GET: APIRoute = async ({ site, url }) => {
     `    <atom:link href="${escape(feedURL)}" rel="self" type="application/rss+xml" />`,
     "    <description>A sourced catalog of reported AI-enabled attacks and qualified security-research findings, newest report first.</description>",
     "    <language>en</language>",
-    attacks.length
-      ? `    <lastBuildDate>${rfc822(attacks[0].date_reported)}</lastBuildDate>`
-      : "",
+    ...(attacks.length
+      ? [`    <lastBuildDate>${rfc822(attacks[0].date_reported)}</lastBuildDate>`]
+      : []),
     ...items,
     "  </channel>",
     "</rss>",
-    "",
-  ]
-    .filter((line) => line !== "")
-    .join("\n");
+  ].join("\n");
 
   return new Response(`${xml}\n`, {
     headers: { "Content-Type": "application/rss+xml; charset=utf-8" },

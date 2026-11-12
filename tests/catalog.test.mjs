@@ -428,12 +428,15 @@ test("RSS feed lists every entry with a permalink and is well-formed", () => {
   assert.ok(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
   assert.ok(feed.includes('<rss version="2.0"'));
   assert.ok(feed.includes('rel="self" type="application/rss+xml"'));
+  // The channel link follows SITE_URL / BASE_PATH, so permalinks are checked
+  // against it rather than a hard-coded production domain.
+  const home = feed.match(/<channel>\s*<title>[^<]*<\/title>\s*<link>([^<]+)<\/link>/)[1];
   const items = feed.match(/<item>[\s\S]*?<\/item>/g) || [];
   assert.equal(items.length, seeds.length);
   for (const entry of seeds)
     assert.ok(
       feed.includes(
-        `<guid isPermaLink="true">https://openattacks.ai/attacks/${entry.id}/</guid>`,
+        `<guid isPermaLink="true">${new URL(`attacks/${entry.id}/`, home).href}</guid>`,
       ),
       `Missing feed item for ${entry.id}`,
     );
