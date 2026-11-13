@@ -75,7 +75,8 @@ test("changed-attack parser keeps added files and rename destinations", () => {
     "attacks/new-entry.yaml",
     "attacks/renamed.yaml",
   ]);
-  assert.deepEqual(changedAttackFiles("HEAD"), []);
+  const exec = (_command, args) => (args[0] === "merge-base" ? "HEAD\n" : "");
+  assert.deepEqual(changedAttackFiles("HEAD", { exec }), []);
 });
 
 test("changed attacks diff from the merge base", () => {
