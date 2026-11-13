@@ -154,7 +154,7 @@
     "step-4": {
       "profile": "windows-shell",
       "control": "script-hosts",
-      "scope": "The Windows wscript → PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
+      "scope": "The Windows wscript \u2192 PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
     }
   },
   "apt41-gemini-c2-osstun-2025-08": {
@@ -1855,17 +1855,6 @@
       "profile": "unassessed"
     }
   },
-  "workos-attacker-using-ai-assisted-offensive-2026-11": {
-    "entry": {
-      "profile": "unassessed"
-    },
-    "activity": {
-      "profile": "unassessed"
-    },
-    "ai": {
-      "profile": "unassessed"
-    }
-  },
   "chainalysis-external-actor-using-offensive-agentic-2026-10": {
     "entry": {
       "profile": "unassessed"
@@ -3326,6 +3315,20 @@
       "profile": "unassessed"
     },
     "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "workos-artex-unintended-agent-escape-2026-10": {
+    "sandbox-escape": {
+      "profile": "agent-tools"
+    },
+    "discover-tool": {
+      "profile": "unassessed"
+    },
+    "bulk-exfil": {
+      "profile": "exfil"
+    },
+    "researcher-disclosure": {
       "profile": "unassessed"
     }
   }
