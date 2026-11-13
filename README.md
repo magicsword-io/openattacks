@@ -4,7 +4,7 @@ The open catalog of AI attacks. How attackers actually use AI, sourced and mappe
 
 **Documented cases only:** attacks observed in the wild or concrete cases documented in public reporting. No conceptual scenarios, hypothetical attack chains, or general threat frameworks. Published vulnerability demonstrations and research PoCs retain their evidence labels and do not imply exploitation in the wild.
 
-**Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [GitHub](https://github.com/magicsword-io/openattacks)
+**Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [RSS feed](https://openattacks.ai/rss.xml) · [GitHub](https://github.com/magicsword-io/openattacks)
 
 `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai` permanently redirect to `https://openattacks.ai`, preserving paths and query strings. The rules live in `vercel.json`; the domains must also be attached to the Vercel project and have valid DNS before they can serve or redirect traffic.
 
@@ -75,6 +75,8 @@ Entry pages lead with the takeaway and an expanded **What happened** account bef
 
 ```sh
 npm run validate
+npm run llm:build   # refresh committed llms.txt, bundles, and data/attacks.json
+npm run llm:check
 npm run test:validation
 npm run check:links -- --all
 npm run check
@@ -99,11 +101,11 @@ The seed has no confidence assessments, so the empty confidence filter and label
 
 Import `magicsword-io/openattacks` into Vercel and select `main` as the production branch. The repository can remain private. Vercel reads the Astro framework, install command (`npm ci`), build command (`npm run check && npm run build && npm test`), and output directory (`dist`) from `vercel.json`.
 
-Every merge to `main` rebuilds and publishes the site, `llms.txt`, `llms-full.txt`, and all catalog exports together. Pull requests receive preview deployments. Failed validation or export tests stop publishing.
+Every merge to `main` rebuilds and publishes the site together with the committed LLM exports. Pull requests receive preview deployments. Failed validation, a stale LLM export, or export tests stop publishing. A push to `main` also runs the Refresh LLM exports workflow, which commits regenerated files when the catalog drift was not already committed. That bot commit uses `[skip ci]`.
 
 Use the root base path (`/`, the default). Canonical URLs, sitemaps, social metadata, and LLM links default to `https://openattacks.ai`, including in preview builds. Remove stale `SITE_URL` and `BASE_PATH` overrides from the Vercel project, or explicitly set `SITE_URL=https://openattacks.ai` and `BASE_PATH=/`. `SITE_URL` can still override the canonical domain for an alternate deployment. Local commands never publish anything.
 
-The production Vercel project is named `openattacks`. In its Domains settings, attach `openattacks.ai`, `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai`, then apply the DNS records Vercel specifies at the registrar. The `.ai` apex serves the site; `vercel.json` redirects the other three hosts with HTTP 308 responses. Existing `ai-attacks.vercel.app` links remain as a legacy alias of the same project. Legacy social-image paths also redirect to `openattacks-share.png`.
+The production Vercel project is named `openattacks`. In its Domains settings, attach `openattacks.ai`, `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai`, then apply the DNS records Vercel specifies at the registrar. The `.ai` apex serves the site; `vercel.json` redirects the other three hosts with HTTP 308 responses. Existing `ai-attacks.vercel.app` links remain as a legacy alias of the same project. Legacy social-image paths also redirect to `openattacks-share-v2.png`.
 
 The four domains were attached to Vercel on 2026-10-29. DNS is managed at Squarespace; Vercel's current configuration check requests these records in each domain's DNS zone:
 
@@ -159,9 +161,23 @@ The static files are available under the deployment base path at `api/attacks.js
 
 ## AI-readable catalog and automatic updates
 
-The landing page links directly to `llms.txt`, which provides the current entry count, a query guide, and links to every entry. `llms-full.txt` includes the complete Markdown context: source credit, caveats, target geography, flow nodes and edges, ATLAS rationale, and defensive notes. Each entry also has `api/attacks/<id>.json` and `api/attacks/<id>.md`; `api/schema.json` publishes the public schema and `api/atlas.json` describes the referenced MITRE ATLAS definitions.
+[Use OpenAttacks with your LLM](https://openattacks.ai/use/) installs the `skills/openattacks` agent skill and shows chat-sized category and month bundles. `npm run llm:build` reads `attacks/*.yaml` and writes the committed LLM exports; `npm run llm:check` fails when those files drift. The site serves the same bytes.
 
-These are **Astro build routes, not manually maintained files**. A merged attack PR pushes to `main`, triggering Vercel's connected Git deployment. The same build validates YAML and regenerates the site, all AI-readable files and all API formats. Tests verify that every YAML record appears in every appropriate output before publishing. No runtime MCP server is needed: assistants can read the discovery guide or download the JSON array and query it locally.
+| File | URL |
+| --- | --- |
+| `llms.txt` | https://openattacks.ai/llms.txt |
+| `llms-full.txt` | https://openattacks.ai/llms-full.txt |
+| `llms/attacks/<id>.md` | https://openattacks.ai/llms/attacks/<id>.md |
+| `llms/by-category/<category>.md` | https://openattacks.ai/llms/by-category/<category>.md |
+| `llms/by-month/<YYYY-MM>.md` | https://openattacks.ai/llms/by-month/<YYYY-MM>.md |
+| `data/attacks.json` | https://openattacks.ai/data/attacks.json |
+| `data/attacks.schema.json` | https://openattacks.ai/data/attacks.schema.json |
+
+`llms.txt` is a short index: one line per attack with title, id, category, actor, date, and a link to `llms/attacks/<id>.md`. Category and month bundles split the same Markdown for smaller context windows. `llms-full.txt` is the complete catalog in one file. `data/attacks.json` is the public records plus `generated_at` and `count`; `generated_at` is the latest source review or report date at UTC midnight, not the wall clock, so a rebuild is byte-stable. `data/attacks.schema.json` describes that document.
+
+Each entry also has `api/attacks/<id>.json` and `api/attacks/<id>.md`. `api/attacks.json` remains a JSON array of the same public records. `api/schema.json` publishes the public entry schema and `api/atlas.json` describes the referenced MITRE ATLAS definitions.
+
+Do not edit the generated files by hand. A merged attack PR should include a fresh export. The main-branch workflow commits any remaining drift with `[skip ci]`. Vercel then publishes the site and these paths together. Tests verify that every YAML record appears in the index, the full catalog, its per-attack file, one category bundle, and one month bundle.
 
 ## Flows, maps and mappings
 

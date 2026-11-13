@@ -1,0 +1,36 @@
+id: vibe-coded-ransomware-extension-published-official-2025-11
+name: Vibe-coded ransomware extension published to official VS Code Marketplace
+date_reported: 2025-11-05
+researcher: unknown
+org: Secure Annex
+sources:
+  - url: https://annex.security/blog/ransomvibe
+    publisher: Secure Annex
+  - url: https://thehackernews.com/2025/11/vibe-coded-malicious-vs-code-extension.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: An extension named susvsex, apparently written with AI assistance, packaged file encryption and exfiltration with GitHub-based C2 and passed Microsoft marketplace review.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI coding assistant used to write the malware
+  - VS Code Marketplace as delivery
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: suspublisher18 / GitHub user aykhanmv
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - ai-supply-chain
+category: adversary-use-of-ai
+attribution:
+  actor_name: suspublisher18 / GitHub user aykhanmv
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

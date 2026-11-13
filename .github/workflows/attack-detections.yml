@@ -1,0 +1,95 @@
+name: Attack detections
+# Untrusted pull request code runs here with read-only repository access. The
+# workflow validates the catalog first, then publishes optional matched rules
+# as an artifact for a contributor to review and apply manually.
+on:
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+permissions:
+  contents: read
+concurrency:
+  group: attack-detections-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  attack-detections:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/head', github.event.pull_request.number) || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Find changed attack entries
+        id: changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$BASE"
+          node scripts/lib/changed-attacks.mjs --base "$BASE"
+
+      - uses: actions/setup-node@v4
+        if: success() && steps.changed.outputs.count != '0'
+        with:
+          node-version: "22.22.2"
+          cache: npm
+
+      - name: Install dependencies
+        if: success() && steps.changed.outputs.count != '0'
+        run: npm ci
+
+      - name: Validate catalog and generated artifacts
+        if: success() && steps.changed.outputs.count != '0'
+        run: npm run validate
+
+      - name: Report changed-entry detection coverage
+        if: success() && steps.changed.outputs.count != '0'
+        continue-on-error: true
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+        run: node scripts/validate-pr-entries.mjs --base "$BASE"
+
+      - name: Detection index week
+        if: success() && steps.changed.outputs.count != '0'
+        id: week
+        run: echo "week=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Entries that need rules
+        if: success() && steps.changed.outputs.count != '0'
+        id: enrich-plan
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+        run: node scripts/enrich-detections.mjs --base "$BASE" --dry-run
+
+      - name: Restore detection index
+        if: success() && steps.changed.outputs.count != '0' && steps.enrich-plan.outputs.needs == 'true'
+        id: detection-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/security-detections-mcp
+            .cache/detection-sources
+          key: security-detections-${{ steps.week.outputs.week }}-${{ hashFiles('scripts/build-detection-index.mjs', 'scripts/lib/detection-mcp.mjs') }}
+
+      - name: Build detection index
+        if: success() && steps.changed.outputs.count != '0' && steps.enrich-plan.outputs.needs == 'true' && steps.detection-cache.outputs.cache-hit != 'true'
+        run: node scripts/build-detection-index.mjs
+
+      - name: Generate matching detection-rule suggestions
+        if: success() && steps.changed.outputs.count != '0' && steps.enrich-plan.outputs.needs == 'true'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          DETECTION_SUGGESTIONS_PATH: ${{ runner.temp }}/detection-suggestions.md
+        run: node scripts/enrich-detections.mjs --base "$BASE"
+
+      - name: Upload detection-rule suggestions
+        if: success() && steps.enrich-plan.outputs.needs == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: detection-rule-suggestions-${{ github.event.pull_request.number || github.sha }}
+          path: ${{ runner.temp }}/detection-suggestions.md
+          if-no-files-found: error
+          retention-days: 7

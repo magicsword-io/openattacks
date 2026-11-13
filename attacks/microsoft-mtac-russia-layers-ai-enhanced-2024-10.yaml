@@ -1,0 +1,35 @@
+id: microsoft-mtac-russia-layers-ai-enhanced-2024-10
+name: "Microsoft MTAC: Russia layers AI-enhanced deepfake videos into late-stage US election influence push"
+date_reported: 2024-10-23
+researcher: unknown
+org: Microsoft Threat Analysis Center (MTAC)
+sources:
+  - url: https://blogs.microsoft.com/on-the-issues/2024/10/23/as-the-u-s-election-nears-russia-iran-and-china-step-up-influence-efforts/
+    publisher: Microsoft Threat Analysis Center (MTAC)
+  - url: https://www.techtarget.com/cybersecurity/news/366611532/Microsoft-warns-of-Russian-election-threats-disinformation?amp=1
+  - url: https://gigazine.net/gsc_news/en/20241024-microsoft-us-election
+borderline: false
+ai_role: other
+technique_summary: Microsoft's fifth pre-election report says Russian operators kept producing AI-enhanced deepfake videos of the Harris-Walz ticket, mixed with conventional fakes, in the final weeks before the 2024 US vote.
+initial_access: unknown
+ai_tooling_and_models:
+  - Generative AI video and audio tooling (unspecified) used to produce deepfakes of US candidates
+other_tooling: []
+victims_and_sectors: Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-1516 and other Russian actors; Cotton Sandstorm and Bushnell's Men persona (Iran); unnamed Chinese actors
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-1516 and other Russian actors; Cotton Sandstorm and Bushnell's Men persona (Iran); unnamed Chinese actors
+  motivation: nation-state
+ai_involvement_confidence: confirmed

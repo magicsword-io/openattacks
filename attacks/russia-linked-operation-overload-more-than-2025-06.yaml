@@ -1,0 +1,37 @@
+id: russia-linked-operation-overload-more-than-2025-06
+name: Russia-linked Operation Overload more than doubles output using consumer AI image and voice tools
+date_reported: 2025-06-26
+researcher: unknown
+org: CheckFirst and Reset Tech
+sources:
+  - url: https://checkfirst.network/?p=3021
+    publisher: CheckFirst and Reset Tech
+  - url: https://getcoai.com/news/russian-disinformation-campaign-triples-ai-generated-content-in-8-months/
+  - url: https://www.bespacific.com/?p=114371
+borderline: false
+ai_role: other
+technique_summary: A Kremlin-aligned influence operation produced 587 fake content items in eight months, largely with free AI tools, and spammed fact-checkers to amplify it.
+initial_access: unknown
+ai_tooling_and_models:
+  - Flux (Black Forest Labs) text-to-image and other image tools
+  - voice cloning tools
+other_tooling: []
+victims_and_sectors: Government; Education; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Operation Overload (also tracked as Matryoshka)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Operation Overload (also tracked as Matryoshka)
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: confirmed

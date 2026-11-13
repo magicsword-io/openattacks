@@ -20,14 +20,23 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.22.2'
+          node-version: "22.22.2"
           cache: npm
       - run: npm ci
       - run: npm run format:data:check
+      - name: Check generated LLM exports are current
+        run: npm run llm:check
       - run: npm run validate
       - run: npm run test:validation
       - run: npm run check
       - run: npm run build
+      - name: Upload built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.event.pull_request.number || github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
       - run: npm test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
@@ -48,7 +57,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.22.2'
+          node-version: "22.22.2"
           cache: npm
       - run: npm ci
       - name: Check published links in added or modified attack entries

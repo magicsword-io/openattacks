@@ -1,0 +1,36 @@
+id: microsoft-storm-3168-ran-agentic-style-2026-09
+name: "Microsoft: Storm-3168 ran agentic-style Azure destruction and key theft, linked to JADEPUFFER"
+date_reported: 2026-09-25
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/09/25/storm-3168-agentic-driven-cloud-attacks-using-compromised-service-principals/
+    publisher: Microsoft Threat Intelligence
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-storm3168-jadepuffer-azure-agentic-attack/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_credential_theft
+technique_summary: Microsoft tied a two-identity Azure attack, with 15 hours of recon then a seven-minute destructive burst, to the agentic ransomware actor JADEPUFFER.
+initial_access: unknown
+ai_tooling_and_models:
+  - None named
+  - activity assessed as AI-orchestrated
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-3168 (linked to JADEPUFFER)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-3168 (linked to JADEPUFFER)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

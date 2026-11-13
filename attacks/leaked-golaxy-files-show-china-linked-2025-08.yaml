@@ -1,0 +1,40 @@
+id: leaked-golaxy-files-show-china-linked-2025-08
+name: Leaked GoLaxy files show China-linked firm built AI persona propaganda system and profiled US lawmakers
+date_reported: 2025-08-05
+researcher: unknown
+org: Vanderbilt Institute of National Security (guest essay in The New York Times)
+sources:
+  - url: https://www.nytimes.com/2025/08/05/opinion/china-ai-propaganda.html
+    publisher: Vanderbilt Institute of National Security (guest essay in The New York Times)
+  - url: https://theregister.com/2025/08/08/golaxy_ai_influence
+  - url: https://news.vanderbilt.edu/2025/08/25/ai-propaganda-has-arrived-vanderbilt-experts-call-for-action/
+  - url: https://www.axios.com/2025/08/22/ai-disinformation-china-golaxy-vanderbilt
+  - url: https://www.nextgov.com/cybersecurity/2025/08/researchers-detail-new-gray-zone-conflict-ai-driven-chinese-propaganda/407358/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: About 400 pages of GoLaxy documents describe an AI system that builds realistic personas and targeted messaging, used in Hong Kong and Taiwan, plus profiles of thousands of US political figures.
+initial_access: unknown
+ai_tooling_and_models:
+  - GoLaxy 'Smart Propaganda System' (GoPro)
+  - documents reference DeepSeek
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: GoLaxy (Beijing-based firm with reported Chinese government ties)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - influence-ops
+  - recon-osint
+category: adversary-use-of-ai
+attribution:
+  actor_name: GoLaxy (Beijing-based firm with reported Chinese government ties)
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

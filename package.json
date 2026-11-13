@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.22.0"
+    "node": "^22.22.0"
   },
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "start": "astro dev --host 0.0.0.0",
-    "validate": "node scripts/validate.mjs && node scripts/build-simulations.mjs --check && node scripts/build-detections.mjs --check",
+    "validate": "node scripts/validate.mjs && node scripts/build-simulations.mjs --check && node scripts/build-detections.mjs --check && node scripts/build-llm-exports.mjs --check",
     "check:links": "node scripts/check-source-links.mjs",
     "test:validation": "node --test tests/validation.test.mjs tests/source-links.test.mjs",
     "check": "astro check",
-    "build": "npm run validate && npm run simulations:check && npm run labs:bundle && astro build",
+    "build": "npm run validate && npm run simulations:check && npm run llm:check && npm run labs:bundle && npm run skill:zip && astro build",
+    "skill:zip": "node scripts/build-skill-zip.mjs",
     "preview": "astro preview --host 0.0.0.0",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
@@ -22,6 +23,8 @@
     "simulations:check": "node scripts/build-simulations.mjs --check",
     "detections:build": "node scripts/build-detections.mjs",
     "detections:check": "node scripts/build-detections.mjs --check",
+    "llm:build": "node scripts/build-llm-exports.mjs",
+    "llm:check": "node scripts/build-llm-exports.mjs --check",
     "labs:bundle": "node scripts/build-lab-bundle.mjs",
     "format:data": "prettier --write \"attacks/*.yaml\" schema.yaml",
     "format:data:check": "prettier --check \"attacks/*.yaml\" schema.yaml"

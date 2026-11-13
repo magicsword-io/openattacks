@@ -990,7 +990,7 @@ p {
   display: flex;
   gap: 26px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 10px;
 }
 .footer-links a {
   display: flex;
@@ -1944,7 +1944,7 @@ p {
   }
   .footer-links {
     gap: 23px;
-    font-size: 8px;
+    font-size: 9px;
   }
   .footer-bottom {
     gap: 18px;
@@ -2389,6 +2389,12 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.chart-inspector:empty {
+  display: none;
+}
+.chart-inspector:empty + a {
+  margin-left: auto;
 }
 .interactive-timeline .chart-bottom {
   font-size: 9px;
@@ -3650,6 +3656,9 @@ p {
     justify-content: flex-end;
     font-size: 9px;
   }
+  .chart-inspector:empty + a {
+    margin-top: 0;
+  }
   .agent-access {
     padding: 23px 20px;
     margin-bottom: 35px;
@@ -3839,13 +3848,6 @@ p {
 .landing-focused .hero-actions {
   flex-wrap: wrap;
   gap: 16px;
-}
-.timeline-context {
-  font-size: 11px;
-  color: var(--muted);
-  margin: 14px 0 0;
-  max-width: 850px;
-  line-height: 1.8;
 }
 .environment-shortcuts {
   display: flex;
@@ -5044,15 +5046,6 @@ p {
 .stack-heading .eyebrow {
   font-size: 9px;
 }
-.stack-local-note {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-  font-size: 11px;
-  color: var(--muted);
-  padding-bottom: 6px;
-}
 .stack-form {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -5434,9 +5427,6 @@ p {
   }
   .stack-heading p {
     font-size: 13px;
-  }
-  .stack-local-note {
-    margin-top: 14px;
   }
   .stack-form {
     padding: 20px 16px 0;

@@ -1,0 +1,36 @@
+id: wiz-storm-0940-overlapping-operator-runs-2026-10
+name: "Wiz: Storm-0940-overlapping operator runs ARTEX agents against Okta, Entra and Cognito logins at IT and software vendors"
+date_reported: 2026-10-22
+researcher: unknown
+org: Wiz Research
+sources:
+  - url: https://wiz.io/blog/artex-in-the-wild-storm-0940-expands-targeting-of-it-and-software-vendors
+    publisher: Wiz Research
+  - url: https://aimatter.in/2026/10/22/wiz-finds-an-ai-agent-that-attacks-software-vendors
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Wiz saw an ARTEX-driven operator sharing Microsoft-attributed Storm-0940 IPs password-spray and probe auth flows at IT and software vendors throughout October; most attempts failed.
+initial_access: unknown
+ai_tooling_and_models:
+  - ARTEX multi-agent pentest framework (LLM backends not named)
+  - Okta, Entra ID, AWS Cognito login flows
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-0940 (overlap per Wiz)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-0940 (overlap per Wiz)
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: confirmed

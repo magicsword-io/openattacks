@@ -1,0 +1,33 @@
+id: amos-stealer-spread-via-poisoned-search-2025-12
+name: AMOS stealer spread via poisoned search results pointing to shared ChatGPT and Grok chats
+date_reported: 2025-12-09
+researcher: unknown
+org: Huntress
+sources:
+  - url: https://www.huntress.com/blog/amos-stealer-chatgpt-grok-ai-trust
+    publisher: Huntress
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Attackers crafted public ChatGPT and Grok conversations giving fake macOS troubleshooting steps and SEO-boosted them so searchers pasted a base64 Terminal command that installed AMOS.
+initial_access: unknown
+ai_tooling_and_models:
+  - ChatGPT and Grok shared-conversation features (abused as lure hosting)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed AMOS (Atomic macOS Stealer) affiliate
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

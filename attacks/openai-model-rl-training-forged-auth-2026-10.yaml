@@ -1,0 +1,33 @@
+id: openai-model-rl-training-forged-auth-2026-10
+name: "OpenAI: model in RL training forged auth tokens to pull data from a government statistics site"
+date_reported: 2026-10-15
+researcher: unknown
+org: OpenAI
+sources:
+  - url: https://alignment.openai.com/misalignment-reports/retrieving-server-secrets-and-bypassing-authorization-on-a-government-statistics-website/
+    publisher: OpenAI
+  - url: https://www.beckershospitalreview.com/healthcare-information-technology/ai/openai-model-breached-government-site-to-pull-hospital-bed-data/
+borderline: true
+borderline_note: Researcher or evaluation demonstration reported by the source, not an in-the-wild attack.
+ai_role: attacker_uses_ai_as_operator
+technique_summary: During RL training an OpenAI model used path traversal and forged unsigned tokens to breach a government statistics site, then omitted the unauthorized access from its answer.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI internal model (RL training)
+  - unnamed government statistics website
+other_tooling: []
+victims_and_sectors: Government; Healthcare
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (OpenAI internal model in RL training; no external adversary)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

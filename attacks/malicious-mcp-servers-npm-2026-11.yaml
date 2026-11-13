@@ -16,17 +16,32 @@ sources:
   - url: https://github.com/advisories/GHSA-556m-xfwj-7wff
     title: "@ifasn/ms-doc-mcp Malicious Package (MAL-2026-18603)"
     publisher: GitHub Advisory Database
+  - url: https://osv.dev/vulnerability/MAL-2026-19148
+    title: "MAL-2026-19148: malicious code in @rfewqa-fes/mnm-doc-mcp"
+    publisher: Amazon Inspector / OSV
+  - url: https://github.com/advisories/GHSA-qwfq-cw9x-55x4
+    title: "@lemili9804/mcp-weather-server malware advisory"
+    publisher: GitHub Advisory Database
+  - url: https://github.com/advisories/GHSA-34p7-qcxm-gc39
+    title: "mcp-contract-tester malware advisory (MAL-2026-19082)"
+    publisher: GitHub Advisory Database
+  - url: https://github.com/advisories/GHSA-vgx2-8w7x-xr8v
+    title: "@bestcoolman/dev-mcp malware advisory (MAL-2026-19052)"
+    publisher: GitHub Advisory Database
+  - url: https://vibevulns.com/issues/malicious-npm-mcp-servers-mnm-doc-mcp-weather-contract-tester-2026-11/
+    title: "Roundup of November 2026 malicious npm MCP servers"
+    publisher: VibeVulns
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. Attack exploits trust in MCP ecosystem and npm package distribution."
+technique_summary: "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. Attack exploits trust in the MCP ecosystem and npm package distribution."
 initial_access: User installs malicious MCP server from npm
 ai_tooling_and_models:
   - MCP servers
-  - npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp)
+  - npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp, @rfewqa-fes/mnm-doc-mcp, @lemili9804/mcp-weather-server, mcp-contract-tester, @bestcoolman/dev-mcp)
 other_tooling:
   - Cloud metadata probing (AWS, GCP, Azure)
   - File system access (/etc/shadow, SSH keys, .env, k8s tokens)
@@ -53,12 +68,14 @@ iocs:
   domains: []
   ips:
     - 121.199.24.94
-  hashes: []
+  hashes:
+    - f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d
+    - f3ad664b487c4041e7e66e5744656ed44e1a6f6a
   urls:
     - https://github.com/zellkernel
 timeline:
   first_seen: "2026-02-20"
-  last_updated: "2026-11-05"
+  last_updated: "2026-11-12"
   updates:
     - date: "2026-02-20"
       source: Socket
@@ -72,6 +89,15 @@ timeline:
     - date: "2026-11-04"
       source: GitHub Advisory Database
       summary: "@ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 disclosed stealing Alibaba Cloud IMDS credentials via imdsAudit() (GHSA-556m-xfwj-7wff)"
+    - date: "2026-11-09"
+      source: GitHub Advisory Database
+      summary: "@bestcoolman/dev-mcp marked malware (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052). No behavior write-up published."
+    - date: "2026-11-10"
+      source: GitHub Advisory Database
+      summary: "@lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4) and mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082) marked malware. No behavior write-up published."
+    - date: "2026-11-12"
+      source: Amazon Inspector
+      summary: "@rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148) pulls node-health-utils over plain HTTP from 121.199.24.94. index.js is an inert MCP stub."
 last_reviewed: 2026-11-05
 confidence: high
 region_notes: Multiple regions reflects global npm and MCP user base
@@ -129,3 +155,19 @@ attack_flow:
       target: exfil-files
     - source: probe
       target: exfil-header
+category: attacks-on-ai
+attribution:
+  actor_name: "Unknown npm publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel)"
+  country: Unknown
+  motivation: cybercrime
+  attributed_by: "OpenSSF, Leitwacht, GitHub Advisory Database, Amazon Inspector, Pillar Security, Socket"
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Suspicious PowerShell from npm Package Install
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/execution_suspicious_powershell_from_npm_install.toml"
+    notes: "Windows. PowerShell started from an npm install script. Use when the remote tarball or a GHSA-flagged MCP package runs a Windows lifecycle script."
+  - name: Plain-HTTP tarball and GHSA-only packages
+    format: guidance
+    notes: "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and alert on package.json dependencies that are bare http:// tarball URLs. @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior, so no tighter rule is cited for them."

@@ -16,8 +16,16 @@ const groups = years.map((year) => ({
     .sort((a, b) => a.ai_role.localeCompare(b.ai_role)),
 }));
 const chartID = large ? "timeline-overview" : "home-overview";
-const columns = 4;
-const rowHeight = 19;
+const chartWidth = 1000;
+const plotInset = 13;
+const plotWidth = chartWidth - plotInset * 2;
+const yearWidth = plotWidth / years.length;
+const columnGap = 14;
+const columns = Math.max(
+  4,
+  Math.min(14, Math.floor((yearWidth - 30) / columnGap)),
+);
+const rowHeight = 16;
 const baseline = Math.max(
   205,
   Math.ceil(
@@ -58,7 +66,7 @@ const chartHeight = baseline + 49;
   </div>
   <svg
     class="dot-chart"
-    viewBox={`0 0 800 ${chartHeight}`}
+    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
     role="group"
     aria-labelledby={`${chartID}-title`}
   >
@@ -76,32 +84,33 @@ const chartHeight = baseline + 49;
       </pattern>
     </defs>
     <rect
-      x="13"
+      x={plotInset}
       y="10"
-      width="774"
+      width={plotWidth}
       height={baseline - 10}
       fill={`url(#${chartID}-grid)`}
     />
     {groups.map((_, index) => (
       <line
-        x1={index * (780 / years.length) + 10}
+        x1={plotInset + index * yearWidth}
         y1="10"
-        x2={index * (780 / years.length) + 10}
+        x2={plotInset + index * yearWidth}
         y2={baseline + 6}
         stroke="currentColor"
         opacity=".1"
       />
     ))}
     <line
-      x1="13"
+      x1={plotInset}
       y1={baseline + 7}
-      x2="787"
+      x2={chartWidth - plotInset}
       y2={baseline + 7}
       stroke="currentColor"
       opacity=".2"
     />
     {groups.map((group, i) => {
-      const center = 10 + (i + 0.5) * (780 / years.length);
+      const center = plotInset + (i + 0.5) * yearWidth;
+      const dotStart = center - ((columns - 1) * columnGap) / 2;
       return (
         <g>
           {group.entries.map((entry, j) => (
@@ -119,9 +128,9 @@ const chartHeight = baseline + 49;
               <g class="dot-arrival">
                 <circle
                   class="attack-dot"
-                  cx={center - 30 + (j % columns) * 20}
+                  cx={dotStart + (j % columns) * columnGap}
                   cy={baseline - 12 - Math.floor(j / columns) * rowHeight}
-                  r="6"
+                  r="5"
                   fill={roles[entry.ai_role].color}
                 >
                   <title>{entry.name} · {roles[entry.ai_role].label}</title>
@@ -160,7 +169,11 @@ const chartHeight = baseline + 49;
     <h2>Attack categories</h2>
     <p>Select a category to highlight its reports.</p>
   </div>
-  <div class="chart-legend" role="group" aria-label="Highlight timeline by AI role">
+  <div
+    class="chart-legend"
+    role="group"
+    aria-label="Highlight timeline by AI role"
+  >
     <button
       class="legend-button legend-all"
       aria-pressed="true"
@@ -177,14 +190,14 @@ const chartHeight = baseline + 49;
       >
         <i aria-hidden="true"></i>
         {role.short}
-        <span class="legend-count">{attacks.filter((attack) => attack.ai_role === id).length}</span>
+        <span class="legend-count">
+          {attacks.filter((attack) => attack.ai_role === id).length}
+        </span>
       </button>
     ))}
   </div>
   <div class="chart-bottom">
-    <span class="chart-inspector" data-chart-inspector>
-      One dot. One documented entry. Select a dot to read the research.
-    </span>
+    <span class="chart-inspector" data-chart-inspector></span>
     <a href={href("timeline/")}>Explore timeline</a>
   </div>
   <span class="sr-only" data-chart-status aria-live="polite"></span>
@@ -213,7 +226,7 @@ const chartHeight = baseline + 49;
           ? `${entries.filter((entry) => inStack(entry) && (!activeRole || entry.dataset.role === activeRole)).length} highlighted${activeRole ? " in this role" : ""} · ${stackIDs.size} of ${entries.length} reports match your selections. Check their conditions below.`
           : activeRole
             ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
-            : "One dot. One documented entry. Select a dot to read the research.";
+            : "";
       function highlight(role: string) {
         activeRole = role;
         entries.forEach(

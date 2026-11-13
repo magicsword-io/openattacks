@@ -1,0 +1,33 @@
+id: dragos-intruder-used-claude-gpt-find-2026-05
+name: "Dragos: intruder used Claude and GPT to find and password-spray a Mexican water utility's OT gateway"
+date_reported: 2026-05-06
+researcher: unknown
+org: Dragos
+sources:
+  - url: https://www.dragos.com/blog/ai-assisted-ics-attack-water-utility
+    publisher: Dragos
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-assisted-ot-intrusion-mexican-water-uti/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: An unidentified intruder in Mexican government networks used commercial LLMs as its main operator, and the AI itself flagged and attacked an industrial gateway at a municipal water utility.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anthropic Claude (primary technical executor), OpenAI GPT models (data analysis and reporting)
+other_tooling: []
+victims_and_sectors: Government; Critical infrastructure
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (Spanish-language operator; tracked by Dragos as TAT26-12 per secondary reporting)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - malware-tooling-dev
+  - recon-osint
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

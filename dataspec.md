@@ -6,16 +6,16 @@ How the catalog stores its data, how that data turns into the site and APIs, and
 
 There is **no database and no runtime backend**. Everything is plain files in git, and the site is built to static HTML and JSON with Astro (`output: "static"` in `astro.config.mjs`). Merging to `main` triggers a Vercel rebuild, which regenerates every page and export.
 
-| Layer | Location | Format | Role | Required for a new entry? |
-|---|---|---|---|---|
-| Attack records | `attacks/<id>.yaml` | YAML, one file per entry | Source of truth for each attack | **Yes** |
-| Record schema | `schema.yaml` | JSON Schema 2020-12, written as YAML | Validates every attack file | Change it only to add fields or enum values |
-| Browse card | `src/data/presentation.json` | JSON keyed by attack ID | Curated title, summary, environments and evidence class | No, but recommended (there's a fallback) |
-| Stage defenses | `detections/stages.json` + `detections/*.yaml` | JSON stage mappings + YAML profiles | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping |
-| Stack relevance | `src/data/applicability.json` | JSON keyed by attack ID | Reviewed "does this affect my stack" rules | No (the default is `not_assessed`) |
-| ATLAS reference | `src/data/atlas-techniques.json` | JSON | Official MITRE ATLAS technique names and URLs (v5.6.0) | Only when new ATLAS IDs are needed |
-| Simulations | `simulations/definitions/*.yaml` + `simulations/fixtures/` → `simulations/catalog.json` | YAML in, generated JSON out | Lab exercises linked to attack stages | No (closed set; see §6) |
-| Editorial patterns | `src/pages/patterns.md` | Markdown | Cross-entry observations | No |
+| Layer              | Location                                                                                | Format                               | Role                                                                     | Required for a new entry?                   |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------- |
+| Attack records     | `attacks/<id>.yaml`                                                                     | YAML, one file per entry             | Source of truth for each attack                                          | **Yes**                                     |
+| Record schema      | `schema.yaml`                                                                           | JSON Schema 2020-12, written as YAML | Validates every attack file                                              | Change it only to add fields or enum values |
+| Browse card        | `src/data/presentation.json`                                                            | JSON keyed by attack ID              | Curated title, summary, environments and evidence class                  | No, but recommended (there's a fallback)    |
+| Stage defenses     | `detections/stages.json` + `detections/*.yaml`                                          | JSON stage mappings + YAML profiles  | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping    |
+| Stack relevance    | `src/data/applicability.json`                                                           | JSON keyed by attack ID              | Reviewed "does this affect my stack" rules                               | No (the default is `not_assessed`)          |
+| ATLAS reference    | `src/data/atlas-techniques.json`                                                        | JSON                                 | Official MITRE ATLAS technique names and URLs (v5.6.0)                   | Only when new ATLAS IDs are needed          |
+| Simulations        | `simulations/definitions/*.yaml` + `simulations/fixtures/` → `simulations/catalog.json` | YAML in, generated JSON out          | Lab exercises linked to attack stages                                    | No (closed set; see §6)                     |
+| Editorial patterns | `src/pages/patterns.md`                                                                 | Markdown                             | Cross-entry observations                                                 | No                                          |
 
 Current coverage: 111 attack files. All 111 have a curated `attack_flow` and explicit stage-detection mappings; 66 have curated presentation and applicability annotations, and 95 have `atlas_techniques`.
 
@@ -44,7 +44,9 @@ Generated at build time (do not edit by hand):
   /api/attacks.json, attacks.csv, catalog.json, schema.json, relevance.json,
   defenses.json, atlas.json, simulations.json
   /api/attacks/<id>.json, /api/attacks/<id>.md, /api/defenses/<id>.json
-  /llms.txt, /llms-full.txt, sitemap
+  /llms.txt, /llms-full.txt, /llms/attacks/<id>.md,
+  /llms/by-category/<category>.md, /llms/by-month/<YYYY-MM>.md,
+  /data/attacks.json, /data/attacks.schema.json, /rss.xml, sitemap
 ```
 
 ## 2. Attack record: `attacks/<id>.yaml`
@@ -53,52 +55,52 @@ Generated at build time (do not edit by hand):
 
 ### 2.1 Required fields
 
-| Field | Type | Rules / notes |
-|---|---|---|
-| `id` | string | `^[a-z0-9]+(-[a-z0-9]+)*$`. **Must equal the filename** (`<id>.yaml`) and be unique. Convention: `<name>-<yyyy>[-<mm>]` or a CVE ID. |
-| `name` | string | Non-empty display name. |
-| `date_reported` | string | `YYYY-MM-DD` or `YYYY-MM` (a real calendar date). Precision is preserved; partial dates sort as the 1st of the month. |
-| `researcher` | string | Credited researcher(s), or `unknown`. |
-| `org` | string | Researching organization, or `unknown`. |
-| `sources` | array, at least 1 | Each item is `{ url (uri, required), title?, publisher? }` with no other keys. |
-| `ai_role` | enum | `attacker_uses_ai_as_operator`, `ai_tool_as_lure`, `ai_agent_or_mcp_as_target`, `ai_infra_as_c2`, `llm_generated_malware`, `ai_credential_theft`, `other` |
-| `technique_summary` | string | Non-empty. Describe the attack and the evidence for AI involvement. |
-| `initial_access` | string | Or `unknown`. |
-| `ai_tooling_and_models` | string[] | Can be `[]`. Also drives the platform filter groups (regexes in `catalog.ts`: Claude, ChatGPT, Gemini, MCP, Cursor, and others). |
-| `other_tooling` | string[] | Can be `[]`. |
-| `victims_and_sectors` | string | Free text. Drives the sector filters by regex (government, finance, technology, and others). |
-| `regions` | string[] | At least 1 item, unique, from the canonical enum in `schema.yaml` (country names such as `United States`, `Bosnia and Herz.`; broader regions such as `Europe`; plus `Multiple regions`, `unknown`, `Not applicable`). |
-| `attribution_or_cluster` | string | Or `unknown`. |
-| `scale_and_metrics` | string | Or `unknown`. Never invent counts. |
-| `prevention_angle` | string | Or `unknown`. |
-| `related_magicsword_projects` | enum[] | Any of `GTFOBins`, `HijackLibs`, `LOLBAS`, `LOLDrivers`, `LOLRMM`, `LOLSkills`, `LOTTunnels`. Can be `[]`. |
-| `borderline` | boolean | `true` for PoCs, marketplace claims and other qualified concrete reports. Conceptual scenarios are not eligible for the catalog. |
+| Field                         | Type              | Rules / notes                                                                                                                                                                                                          |
+| ----------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                          | string            | `^[a-z0-9]+(-[a-z0-9]+)*$`. **Must equal the filename** (`<id>.yaml`) and be unique. Convention: `<name>-<yyyy>[-<mm>]` or a CVE ID.                                                                                   |
+| `name`                        | string            | Non-empty display name.                                                                                                                                                                                                |
+| `date_reported`               | string            | `YYYY-MM-DD` or `YYYY-MM` (a real calendar date). Precision is preserved; partial dates sort as the 1st of the month.                                                                                                  |
+| `researcher`                  | string            | Credited researcher(s), or `unknown`.                                                                                                                                                                                  |
+| `org`                         | string            | Researching organization, or `unknown`.                                                                                                                                                                                |
+| `sources`                     | array, at least 1 | Each item is `{ url (uri, required), title?, publisher? }` with no other keys.                                                                                                                                         |
+| `ai_role`                     | enum              | `attacker_uses_ai_as_operator`, `ai_tool_as_lure`, `ai_agent_or_mcp_as_target`, `ai_infra_as_c2`, `llm_generated_malware`, `ai_credential_theft`, `other`                                                              |
+| `technique_summary`           | string            | Non-empty. Describe the attack and the evidence for AI involvement.                                                                                                                                                    |
+| `initial_access`              | string            | Or `unknown`.                                                                                                                                                                                                          |
+| `ai_tooling_and_models`       | string[]          | Can be `[]`. Also drives the platform filter groups (regexes in `catalog.ts`: Claude, ChatGPT, Gemini, MCP, Cursor, and others).                                                                                       |
+| `other_tooling`               | string[]          | Can be `[]`.                                                                                                                                                                                                           |
+| `victims_and_sectors`         | string            | Free text. Drives the sector filters by regex (government, finance, technology, and others).                                                                                                                           |
+| `regions`                     | string[]          | At least 1 item, unique, from the canonical enum in `schema.yaml` (country names such as `United States`, `Bosnia and Herz.`; broader regions such as `Europe`; plus `Multiple regions`, `unknown`, `Not applicable`). |
+| `attribution_or_cluster`      | string            | Or `unknown`.                                                                                                                                                                                                          |
+| `scale_and_metrics`           | string            | Or `unknown`. Never invent counts.                                                                                                                                                                                     |
+| `prevention_angle`            | string            | Or `unknown`.                                                                                                                                                                                                          |
+| `related_magicsword_projects` | enum[]            | Any of `GTFOBins`, `HijackLibs`, `LOLBAS`, `LOLDrivers`, `LOLRMM`, `LOLSkills`, `LOTTunnels`. Can be `[]`.                                                                                                             |
+| `borderline`                  | boolean           | `true` for PoCs, marketplace claims and other qualified concrete reports. Conceptual scenarios are not eligible for the catalog.                                                                                       |
 
 ### 2.2 Optional fields
 
-| Field | Type | Rules / notes |
-|---|---|---|
-| `aliases` | string[] | |
-| `date_activity_start` / `date_activity_end` | string or null | If both are set, start must be ≤ end. |
-| `borderline_note` | string or null | Explain the qualification when `borderline: true`. Shown as "qualification" in the exports. |
-| `ai_role_secondary` | enum or null | Same values as `ai_role`. |
-| `ai_role_detail` | string or null | |
-| `confidence` | `high` \| `medium` \| `low` | Evidence for **AI involvement**. Omit when not assessed; the site shows "Not assessed". |
-| `last_reviewed` | `YYYY-MM-DD` | The date you actually reviewed the sources. |
-| `source_notes` | string or null | Limits of the evidence. |
-| `region_notes` | string | Qualifications and excluded labels for the region choice. |
-| `magicsword_coverage` | uri[] | **Published** public post URLs only. |
-| `iocs` | object | Only `domains`, `ips`, `hashes`, `urls` (each a string[]). Defang them. No victim data. |
-| `tags` | string[] | |
-| `atlas_techniques` | array | See §2.3. |
-| `attack_flow` | object | See §2.4. |
-| `typefully` | object or null | Legacy internal tracking. The loader **strips** it, so don't use it in this public repo. |
+| Field                                       | Type                        | Rules / notes                                                                               |
+| ------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
+| `aliases`                                   | string[]                    |                                                                                             |
+| `date_activity_start` / `date_activity_end` | string or null              | If both are set, start must be ≤ end.                                                       |
+| `borderline_note`                           | string or null              | Explain the qualification when `borderline: true`. Shown as "qualification" in the exports. |
+| `ai_role_secondary`                         | enum or null                | Same values as `ai_role`.                                                                   |
+| `ai_role_detail`                            | string or null              |                                                                                             |
+| `confidence`                                | `high` \| `medium` \| `low` | Evidence for **AI involvement**. Omit when not assessed; the site shows "Not assessed".     |
+| `last_reviewed`                             | `YYYY-MM-DD`                | The date you actually reviewed the sources.                                                 |
+| `source_notes`                              | string or null              | Limits of the evidence.                                                                     |
+| `region_notes`                              | string                      | Qualifications and excluded labels for the region choice.                                   |
+| `magicsword_coverage`                       | uri[]                       | **Published** public post URLs only.                                                        |
+| `iocs`                                      | object                      | Only `domains`, `ips`, `hashes`, `urls` (each a string[]). Defang them. No victim data.     |
+| `tags`                                      | string[]                    |                                                                                             |
+| `atlas_techniques`                          | array                       | See §2.3.                                                                                   |
+| `attack_flow`                               | object                      | See §2.4.                                                                                   |
+| `typefully`                                 | object or null              | Legacy internal tracking. The loader **strips** it, so don't use it in this public repo.    |
 
 ### 2.3 `atlas_techniques`
 
 ```yaml
 atlas_techniques:
-  - id: AML.T0073            # must be in the schema enum (mirrors src/data/atlas-techniques.json)
+  - id: AML.T0073 # must be in the schema enum (mirrors src/data/atlas-techniques.json)
     rationale: Why this mapping holds, per the source.
     source_urls: [https://…] # at least 1, unique; every URL must also appear in `sources`
 ```
@@ -111,17 +113,17 @@ A directed graph rendered with React Flow.
 
 ```yaml
 attack_flow:
-  nodes:                      # 2 to 12 nodes
-    - id: step-1              # ^[a-z][a-z0-9-]*$, unique
-      title: Short title      # 1 to 80 chars
+  nodes: # 2 to 12 nodes
+    - id: step-1 # ^[a-z][a-z0-9-]*$, unique
+      title: Short title # 1 to 80 chars
       description: Source-supported description.
-      kind: access            # access | ai | execution | impact | unknown
-      source_urls: [https://…]  # each must appear in `sources`
-  edges:                      # at least 1
+      kind: access # access | ai | execution | impact | unknown
+      source_urls: [https://…] # each must appear in `sources`
+  edges: # at least 1
     - source: step-1
       target: step-2
       label: optional
-      loop: true              # optional, for repeated steps
+      loop: true # optional, for repeated steps
 ```
 
 Custom rules (in `src/lib/schema.mjs`):
@@ -173,7 +175,7 @@ These cover required fields, types, enums, the `report-date` format (a real cale
 ### 3.4 Test-enforced consistency (`tests/*.test.mjs`, run on the built `dist/`)
 
 - The JSON exports exactly match the public YAML content and leave out `typefully`.
-- Every YAML ID appears in `llms.txt`, `llms-full.txt`, its entry page, and the per-entry `.json`/`.md` exports.
+- Every YAML ID appears in `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, one category bundle, one month bundle, `data/attacks.json`, its entry page, and the per-entry `.json`/`.md` exports. The committed LLM files are produced by `scripts/build-llm-exports.mjs`; CI rejects drift.
 - **No stale annotation keys:** every key in `presentation.json`, `applicability.json` and `detections/stages.json` must be an existing attack ID, and every detection stage key must be an existing flow node ID.
 - Presentation values use valid environment and evidence IDs. `summary` is ≤ 210 characters. `unspecified` cannot be combined with other environments.
 - Applicability rules use real tool/OS IDs, a valid stage, and source URLs from the record. Attacker-side Claude/Gemini use never turns into a product-exposure match.
@@ -253,7 +255,7 @@ These files are keyed by attack ID. A YAML record alone is enough to publish an 
    ```yaml
    id: example-campaign-2026-11
    name: Example campaign
-   date_reported: '2026-11-05'
+   date_reported: "2026-11-05"
    researcher: unknown
    org: unknown
    sources:
@@ -271,7 +273,7 @@ These files are keyed by attack ID. A YAML record alone is enough to publish an 
    prevention_angle: unknown
    related_magicsword_projects: []
    borderline: false
-   last_reviewed: '2026-11-05'
+   last_reviewed: "2026-11-05"
    ```
 
 3. **Optional enrichment in the YAML:** `confidence`, `borderline_note`, `attack_flow` (use `step-N` IDs, with source URLs taken from `sources`), `atlas_techniques`, `region_notes`, `source_notes`, `iocs` (defanged), `tags`, `aliases`.
@@ -298,6 +300,44 @@ Contributors without repo access can also open the GitHub issue form at `.github
 - `confidence` is about evidence of AI involvement, not about the attack itself.
 - Keep the tone factual. Credit the researcher. Don't make unsupported claims about what a product blocks.
 
+### Importing from Notion
+
+`scripts/import-notion.mjs` converts rows from the "AI Threat Feed" Notion database into entries:
+
+```bash
+node scripts/import-notion.mjs --dry-run export.json   # report only
+node scripts/import-notion.mjs export.json [more.json] # write attacks/*.yaml
+npm run format:data && npm run validate
+```
+
+Each input is the JSON a Notion data-source SQL query returns (`{"results": [...]}`), with the Notion property names as keys: `Headline`, `Summary`, `Source`, `URL`, `Other coverage`, `Targeted AI / Vendor`, `Threat Actor`, `Attribution`, `Actor Type`, `Techniques`, `Sectors`, `Confidence`, `Severity`, `Published`, `Novelty`.
+
+| Notion property                             | YAML field                                                                                                                                                    |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Headline`                                  | `name`, and the slug for `id` (first six meaningful words + `YYYY-MM`)                                                                                        |
+| `Published`                                 | `date_reported`                                                                                                                                               |
+| `Source`                                    | `org`, and `publisher` on the first source                                                                                                                    |
+| `URL`, `Other coverage`                     | `sources` (invalid and duplicate links dropped; tracking parameters are ignored during de-duplication, while identity-bearing query parameters are preserved) |
+| `Summary`                                   | `technique_summary`                                                                                                                                           |
+| `Techniques`                                | `ai_role` and `ai_role_secondary` (first match in the precedence list in the script), `category`, plus `tags`                                                 |
+| `Targeted AI / Vendor`                      | `ai_tooling_and_models`, split on `;` outside parentheses                                                                                                     |
+| `Sectors`                                   | `victims_and_sectors`                                                                                                                                         |
+| `Threat Actor`, `Attribution`, `Actor Type` | `attribution_or_cluster` and `attribution` (`country` only for a single nation-state attribution)                                                             |
+| `Confidence`                                | `ai_involvement_confidence`: Confirmed → `confirmed`, Reported → `vendor-asserted`. `Claimed / unverified` rows are rejected.                                 |
+| `Actor Type` = `Researcher / PoC`           | `borderline: true` with a note                                                                                                                                |
+| `Severity`, `Novelty`                       | `source_notes`                                                                                                                                                |
+
+What the importer does not fill, and why:
+
+- **`researcher`, `initial_access`, `scale_and_metrics`, `prevention_angle`** are `unknown`. The feed doesn't capture them.
+- **`regions`** is `[unknown]`. The feed has no target geography, and actor attribution must never become a victim region.
+- **`confidence` and `last_reviewed`** are left out, because nobody has reviewed the entry yet.
+- **`attack_flow`** is left out, so the site shows the generated summary flow. The importer adds an explicit `unassessed` gap mapping for the generated `entry`, `activity` and `ai` stages in `detections/stages.json`.
+
+Every imported entry is tagged `notion-import`, and its `source_notes` say it hasn't been editorially reviewed. The script never overwrites a file, skips rows whose `URL` is already cited by an entry, and validates every entry before writing it. De-duplication is by URL only, so check for the same story cited through a different link before importing.
+
+The importer recognizes explicit descriptions of AI infrastructure used for command and control and fake or impersonated AI tooling used as a lure, overriding the general technique mapping with `ai_infra_as_c2` or `ai_tool_as_lure`. It derives `category` from the resulting role and target-oriented techniques; reviewers should still confirm both fields against the source.
+
 ## 6. Simulations: a closed set
 
 Simulation labs live in `simulations/definitions/<slug>.yaml` with inert fixtures in `simulations/fixtures/<slug>/`. `npm run simulations:build` compiles them into `simulations/catalog.json`. `validate` and `build` fail on drift.
@@ -316,12 +356,12 @@ The builder (`scripts/build-simulations.mjs`) is deliberately strict:
 
 ## 7. Site-wide and reference data to keep in sync
 
-| When you… | Also update |
-|---|---|
-| Use a new ATLAS ID | the `schema.yaml` enum **and** `src/data/atlas-techniques.json` |
-| Need a new region value | the `schema.yaml` `regions` enum (and the map data in `src/lib/geography.ts` if it isn't a world-atlas name) |
-| Need a new MagicSword project | the `schema.yaml` enum and `projects` in `src/lib/catalog.ts` |
-| Need a new stack tool | `stackTools` in `src/lib/stack-matching.mjs` |
-| Need a new platform or sector filter | the regex lists in `src/lib/catalog.ts` |
-| Do a full catalog re-review | the `reviewed` constant in `src/lib/catalog.ts` |
+| When you…                               | Also update                                                                                                                                                           |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Use a new ATLAS ID                      | the `schema.yaml` enum **and** `src/data/atlas-techniques.json`                                                                                                       |
+| Need a new region value                 | the `schema.yaml` `regions` enum (and the map data in `src/lib/geography.ts` if it isn't a world-atlas name)                                                          |
+| Need a new MagicSword project           | the `schema.yaml` enum and `projects` in `src/lib/catalog.ts`                                                                                                         |
+| Need a new stack tool                   | `stackTools` in `src/lib/stack-matching.mjs`                                                                                                                          |
+| Need a new platform or sector filter    | the regex lists in `src/lib/catalog.ts`                                                                                                                               |
+| Do a full catalog re-review             | the `reviewed` constant in `src/lib/catalog.ts`                                                                                                                       |
 | Rename or delete an attack or flow node | update `src/data/presentation.json`, `src/data/applicability.json`, `detections/stages.json`, and any simulation `attack_mappings` (stale keys fail validation/tests) |

@@ -1,4 +1,5 @@
 node_modules/
+.cache/
 dist/
 .astro/
 .context/
@@ -8,3 +9,4 @@ test-results/
 .vercel/
 public/downloads/openattacks-labs.tar.gz
 public/downloads/openattacks-labs.manifest.json
+public/downloads/openattacks-skill.zip

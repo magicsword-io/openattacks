@@ -25,12 +25,17 @@
     },
     {
       "source": "/ai-attacks-share.png",
-      "destination": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
       "permanent": true
     },
     {
       "source": "/og.png",
-      "destination": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
+      "permanent": true
+    },
+    {
+      "source": "/openattacks-share.png",
+      "destination": "/openattacks-share-v2.png",
       "permanent": true
     }
   ],
@@ -46,6 +51,28 @@
     {
       "source": "/llms-full.txt",
       "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
+    },
+    {
+      "source": "/llms/:path*",
+      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
+    },
+    {
+      "source": "/data/attacks.json",
+      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
+    },
+    {
+      "source": "/data/attacks.schema.json",
+      "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
+    },
+    {
+      "source": "/rss.xml",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        }
+      ]
     }
   ]
 }

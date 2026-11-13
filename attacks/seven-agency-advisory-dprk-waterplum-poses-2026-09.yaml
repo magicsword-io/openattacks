@@ -1,0 +1,38 @@
+id: seven-agency-advisory-dprk-waterplum-poses-2026-09
+name: "Seven-agency advisory: DPRK WaterPlum poses as AI firms, uses AI face-swaps in fake job interviews"
+date_reported: 2026-09-18
+researcher: unknown
+org: NPA Japan, NCO Japan, FBI, DC3, ASD's ACSC, BND, BfV
+sources:
+  - url: https://www.ic3.gov/CSA/2026/260918.pdf
+    publisher: NPA Japan, NCO Japan, FBI, DC3, ASD's ACSC, BND, BfV
+borderline: false
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A seven-agency advisory says WaterPlum impersonates AI and crypto firms, uses AI face-swapping in interviews and infected 30,000 devices in 100-plus countries.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI face-swapping software, free AI service plans
+  - impersonation of AI companies as lures
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: WaterPlum (Contagious Interview); North Korean IT workers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - deepfake-voice
+  - fraud-it-worker-schemes
+  - ai-supply-chain
+category: adversary-use-of-ai
+attribution:
+  actor_name: WaterPlum (Contagious Interview); North Korean IT workers
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

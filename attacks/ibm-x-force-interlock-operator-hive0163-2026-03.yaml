@@ -1,0 +1,34 @@
+id: ibm-x-force-interlock-operator-hive0163-2026-03
+name: "IBM X-Force: Interlock operator Hive0163 deploys likely LLM-written Slopoly PowerShell backdoor"
+date_reported: 2026-03-12
+researcher: unknown
+org: IBM X-Force
+sources:
+  - url: https://www.ibm.com/think/x-force/slopoly-start-ai-enhanced-ransomware-attacks
+    publisher: IBM X-Force
+  - url: https://www.bleepingcomputer.com/news/security/ai-generated-slopoly-malware-used-in-interlock-ransomware-attack/
+  - url: https://www.scworld.com/brief/ai-generated-malware-slopoly-used-in-interlock-ransomware-attacks
+borderline: false
+ai_role: llm_generated_malware
+technique_summary: A ransomware crew used a likely AI-generated PowerShell C2 client to hold a server for over a week before deploying Interlock.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unidentified LLM used to write malware
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Hive0163 (Interlock ransomware)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Hive0163 (Interlock ransomware)
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

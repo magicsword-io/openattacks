@@ -1,0 +1,35 @@
+id: bitdefender-apt36-mass-produces-llm-assisted-2026-03
+name: "Bitdefender: APT36 mass-produces LLM-assisted vibeware in Nim, Zig and Crystal against India"
+date_reported: 2026-03-05
+researcher: unknown
+org: Bitdefender
+sources:
+  - url: https://www.bitdefender.com/en-us/blog/businessinsights/apt36-nightmare-vibeware
+    publisher: Bitdefender
+  - url: https://labs.cloudsecurityalliance.org/research/technical-vibeware-ai-assisted-malware-industrialization-v1/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A Pakistan-aligned APT uses AI coding to churn out near-daily, low-quality implants in niche languages to evade signatures.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unnamed LLM coding assistants (inferred from artifacts)
+other_tooling: []
+victims_and_sectors: Government; Defense
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: APT36 / Transparent Tribe
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: APT36 / Transparent Tribe
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

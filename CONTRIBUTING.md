@@ -9,10 +9,12 @@ The catalog is maintained as one YAML file per entry in `attacks/`. You can also
 
 CI also checks the published source and coverage URLs in added or modified entries. Run `npm run check:links -- --all` locally to audit the catalog, or `npm run check:links -- --base origin/main` to check entries changed in commits since `origin/main`. URL syntax checks run offline with `npm run validate`; live checks require network access.
 
+The Attack detections workflow reports whether changed entries include `category`, `attribution`, `ai_involvement_confidence`, `detections`, and `timeline`, requests detection URLs, and compares each rule's platform with the operating systems described by the entry. Missing editorial coverage is reported for review without blocking schema-valid catalog imports. See [Detection rules on pull requests](#detection-rules-on-pull-requests).
+
 ```yaml
 id: example-campaign-2026
 name: Example campaign
-date_reported: '2026-10-20'
+date_reported: "2026-10-20"
 researcher: unknown
 org: unknown
 sources:
@@ -30,7 +32,7 @@ scale_and_metrics: unknown
 prevention_angle: unknown
 related_magicsword_projects: []
 borderline: false
-last_reviewed: '2026-10-20'
+last_reviewed: "2026-10-20"
 ```
 
 `schema.yaml` is the source of truth. Unknown fields fail validation. Optional fields include `aliases`, `ai_role_secondary`, `ai_role_detail`, `date_activity_start`, `date_activity_end`, `atlas_techniques`, `source_notes`, `iocs`, `tags`, `confidence`, `borderline_note`, and `magicsword_coverage`.
@@ -66,7 +68,6 @@ Use one of: `attacker_uses_ai_as_operator`, `ai_tool_as_lure`, `ai_agent_or_mcp_
 
 Edit `src/pages/patterns.md` to update editorial observations. Link examples to catalog entries, distinguish observations from prevalence claims, and update the review date when you recheck the sources.
 
-
 ## Attack flows and MITRE ATLAS
 
 `attack_flow` is an optional directed graph rendered with React Flow. A new record without it gets a summary diagram from its existing fields. Prefer a curated reconstruction when the source establishes the sequence:
@@ -101,7 +102,9 @@ Do not convert actor language, actor nationality, hosting infrastructure, a pare
 
 ## Automatic AI-readable publishing
 
-Every build generates `llms.txt`, `llms-full.txt`, `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. Do not edit generated files. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds all outputs together; tests check each YAML ID against the generated guide, full context, page and individual exports. GitHub Pages is an optional manual workflow.
+After changing `attacks/*.yaml`, run `npm run llm:build` and commit the generated files. That command refreshes `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, `data/attacks.json`, and `data/attacks.schema.json`. Do not edit those files by hand. `npm run llm:check` fails when they are stale; CI runs that check on every pull request. A push to `main` regenerates and commits them if a merge still drifted, using a `[skip ci]` bot commit.
+
+The site build also generates `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. It serves the committed LLM files at the same paths. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds the site outputs together. GitHub Pages is an optional manual workflow.
 
 The `source-links` CI check follows up to five redirects, uses an eight-second timeout per request and up to four concurrent checks, and retries failures once. It confirms failed HEAD requests with GET before failing on HTTP 404/410. Invalid or unsafe destinations and broken redirect chains also fail. Authentication/bot blocking (401/403), rate limits (429), other unexpected statuses, server errors, DNS failures, and timeouts produce review warnings in the Actions job summary. The checker reads response headers only and never crawls IOC fields or free-text payload URLs. URL fragments are preserved in records but are not checked for matching page anchors. A separate weekly and manually triggered workflow audits all existing links.
 
@@ -122,6 +125,37 @@ An attack record can link to one or more reviewed simulation definitions under `
 Definitions contain a legitimate task, synthetic clean/changed fixtures, prerequisites, expected observations and limits. Agent injection and fixed local comparisons are distinct modes. Never infer agent attribution, native vulnerability reproduction or detection from a helper receipt. Platform status needs identified execution evidence.
 
 Regenerate with `npm run simulations:build`, then run `npm run validate`, `npm test` and the browser checks. A new executable recipe or tool capability requires code review, boundary tests and native verification; adding a YAML field cannot enable arbitrary commands or destinations. Keep source fixtures inert; only explicit preparation may materialize a project or skill instruction inside its run-owned disposable workspace. See [the lab guide](docs/SIMULATIONS.md).
+
+## Detection rules on pull requests
+
+The `attack-detections` job runs on `pull_request` and on merge-group checks. It looks at attack files added or modified relative to the merge base (`attacks/*.yaml`). The job uses a read-only `pull_request` token, does not persist checkout credentials, and never receives repository secrets. It does not use `pull_request_target` or push to contributor branches.
+
+The job first runs the required catalog and generated-artifact validation. It then produces a non-blocking editorial coverage report for each changed entry, reusing `entryErrors` from `src/lib/schema.mjs` and checking:
+
+- `category`, `attribution`, `ai_involvement_confidence`, `detections`, and `timeline` are present and non-empty. `attribution` and `timeline` need at least one filled value. `detections` needs at least one item.
+- Every detection URL is a public HTTP(S) address and the final response is HTTP 200. The request uses the same private-address checks as the source-link checker. `guidance` items may omit a URL.
+- A Sigma, Splunk, Elastic, KQL, or LOLBAS rule's platform agrees with the operating systems named in the entry. Platforms come from the URL path (`rules/windows`, `rules/macos`, `rules/linux`, and the Sigma `win` filename token) or, when the path has no OS, from the rule's `logsource.product`. The entry's OS comes from its summary, tooling, flow, and notes, using the `windows`, `macos`, `linux`, and `android` ids in `src/lib/stack-matching.mjs`. A Windows rule on an entry that only describes macOS fails. When either side does not name an OS, that comparison is skipped.
+
+The report step prints one block per file and exits non-zero when any check fails, but the workflow marks that step as advisory so schema-valid imports with known editorial gaps can proceed to rule suggestions. Run the same strict report locally:
+
+```sh
+node scripts/validate-pr-entries.mjs --base origin/main
+node scripts/validate-pr-entries.mjs attacks/your-entry.yaml
+```
+
+Entries whose detections are missing, empty, or only `format: guidance` are sent to [security-detections-mcp](https://github.com/mhaggis/security-detections-mcp) (`security-detections-mcp@3.3.4`). The workflow installs the Sigma, Splunk ESCU, and Elastic rule repositories on a cache miss and lets the server build its SQLite index. `actions/cache` stores `~/.cache/security-detections-mcp` and `.cache/detection-sources` under a key that changes each ISO week (`date -u +%G-W%V`). A missing cache rebuilds the index. Later runs in that week restore it.
+
+Queries use ATT&CK ids found in the entry (`T1059`, `T1543.001`), ATLAS ids and names from `src/data/atlas-techniques.json`, and public IOC tokens. Results are limited to Sigma, Splunk, and Elastic, dropped when the rule platform does not overlap the entry, and capped at five rules in a stable order. Each suggestion is fetched and kept only when its URL returns HTTP 200. The workflow writes proposed YAML changes only inside its disposable checkout and uploads the reviewable Markdown list as a seven-day artifact.
+
+Download the `detection-rule-suggestions-<pr>` artifact from the workflow run, review every match, and add the accepted rules to the pull request yourself. This keeps untrusted pull-request code separate from write credentials and applies the same process to repository and fork pull requests. The suggestion list is also included in the job summary.
+
+```sh
+node scripts/enrich-detections.mjs --base origin/main --dry-run
+node scripts/build-detection-index.mjs
+node scripts/enrich-detections.mjs attacks/your-entry.yaml
+```
+
+Building the index clones the upstream rule repositories and needs network access. Review every suggested rule before merging. A match is a candidate, not confirmation that the rule detects the incident.
 
 ## Stage detections
 

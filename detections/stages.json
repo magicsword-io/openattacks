@@ -1832,5 +1832,1741 @@
     "step-4": {
       "profile": "cloud"
     }
+  },
+  "gitbook-targeted-attack-using-ai-agents-2026-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "chainstack-intruder-reached-production-user-password-2026-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "chainalysis-external-actor-using-offensive-agentic-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "gtig-mandiant-unc7228-other-crews-run-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "talos-nik-c2-implant-runs-operator-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "crowdstrike-china-nexus-vapor-panda-ran-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-rates-eight-north-korean-actors-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "123-reg-ai-driven-intrusion-read-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "seoul-police-self-taught-hacker-used-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "dream-chinese-nexus-operator-claude-code-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "trendai-chinese-language-operators-used-cyberstrikeais-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "uk-aisi-anthropic-claude-mythos-5-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "wiz-storm-0940-overlapping-operator-runs-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "lazarus-operation-flashhole-uses-likely-ai-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "jpcert-cc-attackers-used-ai-find-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "storm-0940-used-artex-agentic-ai-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "abnormal-athena-stealthroute-phishing-service-sells-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "dutch-police-arrest-two-over-bank-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-model-rl-training-forged-auth-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "tencent-cloud-linked-ai-agent-fleet-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-bans-russian-dark-clark-iranian-2026-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-storm-3168-ran-agentic-style-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "ai-cloned-lawyers-voice-helps-fraudsters-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "divd-ai-agents-carried-out-intrusion-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "russias-matryoshka-hits-2026-us-midterms-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "zenox-scarlet-loop-crew-used-ai-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "greek-police-bust-gang-cloned-relatives-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "seven-agency-advisory-dprk-waterplum-poses-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "fbi-impostor-law-enforcement-officials-use-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "talos-finds-likely-llm-generated-wiper-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "mandiant-ai-risk-report-details-hijacked-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "anthropic-september-2026-report-seven-china-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-finds-llm-fingerprints-1m-email-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "google-gtig-ai-threat-tracker-agentic-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-latam-crime-clusters-used-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-attackers-parallel-ai-agents-2026-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "aurora-ransomware-affiliate-used-cursor-agent-2026-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "fbi-nsa-cnmf-china-linked-qtfy-2026-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-exposes-russian-international-burke-institute-2026-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "cisa-led-advisory-warns-active-campaign-2026-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "genians-kimsuky-runs-local-llms-ai-2026-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-bans-cambodia-scam-compound-ran-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "multinational-alert-north-korean-it-workers-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-captivecrunch-midnight-blizzard-unit-hijacks-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "graphika-spamouflage-uses-ai-text-images-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "anthropic-claude-models-breached-three-real-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "graphika-pundit-prompt-300-plus-assets-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "recorded-future-ai-multiplied-irans-information-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-tuxbot-v3-iot-botnet-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "alethea-russia-china-iran-amplify-us-2026-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-attackers-register-ai-hallucinated-2026-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "jfrog-lazarus-linked-npm-packages-mimic-2026-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "sysdig-attacker-turns-hijacked-ollama-server-2026-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "two-six-pro-russia-pro-china-2026-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-june-2026-threat-report-prc-2026-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "withsecure-exposes-greyvibe-russia-nexus-group-2026-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "sysdig-captures-llm-agent-driving-marimo-2026-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "check-point-irans-nimbus-manticore-used-2026-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "gtig-ai-threat-tracker-criminals-built-2026-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "dragos-intruder-used-claude-gpt-find-2026-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-ai-personalized-device-code-phishing-2026-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-wild-malware-calls-gpt-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "ibm-x-force-interlock-operator-hive0163-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "clemson-exposes-irgc-linked-network-using-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-north-korean-coral-sleet-runs-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "bitdefender-apt36-mass-produces-llm-assisted-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "graphika-ai-deepfakes-ai-written-bilingual-2026-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "solo-attacker-used-claude-code-gpt-2026-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-february-report-prc-police-smear-2026-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "gtig-ai-threat-tracker-distillation-attacks-2026-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "clemson-chinas-llm-run-green-cicada-2026-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "north-koreas-konni-targets-blockchain-developers-2026-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "check-point-voidlink-cloud-malware-framework-2026-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-disrupts-redvds-crime-infrastructure-whose-2026-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "graphika-ordinairy-people-network-500-plus-2025-12": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "amos-stealer-spread-via-poisoned-search-2025-12": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "malicious-npm-package-embeds-prompt-aimed-2025-12": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-profiles-wormgpt-4-kawaiigpt-2025-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "shadowray-2-0-hijacks-exposed-ray-2025-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "vibe-coded-ransomware-extension-published-official-2025-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-dart-finds-sesameop-backdoor-using-2025-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "ukraines-ssscip-russian-groups-use-ai-2025-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "volexity-china-aligned-uta0388-ran-llm-2025-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "citizen-lab-exposes-prisonbreak-ai-enabled-2025-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "eset-deceptivedevelopment-fake-interview-malware-dprk-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-detects-llm-obfuscated-svg-phishing-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "sentinellabs-uncovers-malterminal-gpt-4-powered-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "recorded-future-copycop-adds-200-plus-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "revengehotels-ta558-shifts-llm-generated-loaders-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "shai-hulud-self-replicating-npm-worm-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-cloudflare-seize-338-raccoono365-phishing-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "kimsuky-used-chatgpt-generated-deepfake-south-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "straiker-flags-villager-deepseek-powered-ai-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "grokking-malvertisers-got-xs-grok-repost-2025-09": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "us-japan-south-korea-jointly-warn-2025-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "proofpoint-criminals-abuse-lovable-ai-site-2025-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "leaked-golaxy-files-show-china-linked-2025-08": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "aqua-likely-ai-assisted-koske-linux-2025-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "dfrlab-42-ai-generated-youtube-news-2025-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "impostor-uses-ai-cloned-voice-secretary-2025-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "okta-observes-phishers-using-vercels-v0-2025-07": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-details-jasper-sleet-north-korean-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "doj-nationwide-action-north-korean-it-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "russia-linked-operation-overload-more-than-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "irans-educated-manticore-apt35-phishes-israeli-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "bluenoroff-uses-deepfaked-executives-fake-zoom-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "cato-ctrl-new-wormgpt-variants-jailbroken-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "sysdig-attacker-abuses-exposed-open-webui-2025-06": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "talos-ransomware-destructive-malware-disguised-chatgpt-2025-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "mandiant-vietnam-nexus-unc6032-uses-fake-2025-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "fbi-warns-smishing-ai-voice-cloning-2025-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "noodlophile-infostealer-spread-via-fake-ai-2025-05": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "silent-push-dprk-contagious-interview-set-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "darcula-phishing-service-adds-genai-auto-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "okta-details-how-dprk-it-workers-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "unit-42-north-korean-it-workers-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "akirabot-used-openai-gpt-4o-mini-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "taiwans-security-bureau-china-using-generative-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "spanish-police-break-up-eur-19m-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "singapore-hong-kong-police-claw-back-2025-04": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "leaked-black-basta-chats-show-ransomware-2025-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "symantec-shows-openai-operator-agent-can-2025-03": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "japanese-teens-arrested-chatgpt-assisted-credential-2025-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "openai-february-2025-report-china-linked-2025-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "ai-voice-clone-italys-defence-minister-2025-02": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "correctiv-newsguard-expose-storm-1516s-100-2025-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "fbi-warns-north-korean-it-workers-2025-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "ghostgpt-uncensored-chatbot-sold-telegram-offers-2025-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "check-point-funksec-new-ransomware-service-2025-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "hong-kong-police-arrest-31-deepfake-2025-01": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "treasury-sanctions-gru-backed-group-ran-2024-12": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "anthropics-clio-surfaces-coordinated-seo-spam-2024-12": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "recorded-future-russias-sda-ran-operation-2024-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-north-korean-it-workers-use-2024-11": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "microsoft-mtac-russia-layers-ai-enhanced-2024-10": {
+    "entry": {
+      "profile": "unassessed"
+    },
+    "activity": {
+      "profile": "unassessed"
+    },
+    "ai": {
+      "profile": "unassessed"
+    }
+  },
+  "workos-artex-unintended-agent-escape-2026-10": {
+    "sandbox-escape": {
+      "profile": "agent-tools"
+    },
+    "discover-tool": {
+      "profile": "unassessed"
+    },
+    "bulk-exfil": {
+      "profile": "exfil"
+    },
+    "researcher-disclosure": {
+      "profile": "unassessed"
+    }
+  },
+  "storm-3358-artex-bank-intrusions-2026-11": {
+    "recon-scan": {
+      "profile": "unassessed"
+    },
+    "exploit-upload": {
+      "profile": "web"
+    },
+    "deploy-rats": {
+      "profile": "payload"
+    },
+    "web-shells": {
+      "profile": "linux-webshell"
+    },
+    "lateral-movement": {
+      "profile": "unassessed"
+    },
+    "maintain-access": {
+      "profile": "unassessed"
+    }
+  },
+  "srm-artex-ir-host-artifacts-2026-11": {
+    "initial-compromise": {
+      "profile": "web"
+    },
+    "credential-harvest": {
+      "profile": "credentials"
+    },
+    "rapid-pivot": {
+      "profile": "cloud"
+    },
+    "msp-pivot": {
+      "profile": "unassessed"
+    },
+    "card-skimmer": {
+      "profile": "payment"
+    },
+    "persistent-reentry": {
+      "profile": "persistence"
+    }
+  },
+  "snyk-covert-lookalike-skills-2026-11": {
+    "publish-malicious-skills": {
+      "profile": "repository"
+    },
+    "user-install": {
+      "profile": "agent-tools"
+    },
+    "deploy-backdoor": {
+      "profile": "payload"
+    },
+    "persist-claude-md": {
+      "profile": "agent-input"
+    },
+    "exfiltrate-credentials": {
+      "profile": "exfil"
+    }
+  },
+  "email-prompt-injection-ai-assistants-2026-11": {
+    "craft-injection": {
+      "profile": "phishing"
+    },
+    "deliver-email": {
+      "profile": "phishing"
+    },
+    "ai-reads": {
+      "profile": "agent-input"
+    },
+    "execute-forward": {
+      "profile": "agent-tools"
+    },
+    "self-propagate": {
+      "profile": "exfil"
+    }
+  },
+  "thisbash-claude-dispatch-rce-2026-11": {
+    "install-extension": {
+      "profile": "extension"
+    },
+    "push-prompt": {
+      "profile": "agent-input"
+    },
+    "auto-allow": {
+      "profile": "agent-tools"
+    },
+    "execute-command": {
+      "profile": "unassessed"
+    }
+  },
+  "chatgpt-lockdown-mode-bypass-checkpoint-2026-09": {
+    "craft-exploit": {
+      "profile": "phishing"
+    },
+    "deliver-link": {
+      "profile": "phishing"
+    },
+    "escape-sandbox": {
+      "profile": "web"
+    },
+    "exfil-or-phish": {
+      "profile": "exfil"
+    }
+  },
+  "checkpoint-artex-operator-consoles-2026-11": {
+    "deploy-artex": {
+      "profile": "agent-tools"
+    },
+    "ios-signing": {
+      "profile": "credentials"
+    },
+    "crypto-payment": {
+      "profile": "payment"
+    },
+    "game-accounts": {
+      "profile": "credentials"
+    },
+    "console-exposure": {
+      "profile": "web"
+    }
+  },
+  "radware-github-prompt-injection-bots-2026-11": {
+    "study-bots": {
+      "profile": "unassessed"
+    },
+    "craft-injection": {
+      "profile": "agent-input"
+    },
+    "submit-issue-pr": {
+      "profile": "repository"
+    },
+    "bot-processes": {
+      "profile": "agent-tools"
+    },
+    "execute-injection": {
+      "profile": "unassessed"
+    }
+  },
+  "unit42-hidden-prompt-injection-ai-trading-2026-11": {
+    "plant-prompt": {
+      "profile": "web"
+    },
+    "agent-fetch": {
+      "profile": "agent-input"
+    },
+    "persona": {
+      "profile": "agent-input"
+    },
+    "steer-user": {
+      "profile": "phishing"
+    }
+  },
+  "gpustack-cve-2026-102895-reverse-shell-2026-11": {
+    "bypass": {
+      "profile": "web"
+    },
+    "mint-key": {
+      "profile": "credentials"
+    },
+    "backend": {
+      "profile": "agent-tools"
+    },
+    "shell": {
+      "profile": "linux-fileless-execution"
+    }
+  },
+  "datadog-artex-aws-cognito-2026-11": {
+    "anon-s3": {
+      "profile": "cloud"
+    },
+    "cloudwatch": {
+      "profile": "cloud"
+    },
+    "cognito": {
+      "profile": "identity"
+    },
+    "enumerate": {
+      "profile": "cloud"
+    }
+  },
+  "vecert-operation-ghost-campus-2026-11": {
+    "farm-accounts": {
+      "profile": "identity"
+    },
+    "search-env": {
+      "profile": "credentials"
+    },
+    "validate": {
+      "profile": "credentials"
+    },
+    "panel": {
+      "profile": "agent-tools"
+    }
+  },
+  "arctic-wolf-antifox-iis-aws-2026-11": {
+    "webshell": {
+      "profile": "windows-shell"
+    },
+    "webconfig": {
+      "profile": "credentials"
+    },
+    "aws-enum": {
+      "profile": "cloud"
+    },
+    "secret": {
+      "profile": "cloud"
+    }
+  },
+  "railway-october-ai-key-theft-2026-10": {
+    "signup": {
+      "profile": "identity"
+    },
+    "build-escape": {
+      "profile": "unassessed"
+    },
+    "oidc": {
+      "profile": "cloud"
+    },
+    "decrypt": {
+      "profile": "credentials"
+    },
+    "resale": {
+      "profile": "exfil"
+    }
+  },
+  "kaspersky-citrus-ransomware-llm-2026-11": {
+    "contractor-creds": {
+      "profile": "credentials"
+    },
+    "llm-scripts": {
+      "profile": "windows-shell"
+    },
+    "adcs": {
+      "profile": "windows-credential-dump"
+    },
+    "encrypt": {
+      "profile": "impact"
+    }
   }
 }

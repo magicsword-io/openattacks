@@ -24,11 +24,11 @@ const {
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
-  href("openattacks-share.png"),
+  href("openattacks-share-v2.png"),
   Astro.site || Astro.url.origin,
 );
 const imageAlt =
-  "OpenAttacks by MagicSword. One technology. Many attack paths. A colorful dot graph on a dark grid.";
+  "OpenAttacks by MagicSword. The open catalog of AI attacks, shown with a mapped attack flow on a dark grid.";
 ---
 
 <!doctype html>
@@ -68,6 +68,12 @@ const imageAlt =
       type="application/json"
       title="Complete attack catalog"
       href={href("api/attacks.json")}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="OpenAttacks RSS feed"
+      href={href("rss.xml")}
     />
     <script is:inline>
       try {
@@ -116,6 +122,10 @@ const imageAlt =
           >
             About
           </a>
+          <a class:list={{ active: active === "use" }} href={href("use/")}>
+            Use with an LLM
+          </a>
+          <a href={href("api/attacks.json")}>JSON API</a>
           <a
             class="nav-prevent"
             href={preventionURL}
@@ -175,7 +185,9 @@ const imageAlt =
             Contribute
           </a>
           <a href={href("llms.txt")}>llms.txt</a>
+          <a href={href("use/")}>Use with an LLM</a>
           <a href={href("api/attacks.json")}>JSON API</a>
+          <a href={href("rss.xml")}>RSS</a>
         </div>
       </div>
       <div class="footer-bottom">

@@ -1,0 +1,38 @@
+id: silent-push-dprk-contagious-interview-set-2025-04
+name: "Silent Push: DPRK Contagious Interview set up three fake crypto firms with AI-generated staff photos"
+date_reported: 2025-04-24
+researcher: unknown
+org: Silent Push
+sources:
+  - url: https://www.silentpush.com/blog/contagious-interview-front-companies/
+    publisher: Silent Push
+  - url: https://www.theblock.co/amp/post/351960/north-korean-hackers-created-fake-us-companies-to-target-crypto-developers-report
+  - url: https://cointelegraph.com/news/lazarus-set-up-us-shell-companies-scam-crypto-devs
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Silent Push exposed BlockNovas, Angeloper Agency and SoftGlide as DPRK front companies that used AI-generated employee images to lure crypto developers into malware-laden fake interviews.
+initial_access: unknown
+ai_tooling_and_models:
+  - Remaker AI used to generate fake employee profile images
+other_tooling: []
+victims_and_sectors: Finance; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Contagious Interview / Famous Chollima (Lazarus subgroup)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - deepfake-voice
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Contagious Interview / Famous Chollima (Lazarus subgroup)
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

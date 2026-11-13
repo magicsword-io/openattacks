@@ -42,33 +42,49 @@ test("reported tools link to their projects while preserving labels and fork qua
   ).toBeVisible();
 });
 
-test("Prevent stays visible on desktop and mobile with MagicSword attribution", async ({
+test("primary utility links stay visible on desktop and mobile", async ({
   page,
 }) => {
   await page.goto("/");
-  const prevent = page
-    .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name: "Prevent", exact: true });
+  const navigation = page.getByRole("navigation", { name: "Main navigation" });
+  const prevent = navigation.getByRole("link", {
+    name: "Prevent",
+    exact: true,
+  });
+  const use = navigation.getByRole("link", {
+    name: "Use with an LLM",
+    exact: true,
+  });
+  const api = navigation.getByRole("link", {
+    name: "JSON API",
+    exact: true,
+  });
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await expect(prevent).toBeVisible();
-    const bounds = await prevent.boundingBox();
-    expect(bounds!.x).toBeGreaterThanOrEqual(0);
-    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
     const header = await page.locator(".site-header").boundingBox();
-    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(
-      header!.y + header!.height,
-    );
+    for (const link of [use, api, prevent]) {
+      await expect(link).toBeVisible();
+      const bounds = await link.boundingBox();
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+      expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(
+        header!.y + header!.height,
+      );
+    }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
   }
+  await expect(use).toHaveAttribute("href", "/use/");
+  await expect(api).toHaveAttribute("href", "/api/attacks.json");
   const url = new URL((await prevent.getAttribute("href"))!);
   expect(url.hostname).toBe("www.magicsword.io");
   expect(url.searchParams.get("utm_source")).toBe("openattacks");
   expect(url.searchParams.get("utm_content")).toBe("nav-prevent");
+  await page.goto("/use/");
+  await expect(use).toHaveClass(/active/);
 });
 
 test("client-rendered MagicSword links are attributed before opening or copying", async ({

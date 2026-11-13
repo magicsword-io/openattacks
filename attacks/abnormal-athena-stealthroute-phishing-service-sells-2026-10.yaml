@@ -1,0 +1,31 @@
+id: abnormal-athena-stealthroute-phishing-service-sells-2026-10
+name: "Abnormal: Athena StealthRoute phishing-as-a-service sells AI Studio lure generation, hitting about 2,280 US and EU orgs"
+date_reported: 2026-10-21
+researcher: unknown
+org: Abnormal AI
+sources:
+  - url: https://abnormal.ai/blog/athena-stealthroute-phishing-marketplace-cloaking-ai
+    publisher: Abnormal AI
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Athena StealthRoute, a phishing-as-a-service platform, bundles an AI Studio that writes lures, fake attachments, landing-page code and scanner decoy pages, and Abnormal tied about 89,700 attack emails to it.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unnamed LLMs served via the platform's AI Studio backend
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (operators of the Athena StealthRoute PhaaS platform)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

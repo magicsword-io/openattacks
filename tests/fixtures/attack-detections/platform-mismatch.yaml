@@ -1,0 +1,32 @@
+id: platform-mismatch
+name: Fixture with a Windows rule on a macOS entry
+date_reported: 2026-11-11
+researcher: Fixture
+org: Fixture
+sources:
+  - url: https://example.org/report
+borderline: false
+ai_role: ai_tool_as_lure
+technique_summary: A macOS LaunchAgent persists after the victim runs a fake AI installer.
+initial_access: User runs an installer on macOS
+ai_tooling_and_models: []
+other_tooling:
+  - LaunchAgent
+victims_and_sectors: macOS users
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: Review new LaunchAgent plists
+related_magicsword_projects: []
+category: adversary-use-of-ai
+attribution:
+  actor_name: Fixture actor
+ai_involvement_confidence: confirmed
+detections:
+  - name: Scheduled Task Creation Via Schtasks
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml
+    notes: Windows rule attached to a macOS-only fixture
+timeline:
+  first_seen: 2026-11-11

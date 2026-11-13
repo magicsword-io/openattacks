@@ -1,0 +1,35 @@
+id: microsoft-detects-llm-obfuscated-svg-phishing-2025-09
+name: Microsoft detects LLM-obfuscated SVG phishing that hid code behind business terminology
+date_reported: 2025-09-24
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://microsoft.com/en-us/security/blog/2025/09/24/ai-vs-ai-detecting-an-ai-obfuscated-phishing-campaign
+    publisher: Microsoft Threat Intelligence
+  - url: https://www.helpnetsecurity.com/2025/09/25/microsoft-spots-llm-obfuscated-phishing-attack/
+  - url: https://thehackernews.com/2025/09/microsoft-flags-ai-driven-phishing-llm.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: An SVG credential-phishing lure used likely LLM-written code that encoded its payload as sequences of business words.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM (code assessed as AI-generated)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

@@ -1,15 +1,26 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { Readable } from "node:stream";
 import { isPublicAddress } from "../src/lib/source-urls.mjs";
 import {
   checkLinks,
   checkSourceUrl,
   collectLinks,
+  readCappedResponse,
   requestStatus,
 } from "../scripts/lib/source-links.mjs";
 
 const url = "https://example.org/report";
 const check = (request) => checkSourceUrl(url, { request, retryDelayMs: 0 });
+
+test("capped response reads settle when the stream is destroyed", async () => {
+  const response = Readable.from([Buffer.from("abcdef")]);
+  response.statusCode = 200;
+  response.headers = {};
+  const result = await readCappedResponse(response, 3);
+  assert.equal(result.status, 200);
+  assert.equal(result.body, "abc");
+});
 
 test("GET confirms a failed HEAD before declaring a link broken", async () => {
   const methods = [];

@@ -1,0 +1,33 @@
+id: cisa-led-advisory-warns-active-campaign-2026-08
+name: CISA-led advisory warns of active campaign against Siemens S7 PLCs using AI-generated exploit scripts
+date_reported: 2026-08-19
+researcher: unknown
+org: CISA / NSA / FBI / DOE / EPA
+sources:
+  - url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-231a
+    publisher: CISA / NSA / FBI / DOE / EPA
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-generated-plc-exploits-critical-infrast/
+  - url: https://www.ic3.gov/CSA/2026/260819.pdf
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Five US agencies reported an active campaign against internet-exposed Siemens S7 PLCs in which actors used AI assistance to write Python scripts that read and write PLC memory and logic.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified AI assistants used to generate python-snap7 exploitation scripts
+other_tooling: []
+victims_and_sectors: Critical infrastructure
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

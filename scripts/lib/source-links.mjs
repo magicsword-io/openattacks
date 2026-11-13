@@ -30,7 +30,15 @@ function publicLookup(hostname, options, callback) {
   );
 }
 
-export function requestStatus(value, method) {
+const REQUEST_HEADERS = {
+  "User-Agent":
+    "OpenAttacks-Link-Checker/1.0 (+https://github.com/magicsword-io/openattacks)",
+  Accept: "*/*",
+};
+
+// Shared by evidence-link checks and detection-rule checks. Rejects private
+// destinations before a socket is opened.
+function publicRequest(value, method) {
   const issue = sourceUrlError(value);
   if (issue) return Promise.reject(unsafe(issue));
   const url = new URL(value);
@@ -41,24 +49,93 @@ export function requestStatus(value, method) {
         method,
         lookup: publicLookup,
         signal: AbortSignal.timeout(8000),
-        headers: {
-          "User-Agent":
-            "OpenAttacks-Link-Checker/1.0 (+https://github.com/magicsword-io/openattacks)",
-          Accept: "*/*",
-        },
+        headers: REQUEST_HEADERS,
       },
-      (response) => {
-        resolve({
-          status: response.statusCode,
-          location: response.headers.location,
-        });
-        // Only inspect headers; do not download or execute linked content.
-        response.destroy();
-      },
+      (response) => resolve(response),
     );
     request.on("error", reject);
     request.end();
   });
+}
+
+export function requestStatus(value, method) {
+  return publicRequest(value, method).then((response) => {
+    const result = {
+      status: response.statusCode,
+      location: response.headers.location,
+    };
+    // Only inspect headers; do not download or execute linked content.
+    response.destroy();
+    return result;
+  });
+}
+
+export function readCappedResponse(response, maxBytes = 65536) {
+  return new Promise((resolve) => {
+    const chunks = [];
+    let size = 0;
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve({
+        status: response.statusCode,
+        location: response.headers.location,
+        body: Buffer.concat(chunks).toString("utf8"),
+      });
+    };
+    response.on("data", (chunk) => {
+      if (size >= maxBytes) return;
+      const slice = chunk.subarray(0, maxBytes - size);
+      chunks.push(slice);
+      size += slice.length;
+      if (size >= maxBytes) response.destroy();
+    });
+    response.on("end", finish);
+    response.on("error", finish);
+    response.on("aborted", finish);
+    response.on("close", finish);
+  });
+}
+
+export function requestPublic(
+  value,
+  { method = "GET", maxBytes = 65536 } = {},
+) {
+  return publicRequest(value, method).then((response) =>
+    readCappedResponse(response, maxBytes),
+  );
+}
+
+// Follow public redirects and return the final HTTP status plus a capped body.
+export async function fetchPublic(
+  url,
+  { request = requestPublic, maxBytes = 65536 } = {},
+) {
+  let current = url;
+  const seen = new Set();
+  for (let hop = 0; hop <= 5; hop++) {
+    const issue = sourceUrlError(current);
+    if (issue) throw unsafe(issue);
+    const canonical = new URL(current);
+    canonical.hash = "";
+    if (seen.has(canonical.href)) throw unsafe("redirect loop");
+    seen.add(canonical.href);
+    const response = await request(canonical.href, { method: "GET", maxBytes });
+    if (![301, 302, 303, 307, 308].includes(response.status))
+      return {
+        status: response.status,
+        body: response.body || "",
+        url: canonical.href,
+      };
+    if (!response.location) throw unsafe("redirect has no Location header");
+    try {
+      current = new URL(response.location, current).href;
+    } catch {
+      throw unsafe("redirect has an invalid Location header");
+    }
+  }
+  throw unsafe("too many redirects (maximum 5)");
 }
 
 export async function checkSourceUrl(

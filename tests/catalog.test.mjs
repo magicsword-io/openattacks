@@ -12,7 +12,14 @@ const files = readdirSync(new URL("../attacks/", import.meta.url)).filter(
 const seeds = files.map((file) =>
   parse(readFileSync(new URL(`../attacks/${file}`, import.meta.url), "utf8")),
 );
-const sample = seeds[0];
+// attack_flow is optional; flow tests need an entry with a curated flow.
+const sample = seeds.find((entry) => entry.attack_flow);
+// Node IDs of the summary flow generated for an entry without attack_flow
+// (src/lib/attack-flow.ts), matching scripts/build-detections.mjs.
+const flowNodeIds = (attack) =>
+  attack.attack_flow
+    ? attack.attack_flow.nodes.map((n) => n.id)
+    : ["entry", "activity", "ai"];
 test("all catalog entries validate and IDs are unique", () => {
   assert.ok(seeds.length > 0);
   files.forEach((filename, index) =>
@@ -185,7 +192,7 @@ test("AI discovery, full context and per-entry exports include every YAML record
   assert.ok(full.includes(`${seeds.length} entries`));
   for (const entry of seeds) {
     assert.ok(
-      guide.includes(`/api/attacks/${entry.id}.md`),
+      guide.includes(`/llms/attacks/${entry.id}.md`),
       `Missing guide link for ${entry.id}`,
     );
     assert.ok(
@@ -296,7 +303,7 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
     assert.ok(attack, `Stale attack annotation: ${id}`);
     for (const nodeId of Object.keys(stages))
       assert.ok(
-        attack.attack_flow.nodes.some((n) => n.id === nodeId),
+        flowNodeIds(attack).includes(nodeId),
         `${id}: stale stage ${nodeId}`,
       );
   }
@@ -372,7 +379,15 @@ test("stage defense annotations resolve to real attacks and nodes; exports prese
     new URL("../dist/llms-full.txt", import.meta.url),
     "utf8",
   );
-  assert.match(full, /Stage defense and hunting recommendations/);
+  assert.match(full, /## Prevention/);
+  assert.match(full, /## Detections/);
+  assert.match(
+    readFileSync(
+      new URL("../dist/api/attacks/cairn-norforge-2026-10.md", import.meta.url),
+      "utf8",
+    ),
+    /Stage defense and hunting recommendations/,
+  );
 });
 
 test("script execution starters match encoded execution and exclude unrelated benign processes", () => {
@@ -418,4 +433,49 @@ test("script execution starters match encoded execution and exclude unrelated be
     "GetFoundationModel",
   ]);
   assert.match(bedrock.limitation, /Do not assume default CloudTrail/);
+});
+
+test("RSS feed lists every entry with a permalink and is well-formed", () => {
+  const feed = readFileSync(
+    new URL("../dist/rss.xml", import.meta.url),
+    "utf8",
+  );
+  assert.ok(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
+  assert.ok(feed.includes('<rss version="2.0"'));
+  assert.ok(feed.includes('rel="self" type="application/rss+xml"'));
+  // The channel link follows SITE_URL / BASE_PATH, so permalinks are checked
+  // against it rather than a hard-coded production domain.
+  const home = feed.match(/<channel>\s*<title>[^<]*<\/title>\s*<link>([^<]+)<\/link>/)[1];
+  const items = feed.match(/<item>[\s\S]*?<\/item>/g) || [];
+  assert.equal(items.length, seeds.length);
+  for (const entry of seeds)
+    assert.ok(
+      feed.includes(
+        `<guid isPermaLink="true">${new URL(`attacks/${entry.id}/`, home).href}</guid>`,
+      ),
+      `Missing feed item for ${entry.id}`,
+    );
+  for (const item of items) {
+    assert.match(
+      item,
+      /<pubDate>\w{3}, \d{2} \w{3} \d{4} 12:00:00 GMT<\/pubDate>/,
+    );
+    // Raw markup or unescaped ampersands would break feed readers.
+    const body = item.replace(
+      /<\/?(item|title|link|guid[^>]*|pubDate|description|category)>/g,
+      "",
+    );
+    assert.ok(!/[<>]/.test(body), `Unescaped markup in ${item.slice(0, 120)}`);
+    assert.ok(
+      !/&(?!(amp|lt|gt|quot|apos);)/.test(body),
+      `Unescaped & in ${item.slice(0, 120)}`,
+    );
+  }
+  const pubDates = items.map((item) =>
+    Date.parse(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]),
+  );
+  assert.deepEqual(
+    pubDates,
+    [...pubDates].sort((a, b) => b - a),
+  );
 });

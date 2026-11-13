@@ -1,0 +1,38 @@
+id: jfrog-lazarus-linked-npm-packages-mimic-2026-06
+name: "JFrog: Lazarus-linked npm packages mimic Rollup polyfills, sweep .claude, .gemini and .cursor folders"
+date_reported: 2026-06-30
+researcher: unknown
+org: JFrog Security Research
+sources:
+  - url: https://research.jfrog.com/post/rollup-polyfill-masquerading/
+    publisher: JFrog Security Research
+  - url: https://securityonline.info/lazarus-npm-malware-rollup-polyfill/
+  - url: https://en.sedaily.com/opinion/2026/07/06/north-korean-hackers-now-target-ai-companies-banks-need
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_credential_theft
+technique_summary: JFrog found six Lazarus-linked npm packages impersonating a popular Rollup polyfill that steal browser, wallet and cloud secrets and specifically collect AI coding assistant directories.
+initial_access: unknown
+ai_tooling_and_models:
+  - "Developer AI tooling configs: .claude, .gemini, .cursor and .windsurf directories and Cursor and Windsurf history"
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Lazarus-linked npm cluster
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - ai-supply-chain
+  - api-key-account-abuse
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Lazarus-linked npm cluster
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

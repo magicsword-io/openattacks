@@ -1,0 +1,34 @@
+id: talos-nik-c2-implant-runs-operator-2026-10
+name: "Talos: NIK C2 implant runs operator prompts through OpenAI on the victim's own API key"
+date_reported: 2026-10-29
+researcher: unknown
+org: Cisco Talos
+sources:
+  - url: https://blog.talosintelligence.com/nik-c2-new-ai-enabled-framework/
+    publisher: Cisco Talos
+  - url: https://thehackernews.com/2026/10/threatsday-critical-firewall-flaws.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_credential_theft
+technique_summary: Talos found a Go-based C2 framework with live infrastructure whose implant sends operator prompts to OpenAI from the infected host, preferring the victim's own OpenAI key so the calls trace back to the victim.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI Chat Completions API (default gpt-4; victim's OPENAI_API_KEY used when present)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (operators of the NIK C2 framework)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed
