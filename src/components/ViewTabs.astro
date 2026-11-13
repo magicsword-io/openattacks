@@ -1,5 +1,6 @@
 ---
-import { href, reviewed, formatDate } from "../lib/catalog";
+import { href, formatDate } from "../lib/catalog";
+import { siteUpdated } from "../lib/site-updated";
 import Icon from "./Icon.astro";
 const { active = "catalog", compact = false } = Astro.props;
 ---
@@ -33,7 +34,7 @@ const { active = "catalog", compact = false } = Astro.props;
   </nav>
   {!compact && (
     <span class="update-label mono">
-      LAST UPDATED {formatDate(reviewed).toUpperCase()}
+      LAST UPDATED {formatDate(siteUpdated).toUpperCase()}
     </span>
   )}
 </div>

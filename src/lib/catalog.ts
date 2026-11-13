@@ -145,7 +145,6 @@ export const projects: Record<string, string> = {
   LOTTunnels: "https://lottunnels.github.io",
 };
 export const repo = "https://github.com/magicsword-io/openattacks";
-export const reviewed = "2026-10-20";
 // Search groups derive only from words present in the source descriptions; raw data is preserved.
 export const platforms = [
   { id: "claude-code", label: "Claude Code", pattern: /claude[ -]?code/i },
