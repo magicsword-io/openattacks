@@ -1,0 +1,958 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openattacks.ai/data/attacks.schema.json",
+  "title": "OpenAttacksCatalogExport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "count",
+    "attacks"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Deterministic UTC midnight timestamp of the latest last_reviewed or date_reported value in attacks. It is not the wall-clock time of the build, so the committed file changes only when catalog dates or records change."
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Length of attacks."
+    },
+    "attacks": {
+      "type": "array",
+      "items": {
+        "title": "OpenAttacksEntry",
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "date_reported",
+          "ai_role",
+          "technique_summary",
+          "sources",
+          "researcher",
+          "org",
+          "initial_access",
+          "victims_and_sectors",
+          "regions",
+          "attribution_or_cluster",
+          "scale_and_metrics",
+          "prevention_angle",
+          "ai_tooling_and_models",
+          "other_tooling",
+          "related_magicsword_projects",
+          "borderline"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "http-url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "date_reported": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\\d|3[01]))?$",
+            "anyOf": [
+              {
+                "format": "date"
+              },
+              {
+                "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+              }
+            ]
+          },
+          "date_activity_start": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date_activity_end": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "borderline": {
+            "type": "boolean"
+          },
+          "borderline_note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "researcher": {
+            "type": "string"
+          },
+          "org": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "url"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "url": {
+                  "$ref": "#/$defs/http-url"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "publisher": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "magicsword_coverage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/http-url"
+            }
+          },
+          "ai_role": {
+            "type": "string",
+            "enum": [
+              "ai_agent_or_mcp_as_target",
+              "ai_credential_theft",
+              "ai_infra_as_c2",
+              "ai_tool_as_lure",
+              "attacker_uses_ai_as_operator",
+              "llm_generated_malware",
+              "other"
+            ]
+          },
+          "ai_role_secondary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "ai_agent_or_mcp_as_target",
+              "ai_credential_theft",
+              "ai_infra_as_c2",
+              "ai_tool_as_lure",
+              "attacker_uses_ai_as_operator",
+              "llm_generated_malware",
+              "other",
+              null
+            ]
+          },
+          "ai_role_detail": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "technique_summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "initial_access": {
+            "type": "string"
+          },
+          "ai_tooling_and_models": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "other_tooling": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "victims_and_sectors": {
+            "type": "string"
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Afghanistan",
+                "Africa",
+                "Albania",
+                "Algeria",
+                "Angola",
+                "Antarctica",
+                "Argentina",
+                "Armenia",
+                "Asia",
+                "Australia",
+                "Austria",
+                "Azerbaijan",
+                "Bahamas",
+                "Bangladesh",
+                "Belarus",
+                "Belgium",
+                "Belize",
+                "Benin",
+                "Bhutan",
+                "Bolivia",
+                "Bosnia and Herz.",
+                "Botswana",
+                "Brazil",
+                "Brunei",
+                "Bulgaria",
+                "Burkina Faso",
+                "Burundi",
+                "Cambodia",
+                "Cameroon",
+                "Canada",
+                "Central African Rep.",
+                "Chad",
+                "Chile",
+                "China",
+                "Colombia",
+                "Congo",
+                "Costa Rica",
+                "Croatia",
+                "Cuba",
+                "Cyprus",
+                "Czechia",
+                "Côte d'Ivoire",
+                "Dem. Rep. Congo",
+                "Denmark",
+                "Djibouti",
+                "Dominican Rep.",
+                "Ecuador",
+                "Egypt",
+                "El Salvador",
+                "Eq. Guinea",
+                "Eritrea",
+                "Estonia",
+                "Ethiopia",
+                "Europe",
+                "Falkland Is.",
+                "Fiji",
+                "Finland",
+                "Fr. S. Antarctic Lands",
+                "France",
+                "Gabon",
+                "Gambia",
+                "Georgia",
+                "Germany",
+                "Ghana",
+                "Greece",
+                "Greenland",
+                "Guatemala",
+                "Guinea",
+                "Guinea-Bissau",
+                "Guyana",
+                "Haiti",
+                "Honduras",
+                "Hong Kong",
+                "Hungary",
+                "Iceland",
+                "India",
+                "Indonesia",
+                "Iran",
+                "Iraq",
+                "Ireland",
+                "Israel",
+                "Italy",
+                "Jamaica",
+                "Japan",
+                "Jordan",
+                "Kazakhstan",
+                "Kenya",
+                "Kosovo",
+                "Kuwait",
+                "Kyrgyzstan",
+                "Laos",
+                "Latvia",
+                "Lebanon",
+                "Lesotho",
+                "Liberia",
+                "Libya",
+                "Lithuania",
+                "Luxembourg",
+                "Macedonia",
+                "Madagascar",
+                "Malawi",
+                "Malaysia",
+                "Mali",
+                "Mauritania",
+                "Mexico",
+                "Moldova",
+                "Mongolia",
+                "Montenegro",
+                "Morocco",
+                "Mozambique",
+                "Multiple regions",
+                "Myanmar",
+                "N. Cyprus",
+                "Namibia",
+                "Nepal",
+                "Netherlands",
+                "New Caledonia",
+                "New Zealand",
+                "Nicaragua",
+                "Niger",
+                "Nigeria",
+                "North America",
+                "North Korea",
+                "Norway",
+                "Not applicable",
+                "Oceania",
+                "Oman",
+                "Pakistan",
+                "Palestine",
+                "Panama",
+                "Papua New Guinea",
+                "Paraguay",
+                "Peru",
+                "Philippines",
+                "Poland",
+                "Portugal",
+                "Puerto Rico",
+                "Qatar",
+                "Romania",
+                "Russia",
+                "Rwanda",
+                "S. Sudan",
+                "Saudi Arabia",
+                "Senegal",
+                "Serbia",
+                "Sierra Leone",
+                "Slovakia",
+                "Slovenia",
+                "Solomon Is.",
+                "Somalia",
+                "Somaliland",
+                "South Africa",
+                "South America",
+                "South Korea",
+                "Spain",
+                "Sri Lanka",
+                "Sudan",
+                "Suriname",
+                "Sweden",
+                "Switzerland",
+                "Syria",
+                "Taiwan",
+                "Tajikistan",
+                "Tanzania",
+                "Thailand",
+                "Timor-Leste",
+                "Togo",
+                "Trinidad and Tobago",
+                "Tunisia",
+                "Turkey",
+                "Turkmenistan",
+                "Uganda",
+                "Ukraine",
+                "United Arab Emirates",
+                "United Kingdom",
+                "United States",
+                "Uruguay",
+                "Uzbekistan",
+                "Vanuatu",
+                "Venezuela",
+                "Vietnam",
+                "W. Sahara",
+                "Yemen",
+                "Zambia",
+                "Zimbabwe",
+                "eSwatini",
+                "unknown"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "attribution_or_cluster": {
+            "type": "string"
+          },
+          "scale_and_metrics": {
+            "type": "string"
+          },
+          "prevention_angle": {
+            "type": "string"
+          },
+          "related_magicsword_projects": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GTFOBins",
+                "HijackLibs",
+                "LOLBAS",
+                "LOLDrivers",
+                "LOLRMM",
+                "LOLSkills",
+                "LOTTunnels"
+              ]
+            }
+          },
+          "source_notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "adversary-use-of-ai",
+              "attacks-on-ai",
+              null
+            ]
+          },
+          "attribution": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "actor_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "actor_name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "aliases": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "country": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "motivation": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "nation-state",
+                  "cybercrime",
+                  "financially-motivated",
+                  "hacktivism",
+                  "unknown",
+                  null
+                ]
+              },
+              "attributed_by": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  null
+                ]
+              }
+            }
+          },
+          "ai_involvement_confidence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "confirmed",
+              "vendor-asserted",
+              "unverified",
+              null
+            ]
+          },
+          "detections": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "format"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "sigma",
+                    "splunk",
+                    "elastic",
+                    "kql",
+                    "lolbas",
+                    "guidance"
+                  ]
+                },
+                "url": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uri"
+                },
+                "notes": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "timeline": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "first_seen": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "last_updated": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "updates": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "source"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "iocs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "domains": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ips": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "hashes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "linked_actors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+            }
+          },
+          "linked_tools": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "last_reviewed": {
+            "type": "string",
+            "format": "date"
+          },
+          "region_notes": {
+            "type": "string"
+          },
+          "atlas_techniques": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "rationale",
+                "source_urls"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "AML.T0000",
+                    "AML.T0000.000",
+                    "AML.T0000.001",
+                    "AML.T0000.002",
+                    "AML.T0001",
+                    "AML.T0003",
+                    "AML.T0004",
+                    "AML.T0006",
+                    "AML.T0002",
+                    "AML.T0002.000",
+                    "AML.T0002.001",
+                    "AML.T0016",
+                    "AML.T0016.000",
+                    "AML.T0016.001",
+                    "AML.T0017",
+                    "AML.T0017.000",
+                    "AML.T0008",
+                    "AML.T0008.000",
+                    "AML.T0008.001",
+                    "AML.T0019",
+                    "AML.T0010",
+                    "AML.T0010.000",
+                    "AML.T0010.001",
+                    "AML.T0010.002",
+                    "AML.T0010.003",
+                    "AML.T0040",
+                    "AML.T0047",
+                    "AML.T0041",
+                    "AML.T0044",
+                    "AML.T0013",
+                    "AML.T0014",
+                    "AML.T0020",
+                    "AML.T0021",
+                    "AML.T0005",
+                    "AML.T0005.000",
+                    "AML.T0005.001",
+                    "AML.T0005.002",
+                    "AML.T0007",
+                    "AML.T0011",
+                    "AML.T0011.000",
+                    "AML.T0012",
+                    "AML.T0015",
+                    "AML.T0018",
+                    "AML.T0018.000",
+                    "AML.T0018.001",
+                    "AML.T0024",
+                    "AML.T0024.000",
+                    "AML.T0024.001",
+                    "AML.T0024.002",
+                    "AML.T0025",
+                    "AML.T0029",
+                    "AML.T0046",
+                    "AML.T0031",
+                    "AML.T0034",
+                    "AML.T0035",
+                    "AML.T0036",
+                    "AML.T0037",
+                    "AML.T0042",
+                    "AML.T0043",
+                    "AML.T0043.000",
+                    "AML.T0043.001",
+                    "AML.T0043.002",
+                    "AML.T0043.003",
+                    "AML.T0043.004",
+                    "AML.T0048",
+                    "AML.T0048.000",
+                    "AML.T0048.001",
+                    "AML.T0048.002",
+                    "AML.T0048.003",
+                    "AML.T0048.004",
+                    "AML.T0049",
+                    "AML.T0050",
+                    "AML.T0051",
+                    "AML.T0051.000",
+                    "AML.T0051.001",
+                    "AML.T0052",
+                    "AML.T0052.000",
+                    "AML.T0053",
+                    "AML.T0054",
+                    "AML.T0055",
+                    "AML.T0056",
+                    "AML.T0057",
+                    "AML.T0058",
+                    "AML.T0059",
+                    "AML.T0011.001",
+                    "AML.T0060",
+                    "AML.T0061",
+                    "AML.T0062",
+                    "AML.T0008.002",
+                    "AML.T0008.003",
+                    "AML.T0063",
+                    "AML.T0016.002",
+                    "AML.T0064",
+                    "AML.T0065",
+                    "AML.T0066",
+                    "AML.T0067",
+                    "AML.T0068",
+                    "AML.T0069",
+                    "AML.T0069.000",
+                    "AML.T0069.001",
+                    "AML.T0069.002",
+                    "AML.T0070",
+                    "AML.T0071",
+                    "AML.T0067.000",
+                    "AML.T0018.002",
+                    "AML.T0010.004",
+                    "AML.T0072",
+                    "AML.T0073",
+                    "AML.T0074",
+                    "AML.T0075",
+                    "AML.T0076",
+                    "AML.T0077",
+                    "AML.T0008.004",
+                    "AML.T0078",
+                    "AML.T0079",
+                    "AML.T0080",
+                    "AML.T0080.000",
+                    "AML.T0080.001",
+                    "AML.T0081",
+                    "AML.T0082",
+                    "AML.T0083",
+                    "AML.T0084",
+                    "AML.T0084.000",
+                    "AML.T0084.001",
+                    "AML.T0084.002",
+                    "AML.T0085",
+                    "AML.T0085.000",
+                    "AML.T0085.001",
+                    "AML.T0086",
+                    "AML.T0087",
+                    "AML.T0088",
+                    "AML.T0089",
+                    "AML.T0090",
+                    "AML.T0091",
+                    "AML.T0092",
+                    "AML.T0091.000",
+                    "AML.T0093",
+                    "AML.T0094",
+                    "AML.T0051.002",
+                    "AML.T0095",
+                    "AML.T0096",
+                    "AML.T0097",
+                    "AML.T0098",
+                    "AML.T0099",
+                    "AML.T0100",
+                    "AML.T0101",
+                    "AML.T0102",
+                    "AML.T0103",
+                    "AML.T0104",
+                    "AML.T0011.002",
+                    "AML.T0011.003",
+                    "AML.T0105",
+                    "AML.T0106",
+                    "AML.T0107",
+                    "AML.T0108",
+                    "AML.T0109",
+                    "AML.T0110",
+                    "AML.T0010.005",
+                    "AML.T0034.000",
+                    "AML.T0034.001",
+                    "AML.T0034.002",
+                    "AML.T0084.003",
+                    "AML.T0111",
+                    "AML.T0112",
+                    "AML.T0008.005",
+                    "AML.T0112.000",
+                    "AML.T0112.001",
+                    "AML.T0052.001",
+                    "AML.T0002.002",
+                    "AML.T0095.000"
+                  ]
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_urls": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "$ref": "#/$defs/http-url"
+                  }
+                }
+              }
+            }
+          },
+          "attack_flow": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "nodes",
+              "edges"
+            ],
+            "properties": {
+              "nodes": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 12,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "kind",
+                    "source_urls"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9-]*$"
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "access",
+                        "ai",
+                        "execution",
+                        "impact",
+                        "unknown"
+                      ]
+                    },
+                    "source_urls": {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": {
+                        "$ref": "#/$defs/http-url"
+                      }
+                    }
+                  }
+                }
+              },
+              "edges": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "source",
+                    "target"
+                  ],
+                  "properties": {
+                    "source": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "loop": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$id": "https://openattacks.ai/data/attack-entry.schema.json"
+      }
+    }
+  }
+}

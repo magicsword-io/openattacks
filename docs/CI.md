@@ -4,7 +4,8 @@ Attack PRs are checked as a complete catalog so collisions and stale references 
 
 | Check | What it verifies |
 | --- | --- |
-| `validate` | YAML syntax and duplicate keys; merge conflict markers; strict schema, enums, dates, ID/filename agreement and duplicate IDs; HTTP(S) evidence links and duplicate sources; flow and ATLAS references; generated simulation consistency; type checks; production build; catalog/export parity and sidecar references; browser behavior, internal links and accessibility. |
+| `validate` | YAML syntax and duplicate keys; merge conflict markers; strict schema, enums, dates, ID/filename agreement and duplicate IDs; HTTP(S) evidence links and duplicate sources; flow and ATLAS references; generated simulation consistency; committed LLM export freshness (`llms.txt`, `llms-full.txt`, `llms/`, `data/attacks.json`, `data/attacks.schema.json`); type checks; production build; catalog/export parity and sidecar references; browser behavior, internal links and accessibility. |
+| `Refresh LLM exports` | On push to `main`, regenerates the LLM files and commits any drift as `github-actions[bot]` with `[skip ci]`. The repository token push does not start another workflow run. |
 | `source-links` | Published evidence and coverage links in added or modified attack entries. Confirmed 404/410 responses, invalid destinations and broken redirect chains fail. Other failures produce warnings for review. |
 | `runner (macos-latest)`, `runner (ubuntu-latest)`, `runner (windows-latest)` | Portable simulation runner tests. |
 

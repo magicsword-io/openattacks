@@ -120,20 +120,26 @@ const attacks = await getAttacks();
       </p>
       <h2 id="for-agents">Read with an AI assistant</h2>
       <p>
-        Start with <a href={href("llms.txt")}>llms.txt</a> for an entry index
-        and query guide, or load the{" "}
-        <a href={href("llms-full.txt")}>complete Markdown context</a>.
-        Individual records are available as JSON and Markdown under{" "}
-        <code>api/attacks/&#123;id&#125;.json</code> and{" "}
+        Start with <a href={href("llms.txt")}>llms.txt</a> for a one-line index
+        of every attack. Each line links to a per-attack file under{" "}
+        <code>llms/attacks/</code>. Category and month bundles are{" "}
+        <code>llms/by-category/</code> and <code>llms/by-month/</code>.{" "}
+        <a href={href("llms-full.txt")}>llms-full.txt</a> is the complete
+        Markdown catalog. The structured export is{" "}
+        <a href={href("data/attacks.json")}>data/attacks.json</a> (
+        <a href={href("data/attacks.schema.json")}>schema</a>). Individual
+        records remain at <code>api/attacks/&#123;id&#125;.json</code> and{" "}
         <code>api/attacks/&#123;id&#125;.md</code>. The{" "}
         <a href={href("api/schema.json")}>public schema</a> describes every
         field.
       </p>
       <p>
-        The site and all AI-readable files are generated from the same YAML
-        collection on every merged attack PR through the deployment workflow.
-        Counts and entry links update automatically. The API is static:
-        assistants download the JSON array and apply filters locally.
+        These files are generated from the YAML collection by{" "}
+        <code>npm run llm:build</code> and committed. A push to <code>main</code>{" "}
+        regenerates them when they drift. The site serves the same bytes, so
+        counts and links stay aligned with the catalog. Assistants that cannot
+        fit the full catalog should follow the index or a bundle instead of{" "}
+        <code>llms-full.txt</code>.
       </p>
       <h2>Use and contribute</h2>
       <p>
