@@ -990,7 +990,7 @@ p {
   display: flex;
   gap: 26px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 10px;
 }
 .footer-links a {
   display: flex;
@@ -1944,7 +1944,7 @@ p {
   }
   .footer-links {
     gap: 23px;
-    font-size: 8px;
+    font-size: 9px;
   }
   .footer-bottom {
     gap: 18px;

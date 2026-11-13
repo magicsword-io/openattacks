@@ -122,6 +122,10 @@ const imageAlt =
           >
             About
           </a>
+          <a class:list={{ active: active === "use" }} href={href("use/")}>
+            Use with an LLM
+          </a>
+          <a href={href("api/attacks.json")}>JSON API</a>
           <a
             class="nav-prevent"
             href={preventionURL}
