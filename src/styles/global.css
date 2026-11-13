@@ -3840,13 +3840,6 @@ p {
   flex-wrap: wrap;
   gap: 16px;
 }
-.timeline-context {
-  font-size: 11px;
-  color: var(--muted);
-  margin: 14px 0 0;
-  max-width: 850px;
-  line-height: 1.8;
-}
 .environment-shortcuts {
   display: flex;
   align-items: center;

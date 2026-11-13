@@ -42,11 +42,6 @@ const attacks = await getAttacks();
     {showTimeline && (
       <section class="home-timeline" aria-label="AI attacks over time">
         <TimelineChart attacks={attacks} />
-        <p class="timeline-context">
-          Each dot opens a sourced entry. Years reflect report dates and catalog
-          coverage, including research; they do not measure global attack
-          prevalence.
-        </p>
       </section>
     )}
     <Catalog attacks={attacks} />

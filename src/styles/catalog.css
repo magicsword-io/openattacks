@@ -93,9 +93,6 @@
 .home-timeline .dot-chart {
   max-height: 240px;
 }
-.home-timeline .timeline-context {
-  margin-top: 10px;
-}
 .catalog-controls {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
