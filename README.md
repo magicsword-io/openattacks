@@ -161,7 +161,7 @@ The static files are available under the deployment base path at `api/attacks.js
 
 ## AI-readable catalog and automatic updates
 
-`npm run llm:build` reads `attacks/*.yaml` and writes the committed LLM exports. `npm run llm:check` fails when those files drift. The site serves the same bytes.
+[Use OpenAttacks with your LLM](https://openattacks.ai/use/) installs the `skills/openattacks` agent skill and shows chat-sized category and month bundles. `npm run llm:build` reads `attacks/*.yaml` and writes the committed LLM exports; `npm run llm:check` fails when those files drift. The site serves the same bytes.
 
 | File | URL |
 | --- | --- |
