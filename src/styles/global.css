@@ -5044,15 +5044,6 @@ p {
 .stack-heading .eyebrow {
   font-size: 9px;
 }
-.stack-local-note {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-  font-size: 11px;
-  color: var(--muted);
-  padding-bottom: 6px;
-}
 .stack-form {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -5434,9 +5425,6 @@ p {
   }
   .stack-heading p {
     font-size: 13px;
-  }
-  .stack-local-note {
-    margin-top: 14px;
   }
   .stack-form {
     padding: 20px 16px 0;
