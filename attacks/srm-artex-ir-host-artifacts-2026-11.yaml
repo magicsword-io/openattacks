@@ -1,0 +1,153 @@
+id: srm-artex-ir-host-artifacts-2026-11
+name: S-RM ARTEX in the wild - incident response host artifacts and TTPs
+date_reported: 2026-11-06
+researcher: S-RM
+org: S-RM
+sources:
+  - url: https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    title: "S-RM: ARTEX in the Wild - Lessons from Responding to Agentic AI Attacks"
+    publisher: S-RM
+  - url: https://www.sophos.com/en-us/blog/artex-attackers-apply-agentic-ai
+    title: "ARTEX: Attackers apply agentic AI"
+    publisher: Sophos X-Ops
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Adversaries deploy ARTEX autonomous agents for full intrusion lifecycle automation, from initial compromise through identity/cloud/code/firewall pivots in under 24 hours, with documented MSP supply-chain pivots and persistent re-entry after containment"
+technique_summary: "S-RM incident response analysis (Nov 6, 2026) documents real-world ARTEX deployment artifacts and TTPs from multiple IR engagements. Initial access via vulnerable web plugins and misconfigured upload endpoints; rapid credential harvesting and reuse; autonomous agents pivot through identity systems, cloud resources, code repositories, and firewall configurations within a single day. One case featured MSP supply-chain pivot; another deployed card skimmers on compromised e-commerce sites. Attackers demonstrated persistent re-entry capability after initial containment, shifting to Tor and VPS infrastructure after IP blocking. Forensic artifacts: /opt/artex/data/task/<task>/i<id>/ directory structure; compromised files and accounts tagged with i<id> markers; SQL injection signatures ARTEX' UNION SELECT 1-- and ARTEX'/**/AND/**/2>1--; HTTP User-Agent norma/0.4; ARTEX web console self-signed certificate (O=ARTEX, C=CN) displaying Autonomous pentest console branding; GitHub branches named artex-wtest-*; fake emails @example.invalid. Actor unnamed; attributed by S-RM incident response; confirmed AI involvement from recovered agent task logs and autonomous pivot patterns. Sophos X-Ops (Nov 10, 2026) separately reports activity at a small number of customers consistent with ARTEX or other AI-assisted tooling: webshell and SQL Server command execution, credential theft, lateral movement, rapid command bursts, and structured markers. Windows host markers are temporary files named i[variant]_. such as i12345_b2.ps1, paths beginning artx especially under C:\\Windows\\Temp, and command markers MARKER123 or ARTX123. Cloud markers are a service principal credential or role added by an application, and application sign-ins with a scripted user agent. Sophos file detections are Troj/Bckdr-SDA for a trojanized ARTEX Docker image (see badbyte-artex-backdoor-docker-2026-11), Troj/Loader-TU, Linux/Agent-KD, and ATK/Artex-A, ATK/Artex-B, and ATK/Artex-C. Published firewall and endpoint IPS signatures are 2313266, 2313265, 2313264, 2313263, 2313261, 2313259, 2313258, and 2313257. Sophos cites Microsoft's Storm-0940 attribution for the ConnectWise Cloud Backup case only; that name is not applied to the S-RM engagements."
+initial_access: "Vulnerable web plugins, misconfigured file upload endpoints"
+ai_tooling_and_models:
+  - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
+  - LLM backends for agent decision-making
+other_tooling:
+  - SQL injection tools
+  - Credential harvesting utilities
+  - Card skimmer malware
+  - Tor network
+  - VPS infrastructure
+victims_and_sectors: "Multiple organizations across sectors including e-commerce, MSPs; S-RM IR engagements 2026"
+regions:
+  - Multiple regions
+attribution_or_cluster: "Unnamed actors; attributed by S-RM incident response teams; multiple distinct but tactically similar ARTEX deployments"
+scale_and_metrics: "Multiple IR engagements 2026; identity/cloud/code/firewall compromise in under 24 hours; MSP supply-chain pivot in one case; card skimmer deployment in another; persistent re-entry after containment"
+prevention_angle: "Patch vulnerable web plugins promptly; restrict and validate file uploads; implement strict authentication for admin interfaces; monitor for ARTEX forensic indicators (/opt/artex/ directories, i<id> file/account tagging, SQL markers, norma/0.4 UA, self-signed ARTEX certs); block Tor egress where not required; implement network segmentation to limit lateral movement; rotate credentials after suspected compromise; monitor for artex-wtest- GitHub branch patterns; scrutinize @example.invalid emails in logs; deploy EDR to detect autonomous pivot behaviors; implement MSP supply-chain security controls"
+related_magicsword_projects: []
+source_notes: "S-RM blog (Nov 6, 2026) primary source documenting IR artifacts from multiple ARTEX engagements; all forensic indicators (file paths, SQL markers, UA strings, certificate details, GitHub patterns) verified from S-RM analysis; unnamed adversaries due to ongoing investigations. Sophos X-Ops (Nov 10, 2026) adds Windows host markers and the listed IPS IDs. 2313260 and 2313262 are not in the published signature table, so they are omitted. Sophos describes the customer activity as consistent with ARTEX or other AI-assisted tooling, which is vendor-asserted and does not replace the S-RM task-log evidence. Storm-0940 is Microsoft's attribution for ConnectWise, cited by Sophos, and is not used as the actor for the S-RM cases."
+last_reviewed: 2026-11-12
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0049
+    rationale: "ARTEX agents autonomously conduct full intrusion lifecycle from initial compromise through multi-system pivots without continuous operator guidance"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  - id: AML.T0012
+    rationale: "AI agents exploit vulnerable web plugins and file upload misconfigurations for initial access"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  - id: AML.T0055
+    rationale: "Agents autonomously harvest and reuse credentials, pivot through identity systems, cloud resources, code repositories, and firewall configurations in under 24 hours"
+    source_urls:
+      - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+attack_flow:
+  nodes:
+    - id: initial-compromise
+      title: Exploit vulnerable web plugins
+      description: "ARTEX agents exploit vulnerable web plugins and misconfigured file upload endpoints for initial access"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: credential-harvest
+      title: Credential harvesting and reuse
+      description: "Rapid credential harvesting from compromised hosts; credentials reused for lateral movement"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: rapid-pivot
+      title: Identity/cloud/code/firewall pivot in <24h
+      description: "Autonomous agents pivot through identity systems, cloud resources, code repositories, and firewall configurations within single day"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: msp-pivot
+      title: MSP supply-chain pivot (one case)
+      description: "In one engagement, ARTEX agents pivoted through compromised MSP to reach additional customer environments"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: card-skimmer
+      title: Card skimmer deployment (one case)
+      description: "In e-commerce compromise, agents deployed card skimmer malware to capture payment data"
+      kind: impact
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+    - id: persistent-reentry
+      title: Persistent re-entry after containment
+      description: "Attackers demonstrated re-entry capability after initial containment, shifting to Tor/VPS infrastructure after IP blocking"
+      kind: execution
+      source_urls:
+        - https://www.s-rminform.com/latest-thinking/artex-in-the-wild-lessons-from-responding-to-agentic-ai-attacks
+  edges:
+    - source: initial-compromise
+      target: credential-harvest
+    - source: credential-harvest
+      target: rapid-pivot
+    - source: rapid-pivot
+      target: msp-pivot
+    - source: rapid-pivot
+      target: card-skimmer
+    - source: rapid-pivot
+      target: persistent-reentry
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unnamed ARTEX operators"
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: "S-RM, Sophos X-Ops"
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Potential IIS Web Shell File Creation
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_web_shell_aspx_write.toml"
+    notes: "Windows. ASPX web shell writes under IIS paths. Matches the Sophos report of webshell execution on customer hosts."
+  - name: Suspicious Process By Web Server Process
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_webshell_susp_process_spawned_from_webserver.yml"
+    notes: "Windows. Shells spawned by w3wp.exe and other web server processes."
+  - name: Windows Sqlservr Spawning Shell
+    format: splunk
+    url: "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_sqlservr_spawning_shell.yml"
+    notes: "Windows. sqlservr.exe spawning cmd.exe or PowerShell, matching Sophos SQL Server command execution."
+  - name: SQL Injection with Long URLs
+    format: splunk
+    url: "https://github.com/splunk/security_content/blob/develop/detections/web/sql_injection_with_long_urls.yml"
+    notes: "Detects SQL injection patterns including ARTEX UNION SELECT and comment-based injection markers"
+  - name: Suspicious C2 Activities
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml"
+    notes: "Detects Tor usage, curl/wget C2 patterns, and credential reuse behaviors"
+  - name: ARTEX forensic artifact detection
+    format: guidance
+    notes: "Linux: monitor for /opt/artex/data/task/<task>/i<id>/ directory structures; alert on files and accounts tagged with i<id> patterns; flag HTTP User-Agent norma/0.4; scan for self-signed certificates with O=ARTEX, C=CN; monitor for Autonomous pentest console branding; detect GitHub branches named artex-wtest-*; alert on @example.invalid emails. Windows (Sophos): files named i[variant]_. such as i12345_b2.ps1, paths beginning artx under C:\\Windows\\Temp, and command markers MARKER123 or ARTX123. Cloud: service principal credential or role added by an application, and application sign-ins with a scripted user agent. Sophos file names Troj/Bckdr-SDA, Troj/Loader-TU, Linux/Agent-KD, ATK/Artex-A/B/C and IPS 2313266, 2313265, 2313264, 2313263, 2313261, 2313259, 2313258, 2313257 are vendor signatures, not public Sigma or Elastic rules."
+  - name: Rapid lateral movement detection
+    format: guidance
+    notes: "Detect identity system pivots within 24-hour window; alert on cloud resource access from newly compromised credentials; monitor code repository access anomalies; flag firewall configuration changes from suspicious sources; detect MSP credential usage across multiple customer tenants; implement EDR behavioral detection for autonomous pivot patterns"
+  - name: Card skimmer and payment fraud detection
+    format: guidance
+    notes: "Scan e-commerce sites for injected JavaScript card skimmers; monitor payment form modifications; detect exfiltration of payment data; alert on suspicious checkout flow changes"
+timeline:
+  first_seen: "2026-01-01"
+  last_updated: "2026-11-10"
+  updates:
+    - date: "2026-11-06"
+      source: S-RM
+      summary: "S-RM publishes incident response analysis documenting ARTEX deployment artifacts, TTPs, and forensic indicators from multiple IR engagements; identity/cloud/code/firewall pivots in <24h; MSP supply-chain compromise; card skimmer deployment; persistent re-entry after containment"
+    - date: "2026-11-10"
+      source: Sophos X-Ops
+      summary: "Sophos publishes Windows host markers (i[variant]_. files, artx paths under C:\\Windows\\Temp, MARKER123/ARTX123), cloud service-principal markers, file detections including Troj/Bckdr-SDA, and IPS signatures 2313266, 2313265, 2313264, 2313263, 2313261, 2313259, 2313258, and 2313257. Customer activity is described as consistent with ARTEX or other AI-assisted tooling. Storm-0940 is cited only for Microsoft's ConnectWise attribution."

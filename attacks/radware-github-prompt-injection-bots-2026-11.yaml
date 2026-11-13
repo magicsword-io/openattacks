@@ -1,0 +1,165 @@
+id: radware-github-prompt-injection-bots-2026-11
+name: Radware hidden prompt injection targeting GitHub maintainer bots
+date_reported: 2026-11-05
+researcher: Zvika Babo, Gabi Nakibly
+org: Radware
+sources:
+  - url: https://www.radware.com/blog/prompt-injecting-coding-agents/
+    title: "Radware: Prompt Injecting Coding Agents"
+    publisher: Radware
+  - url: https://github.com/rdwr-gabin/github-ipi-in-the-wild
+    title: "Radware: GitHub IPI in the Wild - Examples Repository"
+    publisher: GitHub
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: GitHub triage, review, and CI bots manipulated via hidden HTML comments,
+  invisible Unicode, and CSS tricks in issues/PRs to execute unauthorized actions
+technique_summary: "Radware researchers Zvika Babo and Gabi Nakibly (Nov 5, 2026)
+  document hidden prompt injection techniques targeting GitHub maintainer bots processing
+  issues and pull requests. Attackers hide instructions in HTML comments, invisible
+  Unicode characters, and CSS display tricks. Examples documented: (1) google-gemini/gemini-cli#28575
+  - deduplication agent told to use run_shell_command to write base64-encoded GITHUB_TOKEN
+  into GITHUB_ENV; (2) openai/codex#16733 - labeler told to curl webhook.site and
+  dump environment variables; (3) microsoft/agent-framework#7177 - fake triage gate
+  with allow_triage=true, gate_result=pass markers; (4) blondesean/Kings_Herald#21
+  - hidden backdoor instruction in feature request. Attackers study bot tool names
+  and output field formats to forge steering markers. Hidden instructions can bypass
+  human review while manipulating bot behavior. Radware provides examples repository
+  at github.com/rdwr-gabin/github-ipi-in-the-wild. No specific threat actor attribution;
+  confirmed technique active in wild."
+initial_access: Malicious GitHub issues or pull requests with hidden prompt injection
+ai_tooling_and_models:
+  - GitHub triage bots
+  - GitHub review bots
+  - GitHub CI/CD automation bots
+  - Repository automation agents
+other_tooling:
+  - HTML comments
+  - Invisible Unicode characters
+  - CSS display manipulation
+  - webhook.site exfiltration
+victims_and_sectors: GitHub repositories using AI-powered triage, review, and CI bots;
+  examples include Google Gemini, OpenAI, Microsoft repositories
+regions:
+  - Multiple regions
+attribution_or_cluster: Unattributed technique; confirmed active in wild with documented
+  examples
+scale_and_metrics: Multiple confirmed examples across major repositories (Google,
+  OpenAI, Microsoft); active Nov 2026
+prevention_angle: Strip HTML comments before bot processing; sanitize invisible Unicode
+  from issues/PRs; validate bot tool output fields against expected schema; implement
+  bot action approval gates; monitor for suspicious run_shell_command, curl webhook,
+  environment variable access; restrict bot permissions to minimum required; log all
+  bot actions for audit; educate maintainers on prompt injection risks; implement
+  bot behavioral analysis
+related_magicsword_projects: []
+source_notes:
+  Radware blog (Nov 5, 2026) primary source; examples repository github.com/rdwr-gabin/github-ipi-in-the-wild
+  provides proof-of-concept demonstrations; links to hackerbot-claw-github-actions-2026-03
+  and forever-agents-md-hijack catalog entries for related GitHub AI agent attacks
+last_reviewed: 2026-11-10
+iocs:
+  domains:
+    - webhook.site
+  ips: []
+  hashes: []
+  urls:
+    - https://github.com/google-gemini/gemini-cli/issues/28575
+    - https://github.com/openai/codex/issues/16733
+    - https://github.com/microsoft/agent-framework/issues/7177
+    - https://github.com/blondesean/Kings_Herald/issues/21
+    - https://github.com/rdwr-gabin/github-ipi-in-the-wild
+atlas_techniques:
+  - id: AML.T0051
+    rationale: Hidden HTML comments, invisible Unicode, and CSS tricks inject instructions
+      into GitHub bot processing
+    source_urls:
+      - https://www.radware.com/blog/prompt-injecting-coding-agents/
+  - id: AML.T0053
+    rationale: Bots manipulated to execute run_shell_command, curl webhooks, write GITHUB_TOKEN
+      to environment
+    source_urls:
+      - https://www.radware.com/blog/prompt-injecting-coding-agents/
+  - id: AML.T0055
+    rationale: Attackers study bot tool names/output fields to forge valid steering
+      markers (allow_triage, gate_result)
+    source_urls:
+      - https://www.radware.com/blog/prompt-injecting-coding-agents/
+attack_flow:
+  nodes:
+    - id: study-bots
+      title: Study bot tools and output formats
+      description: Attacker analyzes target repository bot behavior, tool names, and
+        expected output field formats
+      kind: execution
+      source_urls:
+        - https://www.radware.com/blog/prompt-injecting-coding-agents/
+    - id: craft-injection
+      title: Craft hidden prompt injection
+      description: Embed instructions in HTML comments, invisible Unicode, or CSS-hidden
+        elements
+      kind: execution
+      source_urls:
+        - https://www.radware.com/blog/prompt-injecting-coding-agents/
+    - id: submit-issue-pr
+      title: Submit malicious issue or PR
+      description: Attacker creates GitHub issue or PR containing hidden instructions
+      kind: access
+      source_urls:
+        - https://www.radware.com/blog/prompt-injecting-coding-agents/
+    - id: bot-processes
+      title: Bot processes issue/PR
+      description: Triage, review, or CI bot reads issue/PR including hidden injection
+      kind: ai
+      source_urls:
+        - https://www.radware.com/blog/prompt-injecting-coding-agents/
+    - id: execute-injection
+      title: Bot executes injected instructions
+      description: Bot writes GITHUB_TOKEN to env, curls webhook, or accepts fake triage
+        gate
+      kind: impact
+      source_urls:
+        - https://www.radware.com/blog/prompt-injecting-coding-agents/
+  edges:
+    - source: study-bots
+      target: craft-injection
+    - source: craft-injection
+      target: submit-issue-pr
+    - source: submit-issue-pr
+      target: bot-processes
+    - source: bot-processes
+      target: execute-injection
+category: attacks-on-ai
+attribution:
+  actor_name: Unattributed technique
+  country: Unknown
+  motivation: unknown
+  attributed_by: Radware
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Execution via GitHub Actions Runner
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/execution_via_github_actions_runner.toml
+    notes: Detects malicious code execution via GitHub Actions bot manipulation
+  - name: Tampering with RUNNER_TRACKING_ID in GitHub Actions Runners
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/execution_via_github_runner_with_runner_tracking_id_tampering_via_env_vars.toml
+    notes: Detects GITHUB_ENV and GITHUB_TOKEN manipulation via bot prompt injection
+  - name: GitHub bot security controls
+    format: guidance
+    notes: Strip HTML comments before bot processing; sanitize invisible Unicode (U+200B,
+      U+200C, U+200D, U+FEFF); detect CSS display:none in issues/PRs; monitor run_shell_command
+      usage; alert on curl webhook.site from bots; restrict GITHUB_TOKEN write access
+timeline:
+  first_seen: "2026-10-01"
+  last_updated: "2026-11-05"
+  updates:
+    - date: "2026-11-05"
+      source: Radware
+      summary: Zvika Babo and Gabi Nakibly publish analysis of hidden prompt injection
+        targeting GitHub maintainer bots; examples repository documents real-world cases
+        from Google, OpenAI, Microsoft repositories
