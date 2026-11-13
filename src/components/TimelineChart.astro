@@ -197,9 +197,7 @@ const chartHeight = baseline + 49;
     ))}
   </div>
   <div class="chart-bottom">
-    <span class="chart-inspector" data-chart-inspector>
-      One dot. One documented entry. Select a dot to read the research.
-    </span>
+    <span class="chart-inspector" data-chart-inspector></span>
     <a href={href("timeline/")}>Explore timeline</a>
   </div>
   <span class="sr-only" data-chart-status aria-live="polite"></span>
@@ -228,7 +226,7 @@ const chartHeight = baseline + 49;
           ? `${entries.filter((entry) => inStack(entry) && (!activeRole || entry.dataset.role === activeRole)).length} highlighted${activeRole ? " in this role" : ""} · ${stackIDs.size} of ${entries.length} reports match your selections. Check their conditions below.`
           : activeRole
             ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
-            : "One dot. One documented entry. Select a dot to read the research.";
+            : "";
       function highlight(role: string) {
         activeRole = role;
         entries.forEach(
