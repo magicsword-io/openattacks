@@ -19,6 +19,13 @@ unknown
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: n/a (skill install / agent load path)
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 0 downloads at time of post
+
 ## Attack flow
 ### step-1: Skill bundle is scanned (access)
 
@@ -72,6 +79,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://lolskills.io/discover/56bd2dd3473fa5a15b30dd42a262ac410148e41679ebcc51c71b33279cdbfa6c>

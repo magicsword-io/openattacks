@@ -134,7 +134,6 @@ atlas_techniques:
     source_urls:
       - https://fireworks.ai/security/bulletins/october-2026-security-incident
 timeline:
-  first_seen: "2026-01-01"
   last_updated: "2026-11-11"
   updates:
     - date: "2026-11-02"

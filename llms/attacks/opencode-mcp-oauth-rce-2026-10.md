@@ -19,6 +19,13 @@ Vulnerability research (no in-the-wild campaign named)
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Developer connects coding agent to attacker-controlled or later-compromised remote MCP server
+- Victims and sectors: Windows and WSL developers using opencode (~3M weekly npm downloads cited by Pillar)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Fixed in 1.18.33 (2026-09-28) without CVE/advisory; proposed CVSS 9.8
+
 ## Attack flow
 ### step-1: Developer connects a remote MCP server (access)
 
@@ -71,6 +78,9 @@ No timeline is recorded.
 - [npm open@10.1.2](https://github.com/sindresorhus/open)
 - [PowerShell](https://github.com/PowerShell/PowerShell)
 - related class CVEs: CVE-2025-6514 [mcp-remote](https://github.com/punkpeye/mcp-remote), CVE-2025-58062 [openmcp-client](https://github.com/LSTM-Kirigaya/openmcp-client), CVE-2025-10619 [sequa-mcp](https://github.com/sequa-ai/sequa-mcp)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.pillar.security/blog/open-and-shut-remote-code-execution-in-opencode-via-mcp-oauth>

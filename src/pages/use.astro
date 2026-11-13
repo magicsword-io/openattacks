@@ -7,15 +7,17 @@ const attacks = await getAttacks();
 const slices = catalogSlices(attacks);
 const groups = buildPromptGroups(attacks);
 const months = slices.months.slice(0, 6);
-const zipUrl = "https://openattacks.ai/downloads/openattacks-skill.zip";
-const llmsUrl = "https://openattacks.ai/llms.txt";
+const publicBase = new URL(import.meta.env.BASE_URL, Astro.site || Astro.url.origin);
+const publicUrl = (path: string) => new URL(path, publicBase).href;
+const zipUrl = publicUrl("downloads/openattacks-skill.zip");
+const llmsUrl = publicUrl("llms.txt");
 const install = (directory: string) =>
   `curl -fsSL ${zipUrl} -o /tmp/openattacks-skill.zip && mkdir -p ${directory} && unzip -o /tmp/openattacks-skill.zip -d ${directory}`;
 const categoryLabel: Record<string, string> = {
   "adversary-use-of-ai": "Adversary use of AI — attackers using AI in the operation",
   "attacks-on-ai": "Attacks on AI — the model, agent, or AI tool is the target",
 };
-const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only the entries this question needs at https://openattacks.ai/llms/attacks/<id>.md. For a whole category or month, open https://openattacks.ai/llms/by-category/<category>.md or https://openattacks.ai/llms/by-month/<YYYY-MM>.md instead. Do not load llms-full.txt. Cite the catalog page and the original source URL. Say when attribution or AI involvement is unknown. Do not invent detection rules or MITRE ATLAS mappings.`;
+const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only the entries this question needs at ${publicBase.href}llms/attacks/<id>.md. For a whole category or month, open ${publicBase.href}llms/by-category/<category>.md or ${publicBase.href}llms/by-month/<YYYY-MM>.md instead. Do not load llms-full.txt. Cite the catalog page and the original source URL. Say when attribution or AI involvement is unknown. Do not invent detection rules or MITRE ATLAS mappings.`;
 ---
 
 <Layout

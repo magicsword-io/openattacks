@@ -19,6 +19,13 @@ unknown commercially motivated operator; state affiliation not confirmed
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: n/a (influence ops on social platforms)
+- Victims and sectors: Tens of thousands of authentic social accounts engaged; clients outside US with varied political narratives; state-affiliated style not confirmed
+- Regions: Multiple regions
+- Region notes: The source identifies clients in multiple countries outside the United States; individual target countries are not disclosed.
+- Scale and metrics: 100+ bot accounts on X/Facebook; tens of thousands of engagements; no viral hits noted
+
 ## Attack flow
 ### step-1: Operator defines political personas (access)
 
@@ -70,6 +77,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025>

@@ -23,6 +23,13 @@ knaithe/KnYuan (Unit 42 tracking); Thailand campaign actor unknown (Hunt.io vend
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: 1-day vulnerability exploitation (knaithe); unknown (Thailand campaign)
+- Victims and sectors: Technology companies (knaithe); Thailand Ministry of Finance (Hunt.io); government and private sector
+- Regions: Multiple regions, Thailand
+- Region notes: unknown
+- Scale and metrics: Multiple organizations compromised across both campaigns Jul-Aug 2026
+
 ## Attack flow
 ### initial-access: Gain initial access (access)
 
@@ -80,6 +87,9 @@ Patch 1-day vulnerabilities rapidly; monitor for Hermes agent indicators; detect
 - 1-day vulnerability exploits
 - Autonomous reconnaissance tools
 - Data exfiltration frameworks
+
+## Source notes
+Unit 42 analysis of knaithe/KnYuan; Hunt.io vendor assertion for Thailand campaign. Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Detection: monitor for Hermes Python processes, autonomous reconnaissance patterns, DeepSeek API calls from infrastructure hosts.
 
 ## Sources
 - [Unit 42: knaithe/KnYuan Using Hermes Agent in 1DayNews Campaign](https://unit42.paloaltonetworks.com/autonomous-ai-cyber-attack-campaign/)

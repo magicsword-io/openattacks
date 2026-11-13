@@ -60,6 +60,13 @@ const MOTIVATION = {
 };
 const COUNTRIES = new Set(["China", "Russia", "Iran", "North Korea"]);
 const AI_CONFIDENCE = { Confirmed: "confirmed", Reported: "vendor-asserted" };
+const TARGET_TECHNIQUES = new Set([
+  "API key / account abuse",
+  "Prompt injection",
+  "AI infra intrusion",
+  "Model theft / distillation",
+  "Data poisoning",
+]);
 const STOPWORDS = new Set(
   "a an and are as at by for from has in into is its of on or says that the their them to was were with".split(
     " ",
@@ -77,14 +84,22 @@ const list = (value) => {
   }
 };
 const text = (value) => (typeof value === "string" ? value.trim() : "");
-export const normalizeUrl = (url) =>
-  url
-    .trim()
-    .toLowerCase()
-    .replace(/^https?:\/\//, "")
-    .replace(/^www\./, "")
-    .replace(/[?#].*$/, "")
-    .replace(/\/+$/, "");
+export function normalizeUrl(value) {
+  const url = new URL(value.trim());
+  url.hash = "";
+  for (const key of [...url.searchParams.keys()])
+    if (/^(?:utm_.+|fbclid|gclid|mc_cid|mc_eid)$/i.test(key))
+      url.searchParams.delete(key);
+  url.searchParams.sort();
+  const host = url.host.toLowerCase().replace(/^www\./, "");
+  const path = url.pathname.replace(/\/+$/, "");
+  return `${host}${path}${url.search}`;
+}
+
+export function primaryAlreadyCited(value, cited) {
+  const primary = text(value);
+  return !sourceUrlError(primary) && cited.has(normalizeUrl(primary));
+}
 
 // Split on ";" outside parentheses: "A (x; y); B" -> ["A (x; y)", "B"].
 export function splitTopLevel(value) {
@@ -119,12 +134,47 @@ export function slugFor(headline, published, taken) {
   return id;
 }
 
-function rolesFor(techniques) {
+function rolesFor(row, techniques) {
+  const context = [row.Headline, row.Summary, row["Targeted AI / Vendor"]]
+    .map(text)
+    .join("\n");
+  if (
+    /(?:\bAI\b|\bLLM\b|OpenAI|Anthropic|Claude|Gemini|Assistants API).{0,80}\b(?:C2|command[- ]and[- ]control)\b|\b(?:C2|command[- ]and[- ]control)\b.{0,80}(?:\bAI\b|\bLLM\b|OpenAI|Anthropic|Claude|Gemini|Assistants API)/i.test(
+      context,
+    )
+  )
+    return ["ai_infra_as_c2"];
+  if (
+    /\bfake AI\b|\bAI[- ](?:branded|themed)\b|\bimpersonat(?:e|ed|ing)\b.{0,40}\bAI\b/i.test(
+      context,
+    )
+  )
+    return ["ai_tool_as_lure"];
   const roles = [];
   for (const [technique, role] of ROLE_BY_TECHNIQUE)
     if (techniques.includes(technique) && !roles.includes(role))
       roles.push(role);
   return roles.length ? roles : ["other"];
+}
+
+function categoryFor(techniques, roles) {
+  if (
+    roles.some((role) =>
+      [
+        "ai_infra_as_c2",
+        "ai_tool_as_lure",
+        "attacker_uses_ai_as_operator",
+        "llm_generated_malware",
+      ].includes(role),
+    )
+  )
+    return "adversary-use-of-ai";
+  return techniques.some((technique) => TARGET_TECHNIQUES.has(technique)) ||
+    roles.some((role) =>
+      ["ai_agent_or_mcp_as_target", "ai_credential_theft"].includes(role),
+    )
+    ? "attacks-on-ai"
+    : "adversary-use-of-ai";
 }
 
 // Returns { entry } or { error }. `taken` holds IDs already in use.
@@ -150,7 +200,8 @@ export function convertRow(row, taken) {
   }
 
   const techniques = list(row.Techniques);
-  const [aiRole, secondary] = rolesFor(techniques);
+  const roles = rolesFor(row, techniques);
+  const [aiRole, secondary] = roles;
   const sectors = list(row.Sectors).map((s) => SECTOR_LABELS[s] || s);
   const actor = text(row["Threat Actor"]);
   // "Unnamed (operators of X)" describes an actor without naming one.
@@ -208,7 +259,7 @@ export function convertRow(row, taken) {
           .replace(/^-|-$/g, ""),
       ),
     ],
-    category: "adversary-use-of-ai",
+    category: categoryFor(techniques, roles),
     ...(Object.keys(attribution).length && { attribution }),
     ai_involvement_confidence: AI_CONFIDENCE[row.Confidence],
   };
@@ -250,7 +301,7 @@ function main() {
   for (const path of positionals)
     for (const row of readRows(path)) {
       const label = row.Headline || row.notion_url || "(untitled row)";
-      if (row.URL && cited.has(normalizeUrl(row.URL))) {
+      if (primaryAlreadyCited(row.URL, cited)) {
         skipped.push(`${label} (source already cited)`);
         continue;
       }

@@ -9,8 +9,7 @@ sources:
   - url: https://thehackernews.com/2025/11/microsoft-detects-sesameop-backdoor.html
   - url: https://securityaffairs.com/184197/malware/sesameop-new-backdoor-exploits-openai-api-for-covert-c2.html
 borderline: false
-ai_role: llm_generated_malware
-ai_role_secondary: ai_credential_theft
+ai_role: ai_infra_as_c2
 technique_summary: An espionage-focused intrusion used a .NET backdoor that relays commands and results through the OpenAI Assistants API, hiding C2 inside legitimate AI SaaS traffic.
 initial_access: unknown
 ai_tooling_and_models:

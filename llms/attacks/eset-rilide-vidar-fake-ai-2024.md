@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Malicious ads / fake AI installers / malicious extension
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: AI ads or downloads attract users (access)
 
@@ -72,6 +79,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://blog.eset.ie/2024/07/30/beware-of-fake-ai-tools-masking-very-real-malware-threats/>

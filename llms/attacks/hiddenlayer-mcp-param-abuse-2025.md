@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Connection prerequisite is unspecified (unknown)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.hiddenlayer.com/research/exploiting-mcp-tool-parameters>

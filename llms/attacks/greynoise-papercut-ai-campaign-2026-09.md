@@ -17,6 +17,13 @@ Unknown actor; financially motivated (ransomware, access sales); sophisticated A
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Exploitation of PaperCut NG/MF servers via CVE-2023-27350 and CVE-2023-27351 (path traversal + RCE)
+- Victims and sectors: 395 organizations compromised Aug-Sep 2026; healthcare, education, government, finance; print management infrastructure
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 395 organizations compromised Aug-Sep 2026 via PaperCut exploitation + AI agent post-exploitation
+
 ## Attack flow
 ### scan-exploit: Mass scan and exploit PaperCut (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 - Active Directory enumeration
 - Print job credential harvesting
 - Ransomware (some cases)
+
+## Source notes
+GreyNoise Intelligence analysis. Campaign demonstrates AI agent use in mass exploitation and post-compromise automation. Detection: alert on PaperCut CVE exploitation attempts, monitor DeepSeek API traffic (api.deepseek.com) from print servers or unexpected hosts, detect rapid AD queries from print server IPs, review print job logs for credential exposure, monitor lateral movement patterns from print infrastructure to fileservers/workstations.
 
 ## Sources
 - [GreyNoise: AI-Orchestrated Campaign Against PaperCut NG/MF](https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf)

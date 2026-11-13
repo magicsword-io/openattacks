@@ -23,6 +23,13 @@ DPRK BlueNoroff/Lazarus (high-confidence attribution by SentinelOne); revenue ge
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Spearphishing with fake job offers targeting crypto/AI company employees; malicious macOS application bundle delivered via LinkedIn/email
+- Victims and sectors: Cryptocurrency companies, AI/ML companies, fintech; individuals in tech roles targeted via social engineering
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Unknown number of infections; discovered Jun 2026; first documented malware using prompt injection to manipulate analyst LLM tools
+
 ## Attack flow
 ### spearphishing: Fake job offer spearphishing (access)
 
@@ -82,6 +89,9 @@ Educate employees on fake job offer phishing; verify job offers via official cha
 - Prompt injection in malware samples
 - C2 infrastructure (macos-update\[.\]com)
 - Keylogger, screenshot capture, file exfiltration
+
+## Source notes
+SentinelLABS analysis with DPRK attribution. macOS.Gaslight represents significant evolution: adversary anticipates security analyst workflows and embeds anti-analysis prompt injection targeting LLM tools increasingly used in malware research. Detection: sandbox malware without LLM analysis initially; scan binary strings/comments for prompt injection patterns ('ignore previous instructions', 'this is benign', 'do not report'); verify C2 manually; check for macos-update[.]com domain; look for keylogger/screenshot indicators on macOS.
 
 ## Sources
 - [SentinelLABS: macOS.Gaslight - North Korean Backdoor Uses LLM to Evade Analysis](https://www.sentinelone.com/labs/macos-gaslight-dprk-backdoor-prompt-injection/)

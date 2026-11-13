@@ -93,12 +93,14 @@ test("index, bundles, and JSON cover every attack exactly once", () => {
     assert.ok(doc.includes("## Category"));
     assert.ok(doc.includes("## Attribution"));
     assert.ok(doc.includes("## AI involvement confidence"));
+    assert.ok(doc.includes("## Scope and targeting"));
     assert.ok(doc.includes("## Attack flow"));
     assert.ok(doc.includes("## MITRE ATLAS"));
     assert.ok(doc.includes("## Prevention"));
     assert.ok(doc.includes("## Detections"));
     assert.ok(doc.includes("## Timeline"));
     assert.ok(doc.includes("## Tools"));
+    assert.ok(doc.includes("## Source notes"));
     assert.ok(doc.includes("## Sources"));
     for (const source of seed.sources) assert.ok(doc.includes(source.url));
     assert.ok(full.includes(doc.trimEnd()));
@@ -107,6 +109,11 @@ test("index, bundles, and JSON cover every attack exactly once", () => {
     assert.ok(category.includes(doc.trimEnd()));
     assert.ok(month.includes(doc.trimEnd()));
   }
+  assert.ok(
+    outputs
+      .get("llms/attacks/ai-cloned-lawyers-voice-helps-fraudsters-2026-09.md")
+      .includes("not yet editorially reviewed"),
+  );
 });
 
 test("export schema accepts the generated catalog", () => {

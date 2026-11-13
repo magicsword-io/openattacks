@@ -23,6 +23,13 @@ Storm-3168 (Microsoft attribution, medium confidence)
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Exploits in cloud services, container escapes
+- Victims and sectors: Cloud environments, AI/ML infrastructure, enterprises with data-heavy workloads
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Multiple victims Jul-Aug 2026; ENCFORGE specifically targets AI/ML organizations
+
 ## Attack flow
 ### access: Compromise cloud environment (access)
 
@@ -81,6 +88,9 @@ Secure cloud environments; backup model weights offline; monitor for Langflow pr
 - JADEPUFFER ransomware
 - ENCFORGE variant (targets model weights)
 - Autonomous exfiltration
+
+## Source notes
+Sysdig analysis; Microsoft Storm-3168 link. Langflow GitHub github.com/langflow-ai/langflow. Detection: monitor for Langflow agent processes, autonomous file enumeration patterns, model weight file access (.pt, .ckpt, .safetensors), large-scale encryption operations.
 
 ## Sources
 - [Sysdig: JADEPUFFER - LLM Agent End-to-End Ransomware via Langflow](https://www.sysdig.com/blog/jadepuffer-agentic-ransomware-for-automated-database-extortion)

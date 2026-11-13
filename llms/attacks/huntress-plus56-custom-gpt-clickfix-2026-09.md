@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Custom GPT social engineering → ClickFix paste → MSI
+- Victims and sectors: 40+ Huntress incidents; 2 confirmed via Custom GPT; ongoing as of 2026-10-14
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 40+ related incidents; OpenAI took down first GPT ~2026-09-25; replacement appeared 09-27
+
 ## Attack flow
 ### step-1: Custom GPT attracts a user (access)
 
@@ -77,6 +84,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [HijackLibs](https://hijacklibs.net)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat>

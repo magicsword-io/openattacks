@@ -17,6 +17,13 @@ Canto Incognito campaign; Italian-speaking threat actor (assessment); financiall
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Exploitation of publicly exposed vulnerable services: LiteLLM, Ollama, Gotenberg, Gitea, possibly Ivanti Sentry CVE-2026-10520; first activity April 2026
+- Victims and sectors: 3,400+ victim servers; enterprise AI infrastructure; development toolkits; predominantly US and Western Europe; peak activity 800 active servers per day
+- Regions: United States, Europe
+- Region notes: unknown
+- Scale and metrics: Active since April 2026; 3,400+ impacted servers; peak ~2,200 affected servers mid-June, ~800 active per day; first C2 commit Apr 13, 2026; poem updated 11 times; broader scanning/exploitation began May 2026; recent traffic suggests distributed brute-force experiments
+
 ## Attack flow
 ### vuln-exploit: Exploit vulnerable AI/LLM services (access)
 
@@ -85,6 +92,9 @@ No timeline is recorded.
 - Gotenberg (PDF converter)
 - Gitea (software development toolkit)
 - Ivanti Sentry (possibly CVE-2026-10520)
+
+## Source notes
+Black Lotus Labs discovered via Ivanti Sentry CVE-2026-10520 investigation; disrupted campaign, blocked C2 traffic; Lumen Defender customers protected; malware includes remote shell, miners, HTTP/S scanning, exploit deployment; Gotenberg installation guide warns not to expose to internet
 
 ## Sources
 - [Canto incognito: tracking the PoeLLM malware](https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware)

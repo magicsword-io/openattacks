@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Exposed LLM endpoints without authentication: OpenAI-compatible APIs, self-hosted model servers, AI gateways, MCP servers; stolen API keys
+- Victims and sectors: Organizations with exposed AI/LLM endpoints; Symantec honeypot recorded 127,000+ requests from tens of thousands of addresses
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Symantec honeypot summer 2026 captured full working prompt; 127,000+ external requests from tens of thousands of addresses; authorized up to 100,000 unattended steps per session; deploys XMRig miners
+
 ## Attack flow
 ### hunt-endpoints: Hunt exposed LLM/MCP endpoints (access)
 
@@ -81,6 +88,9 @@ No timeline is recorded.
 - Laravel
 - Supabase
 - Prisma Studio
+
+## Source notes
+Symantec AI honeypot captured full working prompt; operators sent tool's entire prompt expecting real model on other end; honeypot impersonates unprotected internet-facing AI service. Detection guidance: monitor exposed endpoints, API key anomalies, XMRig processes, mining pool connections, web framework exploitation from AI infrastructure.
 
 ## Sources
 - [Autonomous LLMjacking: 'Skynet' Agent Hijacks Exposed AI Models](https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks)

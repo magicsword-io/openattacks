@@ -17,6 +17,13 @@ n0n ransomware group; operations Sep 17 - Oct 22, 2026
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Credential-only access: credential stuffing campaign against 305 FortiGate SSL-VPN devices, exposed AWS keys, weak RDP/WinRM credentials, compromised hosting management portals; no vulnerability exploitation found
+- Victims and sectors: 23 organizations across 14 countries; 93 listed victims as of Oct 19, 2026
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Exposed workspace with 1,719 files (829 scripts, 5 encryptor sources); 154 model entries across 7 providers; $7,216 in AI gateway spending by Oct 22; 93 victims listed with $283.7M total ransom demands; 23 intrusion attempts across 14 countries
+
 ## Attack flow
 ### credential-access: Credential-only initial access (access)
 
@@ -91,6 +98,9 @@ No timeline is recorded.
 - n0n ransomware encryptor (5 C++ versions)
 - Credential stuffing tools
 - Cisco Firepower Management Center (hijacked for policy manipulation)
+
+## Source notes
+SOCRadar STRU discovered exposed staging server in Sweden on port 8877; snapshots Sep 25-26, 2026; first documented criminal use of abliterated models; human-directed operation, not fully autonomous; SOCRadar access to blog post may be restricted (403 observed)
 
 ## Sources
 - [n0n Ransomware: Inside an AI-Assisted Extortion Operation](https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/)

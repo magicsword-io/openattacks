@@ -19,6 +19,13 @@ GTIG QUIETVAULT; industry links to UNC6426 / s1ngularity cluster
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Trojanized npm packages (industry linkage to UNC6426 / s1ngularity-style campaigns)
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Observed in operations 2025
+
 ## Attack flow
 ### step-1: Trojanized npm package is installed (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

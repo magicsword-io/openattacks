@@ -23,6 +23,13 @@ Unknown actor; part of Feb 2026 wave targeting AI CLI tools and skill frameworks
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: npm install cline-cli@2.8.1 (compromised version, available ~6 hours on Feb 17, 2026)
+- Victims and sectors: ~1,200 downloads in 6-hour window; AI developers using Cline CLI
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: ~1,200 downloads in 6-hour exposure window; package removed Feb 17, 2026
+
 ## Attack flow
 ### compromise-package: Publish malicious cline-cli (access)
 
@@ -80,6 +87,9 @@ Use npm package lock files; verify package integrity; review postinstall scripts
 - npm supply chain attack
 - Malicious OpenClaw skill
 - cline-telemetry\[.\]io C2
+
+## Source notes
+GitHub Security Advisory GHSA-9ppg-jx86-fqw7; Cline GitHub github.com/cline/cline. Related to ClawHavoc and other malicious OpenClaw skill campaigns. Detection: alert on npm packages with postinstall scripts installing to ~/.openclaw/skills/, check for cline-telemetry[.]io domain, monitor AI credential file access from unexpected processes.
 
 ## Sources
 - [GHSA-9ppg-jx86-fqw7: Malicious code in cline-cli npm package](https://github.com/advisories/GHSA-9ppg-jx86-fqw7)

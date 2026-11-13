@@ -53,11 +53,11 @@ atlas_techniques:
     rationale: "Remote text appended to ~/.claude/CLAUDE.md persists instructions after skill removal"
     source_urls:
       - https://research.snyk.io/blog/skill-analysis/
-  - id: AML.T0081
+  - id: AML.T0083
     rationale: "Malicious skills target AI credential theft and environment compromise"
     source_urls:
       - https://research.snyk.io/blog/skill-analysis/
-  - id: AML.T0083
+  - id: AML.T0081
     rationale: "Skills establish persistence through CLAUDE.md modification and agent enrollment mechanisms"
     source_urls:
       - https://research.snyk.io/blog/skill-analysis/

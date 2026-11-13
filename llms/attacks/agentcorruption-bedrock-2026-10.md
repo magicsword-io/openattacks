@@ -19,6 +19,13 @@ Vulnerability research (Zenity at SecTor)
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Prompt injection / SSRF via agent tools against exposed AgentCore agent
+- Victims and sectors: Organizations deploying AgentCore agents (research disclosure; patched)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Single prompt to one agent → account/region AgentCore blast radius (pre-fix)
+
 ## Attack flow
 ### step-1: Public agent receives a prompt (access)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 - IMDS / IMDSv2
 - [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/)
 - [ECR](https://aws.amazon.com/ecr/)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://labs.zenity.io/post/agentcorruption-how-a-single-prompt-collapsed-the-entire-cloud-security-model>

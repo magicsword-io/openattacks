@@ -17,6 +17,13 @@ haiou-666 (GitHub username)
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: User downloads and installs haiou-codex jailbreak bundle from GitHub promoted on Chinese social platforms
+- Victims and sectors: Codex users seeking jailbreak or free access, primarily Chinese-speaking users
+- Regions: China, Asia
+- Region notes: China and Asia reflect primary promotion on Bilibili and QQ; global Codex users potentially affected
+- Scale and metrics: Promoted on Bilibili and QQ; repository stars and download count unknown
+
 ## Attack flow
 ### distribution: Jailbreak bundle promoted on social platforms (access)
 
@@ -79,6 +86,14 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+Relevant detection rules:
+- Monitor modifications to global Codex instructions
+- Detect installation of unexpected skills (seagull-* naming pattern)
+- Alert on connections to suspicious API gateways (zz.aiapi2025.top)
+- Review skill content for ad injection patterns or output manipulation logic
+- Note: No direct Sigma rules for agent skill poisoning; requires custom monitoring of agent configuration changes and skill installation events, plus network monitoring for unexpected API gateway connections.
 
 ## Sources
 - [Free the Model, Sell the Gateway: Prompt Adware Hidden in Jailbreak Bundles](https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/) — Check Point Research

@@ -17,6 +17,13 @@ CyberXero initial access broker; sells access to ransomware groups and nation-st
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Spearphishing with malicious attachments; exploitation of public-facing Fortinet VPN (CVE-2024-47575)
+- Victims and sectors: 7 compromised Ukrainian energy companies Sep-Oct 2026; critical infrastructure; SCADA/ICS systems targeted
+- Regions: Ukraine
+- Region notes: unknown
+- Scale and metrics: 7 Ukrainian energy companies compromised; up to 51 parallel AI agents per target; median 18 hours from initial access to domain compromise (vs 72+ hours manual)
+
 ## Attack flow
 ### initial-compromise: Initial access via VPN/phishing (access)
 
@@ -73,6 +80,9 @@ No timeline is recorded.
 - SMB and RDP exploits
 - SCADA/ICS reconnaissance tools
 - SQLite database for agent coordination
+
+## Source notes
+SOCRadar Cyber Intelligence analysis. CyberXero represents evolution of IAB operations: deploying swarms of coordinated AI agents to dramatically reduce time-to-compromise for critical infrastructure. Detection: alert on multiple Claude API-calling processes (Python, Node.js) from single network, monitor SQLite database writes indicating agent coordination, check for rapid multi-host exploitation patterns, review SCADA/ICS access from IT network, scan exploits for LLM generation characteristics.
 
 ## Sources
 - [SOCRadar: CyberXero IAB Targets Ukrainian Critical Infrastructure with AI](https://socradar.io/blog/cyberxero-ai-iab-ukraine-critical-infrastructure/)

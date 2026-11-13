@@ -23,6 +23,13 @@ PhantomRaven; operator unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: npm install of malicious/slopsquat packages
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 126 packages cited in related reporting
+
 ## Attack flow
 ### step-3: Hallucinated names create an exposure path (ai)
 
@@ -77,6 +84,9 @@ Block remote HTTP deps; lockfiles; SCA; never trust AI-suggested package names b
 ### Other tooling
 - Remote dynamic dependencies
 - info-stealers
+
+## Source notes
+CrowdStrike identified LLM-generated stealer patterns: characteristic variable naming, comments explaining basic operations, structured code organization typical of AI-generated malware
 
 ## Sources
 - [Koi Security: PhantomRaven npm Malware Hidden in Invisible Dependencies](https://www.koi.ai/blog/phantomraven-npm-malware-hidden-in-invisible-dependencies)

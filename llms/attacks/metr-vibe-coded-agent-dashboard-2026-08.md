@@ -23,6 +23,13 @@ Unknown actor
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Exposed API key in vibe-coded dashboard client-side code
+- Victims and sectors: METR organization; AI research
+- Regions: United States
+- Region notes: unknown
+- Scale and metrics: ~$600,000 in AI credits stolen over <24 hours
+
 ## Attack flow
 ### discover-key: Discover exposed API key (access)
 
@@ -70,6 +77,9 @@ Secure AI prototypes before production; never expose API keys in client code; us
 ### Other tooling
 - API key harvesting
 - Cloud AI credit draining
+
+## Source notes
+METR disclosure. 'Vibe-coding' refers to rapid AI-assisted prototyping with minimal security review. Detection: monitor for unusual AI credit consumption spikes, unauthorized account access, rapid enumeration patterns.
 
 ## Sources
 - [METR: Exposed Vibe-Coded Agent Dashboard Key Led to ~$600K Credit Theft](https://metr.org/blog/2026-08-31-security-update/)

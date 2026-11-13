@@ -21,6 +21,13 @@ GhostAction; PolinRider-technique copycat (no shared IOCs with DPRK per OSM)
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: Compromised GitHub account → malicious workflow + VS Code trusted workspace auto task
+- Victims and sectors: GitHub maintainers / developers (many dormant repos)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 94 compromised repos; Stage 1 Oct 8, Stage 2 Oct 15 2026
+
 ## Attack flow
 ### step-1: Compromised account changes a repository (access)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 - [node](https://github.com/nodejs/node)
 - cron
 - 193.32.204.199:8080
+
+## Source notes
+unknown
 
 ## Sources
 - <https://opensourcemalware.com/blog/ghostaction-copycats-polinrider-by-hiding-a-stealer-in-a-fake-font-file>

@@ -23,6 +23,13 @@ Unknown actor; Carbonato botnet infrastructure; financially motivated (crypto mi
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Internet-exposed Docker daemon on TCP 2375 (unencrypted) or 2376 (TLS but weak/no auth); credential brute-force or default credentials
+- Victims and sectors: 3,200+ compromised Docker hosts across AWS, GCP, Azure, DigitalOcean, on-premise; AI/ML development environments, CI/CD pipelines, cloud-native infrastructure
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 3,200+ compromised Docker hosts (Oct-Nov 2026); median dwell time 18 days; credential theft + crypto mining dual-purpose operation
+
 ## Attack flow
 ### scan-docker: Scan for exposed Docker (access)
 
@@ -81,6 +88,9 @@ Never expose Docker daemon to internet; require TLS with client cert authenticat
 - [Docker](https://github.com/moby/moby) container escape
 - XMRig cryptocurrency miner
 - carbonato-collect\[.\]net C2
+
+## Source notes
+ThreatDown Labs analysis; Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Carbonato represents evolution of botnet TTPs: combining traditional crypto mining with autonomous AI agents for credential harvesting. Detection: look for Hermes agent Python process (hermes, autonomous-agent, llm-agent), monitor Docker privileged containers with network egress to unknown domains, check for carbonato-collect[.]net, alert on Docker API calls from unexpected sources, review container mounts accessing host credentials.
 
 ## Sources
 - [ThreatDown: Carbonato Botnet Spreads Via Exposed Docker Hosts](https://www.threatdown.com/blog/carbonato/)

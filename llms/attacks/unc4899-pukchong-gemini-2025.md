@@ -19,6 +19,13 @@ UNC4899 aka PUKCHONG; DPRK
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Actor requests exploit research support (access)
 
@@ -69,6 +76,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

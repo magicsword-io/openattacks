@@ -13,7 +13,10 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 import * as prettier from "prettier";
-import { attackPathsFromStatus, changedAttackFiles } from "../scripts/lib/changed-attacks.mjs";
+import {
+  attackPathsFromStatus,
+  changedAttackFiles,
+} from "../scripts/lib/changed-attacks.mjs";
 import {
   entryPlatforms,
   formatReport,
@@ -31,7 +34,10 @@ import { fetchPublic } from "../scripts/lib/source-links.mjs";
 const fixtureDir = fileURLToPath(
   new URL("./fixtures/attack-detections/", import.meta.url),
 );
-const ok = async () => ({ status: 200, body: "logsource:\n  product: macos\n" });
+const ok = async () => ({
+  status: 200,
+  body: "logsource:\n  product: macos\n",
+});
 const roots = [
   {
     root: "/opt/sigma/rules",
@@ -39,7 +45,8 @@ const roots = [
   },
   {
     root: "/opt/splunk/detections",
-    urlBase: "https://github.com/splunk/security_content/blob/develop/detections/",
+    urlBase:
+      "https://github.com/splunk/security_content/blob/develop/detections/",
   },
   {
     root: "/opt/elastic/rules",
@@ -69,6 +76,21 @@ test("changed-attack parser keeps added files and rename destinations", () => {
     "attacks/renamed.yaml",
   ]);
   assert.deepEqual(changedAttackFiles("HEAD"), []);
+});
+
+test("changed attacks diff from the merge base", () => {
+  const calls = [];
+  const exec = (_command, args) => {
+    calls.push(args);
+    if (args[0] === "merge-base") return "common-base\n";
+    return "A\0attacks/new-entry.yaml\0";
+  };
+  assert.deepEqual(changedAttackFiles("new-main", { cwd: "/repo", exec }), [
+    "attacks/new-entry.yaml",
+  ]);
+  assert.deepEqual(calls[0], ["merge-base", "new-main", "HEAD"]);
+  assert.ok(calls[1].includes("common-base"));
+  assert.equal(calls[1].includes("new-main"), false);
 });
 
 test("missing category, attribution, confidence, detections, and timeline fails", async () => {
@@ -129,7 +151,10 @@ test("detection URLs must be public HTTP 200 responses", async () => {
   const data = parse(readFileSync(file, "utf8"));
   data.detections[0].url = "http://127.0.0.1/rule.yml";
   const local = await validateEntryData(data, "platform-mismatch.yaml");
-  assert.match(local.map((issue) => issue.message).join("\n"), /public address/);
+  assert.match(
+    local.map((issue) => issue.message).join("\n"),
+    /public address/,
+  );
   await assert.rejects(
     () =>
       fetchPublic("https://example.org/start", {
@@ -143,12 +168,17 @@ test("detection URLs must be public HTTP 200 responses", async () => {
 });
 
 test("schema errors from entryErrors are included in the report", async () => {
-  const data = parse(readFileSync(join(fixtureDir, "guidance-only.yaml"), "utf8"));
+  const data = parse(
+    readFileSync(join(fixtureDir, "guidance-only.yaml"), "utf8"),
+  );
   data.id = "not-the-filename";
   const issues = await validateEntryData(data, "guidance-only.yaml", {
     readUrl: ok,
   });
-  assert.match(issues.map((issue) => issue.message).join("\n"), /id must match the filename/);
+  assert.match(
+    issues.map((issue) => issue.message).join("\n"),
+    /id must match the filename/,
+  );
 });
 
 test("guidance-only entry receives Sigma, Splunk, and Elastic rules", async () => {
@@ -192,7 +222,10 @@ test("guidance-only entry receives Sigma, Splunk, and Elastic rules", async () =
     );
     const config = await prettier.resolveConfig(file);
     assert.equal(
-      await prettier.check(readFileSync(file, "utf8"), { ...config, filepath: file }),
+      await prettier.check(readFileSync(file, "utf8"), {
+        ...config,
+        filepath: file,
+      }),
       true,
     );
     const validation = await validateFile(file, { readUrl: ok });
@@ -227,7 +260,9 @@ test("ATT&CK ids do not include ATLAS technique suffixes", () => {
 });
 
 test("rule selection is deterministic and drops conflicting platforms", () => {
-  const entry = parse(readFileSync(join(fixtureDir, "guidance-only.yaml"), "utf8"));
+  const entry = parse(
+    readFileSync(join(fixtureDir, "guidance-only.yaml"), "utf8"),
+  );
   assert.deepEqual([...entryPlatforms(entry)], ["macos"]);
   const rows = [
     {
@@ -296,25 +331,22 @@ test("writing detections preserves YAML anchors", async () => {
   rmSync(directory, { recursive: true, force: true });
 });
 
-test("the workflow stays on pull_request and does not pass a push token to forks", () => {
+test("the workflow stays read-only and publishes suggestions as an artifact", () => {
   const source = readFileSync(
-    fileURLToPath(new URL("../.github/workflows/attack-detections.yml", import.meta.url)),
+    fileURLToPath(
+      new URL("../.github/workflows/attack-detections.yml", import.meta.url),
+    ),
     "utf8",
   );
   assert.match(source, /^on:\n {2}pull_request:/m);
   assert.equal(source.includes("pull_request_target"), false);
   assert.match(source, /actions\/cache@v4/);
+  assert.match(source, /actions\/upload-artifact@v4/);
   assert.match(source, /date -u \+%G-W%V/);
-  const secrets = [...source.matchAll(/secrets\.[A-Z0-9_]+/g)].map((match) => match[0]);
-  assert.deepEqual(secrets, ["secrets.DETECTIONS_PUSH_TOKEN"]);
-  assert.match(
-    source,
-    /head\.repo\.full_name == github\.repository[\s\S]*DETECTIONS_PUSH_TOKEN/,
-  );
-  assert.match(
-    source,
-    /head\.repo\.full_name != github\.repository[\s\S]*createComment/,
-  );
+  assert.match(source, /permissions:\n {2}contents: read/);
+  assert.match(source, /persist-credentials: false/);
+  assert.equal(/secrets\.[A-Z0-9_]+/.test(source), false);
+  assert.equal(/git push|createComment/.test(source), false);
 });
 
 test(
@@ -370,7 +402,9 @@ tags:
       });
       assert.equal(result.added.length > 0, true);
       assert.equal(
-        result.added.some((rule) => rule.name === "Fixture macOS LaunchAgent Rule"),
+        result.added.some(
+          (rule) => rule.name === "Fixture macOS LaunchAgent Rule",
+        ),
         true,
       );
       console.log(

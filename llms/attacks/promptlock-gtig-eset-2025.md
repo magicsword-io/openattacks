@@ -19,6 +19,13 @@ unknown
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: PoC starts in a research setting (unknown)
 
@@ -71,6 +78,9 @@ No timeline is recorded.
 
 ### Other tooling
 - [Go](https://github.com/golang/go)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

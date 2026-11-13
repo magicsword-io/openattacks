@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   convertRow,
+  normalizeUrl,
+  primaryAlreadyCited,
   slugFor,
   splitTopLevel,
 } from "../scripts/import-notion.mjs";
@@ -56,6 +58,23 @@ test("actor attribution never becomes a victim region", () => {
   assert.deepEqual(entry.regions, ["unknown"]);
 });
 
+test("URL normalization preserves identity queries and drops tracking", () => {
+  assert.notEqual(
+    normalizeUrl("https://youtube.com/watch?v=alpha"),
+    normalizeUrl("https://youtube.com/watch?v=beta"),
+  );
+  assert.equal(
+    normalizeUrl("https://www.example.org/report/?id=7&utm_source=news#top"),
+    "example.org/report?id=7",
+  );
+});
+
+test("malformed primary URLs do not abort duplicate detection", () => {
+  const cited = new Set(["example.org/report"]);
+  assert.equal(primaryAlreadyCited("not a url", cited), false);
+  assert.equal(primaryAlreadyCited("https://example.org/report", cited), true);
+});
+
 test("technique precedence picks the role; untagged rows become other", () => {
   const role = (techniques) =>
     convertRow(row({ Techniques: JSON.stringify(techniques) }), new Set()).entry
@@ -67,6 +86,36 @@ test("technique precedence picks the role; untagged rows become other", () => {
   );
   assert.equal(role(["Influence ops"]), "other");
   assert.equal(role([]), "other");
+});
+
+test("explicit C2 and fake-AI descriptions override generic technique roles", () => {
+  const c2 = convertRow(
+    row({
+      Headline: "Backdoor uses OpenAI Assistants API as covert C2 channel",
+      Summary: "Commands and results travel through the Assistants API.",
+      Techniques: '["Malware / tooling dev","API key / account abuse"]',
+    }),
+    new Set(),
+  ).entry;
+  assert.equal(c2.ai_role, "ai_infra_as_c2");
+  assert.equal(c2.ai_role_secondary, undefined);
+  assert.equal(c2.category, "adversary-use-of-ai");
+
+  const lure = convertRow(
+    row({
+      Headline: "Fake AI video generator ads spread malware",
+      Techniques: '["Phishing / social eng.","Malware / tooling dev"]',
+    }),
+    new Set(),
+  ).entry;
+  assert.equal(lure.ai_role, "ai_tool_as_lure");
+  assert.equal(lure.category, "adversary-use-of-ai");
+
+  const target = convertRow(
+    row({ Techniques: '["Prompt injection"]' }),
+    new Set(),
+  ).entry;
+  assert.equal(target.category, "attacks-on-ai");
 });
 
 test("unverified, undated and bad-URL rows are rejected, not written", () => {

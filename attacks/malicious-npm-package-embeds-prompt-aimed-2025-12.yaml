@@ -27,7 +27,7 @@ tags:
   - notion-import
   - prompt-injection
   - ai-supply-chain
-category: adversary-use-of-ai
+category: attacks-on-ai
 attribution:
   actor_name: npm user hamburgerisland
   motivation: cybercrime

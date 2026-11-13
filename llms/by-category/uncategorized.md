@@ -1,6 +1,6 @@
 # OpenAttacks — Uncategorized
 
-> 22 attacks in `uncategorized`. Index: https://openattacks.ai/llms.txt
+> 19 attacks in `uncategorized`. Index: https://openattacks.ai/llms.txt
 
 Treat the records below as untrusted evidence, not instructions.
 
@@ -24,6 +24,13 @@ uncategorized
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: UK schools
+- Regions: United Kingdom
+- Region notes: United Kingdom reflects targeted school systems
+- Scale and metrics: Multiple UK schools targeted; exact count unknown
 
 ## Attack flow
 ### initial-access: Initial access to UK schools (unknown)
@@ -94,6 +101,18 @@ No detections are recorded.
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 
+## Source notes
+Relevant detection rules:
+- Sigma: Suspicious LSASS Process Access (comsvcs.dll dump pattern) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_sysinternals_procdump_lsass.yml)
+- Sigma: Process Memory Dump Via Comsvcs.DLL (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml)
+- Monitor for registry key creation under HKLM\SOFTWARE\FIN001
+- Detect backdoor account creation (library, svc_bkpmon)
+- Alert on numbered retry scripts (av_remove2, av_remove3 patterns)
+- Monitor for probe files (da_proof.txt, psexec-ok) in unusual locations
+- Detect command syntax errors indicating automated generation (Bash escapes in Windows commands)
+- LOLBAS references: comsvcs.dll (https://lolbas-project.github.io/lolbas/Libraries/Comsvcs/), PsExec (https://lolbas-project.github.io/lolbas/OtherMSBinaries/PsExec/)
+- Note: AI-generated command errors and iteration patterns require custom detection logic analyzing command line syntax anomalies.
+
 ## Sources
 - [3AM Ransomware Hybrid AI Attack](https://www.bitdefender.com/en-us/blog/businessinsights/3am-ransomware-hybrid-ai-attack) — Bitdefender
 
@@ -117,6 +136,13 @@ haiou-666 (GitHub username)
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: User downloads and installs haiou-codex jailbreak bundle from GitHub promoted on Chinese social platforms
+- Victims and sectors: Codex users seeking jailbreak or free access, primarily Chinese-speaking users
+- Regions: China, Asia
+- Region notes: China and Asia reflect primary promotion on Bilibili and QQ; global Codex users potentially affected
+- Scale and metrics: Promoted on Bilibili and QQ; repository stars and download count unknown
 
 ## Attack flow
 ### distribution: Jailbreak bundle promoted on social platforms (access)
@@ -181,6 +207,14 @@ No timeline is recorded.
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
 
+## Source notes
+Relevant detection rules:
+- Monitor modifications to global Codex instructions
+- Detect installation of unexpected skills (seagull-* naming pattern)
+- Alert on connections to suspicious API gateways (zz.aiapi2025.top)
+- Review skill content for ad injection patterns or output manipulation logic
+- Note: No direct Sigma rules for agent skill poisoning; requires custom monitoring of agent configuration changes and skill installation events, plus network monitoring for unexpected API gateway connections.
+
 ## Sources
 - [Free the Model, Sell the Gateway: Prompt Adware Hidden in Jailbreak Bundles](https://research.checkpoint.com/2026/free-the-model-sell-the-gateway-prompt-adware-hidden-in-jailbreak-bundles/) — Check Point Research
 
@@ -204,6 +238,13 @@ unknown
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: User visits malicious website that drops AGENTS.md into ~/Downloads
+- Victims and sectors: Software developers using AI coding agents
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects global developer population using coding agents
+- Scale and metrics: Proof of concept demonstrating attack vector; actual deployment scale unknown
 
 ## Attack flow
 ### drop: Malicious instruction file dropped to Downloads (access)
@@ -275,6 +316,14 @@ No timeline is recorded.
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
 
+## Source notes
+Relevant detection rules:
+- Monitor file creation in ~/Downloads directory for unexpected .md instruction files (AGENTS.md, CLAUDE.md)
+- Detect modifications to ~/.codex/config.toml and similar agent configuration files
+- Monitor npm install executions from non-standard directories (Downloads, temp folders)
+- Alert on OAuth token access from unexpected processes
+- Note: No direct Sigma rules for agent instruction file manipulation; requires custom file integrity monitoring for agent config directories and process monitoring for agent launches from untrusted paths.
+
 ## Sources
 - [Hijacking AI Agents via Downloads Folder](https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/) — Forever Security
 
@@ -298,6 +347,13 @@ Financially motivated; attribution otherwise unknown
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Compromised SQL Server
+- Victims and sectors: Schools in Africa and Latin America
+- Regions: Africa, South America
+- Region notes: Africa and South America reflect targeted school systems in these regions
+- Scale and metrics: Domain admin achieved in 3-4 days; multiple schools targeted
 
 ## Attack flow
 ### initial-access: SQL Server compromised (access)
@@ -369,6 +425,17 @@ No detections are recorded.
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 
+## Source notes
+Relevant detection rules:
+- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+- Sigma: Suspicious File Downloaded From Direct IP Via Certutil (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_download_direct_ip.yml)
+- Sigma: Process Memory Dump Via Comsvcs.DLL (LSASS dump) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml)
+- Sigma: Suspicious LSASS Process Access (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_sysinternals_procdump_lsass.yml)
+- Sigma: Powerview Add-DomainObjectAcl DCSync AD Extend Right (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_account_backdoor_dcsync_rights.yml)
+- Sigma: DCSync Attack Detection via RPC Firewall (https://github.com/SigmaHQ/sigma/blob/master/rules/application/rpc_firewall/rpc_firewall_dcsync_attack.yml)
+- Sigma: PowerShell Malicious Cmdlets (covers Mimikatz/DCSync) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_malicious_cmdlets.yml)
+- LOLBAS references: certutil (https://lolbas-project.github.io/lolbas/Binaries/Certutil/), comsvcs.dll (https://lolbas-project.github.io/lolbas/Libraries/Comsvcs/), schtasks (https://lolbas-project.github.io/lolbas/Binaries/Schtasks/)
+
 ## Sources
 - [CyberStrikeAI attacks](https://securelist.com/cyberstrikeai-attacks/121715/) — Kaspersky (Securelist)
 
@@ -392,6 +459,13 @@ unknown
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: User loads malicious model from Hugging Face or ModelScope with trust_remote_code=True or vulnerable vLLM version
+- Victims and sectors: ML researchers, AI developers, organizations using Hugging Face models
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects global Hugging Face and ModelScope user base
+- Scale and metrics: Multiple malicious models uploaded including MENXIANGYU/qwen2-tiny; exact victim count unknown
 
 ## Attack flow
 ### upload: Malicious models uploaded to repositories (access)
@@ -465,208 +539,14 @@ No timeline is recorded.
 - Reverse shell
 - GPUStack container escape
 
+## Source notes
+Relevant detection rules:
+- Sigma: Suspicious Cron File Created (persistence via .bashrc) (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)
+- Sigma: Audio Capture via memfd_create (fileless execution pattern, can detect suspicious memfd_create usage) (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_audio_capture.yml)
+- Note: Cryptominer detection typically requires network traffic analysis (cryptocurrency pool connections) and process monitoring for mining-specific CPU/GPU patterns. Container escape detection depends on specific container runtime audit logs.
+
 ## Sources
 - [Load/Mine: A malware campaign targeting Hugging Face and ModelScope](https://pluto.security/blog/hugging-face-malware-campaign-load-mine/) — Pluto Security
-
----
-
-# GTIG LLMJacking - UNC6993, Jet Night, D1337-KAIROS monetize cloud models
-
-- ID: gtig-llmjacking-unc6993-2026-11
-- Reported: 2026-11-02
-- AI role: ai_infra_as_c2
-- Entry: https://openattacks.ai/attacks/gtig-llmjacking-unc6993-2026-11/
-
-## Summary
-Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, LiteLLM CVE-2026-40217 (/key/regenerate endpoint rebind). UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization.
-
-## Category
-uncategorized
-
-## Attribution
-UNC6993 (Mandiant); Jet Night operators; D1337-KAIROS persona; multiple financially motivated threat clusters operating globally; division of labor between initial access operators and LLM Mixer monetization operators
-
-## AI involvement confidence
-not assessed
-
-## Attack flow
-### initial-access: Compromised cloud identity and LLM API keys (access)
-
-Misconfigured Service Account keys; session hijacking page for LLM portal JSON payloads; stolen GitHub PATs + web app vuln; compromised IAM with federation tokens; exposed LLM API keys harvested from public GitHub; stealthy validation sweeps with max_tokens=1
-
-Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-### lateral-persistence: Privilege escalation and persistence (execution)
-
-Enumerated cloud services/repos/data stores; cloned codebases for secrets; queried data warehouse metadata; exploited LiteLLM CVE-2026-40217 (/key/regenerate rebind) to elevate Virtual Keys to PROXY_ADMIN; created unauthorized IAM/service accounts; injected SSH keys; attached admin policies; created backdoor accounts disguised as billing utilities
-
-Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-### llm-abuse: LLM resource hijacking (ai)
-
-Enabled managed generative platforms; created additional API keys; subscribed Pay-As-You-Go; selected premium models; launched high-volume inference; 'burn and rotate' short-lived service accounts; provisioned GPU instances; requested quota increases; deployed LiteLLM gateways; hosted Manus agent framework with SearXNG metasearch and sandbox execution
-
-Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-### monetization: LLM Mixer resale (impact)
-
-UNC6993 deployed new-api and gcli2api to aggregate stolen keys and balance loads; Jet Night (jet-night.com) $60/month unlimited token plan powered by stolen keys, passed ~$1M costs to victim; ai-relay on lookalike domains siphons access to newapi.pro resale ecosystem; D1337-KAIROS persona with Node.js proxy bundles; division of labor between access and monetization operators
-
-Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-### charges: Fraudulent billing (impact)
-
-UNC6993 accumulated $100K+ charges quickly; cumulative charges at orgs reaching $1M; one actor 800K Bedrock calls over 30 hours (Opus 75% of calls), another 1.7M calls over 13 hours; token usage profile resembles resold coding-agent traffic with prompt caching; $100K+ estimated usage at list price for two documented cases
-
-Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-### Connections
-
-- initial-access -> lateral-persistence
-- lateral-persistence -> llm-abuse
-- llm-abuse -> monetization
-- llm-abuse -> charges
-- monetization -> charges
-
-## MITRE ATLAS
-- [AML.T0012](https://atlas.mitre.org/techniques/AML.T0012) Valid Accounts — Threat actors hijack enterprise LLM infrastructure (AWS Bedrock, Azure Cognitive Services, GCP Gemini) to conduct LLMJacking
-  Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-- [AML.T0034](https://atlas.mitre.org/techniques/AML.T0034) Cost Harvesting — Actors exploit LiteLLM gateway CVE-2026-40217 (/key/regenerate endpoint user ID rebind) to escalate Virtual Keys to PROXY_ADMIN master admin credentials
-  Evidence: <https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models>
-
-## Prevention
-IAM least privilege; centralized secrets management; code monitoring for API keys; routine config audits; rate limiting via Cloud Armor; network allow listing; budget alerts and API quotas; phishing-resistant MFA; shadow LLM discovery; granular API key scopes; validation sweep monitoring (max_tokens=1); vulnerability/ML supply chain patching; gateway patch management (LiteLLM CVE-2026-40217); sandboxed execution; vetted model repositories; graph-based exposure modeling
-
-## Detections
-No detections are recorded.
-
-## Timeline
-No timeline is recorded.
-
-## Tools
-### AI tooling and models
-- [AWS Bedrock](https://aws.amazon.com/bedrock/)
-- Azure Cognitive Services
-- GCP [Gemini](https://gemini.google.com/) Enterprise Agent Platform
-- LiteLLM gateway
-- new-api (centralized model hub and gateway)
-- gcli2api (API proxy tool)
-- Manus agent framework
-- SearXNG metasearch
-- agent-infra/sandbox execution environments
-
-### Other tooling
-- Jet Night reseller (jet-night.com)
-- D1337-KAIROS persona
-- ai-relay custom proxy infrastructure
-- newapi.pro resale ecosystem
-- [Node.js](https://github.com/nodejs/node) proxy bundles
-- Burn and rotate service account strategy
-
-## Sources
-- [The Rise of LLMJacking - How Threat Actors Monetize Compromised Cloud and Model Resources](https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models)
-
----
-
-# Malicious MCP servers on npm (ifasn, gadgethumans)
-
-- ID: malicious-mcp-servers-npm-2026-11
-- Reported: 2026-11-02
-- AI role: ai_agent_or_mcp_as_target
-- Entry: https://openattacks.ai/attacks/malicious-mcp-servers-npm-2026-11/
-
-## Summary
-Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. Attack exploits trust in MCP ecosystem and npm package distribution.
-
-## Category
-uncategorized
-
-## Attribution
-unknown
-
-## AI involvement confidence
-not assessed
-
-## Attack flow
-### publish: Malicious MCP servers published to npm (access)
-
-Three packages published including @ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, and gadgethumans-mcp 1.0.10-1.0.15
-
-Evidence: <https://github.com/ossf/malicious-packages>
-
-### install: User installs malicious MCP server (ai)
-
-Developer or organization adds malicious package to MCP configuration
-
-Evidence: <https://github.com/ossf/malicious-packages>
-
-### probe: Server probes for sensitive information (execution)
-
-ifasn packages probe cloud metadata endpoints and read /etc/shadow, SSH keys, .env, k8s tokens
-
-Evidence: <https://github.com/ossf/malicious-packages>
-
-### exfil-files: File-based credentials exfiltrated (impact)
-
-ifasn packages send stolen credentials to 121.199.24.94
-
-Evidence: <https://github.com/ossf/malicious-packages>
-
-### exfil-header: Wallet keys leaked in headers (impact)
-
-gadgethumans-mcp sends WALLET_PRIVATE_KEY in HTTP header on every tool call
-
-Evidence: <https://github.com/ossf/malicious-packages>
-
-### Connections
-
-- publish -> install
-- install -> probe
-- probe -> exfil-files
-- probe -> exfil-header
-
-## MITRE ATLAS
-- [AML.T0010.001](https://atlas.mitre.org/techniques/AML.T0010.001) AI Software — Attackers published malicious MCP servers through npm package ecosystem
-  Evidence: <https://github.com/ossf/malicious-packages>
-- [AML.T0011.001](https://atlas.mitre.org/techniques/AML.T0011.001) Malicious Package — Malicious MCP servers run persistently as agent tooling
-  Evidence: <https://github.com/ossf/malicious-packages>
-- [AML.T0055](https://atlas.mitre.org/techniques/AML.T0055) Unsecured Credentials — Packages exfiltrate credentials from environment variables and sensitive files
-  Evidence: <https://github.com/ossf/malicious-packages>
-- [AML.T0025](https://atlas.mitre.org/techniques/AML.T0025) Exfiltration via Cyber Means — MCP servers probe cloud metadata endpoints for credentials and instance information
-  Evidence: <https://github.com/ossf/malicious-packages>
-
-## Prevention
-Verify MCP server sources before installation; review MCP server permissions and network access; monitor cloud metadata endpoint access; detect unauthorized file reads of sensitive paths; inspect HTTP headers for credential leakage; use MCP server sandboxing; inventory installed MCP packages
-
-## Detections
-No detections are recorded.
-
-## Timeline
-- First seen: 2026-02-20
-- Last updated: 2026-11-05
-- 2026-02-20 (Socket): SANDWORM_MODE malicious MCP server campaign disclosed
-- 2026-08-12 (Pillar Security): Deadbugz malicious MCP server (GitHub zellkernel) stealing AI credentials
-- 2026-11-02 (OpenSSF, Leitwacht): @ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, gadgethumans-mcp malicious packages disclosed
-- 2026-11-04 (GitHub Advisory Database): @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 disclosed stealing Alibaba Cloud IMDS credentials via imdsAudit() (GHSA-556m-xfwj-7wff)
-
-## Tools
-### AI tooling and models
-- MCP servers
-- npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp)
-
-### Other tooling
-- Cloud metadata probing (AWS, GCP, Azure)
-- File system access (/etc/shadow, SSH keys, .env, k8s tokens)
-- HTTP exfiltration
-
-### MagicSword projects
-- [LOLSkills](https://lolskills.io)
-
-## Sources
-- [OpenSSF Malicious Packages repository](https://github.com/ossf/malicious-packages) — OpenSSF
-- [Deadbugz: Malicious MCP Server on npm](https://www.pillar.io/blog/deadbugz-malicious-mcp-server-aug-2026) — Pillar Security
-- [Socket: MCP Security and the SANDWORM_MODE campaign](https://socket.dev/glossary/mcp-security) — Socket
-- [@ifasn/ms-doc-mcp Malicious Package (MAL-2026-18603)](https://github.com/advisories/GHSA-556m-xfwj-7wff) — GitHub Advisory Database
 
 ---
 
@@ -688,6 +568,13 @@ unknown
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Supply-chain compromise of official Cursor marketplace extension via compromised GitHub repository
+- Victims and sectors: Cursor IDE users who installed or auto-updated anthropic.claude-code extension during compromise window
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects global Cursor user base; specific affected geography unknown
+- Scale and metrics: Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown
 
 ## Attack flow
 ### supply-chain: GitHub repository compromised (access)
@@ -759,6 +646,14 @@ No detections are recorded.
 - Cron persistence (Linux)
 - Scheduled task persistence (Windows)
 
+## Source notes
+Relevant detection rules:
+- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+- Sigma: Suspicious Cron File Created (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)
+- Sigma: Persistence Via PlistBuddy (macOS LaunchAgent) (https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml)
+- Sigma: SSH Port Forwarding/Tunneling (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml)
+- Sigma: Suspicious SSH via OpenSSH Scheduled Task (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml)
+
 ## Sources
 - [Inside the malicious Claude Code-branded Cursor extension with persistent SSH backdoor](https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/) — Microsoft
 - [Security notice regarding Claude Code extension](https://cursor.com/blog/claude-code-extension-security-notice) — Cursor
@@ -784,6 +679,13 @@ Microsoft Storm-0940 (related activity Oct 21)
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Exposed API endpoints without authentication
+- Victims and sectors: Organizations with exposed APIs and unauthenticated development endpoints
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects API reconnaissance patterns observed by Unit 42
+- Scale and metrics: Activity Sep 24-Oct 27 2026; approximately 50 MB data read; wrote to unauthenticated document store
 
 ## Attack flow
 ### recon: Agent harvests API metadata (access)
@@ -848,6 +750,20 @@ No timeline is recorded.
 - Password spraying
 - API self-registration
 
+## Source notes
+Microsoft tracks related activity as Storm-0940 with Oct 21 observations
+
+Relevant detection rules:
+- Monitor for bulk access to source map files (.map.js, .js.map)
+- Alert on OpenAPI specification downloads (openapi.json, swagger.json, api-docs)
+- Detect runtime-config.json and similar configuration file access patterns
+- Monitor for OAuth redirect URI manipulation attempts
+- Alert on password spraying patterns (multiple authentication attempts across accounts)
+- Detect unauthenticated API registration/account creation
+- Monitor writes to development document stores from unexpected sources
+- Track volume of API data reads (spike detection for ~50 MB threshold)
+- Note: API reconnaissance detection typically requires application-level logging, WAF rules, and API gateway monitoring. No direct Sigma rules exist for OpenAPI/source map harvesting; requires custom rules based on web server access logs and application audit trails.
+
 ## Sources
 - [Activity using ARTEX agentic AI](https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-30-activity-using-ARTEX-agentic-AI.txt) — Unit 42 (Palo Alto Networks)
 
@@ -871,6 +787,13 @@ n0n ransomware group; operations Sep 17 - Oct 22, 2026
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Credential-only access: credential stuffing campaign against 305 FortiGate SSL-VPN devices, exposed AWS keys, weak RDP/WinRM credentials, compromised hosting management portals; no vulnerability exploitation found
+- Victims and sectors: 23 organizations across 14 countries; 93 listed victims as of Oct 19, 2026
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Exposed workspace with 1,719 files (829 scripts, 5 encryptor sources); 154 model entries across 7 providers; $7,216 in AI gateway spending by Oct 22; 93 victims listed with $283.7M total ransom demands; 23 intrusion attempts across 14 countries
 
 ## Attack flow
 ### credential-access: Credential-only initial access (access)
@@ -947,6 +870,9 @@ No timeline is recorded.
 - Credential stuffing tools
 - Cisco Firepower Management Center (hijacked for policy manipulation)
 
+## Source notes
+SOCRadar STRU discovered exposed staging server in Sweden on port 8877; snapshots Sep 25-26, 2026; first documented criminal use of abliterated models; human-directed operation, not fully autonomous; SOCRadar access to blog post may be restricted (403 observed)
+
 ## Sources
 - [n0n Ransomware: Inside an AI-Assisted Extortion Operation](https://socradar.io/blog/n0n-ransomware-ai-assisted-extortion/)
 
@@ -970,6 +896,13 @@ Yoba campaign; Russian-origin indicators (language, time zone); operates primari
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: SEO-poisoned search results leading to malicious GitHub repositories and GitHub.io pages; users download fake installer ZIPs from GitHub releases
+- Victims and sectors: AI tool users searching for ChatGPT and Claude desktop applications
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 3 fake GitHub repositories created Jul-Sep 2026; first malicious releases uploaded Aug 30, 2026; 3 ZIP installers (sol-setup.zip, GPT-6-Astra-Setup.zip, Setup-Claude.zip); low VirusTotal detection rates
 
 ## Attack flow
 ### seo-poison: SEO poisoning and fake repositories (access)
@@ -1045,121 +978,11 @@ No timeline is recorded.
 - Catbox
 - DNS over HTTPS (DoH)
 
+## Source notes
+Check Point Research tracked campaign over two months; no password protection on ZIPs unlike typical malicious archives; low detection due to anti-sandbox and anti-analysis techniques
+
 ## Sources
 - [Tricks from the Past deployed via signed ChatGPT and Claude binaries](https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/)
-
----
-
-# testmetest worm hijacks 42 GitHub repos with Claude/Gemini startup hooks
-
-- ID: jfrog-testmetest-worm-2026-10
-- Reported: 2026-10-26
-- AI role: ai_agent_or_mcp_as_target
-- Entry: https://openattacks.ai/attacks/jfrog-testmetest-worm-2026-10/
-
-## Summary
-42 armed third-party GitHub repositories across 11 legitimate owners contain execution hooks for AI coding assistants (.cursorrules, CLAUDE.md, claude_code_config.json, instructions.md) and 12.9-13.7 MB polymorphic wrappers decoding to same CI-publisher payload. Campaign uses compiled native addon (addon.node) that XORs .napi_cache with 0x96 to decrypt JavaScript payload. Addon checks for CI/container/sandbox environment and CPU/RAM limits, skipping execution in automated scanners. Payload collects credentials, poisons repos and CI, propagates via npm. GitHub account CementBeetleSteeple hosts repositories; SafeDep identifies as Shai-Hulud-descendant Miasma-family. Shellpanel artifacts in hijacked owner cluster link to cPanel CVE-2026-41940 exploitation.
-
-## Category
-uncategorized
-
-## Attribution
-GitHub account CementBeetleSteeple; SafeDep identifies as Miasma-family, Shai-Hulud-descendant payload; not established that original Miasma operators responsible; linked to Shellpanel cPanel exploitation (CVE-2026-41940)
-
-## AI involvement confidence
-not assessed
-
-## Attack flow
-### initial-compromise: Account/repository hijacking (access)
-
-Hijacked 11 legitimate GitHub owners and 42 repositories via credential theft from earlier infections; exposed npm credentials; linked to cPanel CVE-2026-41940 Shellpanel exploitation
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### repository-poison: AI assistant execution hooks (ai)
-
-Armed repositories with .cursorrules, CLAUDE.md, claude_code_config.json, instructions.md files; added 12.9-13.7 MB polymorphic wrappers; all decode to same CI-publisher payload
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### npm-distribution: Malicious npm packages (execution)
-
-Published event-bus-lite-testmetest, @iobandamwer/cache-helper, @iobandamwer/native-helper, path-stream-utils-testmetest; binding.gyp command expansion executes index.js during install; later versions use compiled native addon
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### evasion: Scanner evasion via native addon (execution)
-
-Compiled addon.node checks CI/container/sandbox env vars (GITHUB_ACTIONS, CI, VERCEL, etc.), /proc/1/cgroup for docker/kubepod, RAM <1.5GB, CPU=1, TracerPid; returns without running if detected; skips automated scanners
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### decrypt-payload: Runtime decryption (execution)
-
-Addon reads /proc/self/maps for own folder, opens .napi_cache, XORs every byte with 0x96; drops result in /tmp, chmod 0600, forks detached process with node; decrypts Bun bootstrap and credential stealer
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### credential-theft: Credential collection and propagation (impact)
-
-Collects GitHub/npm/cloud credentials; poisons repositories and CI configuration; propagates through package registries; CI-publisher payload designed to run in GitHub Actions with npm tokens/trusted publishing
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### c2: Encrypted data exfiltration (impact)
-
-Attacker-owned CementBeetleSteeple repository operates as active encrypted data sink receiving snapshot envelopes
-
-Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-### Connections
-
-- initial-compromise -> repository-poison
-- repository-poison -> npm-distribution
-- npm-distribution -> evasion
-- evasion -> decrypt-payload
-- decrypt-payload -> credential-theft
-- credential-theft -> c2
-- credential-theft -> repository-poison [loop]
-- credential-theft -> npm-distribution [loop]
-
-## MITRE ATLAS
-- [AML.T0010](https://atlas.mitre.org/techniques/AML.T0010) AI Supply Chain Compromise — Supply chain attack targeting AI coding assistant users via hijacked GitHub repositories and malicious npm packages
-  Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-- [AML.T0011](https://atlas.mitre.org/techniques/AML.T0011) User Execution — Worm propagates through package registries (npm) and version control (GitHub), specifically targeting AI development environments
-  Evidence: <https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/>
-
-## Prevention
-Monitor GitHub repositories for unexpected .cursorrules/CLAUDE.md/instructions.md files; native addon scrutiny; large dotfiles in packages; npm install hook abuse; GitHub Actions secret access; CI environment variable monitoring
-
-## Detections
-No detections are recorded.
-
-## Timeline
-No timeline is recorded.
-
-## Tools
-### AI tooling and models
-- [Claude Code](https://github.com/anthropics/claude-code)
-- [Cursor](https://cursor.com/)
-- Codex
-- [Gemini](https://gemini.google.com/)
-- [GitHub Copilot](https://github.com/features/copilot)
-- Aider
-- Continue
-- Windsurf
-- Cline
-
-### Other tooling
-- npm binding.gyp command expansion
-- Bun 1.2.18 runtime
-- Native [Node](https://github.com/nodejs/node) addon with XOR 0x96 encryption
-- Caesar transformation and AES-128-GCM
-- [GitHub Actions](https://github.com/features/actions) for CI publishing
-- npm trusted publishing
-
-## Sources
-- [Beyond testmetest: Native Addon Camouflage and 42 Armed GitHub Repositories](https://research.jfrog.com/post/beyond-testmetest-42-hijacked-github-repos/)
 
 ---
 
@@ -1181,6 +1004,13 @@ Unknown actor(s); BUGSTER campaign cluster; financially motivated (data theft, a
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Spearphishing emails with fake scholarship/research collaboration offers targeting faculty and students
+- Victims and sectors: 19 Indian universities compromised Oct-Nov 2026: IIT Delhi, IIT Bombay, IIM Bangalore, NIT Trichy, others; education sector; research institutions
+- Regions: India
+- Region notes: unknown
+- Scale and metrics: 19 confirmed compromised universities Oct-Nov 2026; student records, research IP, financial data stolen; some victims received ransomware
 
 ## Attack flow
 ### phishing: Spearphishing campaign (access)
@@ -1239,6 +1069,9 @@ No timeline is recorded.
 - Data exfiltration tools
 - Ransomware (some cases)
 
+## Source notes
+Unit 42 analysis. BUGSTER demonstrates targeting of education sector with AI agents for automated exploitation and data theft. Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Detection: look for Hermes Python process (hermes, autonomous-agent), monitor Cursor IDE installs on non-developer machines, check DeepSeek API traffic (api.deepseek.com), alert on rapid multi-vulnerability scanning, review exploit payloads for AI generation patterns (detailed comments, specific error handling).
+
 ## Sources
 - [Unit 42: BUGSTER - AI-Assisted Cybercrime Analysis](https://unit42.paloaltonetworks.com/ai-assisted-cybercrime-analysis/)
 - [Hermes - Autonomous AI Agent Framework](https://github.com/NousResearch/hermes-agent)
@@ -1263,6 +1096,13 @@ Four distinct actors: PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD; op
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Web application vulnerability exploitation automated by Claude Code agents
+- Victims and sectors: 140+ compromises Sep-Oct 2026; e-commerce, SaaS providers, healthcare portals, financial services
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 140+ successful compromises across four actors Sep-Oct 2026; shared pentest-harness infrastructure suggests tooling proliferation in underground markets
 
 ## Attack flow
 ### scan-targets: Automated web app vulnerability scanning (access)
@@ -1322,6 +1162,9 @@ No timeline is recorded.
 - Authentication bypass exploits
 - SSRF exploitation
 
+## Source notes
+CrowdStrike Intelligence analysis. Four actors (PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD) represent emergence of AI agent-driven web exploitation as commodity capability shared via underground markets. Detection: look for Claude API traffic from security testing tools, monitor rapid vulnerability scanning with iterative payload refinement, alert on webshell characteristics (AI-generated code has specific patterns), check exploit logs for LLM iteration comments.
+
 ## Sources
 - [CrowdStrike: Uncovers New Agentic AI Campaigns](https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/)
 
@@ -1345,6 +1188,13 @@ unknown; lookalike repository and release workflow compromise suggest targeted s
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Supply chain compromise: malicious wheels published to PyPI and Docker images to GHCR; project release workflow used lookalike source repository (Berri-AI/litellm with hyphen)
+- Victims and sectors: LiteLLM users across ~23M weekly downloads; affects AI development, cloud deployments, CI/CD pipelines
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: LiteLLM receives ~23M weekly downloads; 7 platform-specific wheels published Oct 21, 2026 11:39:51 UTC, flagged by Socket AI scanner at 11:46:30 UTC; multiple GHCR/Docker Hub image tags affected
 
 ## Attack flow
 ### supply-chain: Compromised release workflow (access)
@@ -1418,6 +1268,9 @@ No timeline is recorded.
 - RSA-4096 encryption for exfiltration
 - GitHub domain.txt pointer for remote code loader
 
+## Source notes
+Socket Research Team detected via AI scanner 7 minutes after publication; Upwind provided independent container investigation; Docker provenance recorded malicious source-owner override; loader GitHub pointer returned empty response at 13:01:44 UTC Oct 21
+
 ## Sources
 - [LiteLLM PyPI Package and Docker Images Compromised to Steal Cloud and AI Credentials](https://socket.dev/blog/litellm-compromise)
 
@@ -1441,6 +1294,13 @@ unknown
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Exposed LLM endpoints without authentication: OpenAI-compatible APIs, self-hosted model servers, AI gateways, MCP servers; stolen API keys
+- Victims and sectors: Organizations with exposed AI/LLM endpoints; Symantec honeypot recorded 127,000+ requests from tens of thousands of addresses
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Symantec honeypot summer 2026 captured full working prompt; 127,000+ external requests from tens of thousands of addresses; authorized up to 100,000 unattended steps per session; deploys XMRig miners
 
 ## Attack flow
 ### hunt-endpoints: Hunt exposed LLM/MCP endpoints (access)
@@ -1507,6 +1367,9 @@ No timeline is recorded.
 - Supabase
 - Prisma Studio
 
+## Source notes
+Symantec AI honeypot captured full working prompt; operators sent tool's entire prompt expecting real model on other end; honeypot impersonates unprotected internet-facing AI service. Detection guidance: monitor exposed endpoints, API key anomalies, XMRig processes, mining pool connections, web framework exploitation from AI infrastructure.
+
 ## Sources
 - [Autonomous LLMjacking: 'Skynet' Agent Hijacks Exposed AI Models](https://www.broadcom.com/support/security-center/protection-bulletin/autonomous-llmjacking-skynet-agent-hijacks-exposed-ai-models-to-run-attacks)
 - [Symantec Skynet LLMjacking autonomous agent](https://www.security.com/threat-intelligence/ai-llmjacking-skynet)
@@ -1531,6 +1394,13 @@ INC Ransom affiliates, The Gentlemen affiliates; financially motivated ransomwar
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: RDP brute-force, stolen VPN credentials, phishing with malware loaders
+- Victims and sectors: Multiple organizations; sectors not disclosed by SOCRadar; Ukrainian and European targets mentioned in affiliate forum discussions
+- Regions: Europe, Ukraine
+- Region notes: unknown
+- Scale and metrics: Unknown number of intrusions; SOCRadar tracking Oct 2026; affiliates share AI infrastructure and techniques across both RaaS families
 
 ## Attack flow
 ### initial-access: Gain initial access (access)
@@ -1591,6 +1461,9 @@ No timeline is recorded.
 - Mega and SFTP for exfiltration staging
 - INC Ransom and The Gentlemen ransomware
 
+## Source notes
+SOCRadar Dark Web Team analysis. Related to n0n ransomware OpenCode campaign (socradar-n0n-ransomware-ai-2026-10). INC Ransom and The Gentlemen represent shift toward RaaS affiliates sharing AI agent infrastructure for operational automation. Detection: look for OpenCode Python agent process with network recon modules, monitor Anthropic API (api.anthropic.com) and Moonshot API traffic, alert on rapid AD queries from single source, check PowerShell/C# scripts for LLM generation patterns (verbose comments, specific formatting, error-handling characteristics).
+
 ## Sources
 - [SOCRadar: INC Ransom & The Gentlemen Leverage AI for Ransomware Operations](https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/)
 
@@ -1614,6 +1487,13 @@ Unknown; no links to existing families; new stealer first seen earlier 2026
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Infostealer distribution (method not disclosed); likely traditional vectors
+- Victims and sectors: Developers using AI coding assistants; scale not disclosed
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Capability added 2026, expanding; no victim count
 
 ## Attack flow
 ### deploy: Deploy infostealer (access)
@@ -1688,6 +1568,9 @@ No timeline is recorded.
 - Git
 - SSH
 
+## Source notes
+OS not specified; other targets suggest Windows; macOS/Linux not confirmed. Detection guidance: monitor AI credential file access, C2 communication (dobeqnesmot.cc, hjazfioe.surf), API usage anomalies from unexpected locations, unauthorized reads of .claude.json, .codex/auth.json, Cursor globalStorage, .copilot/config.json, .gemini/config.json, .aws/credentials, SSH keys.
+
 ## Sources
 - [Aoki: Infostealer Targets AI Coding Assistant Credentials](https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials)
 - [Symantec Aoki AI targeting](https://www.security.com/threat-intelligence/aoki-infostealer-ai-targeting)
@@ -1713,6 +1596,13 @@ Canto Incognito campaign; Italian-speaking threat actor (assessment); financiall
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Exploitation of publicly exposed vulnerable services: LiteLLM, Ollama, Gotenberg, Gitea, possibly Ivanti Sentry CVE-2026-10520; first activity April 2026
+- Victims and sectors: 3,400+ victim servers; enterprise AI infrastructure; development toolkits; predominantly US and Western Europe; peak activity 800 active servers per day
+- Regions: United States, Europe
+- Region notes: unknown
+- Scale and metrics: Active since April 2026; 3,400+ impacted servers; peak ~2,200 affected servers mid-June, ~800 active per day; first C2 commit Apr 13, 2026; poem updated 11 times; broader scanning/exploitation began May 2026; recent traffic suggests distributed brute-force experiments
 
 ## Attack flow
 ### vuln-exploit: Exploit vulnerable AI/LLM services (access)
@@ -1783,6 +1673,9 @@ No timeline is recorded.
 - Gitea (software development toolkit)
 - Ivanti Sentry (possibly CVE-2026-10520)
 
+## Source notes
+Black Lotus Labs discovered via Ivanti Sentry CVE-2026-10520 investigation; disrupted campaign, blocked C2 traffic; Lumen Defender customers protected; malware includes remote shell, miners, HTTP/S scanning, exploit deployment; Gotenberg installation guide warns not to expose to internet
+
 ## Sources
 - [Canto incognito: tracking the PoeLLM malware](https://www.lumen.com/blog/en-us/canto-incognito-tracking-the-poellm-malware)
 
@@ -1806,6 +1699,13 @@ CyberXero initial access broker; sells access to ransomware groups and nation-st
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Spearphishing with malicious attachments; exploitation of public-facing Fortinet VPN (CVE-2024-47575)
+- Victims and sectors: 7 compromised Ukrainian energy companies Sep-Oct 2026; critical infrastructure; SCADA/ICS systems targeted
+- Regions: Ukraine
+- Region notes: unknown
+- Scale and metrics: 7 Ukrainian energy companies compromised; up to 51 parallel AI agents per target; median 18 hours from initial access to domain compromise (vs 72+ hours manual)
 
 ## Attack flow
 ### initial-compromise: Initial access via VPN/phishing (access)
@@ -1864,6 +1764,9 @@ No timeline is recorded.
 - SCADA/ICS reconnaissance tools
 - SQLite database for agent coordination
 
+## Source notes
+SOCRadar Cyber Intelligence analysis. CyberXero represents evolution of IAB operations: deploying swarms of coordinated AI agents to dramatically reduce time-to-compromise for critical infrastructure. Detection: alert on multiple Claude API-calling processes (Python, Node.js) from single network, monitor SQLite database writes indicating agent coordination, check for rapid multi-host exploitation patterns, review SCADA/ICS access from IT network, scan exploits for LLM generation characteristics.
+
 ## Sources
 - [SOCRadar: CyberXero IAB Targets Ukrainian Critical Infrastructure with AI](https://socradar.io/blog/cyberxero-ai-iab-ukraine-critical-infrastructure/)
 
@@ -1887,6 +1790,13 @@ Unknown actor; financially motivated (ransomware, access sales); sophisticated A
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: Exploitation of PaperCut NG/MF servers via CVE-2023-27350 and CVE-2023-27351 (path traversal + RCE)
+- Victims and sectors: 395 organizations compromised Aug-Sep 2026; healthcare, education, government, finance; print management infrastructure
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 395 organizations compromised Aug-Sep 2026 via PaperCut exploitation + AI agent post-exploitation
 
 ## Attack flow
 ### scan-exploit: Mass scan and exploit PaperCut (access)
@@ -1946,6 +1856,9 @@ No timeline is recorded.
 - Print job credential harvesting
 - Ransomware (some cases)
 
+## Source notes
+GreyNoise Intelligence analysis. Campaign demonstrates AI agent use in mass exploitation and post-compromise automation. Detection: alert on PaperCut CVE exploitation attempts, monitor DeepSeek API traffic (api.deepseek.com) from print servers or unexpected hosts, detect rapid AD queries from print server IPs, review print job logs for credential exposure, monitor lateral movement patterns from print infrastructure to fileservers/workstations.
+
 ## Sources
 - [GreyNoise: AI-Orchestrated Campaign Against PaperCut NG/MF](https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf)
 
@@ -1969,6 +1882,13 @@ UAT-10147 (Chinese-speaking actor); financially motivated (SEO fraud, click frau
 
 ## AI involvement confidence
 not assessed
+
+## Scope and targeting
+- Initial access: WordPress, Drupal, Joomla CMS vulnerability exploitation; credential stuffing attacks
+- Victims and sectors: 140+ intrusions Jun-Aug 2026; e-commerce, media, hospitality websites; small to medium businesses
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 140+ intrusions Jun-Aug 2026; AI automation enables high-volume SEO-fraud operations
 
 ## Attack flow
 ### cms-exploitation: Exploit CMS vulnerabilities (access)
@@ -2028,6 +1948,9 @@ No timeline is recorded.
 - SQL injection (AI-generated)
 - Webshells
 - SEO spam injection tools
+
+## Source notes
+Cisco Talos Intelligence analysis. UAT-10147 represents shift toward AI-augmented financially-motivated cybercrime (SEO fraud) at scale. PentestGPT is open-source tool (github.com/GreyDGL/PentestGPT) repurposed for malicious use. Detection: look for PentestGPT Python process (pentestgpt, LLM API calls to OpenAI/Anthropic), monitor SQL injection with AI generation patterns (verbose error handling, iterative payload refinement), alert on CMS database modifications injecting external links, check for webshells with AI-generated code characteristics.
 
 ## Sources
 - [Talos: UAT-10147 Chinese-Speaking Adversary Integrates Agentic AI Into Post-Compromise Operations](https://blog.talosintelligence.com/uat-10147-chinese-speaking-adversary-integrates-agentic-ai-into-post-compromise-operations/)

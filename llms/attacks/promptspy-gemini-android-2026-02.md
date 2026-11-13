@@ -23,6 +23,13 @@ Unknown actor
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Sideloaded APK, distribution method unknown
+- Victims and sectors: Android users; targeted surveillance
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Limited deployment observed as of Feb 2026
+
 ## Attack flow
 ### install: Install PromptSpy APK (access)
 
@@ -78,6 +85,9 @@ Install apps only from official stores; use mobile security solutions; review ap
 - Location tracking
 - Photo exfiltration
 - Contact/message harvesting
+
+## Source notes
+ESET analysis. Demonstrates adversary use of commercial AI APIs for adaptive spyware C2.
 
 ## Sources
 - [ESET: PromptSpy Android Spyware Uses Gemini for C2](https://www.welivesecurity.com/en/eset-research/promptspy-ushers-in-era-android-threats-using-genai/)

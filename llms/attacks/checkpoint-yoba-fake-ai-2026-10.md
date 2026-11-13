@@ -17,6 +17,13 @@ Yoba campaign; Russian-origin indicators (language, time zone); operates primari
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: SEO-poisoned search results leading to malicious GitHub repositories and GitHub.io pages; users download fake installer ZIPs from GitHub releases
+- Victims and sectors: AI tool users searching for ChatGPT and Claude desktop applications
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 3 fake GitHub repositories created Jul-Sep 2026; first malicious releases uploaded Aug 30, 2026; 3 ZIP installers (sol-setup.zip, GPT-6-Astra-Setup.zip, Setup-Claude.zip); low VirusTotal detection rates
+
 ## Attack flow
 ### seo-poison: SEO poisoning and fake repositories (access)
 
@@ -90,6 +97,9 @@ No timeline is recorded.
 - Tor
 - Catbox
 - DNS over HTTPS (DoH)
+
+## Source notes
+Check Point Research tracked campaign over two months; no password protection on ZIPs unlike typical malicious archives; low detection due to anti-sandbox and anti-analysis techniques
 
 ## Sources
 - [Tricks from the Past deployed via signed ChatGPT and Claude binaries](https://research.checkpoint.com/2026/tricks-from-the-past-deployed-via-signed-chatgpt-and-claude-binaries/)

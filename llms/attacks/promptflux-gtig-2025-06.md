@@ -22,6 +22,13 @@ unattributed; financially motivated lure filenames suggested
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Experimental; Google disabled associated assets
+
 ## Attack flow
 ### step-1: Initial delivery is not established (unknown)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 ### Other tooling
 - VBScript
 - Startup folder persistence
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

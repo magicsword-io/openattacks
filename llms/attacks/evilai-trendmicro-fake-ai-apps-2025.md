@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Users install fake AI/productivity apps
+- Victims and sectors: Global organizations (Trend: far-reaching)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: User installs a productivity app (access)
 
@@ -71,6 +78,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.trendmicro.com/en/research/25/i/evilai.html>

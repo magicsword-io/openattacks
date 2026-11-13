@@ -1,6 +1,7 @@
 name: Attack detections
-# Untrusted pull request code runs here and must not receive secrets.
-# Fork pull requests do not receive DETECTIONs_PUSH_TOKEN.
+# Untrusted pull request code runs here with read-only repository access. The
+# workflow validates the catalog first, then publishes optional matched rules
+# as an artifact for a contributor to review and apply manually.
 on:
   pull_request:
   merge_group:
@@ -14,15 +15,12 @@ jobs:
   attack-detections:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/head', github.event.pull_request.number) || github.sha }}
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Find changed attack entries
         id: changed
@@ -36,12 +34,23 @@ jobs:
       - uses: actions/setup-node@v4
         if: success() && steps.changed.outputs.count != '0'
         with:
-          node-version: '22.22.2'
+          node-version: "22.22.2"
           cache: npm
 
       - name: Install dependencies
         if: success() && steps.changed.outputs.count != '0'
         run: npm ci
+
+      - name: Validate catalog and generated artifacts
+        if: success() && steps.changed.outputs.count != '0'
+        run: npm run validate
+
+      - name: Report changed-entry detection coverage
+        if: success() && steps.changed.outputs.count != '0'
+        continue-on-error: true
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+        run: node scripts/validate-pr-entries.mjs --base "$BASE"
 
       - name: Detection index week
         if: success() && steps.changed.outputs.count != '0'
@@ -69,62 +78,18 @@ jobs:
         if: success() && steps.changed.outputs.count != '0' && steps.enrich-plan.outputs.needs == 'true' && steps.detection-cache.outputs.cache-hit != 'true'
         run: node scripts/build-detection-index.mjs
 
-      - name: Add matching detection rules
+      - name: Generate matching detection-rule suggestions
         if: success() && steps.changed.outputs.count != '0' && steps.enrich-plan.outputs.needs == 'true'
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           DETECTION_SUGGESTIONS_PATH: ${{ runner.temp }}/detection-suggestions.md
         run: node scripts/enrich-detections.mjs --base "$BASE"
 
-      - name: Validate changed attack entries
-        if: steps.changed.outputs.count != '0' && (steps.enrich-plan.outcome == 'success' || steps.enrich-plan.outcome == 'failure')
-        env:
-          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
-        run: node scripts/validate-pr-entries.mjs --base "$BASE"
-
-      - name: Commit detection rules
-        if: success() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          HEAD_REF: ${{ github.head_ref }}
-          DETECTIONS_PUSH_TOKEN: ${{ secrets.DETECTIONS_PUSH_TOKEN }}
-        run: |
-          set -euo pipefail
-          git add -- attacks
-          if git diff --cached --quiet; then
-            echo "No detection updates to push."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Add matched detection rules for changed attack entries"
-          if [ -n "${DETECTIONS_PUSH_TOKEN:-}" ]; then
-            git -c "http.extraheader=AUTHORIZATION: bearer ${DETECTIONS_PUSH_TOKEN}" push origin "HEAD:${HEAD_REF}"
-          else
-            git push origin "HEAD:${HEAD_REF}"
-          fi
-
-      - name: Comment on fork pull request
-        if: success() && github.event_name == 'pull_request' && steps.enrich-plan.outputs.needs == 'true' && github.event.pull_request.head.repo.full_name != github.repository
-        continue-on-error: true
-        uses: actions/github-script@v7
-        env:
-          DETECTION_SUGGESTIONS_PATH: ${{ runner.temp }}/detection-suggestions.md
+      - name: Upload detection-rule suggestions
+        if: success() && steps.enrich-plan.outputs.needs == 'true'
+        uses: actions/upload-artifact@v4
         with:
-          script: |
-            const fs = require('fs');
-            const suggestionPath = process.env.DETECTION_SUGGESTIONS_PATH;
-            if (!fs.existsSync(suggestionPath)) {
-              core.notice('No detection suggestions file to post.');
-              return;
-            }
-            const body = fs.readFileSync(suggestionPath, 'utf8').trim();
-            if (!body) {
-              core.notice('No detection rules to suggest.');
-              return;
-            }
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body,
-            });
+          name: detection-rule-suggestions-${{ github.event.pull_request.number || github.sha }}
+          path: ${{ runner.temp }}/detection-suggestions.md
+          if-no-files-found: error
+          retention-days: 7

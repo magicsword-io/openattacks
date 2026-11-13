@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: User asks agent with GitHub MCP to process attacker-controlled public issue
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Agent reads an attacker issue (access)
 
@@ -70,6 +77,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://invariantlabs.ai/blog/mcp-github-vulnerability>

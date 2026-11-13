@@ -19,6 +19,13 @@ unknown; 32 samples ~1 month active development
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown (two-stage: Go stager downloads PE from agent.x90.dev/data/copilot.txt)
+- Victims and sectors: unknown (no victim orgs named in Unit 42 timely intel note)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 32 samples 2026-09-10 to 2026-10-08 (25 agents, 8 major versions in 29 days; 7 stager v7); payload URL live serving v2.4 as of 2026-10-09
+
 ## Attack flow
 ### step-1: Stager downloads the implant (access)
 
@@ -85,6 +92,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-09-C2Agent-malware.txt>

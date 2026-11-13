@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Exposed AWS keys are collected (access)
 
@@ -67,6 +74,9 @@ No timeline is recorded.
 
 ### Other tooling
 - Stolen AKIA keys
+
+## Source notes
+unknown
 
 ## Sources
 - <https://securitylabs.datadoghq.com/articles/beyond-valid-credentials-how-exposed-aws-keys-are-tested-for-amazon-bedrock-access/>

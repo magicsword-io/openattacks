@@ -22,6 +22,13 @@ CrowdStrike did not attribute the activity to a named adversary. It assessed wit
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown (industry reports: loan inquiry service; employee mobile work-support system)
+- Victims and sectors: South Korean financial organizations (multiple banks per industry reports)
+- Regions: South Korea
+- Region notes: South Korea describes victim financial organizations. Chinese language concerns actor attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
+- Scale and metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
+
 ## Attack flow
 ### step-1: Initial access is not established (unknown)
 
@@ -76,6 +83,9 @@ No timeline is recorded.
 
 ### Other tooling
 - Proxy IPs listed in CrowdStrike IOC table
+
+## Source notes
+CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.
 
 ## Sources
 - [CrowdStrike Oct 7 - Unknown threat actor uses ARTEX vs South Korean finance](https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/)

@@ -19,6 +19,13 @@ Multiple overlapping kits (InstallFix, ClickFix Claude, trojanized installer, AI
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Search/malvertising/shared AI chats → paste command or run installer
+- Victims and sectors: Developers, marketers, general users; US second-largest submitter country (16%), first in Download Claude and ChatGPT chains; tech/telecom/education heavy
+- Regions: Multiple regions
+- Region notes: The seed describes a global campaign cluster. India and United States percentages refer to sandbox submitters, not confirmed victim locations, and are excluded from country counts.
+- Scale and metrics: 1,258 analyses; Claude 48%; ≥45% end in paste-and-run
+
 ## Attack flow
 ### step-1: AI-themed lures reach users (access)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://any.run/cybersecurity-blog/fake-ai-tools-us-companies/>

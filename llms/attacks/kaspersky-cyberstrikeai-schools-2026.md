@@ -17,6 +17,13 @@ Financially motivated; attribution otherwise unknown
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Compromised SQL Server
+- Victims and sectors: Schools in Africa and Latin America
+- Regions: Africa, South America
+- Region notes: Africa and South America reflect targeted school systems in these regions
+- Scale and metrics: Domain admin achieved in 3-4 days; multiple schools targeted
+
 ## Attack flow
 ### initial-access: SQL Server compromised (access)
 
@@ -86,6 +93,17 @@ No detections are recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+Relevant detection rules:
+- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+- Sigma: Suspicious File Downloaded From Direct IP Via Certutil (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_download_direct_ip.yml)
+- Sigma: Process Memory Dump Via Comsvcs.DLL (LSASS dump) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml)
+- Sigma: Suspicious LSASS Process Access (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_sysinternals_procdump_lsass.yml)
+- Sigma: Powerview Add-DomainObjectAcl DCSync AD Extend Right (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_account_backdoor_dcsync_rights.yml)
+- Sigma: DCSync Attack Detection via RPC Firewall (https://github.com/SigmaHQ/sigma/blob/master/rules/application/rpc_firewall/rpc_firewall_dcsync_attack.yml)
+- Sigma: PowerShell Malicious Cmdlets (covers Mimikatz/DCSync) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_malicious_cmdlets.yml)
+- LOLBAS references: certutil (https://lolbas-project.github.io/lolbas/Binaries/Certutil/), comsvcs.dll (https://lolbas-project.github.io/lolbas/Libraries/Comsvcs/), schtasks (https://lolbas-project.github.io/lolbas/Binaries/Schtasks/)
 
 ## Sources
 - [CyberStrikeAI attacks](https://securelist.com/cyberstrikeai-attacks/121715/) — Kaspersky (Securelist)

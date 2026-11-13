@@ -12,7 +12,7 @@ export function isAttackYaml(path) {
 export function attackPathsFromStatus(text) {
   const parts = text.split("\0").filter((part) => part.length);
   const files = [];
-  for (let index = 0; index < parts.length; ) {
+  for (let index = 0; index < parts.length;) {
     const status = parts[index++];
     const code = status[0];
     if (code === "R" || code === "C") {
@@ -31,6 +31,10 @@ export function changedAttackFiles(
   base,
   { cwd = repoRoot, exec = execFileSync } = {},
 ) {
+  const mergeBase = exec("git", ["merge-base", base, "HEAD"], {
+    cwd,
+    encoding: "utf8",
+  }).trim();
   const output = exec(
     "git",
     [
@@ -39,7 +43,7 @@ export function changedAttackFiles(
       "-z",
       "--find-renames",
       "--diff-filter=AMR",
-      base,
+      mergeBase,
       "HEAD",
       "--",
       "attacks",

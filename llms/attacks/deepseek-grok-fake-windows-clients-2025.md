@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Users download fake AI desktop clients from unofficial sites/ads
+- Victims and sectors: Users seeking DeepSeek/Grok desktop apps
+- Regions: Multiple regions
+- Region notes: The source describes global distribution. Chinese-language installers do not establish victims in China.
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: User finds an unofficial AI client (access)
 
@@ -72,6 +79,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://securelist.com/backdoors-and-stealers-prey-on-deepseek-and-grok/115801/>

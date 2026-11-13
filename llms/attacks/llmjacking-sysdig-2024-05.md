@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Vulnerable Laravel (CVE-2021-3129) leading to cloud credential theft
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Potential >$46,000/day Claude 2.x costs cited; July 2024 spike 61k Bedrock requests in 3 hours
+
 ## Attack flow
 ### step-1: Vulnerable Laravel provides a foothold (access)
 
@@ -79,6 +86,9 @@ Monitor Bedrock ListFoundationModels+Invoke/Converse from long-term AKIA keys; r
 
 ### Other tooling
 - LLM reverse proxy for resale
+
+## Source notes
+2026 updates expand LLMjacking scope: Bedrock Marketplace abuse (FortiGuard), AI startup targeting (Pillar Bizarre Bazaar), and session token theft (Okta)
 
 ## Sources
 - [Sysdig: LLMjacking - Stolen Cloud Credentials Used in New AI Attack](https://www.sysdig.com/blog/llmjacking-stolen-cloud-credentials-used-in-new-ai-attack)

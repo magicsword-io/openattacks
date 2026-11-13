@@ -142,7 +142,6 @@ detections:
     format: guidance
     notes: "Scan e-commerce sites for injected JavaScript card skimmers; monitor payment form modifications; detect exfiltration of payment data; alert on suspicious checkout flow changes"
 timeline:
-  first_seen: "2026-01-01"
   last_updated: "2026-11-10"
   updates:
     - date: "2026-11-06"

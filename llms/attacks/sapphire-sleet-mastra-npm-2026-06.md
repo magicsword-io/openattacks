@@ -23,6 +23,13 @@ Sapphire Sleet (DPRK, aka BlueNoroff, APT38, Stardust Chollima); Microsoft high-
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: npm install of backdoored @mastra/* packages (140+ packages, versions published May 29-Jun 15 2026) via compromised maintainer account
+- Victims and sectors: 8,000-12,000 downloads across compromised versions; AI/ML developers using Mastra framework; TypeScript/JavaScript AI application developers
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 140+ npm packages backdoored over 18-day window (May 29-Jun 15); 8,000-12,000 estimated downloads; packages removed Jun 16-17, 2026
+
 ## Attack flow
 ### compromise-maintainer: Compromise Mastra maintainer (access)
 
@@ -80,6 +87,9 @@ Verify npm package integrity; use package lock files with checksums; review post
 - npm supply chain attack
 - [Node.js](https://github.com/nodejs/node) postinstall scripts
 - mastra-telemetry\[.\]com C2 (DPRK infrastructure)
+
+## Source notes
+Microsoft Threat Intelligence attribution to Sapphire Sleet (DPRK APT); Mastra GitHub github.com/mastra-ai/mastra. Sapphire Sleet focus on revenue generation (crypto theft) and AI/technology intelligence collection. Detection: alert on npm packages with postinstall scripts accessing credential files, check for mastra-telemetry[.]com domain, monitor base64/eval in npm scripts, review Mastra package versions installed in environment against compromise window (May 29-Jun 15).
 
 ## Sources
 - [Microsoft: North Korea's Sapphire Sleet targets AI developers with Mastra supply chain attack](https://www.microsoft.com/en-us/security/blog/2026/06/17/postinstall-payload-inside-mastra-npm-supply-chain-compromise/)

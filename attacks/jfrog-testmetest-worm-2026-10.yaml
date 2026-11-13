@@ -122,12 +122,12 @@ atlas_techniques:
       to silently run node scripts/setup.js at session start
     source_urls:
       - https://x.com/fr0gger_/status/2119730348699640060
-  - id: AML.T0081
+  - id: AML.T0083
     rationale: Worm steals AI coding assistant credentials (.claude/.credentials.json,
       .codex/auth.json) and cloud/CI credentials
     source_urls:
       - https://socket.dev/blog/shai-hulud-descendant-malicious-ruby-gem
-  - id: AML.T0083
+  - id: AML.T0081
     rationale: Plants workspace-tools MCP server and SessionStart hooks for persistent
       AI agent manipulation
     source_urls:

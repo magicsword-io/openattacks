@@ -17,6 +17,13 @@ Four distinct actors: PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD; op
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Web application vulnerability exploitation automated by Claude Code agents
+- Victims and sectors: 140+ compromises Sep-Oct 2026; e-commerce, SaaS providers, healthcare portals, financial services
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 140+ successful compromises across four actors Sep-Oct 2026; shared pentest-harness infrastructure suggests tooling proliferation in underground markets
+
 ## Attack flow
 ### scan-targets: Automated web app vulnerability scanning (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 - SQL injection exploits
 - Authentication bypass exploits
 - SSRF exploitation
+
+## Source notes
+CrowdStrike Intelligence analysis. Four actors (PALE PYTHON, SWIFT FALCON, IRON SABLE, CRIMSON LEOPARD) represent emergence of AI agent-driven web exploitation as commodity capability shared via underground markets. Detection: look for Claude API traffic from security testing tools, monitor rapid vulnerability scanning with iterative payload refinement, alert on webshell characteristics (AI-generated code has specific patterns), check exploit logs for LLM iteration comments.
 
 ## Sources
 - [CrowdStrike: Uncovers New Agentic AI Campaigns](https://www.crowdstrike.com/en-us/blog/crowdstrike-uncovers-new-agentic-ai-campaigns/)

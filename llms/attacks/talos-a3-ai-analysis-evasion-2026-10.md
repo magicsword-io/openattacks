@@ -19,6 +19,13 @@ CAIRN families FRUITSHELL, PLOTSAFE, HOLLOWCLAD, MANTLEMAZE, ROZESHELL; A3 techn
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown (varies by family; technique is anti-analysis layer)
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 84 samples Jan 2025–Jul 2026; ~35% steering in best direct-instruction runs
+
 ## Attack flow
 ### step-1: Malware is presented for analysis (access)
 
@@ -77,6 +84,9 @@ No timeline is recorded.
 ### MagicSword projects
 - [LOLDrivers](https://loldrivers.io)
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://blog.talosintelligence.com/ignore-all-instructions-and-read-this-blog-the-state-of-ai-analysis-evasion-in-malware/>

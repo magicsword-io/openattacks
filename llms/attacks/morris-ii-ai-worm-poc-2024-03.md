@@ -19,6 +19,13 @@ unknown
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Research payload enters an email assistant (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://arxiv.org/abs/2403.02817>

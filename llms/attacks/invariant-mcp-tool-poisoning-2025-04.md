@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: User connects agent to malicious or rug-pulled MCP server
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: A malicious MCP server is connected (access)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks>

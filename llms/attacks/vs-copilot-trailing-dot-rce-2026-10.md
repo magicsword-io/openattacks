@@ -19,6 +19,13 @@ Vulnerability research; CVE-2026-103572 CVSS 8.8 Important
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Indirect prompt injection (file content / MCP) into Copilot chat, or misaligned agent
+- Victims and sectors: Visual Studio and SSMS users
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Patched 2026-10-13 Patch Tuesday
+
 ## Attack flow
 ### step-1: Untrusted instructions reach Copilot (access)
 
@@ -73,6 +80,9 @@ No timeline is recorded.
 ### Other tooling
 - MCP config
 - ripgrepPath setting
+
+## Source notes
+unknown
 
 ## Sources
 - <https://embracethered.com/blog/posts/2026/visual-studio-copilot-remote-code-execution/>

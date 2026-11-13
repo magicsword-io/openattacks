@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Victims install malicious Chrome Web Store extensions
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: 900,000+ users cited for related extension cluster
+
 ## Attack flow
 ### step-1: Impersonating extension is installed (access)
 
@@ -67,6 +74,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.ox.security/blog/malicious-chrome-extensions-steal-chatgpt-deepseek-conversations/>

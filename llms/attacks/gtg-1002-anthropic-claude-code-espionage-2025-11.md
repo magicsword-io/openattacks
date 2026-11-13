@@ -21,6 +21,13 @@ GTG-1002; high confidence Chinese state-sponsored (Anthropic); MITRE Campaign C0
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Human-selected targets; AI discovered and exploited vulnerabilities in live ops (details redacted in public report)
+- Victims and sectors: ~30 entities; validated handful of successful intrusions including major technology corporations and government agencies; technology, financial, chemical, government (MITRE C0062)
+- Regions: Multiple regions
+- Region notes: Global targeting is described without individual countries. China-nexus attribution concerns the actor, not victim location.
+- Scale and metrics: ~30 entities targeted; mid-Sep 2025 activity window; first documented largely autonomous AI cyberattack at scale per Anthropic
+
 ## Attack flow
 ### step-1: Human operators choose targets (access)
 
@@ -80,6 +87,9 @@ No timeline is recorded.
 - [LOLSkills](https://lolskills.io)
 - [LOLBAS](https://lolbas-project.github.io)
 - [GTFOBins](https://gtfobins.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www-cdn.anthropic.com/d7dd50dd1185f59be051b307150d877f2b82bd2c.pdf>

@@ -23,6 +23,13 @@ ClawHavoc campaign and related poisoned-skill activity; actor unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: User installs malicious OpenClaw skill from fake GitHub repo, typosquat, or rogue skill registry (openclaw-skills[.]com)
+- Victims and sectors: AI developers installing untrusted OpenClaw skills
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Multiple malicious skills and associated payload infrastructure reported during 2026
+
 ## Attack flow
 ### distribute-skills: Distribute malicious skills (access)
 
@@ -86,6 +93,9 @@ Only install OpenClaw skills from trusted sources; verify GitHub repo authentici
 - [Node.js](https://github.com/nodejs/node) credential harvesters
 - Reverse shells
 - openclaw-skills\[.\]com rogue registry
+
+## Source notes
+Koi Security ClawHavoc analysis and Cyera poisoned-skill research. Detection should monitor skill installation, unknown source repositories, unexpected network egress, and credential-file access.
 
 ## Sources
 - [Koi: ClawHavoc Campaign Delivers AMOS via Malicious OpenClaw Skills](https://koi.security/blog/clawhavoc-malicious-openclaw-skills-amos)

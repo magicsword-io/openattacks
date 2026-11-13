@@ -23,6 +23,13 @@ Unknown actor
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Public GitHub scanning
+- Victims and sectors: Open-source projects with insecure GitHub Actions workflows
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Hundreds of repositories scanned and exploited; multiple secrets stolen as of Mar 2026
+
 ## Attack flow
 ### scan: Scan public repositories (execution)
 
@@ -78,6 +85,9 @@ Secure GitHub Actions workflows; avoid untrusted input in run commands; use Step
 ### Other tooling
 - [GitHub Actions](https://github.com/features/actions) exploitation
 - Automated secret harvesting
+
+## Source notes
+StepSecurity analysis. Detection: monitor for automated pull requests exploiting workflow patterns, mass secret access, rapid workflow execution spikes from untrusted actors.
 
 ## Sources
 - [StepSecurity: hackerbot-claw Autonomous GitHub Actions Exploitation](https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation)

@@ -20,6 +20,13 @@ GTG-2002; financially motivated cybercriminal
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Opportunistic via OSINT and scanning of Internet-facing devices; some ops began from compromised VPNs for internal access (vs later GTG-1002)
+- Victims and sectors: At least 17 organizations in ~1 month: government, healthcare, emergency services, religious institutions
+- Regions: Multiple regions
+- Region notes: Multiple target countries are reported, but specific country names are largely redacted.
+- Scale and metrics: ≥17 orgs; occasional ransom demands exceeding $500,000
+
 ## Attack flow
 ### step-1: Internet-facing systems are scanned (access)
 
@@ -77,6 +84,9 @@ No timeline is recorded.
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 - [GTFOBins](https://gtfobins.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www-cdn.anthropic.com/b2a76c6f6992465c09a6f2fce282f6c0cea8c200.pdf>

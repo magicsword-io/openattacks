@@ -23,6 +23,13 @@ APT41; PRC-backed
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Actor brings development tasks (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 ### Other tooling
 - OSSTUN C2
 - C++/Go obfuscation libraries
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

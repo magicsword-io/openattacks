@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Confirmed Java RCE in exposed Kafka UI among multiple probed doors; same source IP scanned 600+ other Wiz customer environments
+- Victims and sectors: Large multi-cloud organization (Wiz customer); opportunistic scanning across many other customers
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Hundreds–thousands of actions per hour; 600+ environments scanned from same IP
+
 ## Attack flow
 ### step-1: Exposed Kafka UI is exploited (access)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 - GitOps/K8s manifests
 - [webhook.site](https://github.com/webhooksite/webhook.site)
 - IMDS credential harvest
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.wiz.io/blog/anatomy-of-ai-driven-cloud-attacks>

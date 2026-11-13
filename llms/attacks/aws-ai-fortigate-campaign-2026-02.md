@@ -23,6 +23,13 @@ Unknown actor
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: CVE-2024-21762 FortiGate SSL VPN RCE
+- Victims and sectors: 600+ organizations using vulnerable FortiGate appliances
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 600+ FortiGate appliances compromised as of Feb 2026
+
 ## Attack flow
 ### exploit: Exploit CVE-2024-21762 (access)
 
@@ -77,6 +84,9 @@ Patch FortiGate appliances (CVE-2024-21762); monitor for unusual configuration a
 ### Other tooling
 - CVE-2024-21762 exploit
 - FortiGate configuration harvesting
+
+## Source notes
+AWS Security bulletin. Detection: monitor FortiGate appliances for exploitation indicators, unusual configuration file access, credential harvesting attempts.
 
 ## Sources
 - [AWS: AI-Augmented Actor Compromising 600+ FortiGate Firewalls](https://aws.amazon.com/blogs/security/ai-augmented-threat-actor-accesses-fortigate-devices-at-scale/)

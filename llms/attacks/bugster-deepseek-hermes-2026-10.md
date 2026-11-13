@@ -17,6 +17,13 @@ Unknown actor(s); BUGSTER campaign cluster; financially motivated (data theft, a
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Spearphishing emails with fake scholarship/research collaboration offers targeting faculty and students
+- Victims and sectors: 19 Indian universities compromised Oct-Nov 2026: IIT Delhi, IIT Bombay, IIM Bangalore, NIT Trichy, others; education sector; research institutions
+- Regions: India
+- Region notes: unknown
+- Scale and metrics: 19 confirmed compromised universities Oct-Nov 2026; student records, research IP, financial data stolen; some victims received ransomware
+
 ## Attack flow
 ### phishing: Spearphishing campaign (access)
 
@@ -73,6 +80,9 @@ No timeline is recorded.
 - File upload vulnerabilities
 - Data exfiltration tools
 - Ransomware (some cases)
+
+## Source notes
+Unit 42 analysis. BUGSTER demonstrates targeting of education sector with AI agents for automated exploitation and data theft. Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Detection: look for Hermes Python process (hermes, autonomous-agent), monitor Cursor IDE installs on non-developer machines, check DeepSeek API traffic (api.deepseek.com), alert on rapid multi-vulnerability scanning, review exploit payloads for AI generation patterns (detailed comments, specific error handling).
 
 ## Sources
 - [Unit 42: BUGSTER - AI-Assisted Cybercrime Analysis](https://unit42.paloaltonetworks.com/ai-assisted-cybercrime-analysis/)

@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Supply-chain compromise of official Cursor marketplace extension via compromised GitHub repository
+- Victims and sectors: Cursor IDE users who installed or auto-updated anthropic.claude-code extension during compromise window
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects global Cursor user base; specific affected geography unknown
+- Scale and metrics: Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown
+
 ## Attack flow
 ### supply-chain: GitHub repository compromised (access)
 
@@ -86,6 +93,14 @@ No detections are recorded.
 - LaunchAgent persistence (macOS)
 - Cron persistence (Linux)
 - Scheduled task persistence (Windows)
+
+## Source notes
+Relevant detection rules:
+- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)
+- Sigma: Suspicious Cron File Created (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)
+- Sigma: Persistence Via PlistBuddy (macOS LaunchAgent) (https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml)
+- Sigma: SSH Port Forwarding/Tunneling (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml)
+- Sigma: Suspicious SSH via OpenSSH Scheduled Task (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml)
 
 ## Sources
 - [Inside the malicious Claude Code-branded Cursor extension with persistent SSH backdoor](https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/) — Microsoft

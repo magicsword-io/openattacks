@@ -21,6 +21,13 @@ Academic (Pretext paper)
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: n/a (research)
+- Victims and sectors: n/a (research against scanners)
+- Regions: Not applicable
+- Region notes: Controlled research against skill scanners, rather than a geographically located victim campaign.
+- Scale and metrics: Up to 97% / 77% evasion rates in paper evaluation
+
 ## Attack flow
 ### step-1: Researchers construct skill bundles (access)
 
@@ -78,6 +85,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://arxiv.org/abs/2609.39607>

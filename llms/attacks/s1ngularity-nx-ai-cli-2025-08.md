@@ -19,6 +19,13 @@ s1ngularity / UNC6426 (industry)
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Malicious npm postinstall on nx/@nx packages (versions around 20.9–21.8)
+- Victims and sectors: Nx ecosystem developers (~4M weekly downloads cited); 400+ users/orgs in phase 2
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Malicious packages live ~4–5 hours; phase 2 >5500 private repos exposed; Wiz: AI path succeeded in <25% of cases; <100 unique valid secrets across 20k files
+
 ## Attack flow
 ### step-1: Publish token is stolen (access)
 
@@ -78,6 +85,9 @@ No timeline is recorded.
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - [Wiz: s1ngularity Supply Chain Attack](https://www.wiz.io/blog/s1ngularity-supply-chain-attack)

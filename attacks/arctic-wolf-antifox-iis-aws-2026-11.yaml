@@ -93,8 +93,6 @@ attack_flow:
   edges:
     - source: webshell
       target: webconfig
-    - source: webconfig
-      target: aws-enum
     - source: aws-enum
       target: secret
 category: adversary-use-of-ai

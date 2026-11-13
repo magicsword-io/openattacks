@@ -23,6 +23,13 @@ Multiple attackers from 27 countries; financially motivated/opportunistic exploi
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Authenticated user access (or LANGFLOW_AUTO_LOGIN=true provides token without credentials); exploitation via POST/PATCH /api/v2/mcp/servers/{server_name} or embedded flow configs
+- Victims and sectors: Langflow installations; multiple internet-facing vulnerable instances found; 1,423 exploitation attempts against Previdian honeypots from 27 countries
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 1,423 exploitation attempts against Previdian honeypots from 27 IPs (Sep 19-Oct 2026); 333 attempts on Oct 11 alone; first attempts Sep 19 (2+ weeks before CVE publication Oct 5); dramatic increase post-CVE
+
 ## Attack flow
 ### auth: Obtain authentication (access)
 
@@ -80,6 +87,9 @@ Upgrade to Langflow 1.10.3+; disable LANGFLOW_AUTO_LOGIN; enforce strong unique 
 ### Other tooling
 - bash command execution
 - Environment variable injection (LD_PRELOAD, NODE_OPTIONS, PYTHONPATH, BASH_ENV)
+
+## Source notes
+Two GitHub Security Advisories (GHSA-7w94-79vh-5mr2 for <1.9.0, GHSA-w794-rj3p-xv45 for <1.10.3); Previdian observed exploitation 2+ weeks before public CVE; VulnCheck analysis of AI stack vulnerabilities. Detection: monitor Langflow API /api/v2/mcp/servers/ for suspicious commands, review MCP Stdio configs, check for bash -c execution, monitor env var injection patterns (LD_PRELOAD, PATH), alert on auto-login token requests from unexpected IPs.
 
 ## Sources
 - [GHSA-7w94-79vh-5mr2: Authenticated RCE via MCP Stdio transport](https://github.com/langflow-ai/langflow/security/advisories/GHSA-7w94-79vh-5mr2)

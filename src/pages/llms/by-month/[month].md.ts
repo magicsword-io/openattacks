@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { cors, generated, generatedNames } from "../../../lib/generated";
+import { cors, generatedForSite, generatedNames } from "../../../lib/generated";
 
 export function getStaticPaths() {
   return generatedNames("llms/by-month", ".md").map((name) => ({
@@ -7,7 +7,11 @@ export function getStaticPaths() {
   }));
 }
 
-export const GET: APIRoute = ({ params }) =>
-  new Response(generated(`llms/by-month/${params.month}.md`), {
-    headers: { "Content-Type": "text/markdown; charset=utf-8", ...cors },
-  });
+export const GET: APIRoute = ({ params, site, url }) =>
+  new Response(
+    generatedForSite(
+      `llms/by-month/${params.month}.md`,
+      new URL(import.meta.env.BASE_URL, site || url.origin),
+    ),
+    { headers: { "Content-Type": "text/markdown; charset=utf-8", ...cors } },
+  );

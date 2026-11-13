@@ -23,6 +23,13 @@ China-linked based on LLM provider selection
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Sideloaded APK via phishing or malicious app stores
+- Victims and sectors: Android users with banking apps; multiple regions
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Unknown number of infections as of Sep 2026
+
 ## Attack flow
 ### install: Install malicious APK (access)
 
@@ -78,6 +85,9 @@ Install apps only from official stores; use mobile security solutions detecting 
 - Android banking trojan
 - Screen overlay injection
 - SMS interception
+
+## Source notes
+Zimperium analysis. First documented Android malware making runtime LLM API calls for adaptive behavior.
 
 ## Sources
 - [BleepingComputer: New RatHat Android malware uses AI to automate device control](https://www.bleepingcomputer.com/news/security/new-rathat-android-malware-uses-ai-to-automate-device-control/)

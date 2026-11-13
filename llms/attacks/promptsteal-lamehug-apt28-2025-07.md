@@ -24,6 +24,13 @@ APT28 / FROZENLAKE (GTIG); CERT-UA moderate confidence APT28
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Phishing emails with ZIP (Додаток.pdf.zip) impersonating ministry representative
+- Victims and sectors: Ukrainian government / security and defence sector
+- Regions: Ukraine
+- Region notes: unknown
+- Scale and metrics: Observed in operations mid-2025; continued sample development with obfuscation/C2 changes
+
 ## Attack flow
 ### step-1: Phishing delivers a ZIP attachment (access)
 
@@ -80,6 +87,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

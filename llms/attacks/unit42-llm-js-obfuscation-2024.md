@@ -19,6 +19,13 @@ unknown
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Researchers provide malicious JavaScript (access)
 
@@ -69,6 +76,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://unit42.paloaltonetworks.com/using-llms-obfuscate-malicious-javascript/>

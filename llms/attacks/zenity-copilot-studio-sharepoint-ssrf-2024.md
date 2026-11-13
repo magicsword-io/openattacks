@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: CVE-2024-38206; multi-product impact
+
 ## Attack flow
 ### step-1: Original victim-contact route is unspecified (unknown)
 
@@ -67,6 +74,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat>

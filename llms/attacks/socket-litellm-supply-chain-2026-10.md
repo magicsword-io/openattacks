@@ -17,6 +17,13 @@ unknown; lookalike repository and release workflow compromise suggest targeted s
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Supply chain compromise: malicious wheels published to PyPI and Docker images to GHCR; project release workflow used lookalike source repository (Berri-AI/litellm with hyphen)
+- Victims and sectors: LiteLLM users across ~23M weekly downloads; affects AI development, cloud deployments, CI/CD pipelines
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: LiteLLM receives ~23M weekly downloads; 7 platform-specific wheels published Oct 21, 2026 11:39:51 UTC, flagged by Socket AI scanner at 11:46:30 UTC; multiple GHCR/Docker Hub image tags affected
+
 ## Attack flow
 ### supply-chain: Compromised release workflow (access)
 
@@ -88,6 +95,9 @@ No timeline is recorded.
 - Maturin build with data directory
 - RSA-4096 encryption for exfiltration
 - GitHub domain.txt pointer for remote code loader
+
+## Source notes
+Socket Research Team detected via AI scanner 7 minutes after publication; Upwind provided independent container investigation; Docker provenance recorded malicious source-owner override; loader GitHub pointer returned empty response at 13:01:44 UTC Oct 21
 
 ## Sources
 - [LiteLLM PyPI Package and Docker Images Compromised to Steal Cloud and AI Credentials](https://socket.dev/blog/litellm-compromise)

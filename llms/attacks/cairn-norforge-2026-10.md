@@ -24,6 +24,13 @@ NorForge AIA0001 (Chinese language, CGI Global Limited / AS56594, high confidenc
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Unauthenticated web RCE / upload / deserialization / SQLi-to-RCE chains against e-commerce and payment sites (task-driven); CVE-2026-75650 Magento lab tooling observed on workers
+- Victims and sectors: E-commerce / payment / merchant sites; AIA0001 mostly US, Japan, Australia; AIA0002 merchant/gray-market/pharma and some African commerce; Reuters-reported one operator into 100+ sites
+- Regions: United States, Japan, Australia
+- Region notes: Reported target geography includes the United States, Japan and Australia. Canada appeared in task text and African commerce was suggested by hints; those unconfirmed locations are excluded from country counts.
+- Scale and metrics: 20+ malicious exposed panels; AIA0001 1,100+ projects across 14 panels; ~10% success; ~<$5/task estimate; <23h start-to-goal; TruffleHog hundreds of secrets (11% verified); Censys: 24 stock Cairn panel hosts
+
 ## Attack flow
 ### step-1: Operator assigns an intrusion goal (access)
 
@@ -98,6 +105,9 @@ Default-deny / GTFOBins-style block of nmap, python, php, openssl on web servers
 ### MagicSword projects
 - [GTFOBins](https://gtfobins.github.io)
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+Jose post credits Reuters for the 100+ sites figure; exact Reuters article URL not captured in Typefully text.
 
 ## Sources
 - [NorForge: Inside Cairn - Exposed AI Agent Panels (AIA0001-AIA0003)](https://norforge.com/blog/inside_cairn)

@@ -23,6 +23,13 @@ Unknown actor; 'InstallFix' campaign; sophisticated SEO manipulation and multi-p
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: User searches 'download Claude Code', finds fake site via SEO poisoning, downloads trojanized installer
+- Victims and sectors: 8,900+ downloads Mar-May 2026; AI developers, data scientists, software engineers seeking Claude Code
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 120+ fake installation websites, 8,900+ downloads Mar-May 2026; avg 23-day dwell time before detection
+
 ## Attack flow
 ### seo-poisoning: Create fake install sites with SEO (access)
 
@@ -81,6 +88,9 @@ Only download Claude Code from official anthropic.com; verify installer signatur
 - XMRig cryptocurrency miner (Linux)
 - Credential harvesters
 - SEO poisoning and typosquat domains
+
+## Source notes
+Push Security analysis. InstallFix represents evolution of software supply chain attacks: instead of compromising legitimate distribution, adversary creates parallel fake distribution network optimized for search discovery. Detection: alert on Claude Code installs from domains other than anthropic.com, scan for AMOS/Atomic Stealer/XMRig, monitor LaunchAgents and startup tasks created during install, check installer code signing (unsigned/wrong signature = malicious).
 
 ## Sources
 - [Push Security: InstallFix Campaign - Fake Claude Code Installation Pages](https://pushsecurity.com/blog/installfix/)

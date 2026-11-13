@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: User visits malicious website that drops AGENTS.md into ~/Downloads
+- Victims and sectors: Software developers using AI coding agents
+- Regions: Multiple regions
+- Region notes: Multiple regions reflects global developer population using coding agents
+- Scale and metrics: Proof of concept demonstrating attack vector; actual deployment scale unknown
+
 ## Attack flow
 ### drop: Malicious instruction file dropped to Downloads (access)
 
@@ -86,6 +93,14 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+Relevant detection rules:
+- Monitor file creation in ~/Downloads directory for unexpected .md instruction files (AGENTS.md, CLAUDE.md)
+- Detect modifications to ~/.codex/config.toml and similar agent configuration files
+- Monitor npm install executions from non-standard directories (Downloads, temp folders)
+- Alert on OAuth token access from unexpected processes
+- Note: No direct Sigma rules for agent instruction file manipulation; requires custom file integrity monitoring for agent config directories and process monitoring for agent launches from untrusted paths.
 
 ## Sources
 - [Hijacking AI Agents via Downloads Folder](https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/) — Forever Security

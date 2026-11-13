@@ -24,6 +24,13 @@ Developer artifacts link to carding forum postings dating to 2025; no confirmed 
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Not established in public sample; deployment method unknown
+- Victims and sectors: No confirmed in-the-wild deployment; public sample analysis only
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: First publicly documented autonomous AI C2 implant; analysis dated Jun 17, 2026; disclosed Sep 22, 2026; public build non-functional (dummy keys)
+
 ## Attack flow
 ### deployment: Implant deployment (access)
 
@@ -91,6 +98,9 @@ AI API key monitoring; Discord webhook traffic from unexpected processes; plural
 - [CAIRN](https://github.com/oritera/Cairn) (Talos AI-malware hunting tool, used for discovery)
 - Go-based implant
 - Windows process injection primitives (CreateProcessW, CREATE_SUSPENDED)
+
+## Source notes
+Cisco Talos first public documentation; discovered via CAIRN. Talos reports that the public distribution binary is inert because it contains dummy API keys and a dummy webhook. Static analysis confirms plurality voting and deterministic tie-breaking, not a minimum 3-of-4 quorum; if every provider fails, an unhandled consensus value causes the loop to sleep and retry.
 
 ## Sources
 - [The Closed Quorum: Inside the first reported autonomous AI C2 implant](https://blog.talosintelligence.com/the-closed-quorum-inside-the-first-reported-autonomous-ai-c2-implant/)

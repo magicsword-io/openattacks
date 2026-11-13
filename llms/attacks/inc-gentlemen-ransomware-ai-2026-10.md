@@ -17,6 +17,13 @@ INC Ransom affiliates, The Gentlemen affiliates; financially motivated ransomwar
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: RDP brute-force, stolen VPN credentials, phishing with malware loaders
+- Victims and sectors: Multiple organizations; sectors not disclosed by SOCRadar; Ukrainian and European targets mentioned in affiliate forum discussions
+- Regions: Europe, Ukraine
+- Region notes: unknown
+- Scale and metrics: Unknown number of intrusions; SOCRadar tracking Oct 2026; affiliates share AI infrastructure and techniques across both RaaS families
+
 ## Attack flow
 ### initial-access: Gain initial access (access)
 
@@ -75,6 +82,9 @@ No timeline is recorded.
 - Active Directory reconnaissance
 - Mega and SFTP for exfiltration staging
 - INC Ransom and The Gentlemen ransomware
+
+## Source notes
+SOCRadar Dark Web Team analysis. Related to n0n ransomware OpenCode campaign (socradar-n0n-ransomware-ai-2026-10). INC Ransom and The Gentlemen represent shift toward RaaS affiliates sharing AI agent infrastructure for operational automation. Detection: look for OpenCode Python agent process with network recon modules, monitor Anthropic API (api.anthropic.com) and Moonshot API traffic, alert on rapid AD queries from single source, check PowerShell/C# scripts for LLM generation patterns (verbose comments, specific formatting, error-handling characteristics).
 
 ## Sources
 - [SOCRadar: INC Ransom & The Gentlemen Leverage AI for Ransomware Operations](https://socradar.io/blog/inc-gentlemen-ransomware-ai-infrastructure/)

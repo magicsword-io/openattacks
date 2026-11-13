@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Social engineering via deepfake video conference
+- Victims and sectors: Arup (engineering consultancy) Hong Kong finance staff
+- Regions: Hong Kong
+- Region notes: The affected finance staff were in Hong Kong. The United Kingdom refers to the parent organization and executive impersonation, not a separately confirmed victim location.
+- Scale and metrics: ~US$25.6 million loss
+
 ## Attack flow
 ### step-1: Finance employee joins a video call (access)
 
@@ -69,6 +76,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk>

@@ -23,6 +23,13 @@ Unknown actor; UTC+8 archive timestamps; Simplified Chinese strings in binary; s
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Developers install tampered PDF skill archive from unknown distribution channel (not Anthropic's official Skills repository)
+- Victims and sectors: AI developers using Claude Skills; targets include AI/ML engineering teams, research labs, and organizations deploying Anthropic skills
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: Six tampered skill archives observed May 23 - July 14, 2026; Cyera analyzed archives but did not observe live system_linux execution
+
 ## Attack flow
 ### create-tampered-skill: Create tampered PDF skill with system_linux backdoor (execution)
 
@@ -96,6 +103,9 @@ Only install skills from Anthropic's official Skills repository (github.com/anth
 ### Other tooling
 - system_linux [Go](https://github.com/golang/go) backdoor (5.1 MB ELF64, AES-256-GCM + 0xAA XOR config)
 - /bin/bash reverse shell over TCP
+
+## Source notes
+Cyera Research (Assaf Morag, Nov 3, 2026) primary source; all hashes from Cyera IoC table: system_linux SHA-256 50cb53704f318e4fc9a9cd8f6d32eb98d8c666501c720d63c2c701caeb6fa946, SKILL.md SHA-256 d0d4144609825ee7480f7889ee04d97f4b1d9eaa8a46c2a0d46d81ab5aa83827, plus archive hashes; network IOCs 81.70.101.115 and scan.100tal.com verified from Cyera; Cyera explicitly states archives were analyzed but system_linux was not observed executing
 
 ## Sources
 - [Malicious Copy of Anthropic's PDF Skill Carries Linux Backdoor](https://www.cyera.com/research/malicious-copy-anthropic-pdf-skill-carries-linux-backdoor) — Cyera Research

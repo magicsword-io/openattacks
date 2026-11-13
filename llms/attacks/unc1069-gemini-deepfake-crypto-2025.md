@@ -19,6 +19,13 @@ UNC1069 aka MASAN; DPRK-associated
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Social engineering / deepfake lures with malicious Zoom SDK download
+- Victims and sectors: Cryptocurrency users/industry
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Actor prepares cryptocurrency operations (access)
 
@@ -76,6 +83,9 @@ No timeline is recorded.
 
 ### MagicSword projects
 - [LOLRMM](https://lolrmm.io)
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools/>

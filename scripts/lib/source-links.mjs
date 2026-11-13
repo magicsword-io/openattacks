@@ -70,28 +70,40 @@ export function requestStatus(value, method) {
   });
 }
 
-export function requestPublic(value, { method = "GET", maxBytes = 65536 } = {}) {
-  return publicRequest(value, method).then(
-    (response) =>
-      new Promise((resolve) => {
-        const chunks = [];
-        let size = 0;
-        const finish = () =>
-          resolve({
-            status: response.statusCode,
-            location: response.headers.location,
-            body: Buffer.concat(chunks).toString("utf8"),
-          });
-        response.on("data", (chunk) => {
-          if (size >= maxBytes) return;
-          const slice = chunk.subarray(0, maxBytes - size);
-          chunks.push(slice);
-          size += slice.length;
-          if (size >= maxBytes) response.destroy();
-        });
-        response.on("end", finish);
-        response.on("error", finish);
-      }),
+export function readCappedResponse(response, maxBytes = 65536) {
+  return new Promise((resolve) => {
+    const chunks = [];
+    let size = 0;
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve({
+        status: response.statusCode,
+        location: response.headers.location,
+        body: Buffer.concat(chunks).toString("utf8"),
+      });
+    };
+    response.on("data", (chunk) => {
+      if (size >= maxBytes) return;
+      const slice = chunk.subarray(0, maxBytes - size);
+      chunks.push(slice);
+      size += slice.length;
+      if (size >= maxBytes) response.destroy();
+    });
+    response.on("end", finish);
+    response.on("error", finish);
+    response.on("aborted", finish);
+    response.on("close", finish);
+  });
+}
+
+export function requestPublic(
+  value,
+  { method = "GET", maxBytes = 65536 } = {},
+) {
+  return publicRequest(value, method).then((response) =>
+    readCappedResponse(response, maxBytes),
   );
 }
 

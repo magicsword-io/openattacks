@@ -17,6 +17,13 @@ Unknown; no links to existing families; new stealer first seen earlier 2026
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: Infostealer distribution (method not disclosed); likely traditional vectors
+- Victims and sectors: Developers using AI coding assistants; scale not disclosed
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Capability added 2026, expanding; no victim count
+
 ## Attack flow
 ### deploy: Deploy infostealer (access)
 
@@ -89,6 +96,9 @@ No timeline is recorded.
 - AWS CLI/SSO
 - Git
 - SSH
+
+## Source notes
+OS not specified; other targets suggest Windows; macOS/Linux not confirmed. Detection guidance: monitor AI credential file access, C2 communication (dobeqnesmot.cc, hjazfioe.surf), API usage anomalies from unexpected locations, unauthorized reads of .claude.json, .codex/auth.json, Cursor globalStorage, .copilot/config.json, .gemini/config.json, .aws/credentials, SSH keys.
 
 ## Sources
 - [Aoki: Infostealer Targets AI Coding Assistant Credentials](https://www.broadcom.com/support/security-center/protection-bulletin/aoki-infostealer-targets-ai-coding-assistant-credentials)

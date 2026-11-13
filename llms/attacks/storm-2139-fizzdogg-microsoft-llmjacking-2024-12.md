@@ -23,6 +23,13 @@ Storm-2139 / FizzDogg
 ## AI involvement confidence
 vendor-asserted
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown (litigation)
+
 ## Attack flow
 ### step-1: Theft route is not detailed in the seed (unknown)
 
@@ -74,6 +81,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.microsoft.com/en-us/corporate-responsibility/customer-security-trust/digital-crimes-unit/notice-of-pleadings/storm-2139/>

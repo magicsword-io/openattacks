@@ -17,7 +17,11 @@ export const root = fileURLToPath(new URL("..", import.meta.url));
 export const SITE = "https://openattacks.ai";
 
 const MANAGED_DIRS = ["llms/attacks", "llms/by-category", "llms/by-month"];
-const CATEGORY_ORDER = ["adversary-use-of-ai", "attacks-on-ai", "uncategorized"];
+const CATEGORY_ORDER = [
+  "adversary-use-of-ai",
+  "attacks-on-ai",
+  "uncategorized",
+];
 const CATEGORY_LABELS = {
   "adversary-use-of-ai": "Adversary use of AI",
   "attacks-on-ai": "Attacks on AI",
@@ -35,7 +39,10 @@ const PROJECTS = {
 };
 
 const atlas = JSON.parse(
-  readFileSync(new URL("../src/data/atlas-techniques.json", import.meta.url), "utf8"),
+  readFileSync(
+    new URL("../src/data/atlas-techniques.json", import.meta.url),
+    "utf8",
+  ),
 );
 
 /** Approximate token count requested by the export contract: characters / 4. */
@@ -56,7 +63,9 @@ function inline(value) {
 }
 
 function body(value) {
-  const text = String(value ?? "").replace(/\r\n/g, "\n").trim();
+  const text = String(value ?? "")
+    .replace(/\r\n/g, "\n")
+    .trim();
   if (!text) return "unknown";
   return text
     .split("\n")
@@ -101,7 +110,9 @@ export function generatedAt(attacks) {
 function actorLabel(attack) {
   const named = attack.attribution?.actor_name;
   if (typeof named === "string" && named.trim()) return inline(named);
-  const clause = inline(attack.attribution_or_cluster || "unknown").split(";")[0].trim();
+  const clause = inline(attack.attribution_or_cluster || "unknown")
+    .split(";")[0]
+    .trim();
   return clause.length <= 80 ? clause : `${clause.slice(0, 79).trimEnd()}...`;
 }
 
@@ -127,7 +138,11 @@ function toolingList(items) {
       })
       .join("");
     const notes = [
-      ...new Set(segments.flatMap(({ project }) => (project?.note ? [project.note] : []))),
+      ...new Set(
+        segments.flatMap(({ project }) =>
+          project?.note ? [project.note] : [],
+        ),
+      ),
     ];
     return `- ${text}${notes.length ? ` — ${notes.map(inline).join(" ")}` : ""}`;
   });
@@ -184,7 +199,8 @@ function attackDocument(attack) {
   const atlasLines = attack.atlas_techniques?.length
     ? attack.atlas_techniques.map((mapping) => {
         const known = atlas.techniques[mapping.id];
-        const url = known?.url || `https://atlas.mitre.org/techniques/${mapping.id}`;
+        const url =
+          known?.url || `https://atlas.mitre.org/techniques/${mapping.id}`;
         return `- [${mapping.id}](${url}) ${inline(known?.name || mapping.id)} — ${inline(mapping.rationale)}\n  Evidence: ${autolinks(mapping.source_urls)}`;
       })
     : ["No ATLAS mapping is recorded."];
@@ -201,11 +217,15 @@ function attackDocument(attack) {
   const timeline = attack.timeline;
   const timelineLines = [];
   if (timeline && typeof timeline === "object") {
-    if (timeline.first_seen) timelineLines.push(`- First seen: ${timeline.first_seen}`);
-    if (timeline.last_updated) timelineLines.push(`- Last updated: ${timeline.last_updated}`);
+    if (timeline.first_seen)
+      timelineLines.push(`- First seen: ${timeline.first_seen}`);
+    if (timeline.last_updated)
+      timelineLines.push(`- Last updated: ${timeline.last_updated}`);
     for (const update of timeline.updates || []) {
       const summary = update.summary ? `: ${inline(update.summary)}` : "";
-      timelineLines.push(`- ${update.date} (${inline(update.source)})${summary}`);
+      timelineLines.push(
+        `- ${update.date} (${inline(update.source)})${summary}`,
+      );
     }
   }
   if (!timelineLines.length) timelineLines.push("No timeline is recorded.");
@@ -253,6 +273,13 @@ function attackDocument(attack) {
     "## AI involvement confidence",
     confidence,
     "",
+    "## Scope and targeting",
+    `- Initial access: ${body(attack.initial_access)}`,
+    `- Victims and sectors: ${body(attack.victims_and_sectors)}`,
+    `- Regions: ${attack.regions?.length ? attack.regions.map(inline).join(", ") : "unknown"}`,
+    `- Region notes: ${body(attack.region_notes)}`,
+    `- Scale and metrics: ${body(attack.scale_and_metrics)}`,
+    "",
     "## Attack flow",
     flowLines.join("\n").trimEnd(),
     "",
@@ -271,10 +298,15 @@ function attackDocument(attack) {
     "## Tools",
     toolLines.join("\n"),
     "",
+    "## Source notes",
+    body(attack.source_notes),
+    "",
     "## Sources",
     (attack.sources || [])
       .map((source) => {
-        const publisher = source.publisher ? ` — ${inline(source.publisher)}` : "";
+        const publisher = source.publisher
+          ? ` — ${inline(source.publisher)}`
+          : "";
         if (!source.title) return `- <${source.url}>${publisher}`;
         return `- [${inline(source.title)}](${source.url})${publisher}`;
       })
@@ -345,7 +377,9 @@ export function loadAttacks() {
 
 export function buildOutputs(attacks = loadAttacks()) {
   const outputs = new Map();
-  const documents = new Map(attacks.map((attack) => [attack.id, finish(attackDocument(attack))]));
+  const documents = new Map(
+    attacks.map((attack) => [attack.id, finish(attackDocument(attack))]),
+  );
   const byCategory = new Map(CATEGORY_ORDER.map((key) => [key, []]));
   const byMonth = new Map();
   for (const attack of attacks) {
@@ -356,8 +390,12 @@ export function buildOutputs(attacks = loadAttacks()) {
     if (!byMonth.has(month)) byMonth.set(month, []);
     byMonth.get(month).push(attack);
   }
-  const categories = [...byCategory.entries()].filter(([, group]) => group.length);
-  const months = [...byMonth.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+  const categories = [...byCategory.entries()].filter(
+    ([, group]) => group.length,
+  );
+  const months = [...byMonth.entries()].sort((a, b) =>
+    b[0].localeCompare(a[0]),
+  );
 
   const index = [
     "# OpenAttacks",
@@ -389,6 +427,7 @@ export function buildOutputs(attacks = loadAttacks()) {
     `- [Stack relevance](${SITE}/api/relevance.json): reviewed victim-side product mappings.`,
     `- [Public entry schema](${SITE}/api/schema.json): field rules for one attack.`,
     `- [Per-entry API](${SITE}/api/attacks.json): the same public records as a JSON array.`,
+    `- [RSS feed](${SITE}/rss.xml): every entry, newest report first, for feed readers.`,
     "",
   ].join("\n");
 
@@ -410,7 +449,8 @@ export function buildOutputs(attacks = loadAttacks()) {
         `- [${CATEGORY_LABELS[category] || category}](${SITE}/llms/by-category/${category}.md): ${group.length} attacks`,
     ),
     ...months.map(
-      ([month, group]) => `- [${month}](${SITE}/llms/by-month/${month}.md): ${group.length} attacks`,
+      ([month, group]) =>
+        `- [${month}](${SITE}/llms/by-month/${month}.md): ${group.length} attacks`,
     ),
   ].join("\n");
 
@@ -424,7 +464,8 @@ export function buildOutputs(attacks = loadAttacks()) {
     ),
   );
 
-  for (const attack of attacks) outputs.set(`llms/attacks/${attack.id}.md`, documents.get(attack.id));
+  for (const attack of attacks)
+    outputs.set(`llms/attacks/${attack.id}.md`, documents.get(attack.id));
 
   for (const [category, group] of categories) {
     outputs.set(
@@ -439,7 +480,9 @@ export function buildOutputs(attacks = loadAttacks()) {
           "",
           "---",
           "",
-          group.map((attack) => documents.get(attack.id).trimEnd()).join("\n\n---\n\n"),
+          group
+            .map((attack) => documents.get(attack.id).trimEnd())
+            .join("\n\n---\n\n"),
           "",
         ].join("\n"),
       ),
@@ -459,7 +502,9 @@ export function buildOutputs(attacks = loadAttacks()) {
           "",
           "---",
           "",
-          group.map((attack) => documents.get(attack.id).trimEnd()).join("\n\n---\n\n"),
+          group
+            .map((attack) => documents.get(attack.id).trimEnd())
+            .join("\n\n---\n\n"),
           "",
         ].join("\n"),
       ),
@@ -472,7 +517,10 @@ export function buildOutputs(attacks = loadAttacks()) {
     attacks,
   };
   outputs.set("data/attacks.json", `${JSON.stringify(payload, null, 2)}\n`);
-  outputs.set("data/attacks.schema.json", `${JSON.stringify(exportSchema(), null, 2)}\n`);
+  outputs.set(
+    "data/attacks.schema.json",
+    `${JSON.stringify(exportSchema(), null, 2)}\n`,
+  );
   return outputs;
 }
 
@@ -480,7 +528,8 @@ export function freshnessErrors(expected, actual) {
   const errors = [];
   for (const path of [...expected.keys()].sort()) {
     if (!actual.has(path)) errors.push(`missing ${path}`);
-    else if (actual.get(path) !== expected.get(path)) errors.push(`stale ${path}`);
+    else if (actual.get(path) !== expected.get(path))
+      errors.push(`stale ${path}`);
   }
   for (const path of [...actual.keys()].sort()) {
     if (!expected.has(path)) errors.push(`unexpected ${path}`);
@@ -490,16 +539,23 @@ export function freshnessErrors(expected, actual) {
 
 export function readCommitted(base = root) {
   const actual = new Map();
-  for (const rel of ["llms.txt", "llms-full.txt", "data/attacks.json", "data/attacks.schema.json"]) {
+  for (const rel of [
+    "llms.txt",
+    "llms-full.txt",
+    "data/attacks.json",
+    "data/attacks.schema.json",
+  ]) {
     const abs = join(base, rel);
-    if (existsSync(abs) && statSync(abs).isFile()) actual.set(rel, readFileSync(abs, "utf8"));
+    if (existsSync(abs) && statSync(abs).isFile())
+      actual.set(rel, readFileSync(abs, "utf8"));
   }
   for (const dir of MANAGED_DIRS) {
     const abs = join(base, dir);
     if (!existsSync(abs)) continue;
     for (const name of readdirSync(abs)) {
       const file = join(abs, name);
-      if (statSync(file).isFile()) actual.set(`${dir}/${name}`, readFileSync(file, "utf8"));
+      if (statSync(file).isFile())
+        actual.set(`${dir}/${name}`, readFileSync(file, "utf8"));
     }
   }
   return actual;
@@ -517,13 +573,16 @@ export function writeOutputs(outputs, base = root) {
     if (!existsSync(abs)) continue;
     for (const name of readdirSync(abs)) {
       const rel = `${dir}/${name}`;
-      if (!expected.has(rel) && statSync(join(abs, name)).isFile()) unlinkSync(join(abs, name));
+      if (!expected.has(rel) && statSync(join(abs, name)).isFile())
+        unlinkSync(join(abs, name));
     }
   }
 }
 
 export function reportTokens(outputs) {
-  const paths = [...outputs.keys()].sort((a, b) => rank(a).localeCompare(rank(b)));
+  const paths = [...outputs.keys()].sort((a, b) =>
+    rank(a).localeCompare(rank(b)),
+  );
   console.log("Approximate tokens (ceil(chars/4)):");
   let chars = 0;
   for (const path of paths) {
@@ -533,22 +592,26 @@ export function reportTokens(outputs) {
       `${path} ${Buffer.byteLength(text)} bytes, ${text.length} chars, ${approximateTokens(text)} tokens`,
     );
   }
-  const tokens = paths.reduce((sum, path) => sum + approximateTokens(outputs.get(path)), 0);
+  const tokens = paths.reduce(
+    (sum, path) => sum + approximateTokens(outputs.get(path)),
+    0,
+  );
   console.log(`total ${paths.length} files, ${chars} chars, ${tokens} tokens`);
 }
 
 function rank(path) {
-  const group = path === "llms.txt"
-    ? "0"
-    : path === "llms-full.txt"
-      ? "1"
-      : path.startsWith("data/")
-        ? "2"
-        : path.startsWith("llms/by-category/")
-          ? "3"
-          : path.startsWith("llms/by-month/")
-            ? "4"
-            : "5";
+  const group =
+    path === "llms.txt"
+      ? "0"
+      : path === "llms-full.txt"
+        ? "1"
+        : path.startsWith("data/")
+          ? "2"
+          : path.startsWith("llms/by-category/")
+            ? "3"
+            : path.startsWith("llms/by-month/")
+              ? "4"
+              : "5";
   return `${group}\0${path}`;
 }
 
@@ -577,7 +640,10 @@ function main() {
   console.log(`Wrote ${outputs.size} LLM export files.`);
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   try {
     main();
   } catch (error) {

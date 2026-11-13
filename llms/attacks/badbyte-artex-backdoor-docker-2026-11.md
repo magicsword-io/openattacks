@@ -23,6 +23,13 @@ Unknown operator controlling Docker Hub tomicdd (primary) and congdonglinux (mir
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: ARTEX operators pull backdoored tomicdd/artex or congdonglinux/artex Docker image via compromised docker-compose.yml in deleted trhhubsd/ARTEX repository
+- Victims and sectors: ARTEX operators conducting offensive security operations; exposed: operator LLM API keys, MCP configurations, autonomous agent prompts, harvested target credentials
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: tomicdd/artex available on Docker Hub Oct 8 - Nov 5, 2026; unknown number of pulls before takedown; backdoor active approximately 4 weeks
+
 ## Attack flow
 ### close-source: ARTEX source closed Oct 8, 2026 (execution)
 
@@ -96,6 +103,9 @@ Verify Docker image integrity via official repository sources and signed images;
 ### Other tooling
 - [Docker](https://github.com/moby/moby) / [Docker](https://github.com/moby/moby) Compose
 - Unauthenticated /api/auth/login backdoor endpoint
+
+## Source notes
+BadByte analysis (Nov 4, 2026, updated Nov 5 on Docker Hub takedown) primary source; Dan Tentler (Viss) initial disclosure Nov 2, 2026; all hashes and IOCs verified from BadByte post: /app/artex SHA-256 d5070f52262effe216b840711343bff8f2787f39208d887d8dfd9c673f8d1573, image index digest sha256:ce85d8369ccc1a85423f1f75d2f3afaa2fab759e580da37a6891af2f7392745e, UI build ID 3aC1db3gGU08O4UHbAt4J
 
 ## Sources
 - [Backdoored Docker Image for ARTEX AI Offensive Agent](https://badbyte.io/artex-backdoor-docker-image/) — BadByte

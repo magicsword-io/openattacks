@@ -23,6 +23,13 @@ Actor 'ChainDrop'; linked to Mini Shai-Hulud keyv campaign (Aug 7); persistent t
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: npm install of malicious @tensorzero/* packages (1.8.4, gateway@2.0.1, cli@1.4.0) via compromised maintainer account
+- Victims and sectors: ~450 downloads during 3-hour window; AI/ML engineering teams using TensorZero; broader Shai-Hulud campaign targets AI developers
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: ~450 downloads in 3-hour window; packages removed within 3 hours of publication; part of broader Shai-Hulud campaign across AI tooling ecosystem
+
 ## Attack flow
 ### phish-maintainer: Compromise maintainer account (access)
 
@@ -82,6 +89,9 @@ Verify npm package integrity; review postinstall scripts; monitor for unexpected
 - npm supply chain attack
 - Discord webhooks for exfiltration
 - tensorlakeapi\[.\]online C2
+
+## Source notes
+Socket Security analysis; TensorZero GitHub repo github.com/tensorlake/tensorzero. Related to s1ngularity-nx-ai-cli-2025-08 entry (Shai-Hulud targeting NX.dev AI CLI) and Mini Shai-Hulud keyv campaign. Detection: monitor for 'Shai-Hulud' patterns (Discord webhooks, base64 obfuscation in postinstall, AI credential path access .cursor/*, Claude config access, env var harvesting), alert on npm packages with obfuscated postinstall scripts, check for tensorlakeapi[.]online domain.
 
 ## Sources
 - [Socket: AI Sandbox SDK Compromised in Supply Chain Attack](https://socket.dev/blog/tensorlake-compromise)

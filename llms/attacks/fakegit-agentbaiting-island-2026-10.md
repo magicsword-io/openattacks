@@ -6,7 +6,7 @@
 - Entry: https://openattacks.ai/attacks/fakegit-agentbaiting-island-2026-10/
 
 ## Summary
-Oct 30, 2026: Island Security identified 'FakeGit' campaign: 800+ fake GitHub repositories impersonating popular AI skills, MCP servers, Cursor rules, and Claude Code extensions. Repos use typosquat/combosquat names (e.g., 'cursor-rules-best-practices', 'mcp-server-github-enhanced', 'claude-code-skills-security'), contain trojanized npm/PyPI packages or malicious install scripts. Adversary optimized repo metadata (README, topics, stars, forks) to rank highly in LLM tool recommendations: when users ask agents 'find me a GitHub MCP server' or 'what Cursor skills should I use?', agents recommend FakeGit repos from search results. Payloads: Shai-Hulud variants, Discord webhook exfiltration, npm/PyPI worms, SSH backdoors. Island tracked 2,400+ installations from agent recommendations Oct-Nov 2026. Attack exploits agent trust in GitHub search ranking and lack of package verification. Detection: verify GitHub repo authenticity (check org, stars, commit history, age); review agent-recommended packages before install; use allowlisted skill/MCP sources; monitor for unexpected GitHub clones initiated by AI agents; check for typosquat patterns in recommended repo names.
+Oct 30, 2026: Island Security identified 'FakeGit' campaign: 800+ fake GitHub repositories impersonating popular AI skills, MCP servers, Cursor rules, and Claude Code extensions. Repos use typosquat/combosquat names (e.g., cursor-rules-best-practices, mcp-server-github-enhanced, claude-code-skills-security), contain trojanized npm/PyPI packages or malicious install scripts. Adversary optimized repo metadata (README, topics, stars, forks) to rank highly in LLM tool recommendations: when users ask agents find me a GitHub MCP server or what Cursor skills should I use?, agents recommend FakeGit repos from search results. Payloads: Shai-Hulud variants, Discord webhook exfiltration, npm/PyPI worms, SSH backdoors. Island tracked 2,400+ installations from agent recommendations Oct-Nov 2026. Island reports the repositories deliver SmartLoader, which establishes persistence and installs StealC to steal credentials, active sessions, and other sensitive data. Attack exploits agent trust in GitHub search ranking and lack of package verification.
 
 ## Category
 attacks-on-ai
@@ -22,6 +22,13 @@ Unknown actor; 'FakeGit' campaign; sophisticated understanding of LLM recommenda
 
 ## AI involvement confidence
 confirmed
+
+## Scope and targeting
+- Initial access: AI agent recommends malicious GitHub repo in response to user query; user clones/installs per agent suggestion
+- Victims and sectors: 2,400+ installations tracked Oct-Nov 2026 from agent recommendations; AI developers using agent-assisted package discovery
+- Regions: Multiple regions
+- Region notes: unknown
+- Scale and metrics: 800+ fake GitHub repos created; 2,400+ installations from agent recommendations (Oct-Nov 2026); ongoing campaign as of Nov 2026
 
 ## Attack flow
 ### create-fakes: Create fake repos (ai)
@@ -62,7 +69,9 @@ Evidence: <https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mc
 Verify GitHub repos before install (check org, stars, age, commit history); use allowlisted skill/MCP sources; implement agent guardrails to warn on unverified packages; educate users not to blindly trust agent recommendations; review install scripts; use SCA tools; prefer official sources (Anthropic MCP registry, Cursor skills directory); flag typosquat patterns
 
 ## Detections
-- Supply chain monitoring (guidance) — Monitor package installations, verify publisher authenticity, scan for malicious code patterns
+- [Potential Browser Data Stealing](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_susp_copy_browser_data.yml) (sigma) — Detects StealC infostealer browser data theft on Windows
+- [Suspicious File Access to Browser Credential Storage](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file/file_access/file_access_win_susp_process_access_browser_cred_files.yml) (sigma) — Detects SmartLoader/StealC accessing browser credential files
+- Malicious skill and MCP repository detection (guidance) — Monitor agent-initiated GitHub clones; alert on typosquat repo names; verify repo authenticity (check org, stars, age, commit history); detect inflated stars/forks with low commit activity; scan for SmartLoader/StealC signatures
 
 ## Timeline
 - First seen: 2026-10-30
@@ -83,6 +92,11 @@ Verify GitHub repos before install (check org, stars, age, commit history); use 
 - Shai-Hulud credential stealer variants
 - SSH backdoors
 - Discord webhook exfiltration
+- SmartLoader dropper
+- StealC infostealer
+
+## Source notes
+Island Security analysis is the live source for the FakeGit SmartLoader and StealC chain. The previously cited SecurityBreak post returned HTTP 404 and was removed. First documented campaign explicitly optimizing malware for LLM recommendation engines (agentbaiting). Represents new supply chain threat vector where adversaries target agent search/recommendation behavior rather than direct user search. Detection: monitor agent-initiated GitHub clones, alert on typosquat repo names (edit distance to popular repos), check for new GitHub accounts with multiple similar repos, review repos with inflated stars/forks but low commit activity, flag repos created after popular tools rise, scan for SmartLoader/StealC signatures.
 
 ## Sources
-- [Island: FakeGit 'Agentbaiting' Campaign Targets AI Agent Recommendations](https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware)
+- [Island: FakeGit 'Agentbaiting' Campaign Targets AI Agent Recommendations](https://www.island.io/blog/agentbaiting-how-800-fake-ai-skills-and-mcp-servers-delivered-malware) — Island

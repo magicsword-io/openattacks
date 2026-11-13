@@ -25,6 +25,13 @@ bossjy (TIAN0517, lstjks), Hualien City, Taiwan; high confidence single operator
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Vulnerability exploitation (SQL injection, RCE), credential harvesting, exposed systems
+- Victims and sectors: Taiwan emergency services (fire department, 119 dispatch, disaster response), financial institutions (lending, mobile payment, fire-dispatch vendors), universities (Thailand: 3 confirmed SQL injection with data exfiltration, 2 partial), Mexico (206,800+ residential phone records, 124,000+ yellow pages records), Honduras military air force personnel system (characterized but not exploited), government agencies across 11 countries
+- Regions: Taiwan, Thailand, Mexico, Honduras, United States, United Kingdom, Australia, Sri Lanka, China, Vietnam
+- Region notes: unknown
+- Scale and metrics: 12-agent mesh; hundreds of organizations targeted across 11 countries; ~10 confirmed breaches; 206,800+ Mexican residential phone records; 124,000+ Mexican yellow pages records; Taiwan emergency medical data (ECG, ambulance video, vitals from 2018), 119 dispatch case records (7 Taipei districts); 3 Thai universities SQL injection with data extraction; 16 SQL injection points at Taiwan lending firm; ~95 Hermes offensive sessions; attack mesh ran for 12+ days under observation; 9GB evidence (90,000+ files); false positive rate >50% on high-severity findings from HalberdStrike
+
 ## Attack flow
 ### mesh-deploy: Deploy 12-agent BOSSAI mesh (ai)
 
@@ -117,6 +124,9 @@ Monitor for autonomous AI agent behavior patterns; detect nmap, sqlmap, Metasplo
 - [LOLBAS](https://lolbas-project.github.io)
 - [GTFOBins](https://gtfobins.github.io)
 - [LOLSkills](https://lolskills.io)
+
+## Source notes
+Acronis TRU analysis. Attribution via OPSEC failures: GitHub account TIAN0517 with email linking to 99 Gas Store (九九瓦斯行) in Hualien County; lstjks SSH key identity matching GitHub; Jy技術團隊 logo across infrastructure; home IP exposed in SSH sessions; legitimate SaaS 行銷快手 (SnapPost) Facebook auto-post tool, INCELLDERM K-beauty reseller, and gas delivery business ran from same residential IP; WeChat QR tied to Tencent iLink enterprise registration; hardcoded credentials throughout (Shodan API, Cloudflare API, MiniMax API, NVIDIA API keys)
 
 ## Sources
 - [Acronis TRU: BOSSAI - Inside the AI Attack Mesh That Targeted Taiwan's Emergency Services](https://www.acronis.com/en/tru/posts/bossai-inside-the-ai-attack-mesh-that-targeted-taiwans-emergency-services/)

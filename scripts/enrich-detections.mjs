@@ -9,6 +9,7 @@ import {
   loadAttackFile,
 } from "./lib/attack-entry-checks.mjs";
 import {
+  detectionSourceEnv,
   queryRules,
   rootsFromEnv,
   startDetectionClient,
@@ -42,7 +43,9 @@ function cleanDetection(detection) {
 
 export function mergeDetections(existing, added) {
   const current = (Array.isArray(existing) ? existing : [])
-    .filter((item) => item && typeof item === "object" && item.name && item.format)
+    .filter(
+      (item) => item && typeof item === "object" && item.name && item.format,
+    )
     .map(cleanDetection);
   const urls = new Set(current.map((item) => item.url).filter(Boolean));
   const appended = [];
@@ -79,7 +82,10 @@ function atlasNames() {
     ),
   );
   return new Map(
-    Object.entries(atlas.techniques).map(([id, technique]) => [id, technique.name]),
+    Object.entries(atlas.techniques).map(([id, technique]) => [
+      id,
+      technique.name,
+    ]),
   );
 }
 
@@ -88,7 +94,7 @@ export function suggestionBody(updates) {
   const lines = [
     "## Suggested detection rules",
     "",
-    "security-detections-mcp matched these Sigma, Splunk, and Elastic rules from the entry techniques, platforms, and indicators. Same-repository pull requests commit the rules. Fork pull requests receive this comment because the workflow cannot push to the fork.",
+    "security-detections-mcp matched these Sigma, Splunk, and Elastic rules from the entry techniques, platforms, and indicators. Review the suggestions and add only rules that fit the documented behavior and telemetry.",
     "",
   ];
   for (const update of updates) {
@@ -126,7 +132,9 @@ export async function enrichFile(file, { client, readUrl, roots, names }) {
   const matched = await queryRules(client, data, { roots, atlasNames: names });
   const { kept, skipped } = await keepReachable(matched, readUrl);
   const { detections, appended } = mergeDetections(data.detections, kept);
-  const changed = appended.length ? await writeDetections(file, detections) : false;
+  const changed = appended.length
+    ? await writeDetections(file, detections)
+    : false;
   return { file, added: appended, skipped, changed };
 }
 
@@ -162,9 +170,10 @@ async function main() {
     return;
   }
 
-  const roots = rootsFromEnv();
+  const detectionEnv = { ...process.env, ...detectionSourceEnv() };
+  const roots = rootsFromEnv(detectionEnv);
   const names = atlasNames();
-  const client = await startDetectionClient();
+  const client = await startDetectionClient({ env: detectionEnv });
   const updates = [];
   try {
     for (const file of pending) {

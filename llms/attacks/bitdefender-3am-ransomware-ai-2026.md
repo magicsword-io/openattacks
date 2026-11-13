@@ -17,6 +17,13 @@ uncategorized
 ## AI involvement confidence
 not assessed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: UK schools
+- Regions: United Kingdom
+- Region notes: United Kingdom reflects targeted school systems
+- Scale and metrics: Multiple UK schools targeted; exact count unknown
+
 ## Attack flow
 ### initial-access: Initial access to UK schools (unknown)
 
@@ -85,6 +92,18 @@ No detections are recorded.
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
+
+## Source notes
+Relevant detection rules:
+- Sigma: Suspicious LSASS Process Access (comsvcs.dll dump pattern) (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_sysinternals_procdump_lsass.yml)
+- Sigma: Process Memory Dump Via Comsvcs.DLL (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml)
+- Monitor for registry key creation under HKLM\SOFTWARE\FIN001
+- Detect backdoor account creation (library, svc_bkpmon)
+- Alert on numbered retry scripts (av_remove2, av_remove3 patterns)
+- Monitor for probe files (da_proof.txt, psexec-ok) in unusual locations
+- Detect command syntax errors indicating automated generation (Bash escapes in Windows commands)
+- LOLBAS references: comsvcs.dll (https://lolbas-project.github.io/lolbas/Libraries/Comsvcs/), PsExec (https://lolbas-project.github.io/lolbas/OtherMSBinaries/PsExec/)
+- Note: AI-generated command errors and iteration patterns require custom detection logic analyzing command line syntax anomalies.
 
 ## Sources
 - [3AM Ransomware Hybrid AI Attack](https://www.bitdefender.com/en-us/blog/businessinsights/3am-ransomware-hybrid-ai-attack) — Bitdefender

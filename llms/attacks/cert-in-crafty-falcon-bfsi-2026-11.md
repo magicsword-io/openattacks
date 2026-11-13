@@ -23,6 +23,13 @@ CERT-In: CRAFTY FALCON financially motivated campaign; Indian press notes Chines
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Cloud service exploitation, exposed APIs, compromised AWS Lambda functions, credential stuffing against fintech portals
+- Victims and sectors: Indian non-banking financial companies (NBFCs), fintechs, payment aggregators, cryptocurrency exchanges; festive-season targeting (Diwali, year-end)
+- Regions: India
+- Region notes: unknown
+- Scale and metrics: Active since at least Oct 2026; Rs. 1 test transfers followed by large payouts; multiple NBFCs and fintechs compromised; festive-window retargeting pattern
+
 ## Attack flow
 ### initial-recon: AI agent reconnaissance (execution)
 
@@ -105,6 +112,9 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 - AWS Lambda for staging-to-production pivots
 - Custom payment API invocation scripts
 - Log deletion tools
+
+## Source notes
+CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) official government warning; Indian Express and industry coverage provide context on AI framework usage and festive-window targeting; cross-reference with cairn-norforge-2026-10 entry for Cairn exploitation patterns
 
 ## Sources
 - [CERT-In Advisory CIAD-2026-0058: CRAFTY FALCON Campaign Against Indian Financial Sector](https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058) — CERT-In

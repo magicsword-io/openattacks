@@ -24,6 +24,13 @@ leepsmarts (@leepsmartsx), Chinese-speaking, UTC+8, GitHub PRO account
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: Exposed .env files on PaaS platforms, GitHub leaked credentials, cloud metadata endpoints (IMDS)
+- Victims and sectors: Developers and organizations with exposed LLM API keys on PaaS platforms; 20 universities (19 US): Harvard alumni data, Stanford/UChicago/Wake Forest/Case Western/Central Michigan applications, NYU/UC Berkeley/Oregon State/UIUC/Colorado State/CSU accounts; cryptocurrency wallet users (Harmony ONE drainer); credit card fraud victims
+- Regions: United States, China, South Korea, Malaysia, Argentina
+- Region notes: unknown
+- Scale and metrics: 2,233 API keys harvested, 12 valid (0.54% yield); 247 exposed LLM gateways catalogued, 223 usable; 195 Harvard alumni records; 20 universities targeted (19 US); active since Jan 15, 2026, last activity Oct 13, 2026; 110 files exposed (37 directories, 9GB); AI_radar: 20 runs Aug-Sep, $6.13/run, $37/day est.; URL survival rate 1.9%; 41 keys in 24h; env_hunter v4.0: +257% path expansion (14→50)
+
 ## Attack flow
 ### ai-monitoring: Phase 0: AI-driven intelligence monitoring (ai)
 
@@ -114,6 +121,9 @@ Secure .env files and cloud configurations; never expose API keys in GitHub repo
 - stripe_card_checker.py
 - Harmony ONE crypto drainer (modified fork)
 - CVE-2026-41940 exploit (4-stage, pre-staged SSH key)
+
+## Source notes
+SOCRadar STRU analysis. Attribution via open directory at 209.112.91.74, Telegram bot tokens exposing @leepsmartsx, GitHub PRO account leepsmarts with forked repositories. Infrastructure: 209.112.91.74 (primary C2, US), 173.231.39.244 (Hermes Agent, US), 123.60.2.245 (PentAGI, Huawei Cloud CN), 14.47.118.194 (Open WebUI + Wazuh, Korea Telecom KR), 66.42.94.67 (Vultr relay), Malaysia Oracle Cloud (OpenClaw). Domains: senhai.store, astrdark.cyou, xxtt.me, sajuai.xyz, 712019.xyz, bfvdoor.com. Telegram bots: LEEP group messages through Oct 13, 2026. CVV source: 卷王二手CVV Chinese underground market (>60% live rate claim).
 
 ## Sources
 - [SOCRadar STRU: KeyHunter Operation - Harvard Alumni Data, Stanford Applications and LLM Key Theft](https://socradar.io/blog/keyhunter-operation-harvard-alumni-stanford-llm-key-data/)

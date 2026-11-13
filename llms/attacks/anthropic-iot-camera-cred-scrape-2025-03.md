@@ -21,6 +21,13 @@ unknown sophisticated actor
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: Potential IoT/security camera owners (deployment unconfirmed)
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Leaked credentials and target URLs (access)
 
@@ -72,6 +79,9 @@ No timeline is recorded.
 ### Other tooling
 - commercial breach data platforms
 - Telegram stealer log communities
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025>

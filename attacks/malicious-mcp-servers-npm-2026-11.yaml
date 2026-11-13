@@ -164,10 +164,6 @@ attribution:
   confidence: medium
 ai_involvement_confidence: confirmed
 detections:
-  - name: Curl Download Activity from npm Package Install
-    format: elastic
-    url: "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml"
-    notes: "Endpoint, cross-platform. curl spawned from an npm or npx process tree. Fits @rfewqa-fes/mnm-doc-mcp, whose install fetches an off-registry HTTP tarball."
   - name: Suspicious PowerShell from npm Package Install
     format: elastic
     url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/execution_suspicious_powershell_from_npm_install.toml"

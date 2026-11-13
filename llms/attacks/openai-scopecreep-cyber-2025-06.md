@@ -19,6 +19,13 @@ ScopeCreep (OpenAI designation)
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Part of OpenAI's broader 40+ network disruptions since Feb 2024 reporting began
+
 ## Attack flow
 ### step-1: ScopeCreep accounts seek assistance (access)
 
@@ -69,6 +76,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://cdn.openai.com/threat-intelligence-reports/5f73af09-a3a3-4a55-992e-069237681620/disrupting-malicious-uses-of-ai-june-2025.pdf>

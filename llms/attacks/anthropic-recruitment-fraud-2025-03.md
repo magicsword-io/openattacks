@@ -19,6 +19,13 @@ unknown
 ## AI involvement confidence
 unverified
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: Job seekers primarily in Eastern European countries
+- Regions: Europe
+- Region notes: The source describes job seekers in Eastern Europe without naming individual countries.
+- Scale and metrics: unknown
+
 ## Attack flow
 ### step-1: Recruiter identities are impersonated (access)
 
@@ -69,6 +76,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025>

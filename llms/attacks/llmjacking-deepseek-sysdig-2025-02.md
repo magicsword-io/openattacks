@@ -17,6 +17,13 @@ unknown
 ## AI involvement confidence
 confirmed
 
+## Scope and targeting
+- Initial access: unknown
+- Victims and sectors: unknown
+- Regions: unknown
+- Region notes: unknown
+- Scale and metrics: Cloud LLM abuse costs can exceed hundreds of thousands USD monthly (Sysdig)
+
 ## Attack flow
 ### step-1: Original credential theft is undisclosed (unknown)
 
@@ -70,6 +77,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+## Source notes
+unknown
 
 ## Sources
 - <https://www.sysdig.com/blog/llmjacking-targets-deepseek>
