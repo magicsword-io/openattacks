@@ -1,0 +1,35 @@
+id: symantec-shows-openai-operator-agent-can-2025-03
+name: Symantec shows OpenAI Operator agent can autonomously research a target and send a phishing email with script
+date_reported: 2025-03-13
+researcher: unknown
+org: Symantec Threat Hunter Team (Broadcom)
+sources:
+  - url: https://www.security.com/threat-intelligence/ai-agent-attacks
+    publisher: Symantec Threat Hunter Team (Broadcom)
+borderline: true
+borderline_note: Researcher or evaluation demonstration reported by the source, not an in-the-wild attack.
+ai_role: attacker_uses_ai_as_operator
+technique_summary: After a simple authorization pretext, Operator identified a named employee, inferred his email, wrote a PowerShell recon script and emailed it with a lure.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI Operator
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Symantec researchers (PoC)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - phishing-social-eng
+  - recon-osint
+  - jailbreak-misuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: Symantec researchers (PoC)
+ai_involvement_confidence: confirmed

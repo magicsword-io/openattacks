@@ -1,0 +1,35 @@
+id: sysdig-attacker-abuses-exposed-open-webui-2025-06
+name: "Sysdig: attacker abuses exposed Open WebUI to plant AI-generated Python tool dropping miners and infostealer"
+date_reported: 2025-06-02
+researcher: unknown
+org: Sysdig
+sources:
+  - url: https://www.sysdig.com/blog/attacker-exploits-misconfigured-ai-tool-to-run-ai-generated-payload
+    publisher: Sysdig
+  - url: https://www.scworld.com/brief/misconfigured-open-webui-leveraged-for-ai-based-payload-delivery
+  - url: https://threats.wiz.io/all-incidents/open-webui-misconfiguration-exploited-for-cryptojacking
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: An attacker uploaded a malicious Open WebUI Tool to an internet-exposed admin instance, running a likely AI-written script that installed miners on Linux and stealers on Windows.
+initial_access: unknown
+ai_tooling_and_models:
+  - Open WebUI (self-hosted LLM interface) with admin exposed
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - ai-infra-intrusion
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

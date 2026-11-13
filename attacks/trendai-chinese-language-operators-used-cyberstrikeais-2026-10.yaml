@@ -1,0 +1,40 @@
+id: trendai-chinese-language-operators-used-cyberstrikeais-2026-10
+name: "TrendAI: Chinese-language operators used CyberStrikeAI's 44 agents and LLM-built tooling against Japanese organizations"
+date_reported: 2026-10-23
+researcher: unknown
+org: TrendAI (Trend Micro)
+sources:
+  - url: https://www.trendaisecurity.com/en-us/resources-insights/deep-research/not-only-artex-the-different-levels-ai-is-used-in-attacks-targeting-japan
+    publisher: TrendAI (Trend Micro)
+  - url: https://thehackernews.com/2026/10/cyberstrikeai-uses-44-ai-agents-to.html
+  - url: https://cyberpress.org/ai-agents-target-japan/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: TrendAI details three Chinese-language campaigns against Japan using AI at different levels, from a 44-agent CyberStrikeAI pipeline to LLM-planned intrusions that also hunted AI inference services, and finds AI raised scale but not depth of compromise.
+initial_access: unknown
+ai_tooling_and_models:
+  - CyberStrikeAI (open-source agent pentest tool)
+  - unnamed LLMs
+  - AI workflow, LLM preprocessing and inference platforms in South Korea
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (three Simplified Chinese-language operators; not linked to each other)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+  - vuln-discovery-exploit
+  - malware-tooling-dev
+  - jailbreak-misuse
+  - phishing-social-eng
+  - ai-infra-intrusion
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

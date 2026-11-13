@@ -1,0 +1,36 @@
+id: microsoft-captivecrunch-midnight-blizzard-unit-hijacks-2026-07
+name: "Microsoft CaptiveCrunch: Midnight Blizzard unit hijacks hotel Wi-Fi portals, runs AI-augmented phishing"
+date_reported: 2026-07-31
+researcher: unknown
+org: Microsoft
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/07/31/captivecrunch-midnight-blizzard-targets-travelers-worldwide-for-malware-delivery-and-credential-theft/
+    publisher: Microsoft
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Microsoft says SVR-linked Storm-2945 uses AI to support much of its operations, including device code phishing and likely AI-written stealers, while hijacking hospitality captive portals to hit travelers.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unnamed AI tools
+  - Microsoft credits Anthropic and OpenAI for collaboration
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-2945 (sub-cluster of Midnight Blizzard / SVR)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-2945 (sub-cluster of Midnight Blizzard / SVR)
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: confirmed

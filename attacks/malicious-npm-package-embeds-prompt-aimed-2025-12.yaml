@@ -1,0 +1,34 @@
+id: malicious-npm-package-embeds-prompt-aimed-2025-12
+name: Malicious npm package embeds prompt aimed at fooling AI-based security scanners
+date_reported: 2025-12-01
+researcher: unknown
+org: Infosecurity Magazine (reporting Koi Security research)
+sources:
+  - url: https://infosecurity-magazine.com/news/malware-ai-detection-npm-package
+    publisher: Infosecurity Magazine (reporting Koi Security research)
+  - url: https://thehackernews.com/2025/12/malicious-npm-package-uses-hidden.html
+borderline: false
+ai_role: ai_agent_or_mcp_as_target
+technique_summary: The typosquat eslint-plugin-unicorn-ts-2 stole environment secrets via a postinstall hook and carried an inert string instructing AI reviewers to treat the code as legitimate.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLM-based package and code security scanners
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: npm user hamburgerisland
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - prompt-injection
+  - ai-supply-chain
+category: adversary-use-of-ai
+attribution:
+  actor_name: npm user hamburgerisland
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

@@ -1,0 +1,36 @@
+id: mandiant-vietnam-nexus-unc6032-uses-fake-2025-05
+name: "Mandiant: Vietnam-nexus UNC6032 uses fake AI video generator ads to spread stealers and backdoors"
+date_reported: 2025-05-27
+researcher: unknown
+org: Google Threat Intelligence Group / Mandiant
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/cybercriminals-weaponize-fake-ai-websites/
+    publisher: Google Threat Intelligence Group / Mandiant
+  - url: https://www.theregister.com/2025/05/27/fake_social_media_ads_ai_tool/
+  - url: https://infosecurity-magazine.com/news/vietnam-hackers-malware-fake-ai
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: UNC6032 ran thousands of Facebook and LinkedIn ads for fake AI video generators that delivered STARKVEIL, XWORM, FROSTRIFT and GRIMPULL malware.
+initial_access: unknown
+ai_tooling_and_models:
+  - "Impersonated AI video tools: Luma AI, Canva Dream Lab, Kling AI and others"
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: UNC6032
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: UNC6032
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

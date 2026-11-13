@@ -1,0 +1,39 @@
+id: volexity-china-aligned-uta0388-ran-llm-2025-10
+name: "Volexity: China-aligned UTA0388 ran LLM-driven phishing with incoherent lures to deliver GOVERSHELL"
+date_reported: 2025-10-08
+researcher: unknown
+org: Volexity
+sources:
+  - url: https://www.volexity.com/blog/2025/10/08/apt-meets-gpt-targeted-operations-with-untamed-llms/
+    publisher: Volexity
+  - url: https://thehackernews.com/2025/10/from-healthkick-to-govershell-evolution.html
+  - url: https://openai.com/global-affairs/disrupting-malicious-uses-of-ai-october-2025
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: A Chinese espionage actor used LLMs to mass-produce multilingual, persona-based phishing and iterate malware, leaving telltale AI artifacts.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI ChatGPT (per OpenAI)
+  - LLM-automated email generation
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Education; Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: UTA0388 (overlaps Proofpoint UNK_DROPPITCH)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+  - agentic-operations
+category: adversary-use-of-ai
+attribution:
+  actor_name: UTA0388 (overlaps Proofpoint UNK_DROPPITCH)
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: confirmed

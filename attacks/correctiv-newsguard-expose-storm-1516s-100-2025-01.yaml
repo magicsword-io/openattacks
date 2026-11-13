@@ -1,0 +1,36 @@
+id: correctiv-newsguard-expose-storm-1516s-100-2025-01
+name: CORRECTIV and NewsGuard expose Storm-1516's 100-plus AI-filled German sites and deepfake smears before vote
+date_reported: 2025-01-24
+researcher: unknown
+org: CORRECTIV (with NewsGuard and Gnida Project)
+sources:
+  - url: https://correctiv.org/en/?p=205959
+    publisher: CORRECTIV (with NewsGuard and Gnida Project)
+  - url: https://www.recordedfuture.com/research/stimmen-aus-moskau-russian-influence-operations-target-german-elections
+borderline: false
+ai_role: other
+technique_summary: Ahead of Germany's February 2025 election, Storm-1516 registered more than 100 German-language domains and filled them with AI-rewritten articles and staged or deepfake whistleblower videos.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLMs used to rewrite articles
+  - deepfake video tools
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-1516 (CopyCop; John Mark Dougan network)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-1516 (CopyCop; John Mark Dougan network)
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

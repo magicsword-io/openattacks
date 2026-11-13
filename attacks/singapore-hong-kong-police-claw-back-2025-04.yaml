@@ -1,0 +1,35 @@
+id: singapore-hong-kong-police-claw-back-2025-04
+name: Singapore and Hong Kong police claw back USD 499,000 sent after deepfake CEO Zoom call
+date_reported: 2025-04-07
+researcher: unknown
+org: Singapore Police Force
+sources:
+  - url: https://www.police.gov.sg/media-hub/news/2025/04/20250407_singapore_and_hong_kong_police_force_recover_over_$670000_in_a_scam
+    publisher: Singapore Police Force
+  - url: https://hcamag.com/asia/specialisation/hr-technology/singapore-firm-nearly-lost-500000-after-deepfake-video-scam-police/531450
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: A Singapore multinational's finance director wired over USD 499,000 after a Zoom call where the CEO and others were deepfaked; cross-border police action withheld the full amount.
+initial_access: unknown
+ai_tooling_and_models:
+  - Deepfake video of company executives on a Zoom call (tool not named)
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed business-impersonation scam group
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

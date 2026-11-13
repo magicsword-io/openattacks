@@ -1,0 +1,38 @@
+id: okta-details-how-dprk-it-workers-2025-04
+name: Okta details how DPRK IT workers use GenAI services across hiring, interviews and job retention
+date_reported: 2025-04-24
+researcher: unknown
+org: Okta Threat Intelligence
+sources:
+  - url: https://sec.okta.com/articles/2025/04/GenAIDPRK/
+    publisher: Okta Threat Intelligence
+  - url: https://www.okta.com/newsroom/articles/okta-threat-intelligence-exposes-genai-s-role-in-dprk-it-scams/
+borderline: false
+ai_role: ai_credential_theft
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Okta found that DPRK IT workers and their facilitators rely on a chain of generative AI services, from messaging and translation to ATS-gaming and mock interviews, to land and keep remote tech jobs.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI unified-messaging and translation tools, AI recruitment and ATS-testing platforms, AI application agents, AI mock-interview services, general LLM chatbots (products not named)
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: DPRK IT workers (Wagemole) and facilitators
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+  - deepfake-voice
+  - recon-osint
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: DPRK IT workers (Wagemole) and facilitators
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

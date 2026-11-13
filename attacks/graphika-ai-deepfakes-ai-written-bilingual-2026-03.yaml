@@ -1,0 +1,35 @@
+id: graphika-ai-deepfakes-ai-written-bilingual-2026-03
+name: "Graphika: AI deepfakes and AI-written bilingual articles hit Bangladesh, Tibetan exile and Colombian elections"
+date_reported: 2026-03-04
+researcher: unknown
+org: Graphika
+sources:
+  - url: https://www.graphika.com/blogs/deepfakes-noise-and-doubt-ai-s-role-in-three-recent-elections
+    publisher: Graphika
+borderline: false
+ai_role: other
+technique_summary: Over six weeks, Graphika saw AI deepfakes in Bangladesh, Spamouflage's AI-written English and Tibetan articles against Tibetan exile candidates, and an automated 176-account network in Colombia.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI video generators, LLM text generation
+  - possible AI coding assistance for bot automation
+other_tooling: []
+victims_and_sectors: Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Spamouflage (Tibet case); unnamed actors in Bangladesh and Colombia
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Spamouflage (Tibet case); unnamed actors in Bangladesh and Colombia
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: confirmed

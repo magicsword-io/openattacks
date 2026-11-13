@@ -1,0 +1,36 @@
+id: proofpoint-criminals-abuse-lovable-ai-site-2025-08
+name: "Proofpoint: criminals abuse Lovable AI site builder at scale for MFA phishing, drainers and zgRAT delivery"
+date_reported: 2025-08-14
+researcher: unknown
+org: Proofpoint
+sources:
+  - url: https://www.proofpoint.com/us/blog/threat-insight/cybercriminals-abuse-ai-website-creation-app-phishing
+    publisher: Proofpoint
+  - url: https://thehackernews.com/2025/08/experts-find-ai-browsers-can-be-tricked.html
+  - url: https://lovable.dev/blog/lovable-security
+borderline: false
+ai_role: ai_credential_theft
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Tens of thousands of Lovable-hosted URLs a month were used for credential phishing, crypto drainers and malware delivery.
+initial_access: unknown
+ai_tooling_and_models:
+  - Lovable AI website builder
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Tycoon PhaaS users; Cookie Reloaded redirect operators; unnamed
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: Tycoon PhaaS users; Cookie Reloaded redirect operators; unnamed
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

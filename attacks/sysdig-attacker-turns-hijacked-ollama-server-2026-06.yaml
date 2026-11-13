@@ -1,0 +1,34 @@
+id: sysdig-attacker-turns-hijacked-ollama-server-2026-06
+name: "Sysdig: attacker turns hijacked Ollama server into reasoning engine for an autonomous exploit pipeline"
+date_reported: 2026-06-17
+researcher: unknown
+org: Sysdig Threat Research Team
+sources:
+  - url: https://webflow.sysdig.com/blog/llmjacking-evolved-attackers-are-using-stolen-ai-compute-to-build-offensive-agentic-tools
+    publisher: Sysdig Threat Research Team
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-llmjacking-offensive-agentic-infrastructur/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_credential_theft
+technique_summary: Instead of reselling stolen AI compute, an actor used a free exposed Ollama model as the brain of a multi-stage autonomous scanning and exploitation tool under active development.
+initial_access: unknown
+ai_tooling_and_models:
+  - Internet-exposed Ollama servers
+  - tool requested OpenAI, Anthropic and Google model names
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (VAPT tool developer; source IPs in India)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - api-key-account-abuse
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

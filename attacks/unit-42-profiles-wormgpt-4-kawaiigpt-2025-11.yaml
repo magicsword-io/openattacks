@@ -1,0 +1,35 @@
+id: unit-42-profiles-wormgpt-4-kawaiigpt-2025-11
+name: Unit 42 profiles WormGPT 4 and KawaiiGPT malicious LLMs generating ransomware and phishing
+date_reported: 2025-11-25
+researcher: unknown
+org: Palo Alto Networks Unit 42
+sources:
+  - url: https://unit42.paloaltonetworks.com/dilemma-of-ai-malicious-llms/
+    publisher: Palo Alto Networks Unit 42
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Commercial and free uncensored LLMs are producing working ransomware scripts, BEC lures and lateral movement code for low-skill criminals.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unrestricted LLM services WormGPT 4 and KawaiiGPT
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: WormGPT 4 and KawaiiGPT operators
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - phishing-social-eng
+  - jailbreak-misuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: WormGPT 4 and KawaiiGPT operators
+  motivation: cybercrime
+ai_involvement_confidence: confirmed
