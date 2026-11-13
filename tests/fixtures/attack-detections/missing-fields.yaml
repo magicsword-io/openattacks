@@ -1,0 +1,20 @@
+id: missing-fields
+name: Fixture missing required detection metadata
+date_reported: 2026-11-11
+researcher: Fixture
+org: Fixture
+sources:
+  - url: https://example.org/report
+borderline: false
+ai_role: ai_tool_as_lure
+technique_summary: A documented lure with the detection fields left empty on purpose.
+initial_access: unknown
+ai_tooling_and_models: []
+other_tooling: []
+victims_and_sectors: unknown
+regions:
+  - unknown
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []

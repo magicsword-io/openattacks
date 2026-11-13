@@ -9,6 +9,8 @@ The catalog is maintained as one YAML file per entry in `attacks/`. You can also
 
 CI also checks the published source and coverage URLs in added or modified entries. Run `npm run check:links -- --all` locally to audit the catalog, or `npm run check:links -- --base origin/main` to check entries changed in commits since `origin/main`. URL syntax checks run offline with `npm run validate`; live checks require network access.
 
+Changed attack entries must also include `category`, `attribution`, `ai_involvement_confidence`, `detections`, and `timeline`. The Attack detections workflow checks those fields, requests every detection URL, and compares each rule's platform with the operating systems described by the entry. See [Detection rules on pull requests](#detection-rules-on-pull-requests).
+
 ```yaml
 id: example-campaign-2026
 name: Example campaign
@@ -124,6 +126,37 @@ An attack record can link to one or more reviewed simulation definitions under `
 Definitions contain a legitimate task, synthetic clean/changed fixtures, prerequisites, expected observations and limits. Agent injection and fixed local comparisons are distinct modes. Never infer agent attribution, native vulnerability reproduction or detection from a helper receipt. Platform status needs identified execution evidence.
 
 Regenerate with `npm run simulations:build`, then run `npm run validate`, `npm test` and the browser checks. A new executable recipe or tool capability requires code review, boundary tests and native verification; adding a YAML field cannot enable arbitrary commands or destinations. Keep source fixtures inert; only explicit preparation may materialize a project or skill instruction inside its run-owned disposable workspace. See [the lab guide](docs/SIMULATIONS.md).
+
+## Detection rules on pull requests
+
+The `attack-detections` job runs on `pull_request` and on merge-group checks. It looks at attack files added or modified relative to the base commit (`attacks/*.yaml`). The job uses `pull_request` so the workflow that arrives with the pull request cannot read repository secrets. It does not use `pull_request_target`. Fork pull requests do not receive `DETECTIONS_PUSH_TOKEN`.
+
+For each changed entry the job reuses `entryErrors` from `src/lib/schema.mjs`, then checks:
+
+- `category`, `attribution`, `ai_involvement_confidence`, `detections`, and `timeline` are present and non-empty. `attribution` and `timeline` need at least one filled value. `detections` needs at least one item.
+- Every detection URL is a public HTTP(S) address and the final response is HTTP 200. The request uses the same private-address checks as the source-link checker. `guidance` items may omit a URL.
+- A Sigma, Splunk, Elastic, KQL, or LOLBAS rule's platform agrees with the operating systems named in the entry. Platforms come from the URL path (`rules/windows`, `rules/macos`, `rules/linux`, and the Sigma `win` filename token) or, when the path has no OS, from the rule's `logsource.product`. The entry's OS comes from its summary, tooling, flow, and notes, using the `windows`, `macos`, `linux`, and `android` ids in `src/lib/stack-matching.mjs`. A Windows rule on an entry that only describes macOS fails. When either side does not name an OS, that comparison is skipped.
+
+The job prints one block per file and exits non-zero when any check fails. Run the same report locally:
+
+```sh
+node scripts/validate-pr-entries.mjs --base origin/main
+node scripts/validate-pr-entries.mjs attacks/your-entry.yaml
+```
+
+Entries whose detections are missing, empty, or only `format: guidance` are sent to [security-detections-mcp](https://github.com/mhaggis/security-detections-mcp) (`security-detections-mcp@3.3.4`). The workflow installs the Sigma, Splunk ESCU, and Elastic rule repositories on a cache miss and lets the server build its SQLite index. `actions/cache` stores `~/.cache/security-detections-mcp` and `.cache/detection-sources` under a key that changes each ISO week (`date -u +%G-W%V`). A missing cache rebuilds the index. Later runs in that week restore it.
+
+Queries use ATT&CK ids found in the entry (`T1059`, `T1543.001`), ATLAS ids and names from `src/data/atlas-techniques.json`, and public IOC tokens. Results are limited to Sigma, Splunk, and Elastic, dropped when the rule platform does not overlap the entry, and capped at five rules in a stable order. Each suggestion is fetched and kept only when its URL returns HTTP 200. Matching rules are written into `detections` and formatted with Prettier.
+
+On a pull request from this repository the job commits those rules to the head branch. Set the optional Actions secret `DETECTIONS_PUSH_TOKEN` (contents write on this repo only) when that commit should start a new workflow run. A push made with the default `GITHUB_TOKEN` does not start another workflow. Fork pull requests cannot be pushed to; the same suggestion list is posted as a pull request comment when the token can write comments, and it is always included in the job summary.
+
+```sh
+node scripts/enrich-detections.mjs --base origin/main --dry-run
+node scripts/build-detection-index.mjs
+node scripts/enrich-detections.mjs attacks/your-entry.yaml
+```
+
+Building the index clones the upstream rule repositories and needs network access. Review every suggested rule before merging. A match is a candidate, not confirmation that the rule detects the incident.
 
 ## Stage detections
 
