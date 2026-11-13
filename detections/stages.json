@@ -3467,5 +3467,106 @@
     "execute-injection": {
       "profile": "unassessed"
     }
+  },
+  "unit42-hidden-prompt-injection-ai-trading-2026-11": {
+    "plant-prompt": {
+      "profile": "web"
+    },
+    "agent-fetch": {
+      "profile": "agent-input"
+    },
+    "persona": {
+      "profile": "agent-input"
+    },
+    "steer-user": {
+      "profile": "phishing"
+    }
+  },
+  "gpustack-cve-2026-102895-reverse-shell-2026-11": {
+    "bypass": {
+      "profile": "web"
+    },
+    "mint-key": {
+      "profile": "credentials"
+    },
+    "backend": {
+      "profile": "agent-tools"
+    },
+    "shell": {
+      "profile": "linux-fileless-execution"
+    }
+  },
+  "datadog-artex-aws-cognito-2026-11": {
+    "anon-s3": {
+      "profile": "cloud"
+    },
+    "cloudwatch": {
+      "profile": "cloud"
+    },
+    "cognito": {
+      "profile": "identity"
+    },
+    "enumerate": {
+      "profile": "cloud"
+    }
+  },
+  "vecert-operation-ghost-campus-2026-11": {
+    "farm-accounts": {
+      "profile": "identity"
+    },
+    "search-env": {
+      "profile": "credentials"
+    },
+    "validate": {
+      "profile": "credentials"
+    },
+    "panel": {
+      "profile": "agent-tools"
+    }
+  },
+  "arctic-wolf-antifox-iis-aws-2026-11": {
+    "webshell": {
+      "profile": "windows-shell"
+    },
+    "webconfig": {
+      "profile": "credentials"
+    },
+    "aws-enum": {
+      "profile": "cloud"
+    },
+    "secret": {
+      "profile": "cloud"
+    }
+  },
+  "railway-october-ai-key-theft-2026-10": {
+    "signup": {
+      "profile": "identity"
+    },
+    "build-escape": {
+      "profile": "unassessed"
+    },
+    "oidc": {
+      "profile": "cloud"
+    },
+    "decrypt": {
+      "profile": "credentials"
+    },
+    "resale": {
+      "profile": "exfil"
+    }
+  },
+  "kaspersky-citrus-ransomware-llm-2026-11": {
+    "contractor-creds": {
+      "profile": "credentials"
+    },
+    "llm-scripts": {
+      "profile": "windows-shell"
+    },
+    "adcs": {
+      "profile": "windows-credential-dump"
+    },
+    "encrypt": {
+      "profile": "impact"
+    }
   }
 }
