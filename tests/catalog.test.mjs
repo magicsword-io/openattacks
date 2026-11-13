@@ -427,3 +427,48 @@ test("script execution starters match encoded execution and exclude unrelated be
   ]);
   assert.match(bedrock.limitation, /Do not assume default CloudTrail/);
 });
+
+test("RSS feed lists every entry with a permalink and is well-formed", () => {
+  const feed = readFileSync(
+    new URL("../dist/rss.xml", import.meta.url),
+    "utf8",
+  );
+  assert.ok(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
+  assert.ok(feed.includes('<rss version="2.0"'));
+  assert.ok(feed.includes('rel="self" type="application/rss+xml"'));
+  // The channel link follows SITE_URL / BASE_PATH, so permalinks are checked
+  // against it rather than a hard-coded production domain.
+  const home = feed.match(/<channel>\s*<title>[^<]*<\/title>\s*<link>([^<]+)<\/link>/)[1];
+  const items = feed.match(/<item>[\s\S]*?<\/item>/g) || [];
+  assert.equal(items.length, seeds.length);
+  for (const entry of seeds)
+    assert.ok(
+      feed.includes(
+        `<guid isPermaLink="true">${new URL(`attacks/${entry.id}/`, home).href}</guid>`,
+      ),
+      `Missing feed item for ${entry.id}`,
+    );
+  for (const item of items) {
+    assert.match(
+      item,
+      /<pubDate>\w{3}, \d{2} \w{3} \d{4} 12:00:00 GMT<\/pubDate>/,
+    );
+    // Raw markup or unescaped ampersands would break feed readers.
+    const body = item.replace(
+      /<\/?(item|title|link|guid[^>]*|pubDate|description|category)>/g,
+      "",
+    );
+    assert.ok(!/[<>]/.test(body), `Unescaped markup in ${item.slice(0, 120)}`);
+    assert.ok(
+      !/&(?!(amp|lt|gt|quot|apos);)/.test(body),
+      `Unescaped & in ${item.slice(0, 120)}`,
+    );
+  }
+  const pubDates = items.map((item) =>
+    Date.parse(item.match(/<pubDate>(.*?)<\/pubDate>/)[1]),
+  );
+  assert.deepEqual(
+    pubDates,
+    [...pubDates].sort((a, b) => b - a),
+  );
+});

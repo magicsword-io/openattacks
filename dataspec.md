@@ -46,7 +46,7 @@ Generated at build time (do not edit by hand):
   /api/attacks/<id>.json, /api/attacks/<id>.md, /api/defenses/<id>.json
   /llms.txt, /llms-full.txt, /llms/attacks/<id>.md,
   /llms/by-category/<category>.md, /llms/by-month/<YYYY-MM>.md,
-  /data/attacks.json, /data/attacks.schema.json, sitemap
+  /data/attacks.json, /data/attacks.schema.json, /rss.xml, sitemap
 ```
 
 ## 2. Attack record: `attacks/<id>.yaml`

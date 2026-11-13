@@ -4,7 +4,7 @@ The open catalog of AI attacks. How attackers actually use AI, sourced and mappe
 
 **Documented cases only:** attacks observed in the wild or concrete cases documented in public reporting. No conceptual scenarios, hypothetical attack chains, or general threat frameworks. Published vulnerability demonstrations and research PoCs retain their evidence labels and do not imply exploitation in the wild.
 
-**Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [GitHub](https://github.com/magicsword-io/openattacks)
+**Primary domain:** [openattacks.ai](https://openattacks.ai/) · [LLM guide](https://openattacks.ai/llms.txt) · [JSON catalog](https://openattacks.ai/api/attacks.json) · [RSS feed](https://openattacks.ai/rss.xml) · [GitHub](https://github.com/magicsword-io/openattacks)
 
 `openattacks.com`, `www.openattacks.com`, and `www.openattacks.ai` permanently redirect to `https://openattacks.ai`, preserving paths and query strings. The rules live in `vercel.json`; the domains must also be attached to the Vercel project and have valid DNS before they can serve or redirect traffic.
 
