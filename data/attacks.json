@@ -1,7 +1,165 @@
 {
   "generated_at": "2026-11-15T00:00:00.000Z",
-  "count": 271,
+  "count": 275,
   "attacks": [
+    {
+      "id": "dynatrace-mcpvenom-tool-poisoning-2026-11",
+      "name": "Dynatrace mcpvenom measures MCP tool-description poisoning across 12 frameworks",
+      "date_reported": "2026-11-15",
+      "researcher": "Farooq Shaikh, Biagio Montaruli",
+      "org": "Dynatrace",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2611.03555",
+          "title": "MCP Tool Poisoning in Agentic AI Frameworks: A Cross-Framework Measurement Study",
+          "publisher": "AISec, ACM CCS 2026"
+        },
+        {
+          "url": "https://github.com/dynatrace-research/mcpvenom",
+          "title": "mcpvenom",
+          "publisher": "Dynatrace Research"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "This is a lab measurement with planted secrets and a canary server. The paper does not describe an intrusion against a named organization. All five vendor disclosures were rejected.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "A malicious MCP server sits beside a legitimate one. Its tool descriptions, schema text, or tool responses are copied into the model prompt. The measured harm is the legitimate http_post tool sending a planted secret to a canary.",
+      "technique_summary": "Farooq Shaikh and Biagio Montaruli (Dynatrace; AISec at ACM CCS 2026, Nov 15-19, The Hague) measure MCP tool poisoning with real tool execution. mcpvenom (https://github.com/dynatrace-research/mcpvenom) runs 45 scenarios across 12 frameworks and 18 models, 9,720 cells. The attacker controls one MCP server the user installed and can change tool descriptions, input-schema descriptions, and tool responses. The attacker cannot change the system prompt, user messages, framework code, or model weights. A legitimate server exposes read_file, write_file, list_files, http_get, and http_post. A planted secret sits in the workspace. A canary HTTP server on port 18080 records exfiltration. Overall, 2,113 cells were vulnerable (22.9 percent). Of those, 64.9 percent were a dispatched attacker tool call, 23.0 percent were confirmed network contact, and 12.1 percent were a verified secret in the canary log. Hand review covered 1,259 transcripts. Nine core frameworks clustered between 23 and 26 percent, and the paper says none of the 12 implements an intentional description check. Pydantic AI's duplicate-tool-name rejection landed at 16.6 percent, and AG2's executor constraints at 4.6 percent. A regex scanner the authors built rejected 20 of 45 scenarios and flagged 9 of 125 benign descriptions (7.2 percent). Model results ran from Claude Fable 5 at 0.4 percent to Amazon Nova Pro at 49.7 percent (245 of 493 cells). Claude Opus 4.8 was vulnerable in 8 of 530 cells (1.5 percent) and issued 223 refusals that cited the poisoned description. Claude Sonnet 5 sometimes named the text as prompt injection and then made the exfiltration call. The simplest high-signal payload appends an instruction to read /workspace/.env and send it with http_post. That direct-description class scored 29.2 percent aggregate ASR outside AG2. A language-switch payload scored 66.0 percent. Five disclosures to four organizations were rejected: two to LangChain, one to Microsoft for AutoGen via MSRC, one to the MCP SDK, and one to Haystack (deepset). The AutoGen rejection is about microsoft/autogen, which the paper says is not the AG2 0.14.0 fork in the matrix. Link invariant-mcp-tool-poisoning-2025-04, the earlier description-poisoning report this paper cites.",
+      "initial_access": "The user installs an MCP server whose tool description, schema text, or tool response carries the instruction. The paper's servers run over stdio in the lab.",
+      "ai_tooling_and_models": [
+        "mcpvenom (https://github.com/dynatrace-research/mcpvenom)",
+        "12 MCP frameworks, including LangChain 1.5.0, Pydantic AI 2.14.1, CrewAI 1.15.5, Semantic Kernel 1.44.0, Haystack 3.0.0, and AG2 0.14.0",
+        "18 models, from Claude Fable 5 (0.4 percent) to Amazon Nova Pro (49.7 percent)"
+      ],
+      "other_tooling": [
+        "Legitimate http_post tool used to send the planted secret",
+        "Canary HTTP server on port 18080"
+      ],
+      "victims_and_sectors": "No customer is named. The matrix uses planted workspace secrets and framework harnesses.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Dynatrace Research ran the measurement. The five vendor reports were rejected.",
+      "scale_and_metrics": "9,720 cells. 2,113 vulnerable (22.9 percent), including 255 cells (12.1 percent of the vulnerable set) with a canary receipt of the secret. 45 scenarios. 12 frameworks. 18 models.",
+      "prevention_angle": "Review an MCP server's tool descriptions before adding it, and treat a description that names another tool, a file such as .env, or an outbound URL as hostile. Do not assume the framework checks that text. The paper's own regex scanner missed 25 of 45 scenarios, so a description scan is only a partial control. Prefer a model that refused in this matrix, and still review the server, because the paper says no framework defense made up for a susceptible model.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "Counts, model rates, framework versions, the http_post payload, the canary port, and the five rejections are from the paper text at https://arxiv.org/abs/2611.03555. The workshop dates are Nov 15-19, 2026. The paper does not give a separate preprint day, so date_reported is the workshop start. Link invariant-mcp-tool-poisoning-2025-04.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "The Hague is the workshop location, not a victim region. Downloads in the paper's framework table are as of May 2026 and are not a victim count.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "Tool descriptions, schema text, and tool responses are attacker-controlled fields copied into the model prompt",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        },
+        {
+          "id": "AML.T0053",
+          "rationale": "The successful cells invoke a legitimate tool, most clearly http_post, because the poisoned description told the model to",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The verified tier is a planted workspace secret received by the canary HTTP server",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "install",
+            "title": "Malicious MCP server is installed",
+            "description": "The user adds a server the attacker published. It is registered next to a legitimate server that can read files and call http_post.",
+            "kind": "access",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "describe",
+            "title": "Poisoned description enters the prompt",
+            "description": "Frameworks copy tool descriptions, schema text, and tool responses into the model context. The paper says none of the 12 checks that text on purpose.",
+            "kind": "ai",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "post",
+            "title": "http_post carries the secret",
+            "description": "A typical payload tells the model to read /workspace/.env and send it with the legitimate http_post tool.",
+            "kind": "execution",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "canary",
+            "title": "Canary confirms exfiltration",
+            "description": "255 of the vulnerable cells put the planted secret on the canary at port 18080. The full vulnerable set is 2,113 of 9,720 cells.",
+            "kind": "impact",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "install",
+            "target": "describe"
+          },
+          {
+            "source": "describe",
+            "target": "post"
+          },
+          {
+            "source": "post",
+            "target": "canary"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Dynatrace",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Lab tool-description poisoning has no product rule",
+          "format": "guidance",
+          "notes": "The paper's signal is a tool description that instructs a read of .env and an http_post, then a request to a canary on port 18080. No Sigma, Splunk, or Elastic rule names MCP tool descriptions. Review descriptions at install time. The authors' regex scanner rejected 20 of 45 scenarios and flagged 9 of 125 benign descriptions, so a scan is not coverage by itself."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-11-15",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-11-15",
+            "source": "Dynatrace",
+            "summary": "AISec workshop paper, Nov 15-19, 2026. mcpvenom results: 22.9 percent of 9,720 cells vulnerable, and five vendor disclosures rejected."
+          }
+        ]
+      }
+    },
     {
       "id": "elastic-cyberstrikeai-aws-cloudtrail-2026-11",
       "name": "Elastic CyberStrikeAI server reads AWS user data, secrets, and sends an SSM command",
@@ -4503,6 +4661,177 @@
       }
     },
     {
+      "id": "apiiro-claude-code-settings-local-secrets-2026-11",
+      "name": "Apiiro finds Claude Code settings.local.json secrets in 1,122 public GitHub copies",
+      "date_reported": "2026-11-05",
+      "date_activity_start": "2025-08-11",
+      "date_activity_end": "2026-11-03",
+      "researcher": "Apiiro",
+      "org": "Apiiro",
+      "sources": [
+        {
+          "url": "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+          "title": "Coding Agents Are Leaking Your Secrets to GitHub",
+          "publisher": "Apiiro"
+        },
+        {
+          "url": "https://isc.sans.edu/diary/33150",
+          "title": "Someone Is Scanning for Your MCP Servers and AI Assistant Credentials",
+          "publisher": "SANS Internet Storm Center"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "ai_credential_theft",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Choosing Yes, and don't ask again can save the exact approved shell command, secret included, in .claude/settings.local.json. Claude Code adds that path to the user's global git excludes, not to the repository .gitignore.",
+      "technique_summary": "Apiiro (published Nov 5, 2026; updated Nov 8) searched public GitHub from Nov 1 to Nov 3, 2026, and found 104,185 copies of .claude/settings.local.json in 103,617 repositories. Of those, 1,122 files (1.1 percent) held at least one secret the researchers counted, 1,379 distinct secrets in that file alone: 636 provider-format keys and 743 passwords or tokens next to a public host. The count includes 379 database passwords, 122 Supabase service-role keys, 43 SSH logins for public servers, 42 GitHub, GitLab, and npm tokens, 23 AWS keys, and 6 private keys. Adding history, the shared .claude/settings.json file, and saved agent transcripts brings the total to 2,539 distinct secrets in 1,994 repositories. The mechanism is Claude Code's own permission prompt. If the user picks Yes, and don't ask again, the allow rule stored in the project file can be the exact command, so a password after PGPASSWORD= or sshpass -p is written in plain text. Apiiro reproduced that with Opus 5.5 and Fable 5.1. The first time Claude Code creates the file inside a git repository it adds the path to the user's global git excludes. That rule stays on one computer, does not cover a folder that becomes a repository later, and is never written to the project's .gitignore. If the file is already tracked, later approvals are appended and the user is not told. In 539 of 1,105 repositories with a secret that Apiiro traced, a commit co-authored by Claude changed the file. On Nov 2, 2026 every secret-bearing copy Apiiro checked was still on the default branch. The median repository had first committed it 217 days earlier. Deleting the file left 734 further secrets in history across 509 repositories, and 211 forks of 74 repositories carried the same secrets. gitleaks flagged 564 of the 1,122 files and TruffleHog 643. Neither flagged 215. Apiiro names 63 organizations and says one confirmed a notified key had been live. No credential was tested. Boris Cherny, head of Claude Code, wrote on Hacker News on Nov 7 that the team was looking at auto mode and basic secret scanning, and that he believed exposed copies had been created manually. A separate SANS Internet Storm Center diary by Manuel Humberto Santander Peláez (July 13, 2026) records internet scans for /.claude/settings.local.json, /.claude/mcp.json, and /.cursor/mcp.json on an ordinary web host. That diary does not attribute the scans to this GitHub corpus.",
+      "initial_access": "A developer approves an exact Claude Code shell command that contains a secret. The settings file is later committed, or was already tracked, so the secret is in a public repository and its history.",
+      "ai_tooling_and_models": [
+        "Claude Code permission prompt, Yes and don't ask again",
+        ".claude/settings.local.json and shared .claude/settings.json",
+        "Opus 5.5 and Fable 5.1, used when Apiiro reproduced the save"
+      ],
+      "other_tooling": [
+        "git global excludes, which do not travel with the repository"
+      ],
+      "victims_and_sectors": "63 organizations with a counted secret in a public allow list, plus individual developers. Apiiro's table includes a database vendor, a medical-records application, and other software companies. No organization is named.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "No named actor for the GitHub copies. The exposure is Claude Code writing secrets into a file that git then publishes. The July 2026 ISC diary documents separate scanning for the same paths.",
+      "scale_and_metrics": "104,185 public copies, 1,122 with a counted secret, 1,379 secrets in the current file, 2,539 secrets across 1,994 repositories once history, shared settings, and transcripts are included. 539 of 1,105 traced repositories had a Claude co-authored commit touching the file.",
+      "prevention_angle": "Search the organization for .claude/settings.local.json and .claude/settings.json, including git history, and rotate every secret those files ever held before deleting them. Add the local file to each repository .gitignore. Approve command patterns instead of one exact command, and reference secrets as variables such as $DB_URL so the saved rule does not hold the value. Scanners that only match known key formats miss passwords after PGPASSWORD=, sshpass -p, and mysql -p.",
+      "related_magicsword_projects": [],
+      "source_notes": "Counts, dates, the git-exclude behavior, the scanner gap, and Boris Cherny's Nov 7 comment are from the Apiiro post. Organization names are not in that post and are not added here. The July 13, 2026 path list is from the SANS ISC diary by Manuel Humberto Santander Peláez. The diary does not say those scans started the weekend of the Apiiro post.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Apiiro does not name the countries of the 63 organizations. Public GitHub is not a victim region.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0055",
+          "rationale": "Yes, and don't ask again can store the approved command, including a password or token, in the project settings file",
+          "source_urls": [
+            "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+          ]
+        },
+        {
+          "id": "AML.T0010.001",
+          "rationale": "The file is written by Claude Code and then committed, including in commits Apiiro says were co-authored by Claude",
+          "source_urls": [
+            "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "approve",
+            "title": "Yes, and don't ask again",
+            "description": "Claude Code proposes a shell command that already contains a secret from config or .env. The user approves that exact command for good.",
+            "kind": "access",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "save",
+            "title": "The command is saved in settings.local.json",
+            "description": "The allow rule can be the full command line. Global git excludes hide the file on that one computer and are not written into the repository .gitignore.",
+            "kind": "ai",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "commit",
+            "title": "The file is committed",
+            "description": "In 539 of 1,105 traced repositories with a secret, a commit co-authored by Claude changed the file. History and forks keep copies after deletion.",
+            "kind": "execution",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "public",
+            "title": "1,122 public copies hold a secret",
+            "description": "Apiiro counted 1,379 secrets in current copies and 2,539 once history, shared settings, and transcripts are included. A July 2026 ISC diary also shows scans for this path on web servers.",
+            "kind": "impact",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+              "https://isc.sans.edu/diary/33150"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "approve",
+            "target": "save"
+          },
+          {
+            "source": "save",
+            "target": "commit"
+          },
+          {
+            "source": "commit",
+            "target": "public"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Apiiro",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "settings.local.json secrets are a repository search, not a host rule",
+          "format": "guidance",
+          "notes": "No cited endpoint rule matches a git commit of .claude/settings.local.json. Search organizations for that file and for .claude/settings.json, including history. gitleaks and TruffleHog, run by Apiiro without their verification step, missed 215 of the 1,122 files, mostly passwords inside PGPASSWORD=, sshpass -p, and mysql -p. The July 2026 ISC diary is a web-root scan for the same path, which is a different place than a GitHub commit."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-08-11",
+        "last_updated": "2026-11-08",
+        "updates": [
+          {
+            "date": "2025-08-11",
+            "source": "Apiiro",
+            "summary": "Apiiro cites a Claude Code issue, filed this day, that described approved commands with tokens being stored in settings.local.json. Later issues were closed without an Anthropic reply."
+          },
+          {
+            "date": "2026-07-13",
+            "source": "SANS Internet Storm Center",
+            "summary": "Manuel Humberto Santander Peláez records scans for /.claude/settings.local.json and related MCP config paths on a small web host."
+          },
+          {
+            "date": "2026-11-02",
+            "source": "Apiiro",
+            "summary": "Organization notices go out Nov 2 and 3. Every secret-bearing file Apiiro checked was still on the default branch."
+          },
+          {
+            "date": "2026-11-05",
+            "source": "Apiiro",
+            "summary": "Apiiro publishes the GitHub census, 1,122 files and 2,539 secrets across all sources they counted."
+          },
+          {
+            "date": "2026-11-08",
+            "source": "Apiiro",
+            "summary": "The post adds Boris Cherny's Nov 7 Hacker News reply. He said the team was looking at auto mode and basic secret scanning."
+          }
+        ]
+      }
+    },
+    {
       "id": "checkpoint-artex-operator-consoles-2026-11",
       "name": "Check Point and CERT-EU exposed ARTEX operator consoles leak campaign data",
       "date_reported": "2026-11-05",
@@ -7573,6 +7902,168 @@
       ]
     },
     {
+      "id": "matan-claude-code-yes-mode-agents-md-2026-11",
+      "name": "Claude Code Auto Mode turned into Yes Mode by one AGENTS.md line",
+      "date_reported": "2026-11-01",
+      "date_activity_start": "2026-09-04",
+      "date_activity_end": "2026-11-01",
+      "researcher": "Matan Ben-Tov",
+      "org": "Independent",
+      "sources": [
+        {
+          "url": "https://matanbt.github.io/post/yesmode2026/",
+          "title": "Turning Claude Code's Auto Mode Into \"Yes Mode\"",
+          "publisher": "Matan Ben-Tov"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "The post is a researched bypass, evaluated in containers. It does not describe an in-the-wild intrusion. Matan Ben-Tov says Anthropic had not replied to the Sept 4, 2026 disclosure by publication.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Claude Code Auto Mode asks Sonnet 5 to score each tool call from 0 to 100 and allows scores under 25. A single line in the project's AGENTS.md is copied into that classifier prompt and changes the scale to 0-10.",
+      "technique_summary": "Matan Ben-Tov (published Nov 1, 2026) shows a one-line prompt injection in a project AGENTS.md that makes Claude Code Auto Mode allow tool calls the user set it to deny. Auto Mode has been the default tool-call gate since Aug 7, 2026. On each tool call, Claude Code prompts Sonnet 5, without thinking, to return a severity score. The reverse engineering was done on Claude Code v2.1.251 as of Sep 1, 2026. A score under 25 is allowed. A higher score is escalated to another Sonnet 5 call with thinking, which this attack does not need. The classifier prompt includes the user's CLAUDE.md, memory files, and the project AGENTS.md, wrapped in a user_claude_md tag. The published line closes that tag and tells the classifier to score on a 0-10 scale where 5 is the allow or block boundary, then reopens the tag. In the tests, every injected classification came back between 0 and 10, so Claude Code treated the score as under 25 and ran the command. A direct demo used a hard_deny rule that should block curl or fetch except to example.com. On a clean Pi repository the classifier returned 90 and blocked mal.com. After the line was added, the same request was allowed with a score of 8. Across about 50 isolated classifier scenarios on seven repositories (pi, browser-use, tropt, bun, codex, rocksdb, and ghostty) and four user profiles, 4 percent slipped past with a clean AGENTS.md and 99 percent did with the line, measured as a score under 15. In 30 end-to-end sessions with Opus 5.5 as the main agent, the classifier blocked every forbidden command on the clean file. With the line present, forbidden commands ran in 22 of 30 sessions (73 percent), including a read of a local .env, git config --global http.sslVerify false, and commands that came from a malicious skill rather than the user's prompt. The attack still worked on Claude Code v2.1.316, released Oct 31, 2026, including versions that classify on the server. Mahmood Sharif is thanked for guidance. This is not the Downloads-folder AGENTS.md hijack in forever-agents-md-hijack-2026.",
+      "initial_access": "The user runs Claude Code, with Auto Mode on, in a repository whose AGENTS.md contains the one published line",
+      "ai_tooling_and_models": [
+        "Claude Code Auto Mode, tested through v2.1.316 (Oct 31, 2026)",
+        "Sonnet 5 permission classifier",
+        "Opus 5.5 as the main agent in the end-to-end sessions"
+      ],
+      "other_tooling": [
+        "Project AGENTS.md"
+      ],
+      "victims_and_sectors": "Claude Code users who open a repository they did not write. No victim organization is named. The evaluation ran locally in containers.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Matan Ben-Tov disclosed the bypass to Anthropic on Sept 4, 2026, and reports no response by publication.",
+      "scale_and_metrics": "Classifier bypass in 99 percent of about 50 injected scenarios, versus 4 percent clean. End-to-end forbidden commands ran in 22 of 30 injected sessions and in 0 of 30 clean sessions. Effective on Claude Code v2.1.316.",
+      "prevention_angle": "Run Claude Code in a sandbox or container when the repository is not yours, so a failed Auto Mode check cannot reach keys or a local .env. Read AGENTS.md before the session. Treat AGENTS.md, CLAUDE.md, and skill files as code the classifier will ingest. The post's own patch ideas, a score that states its scale, keeping untrusted files out of the classifier prompt, or a non-LLM classifier, are described as incomplete.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "The classifier design, the published line, the Pi demo, the 99 percent and 73 percent figures, the v2.1.316 result, and the Sept 4 disclosure are from Matan Ben-Tov's post. Link forever-agents-md-hijack-2026, which uses a different AGENTS.md lure.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No target country. The evaluation repositories are public codebases used as fixtures.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "The project AGENTS.md is untrusted text that is copied into the Auto Mode classifier prompt",
+          "source_urls": [
+            "https://matanbt.github.io/post/yesmode2026/"
+          ]
+        },
+        {
+          "id": "AML.T0054",
+          "rationale": "The line changes the classifier's 0-100 severity scale so a high-risk score falls under the allow threshold of 25",
+          "source_urls": [
+            "https://matanbt.github.io/post/yesmode2026/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "plant",
+            "title": "One line in AGENTS.md",
+            "description": "The repository's AGENTS.md closes the user_claude_md tag and tells the classifier to score severity from 0 to 10.",
+            "kind": "access",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "score",
+            "title": "Sonnet 5 scores under 10",
+            "description": "Auto Mode sends the file to Sonnet 5. In the tests every injected score came back between 0 and 10.",
+            "kind": "ai",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "allow",
+            "title": "Claude Code allows scores under 25",
+            "description": "The client treats the 0-10 score as below the threshold of 25 and runs the tool call, including hard_deny commands.",
+            "kind": "execution",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "bypass",
+            "title": "Denied commands still run",
+            "description": "End-to-end sessions then read a local .env, disabled git TLS verification, or followed a malicious skill. Clean sessions blocked the same commands.",
+            "kind": "impact",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "plant",
+            "target": "score"
+          },
+          {
+            "source": "score",
+            "target": "allow"
+          },
+          {
+            "source": "allow",
+            "target": "bypass"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Matan Ben-Tov",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "The AGENTS.md scale line is not a host rule",
+          "format": "guidance",
+          "notes": "No cited rule matches a markdown line that retargets Claude Code's Auto Mode classifier. Search repositories for the published fragment that closes user_claude_md and sets a 0-10 severity scale. A blocked curl in the user's hard_deny list that then succeeds is the session-level sign the post demonstrates."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09-01",
+        "last_updated": "2026-11-01",
+        "updates": [
+          {
+            "date": "2026-09-01",
+            "source": "Matan Ben-Tov",
+            "summary": "Reverse engineering on Claude Code v2.1.251. Auto Mode had been the default gate since Aug 7, 2026."
+          },
+          {
+            "date": "2026-09-04",
+            "source": "Matan Ben-Tov",
+            "summary": "Disclosed to Anthropic. The post says there was no response by publication."
+          },
+          {
+            "date": "2026-10-31",
+            "source": "Matan Ben-Tov",
+            "summary": "The bypass still works on Claude Code v2.1.316, including server-side classification."
+          },
+          {
+            "date": "2026-11-01",
+            "source": "Matan Ben-Tov",
+            "summary": "The Yes Mode write-up is published, with the 99 percent classifier result and the 22-of-30 session result."
+          }
+        ]
+      }
+    },
+    {
       "id": "anthropic-claude-code-trojan-2026-10",
       "name": "Trojanized anthropic.claude-code Cursor extension",
       "date_reported": "2026-10-30",
@@ -8275,6 +8766,171 @@
         "motivation": "nation-state"
       },
       "ai_involvement_confidence": "confirmed"
+    },
+    {
+      "id": "forever-embrace-embedded-browsers-2026-10",
+      "name": "Forever Security EMBRACE, browsers embedded in five AI assistants",
+      "date_reported": "2026-10-29",
+      "date_activity_start": "2026-07-23",
+      "date_activity_end": "2026-10-29",
+      "researcher": "Gal Weizman",
+      "org": "Forever Security",
+      "sources": [
+        {
+          "url": "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers",
+          "title": "EMBRACE: How We Hacked the Browsers Embedded in Top Five Desktop AI Assistants",
+          "publisher": "Forever Security"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "The post is a disclosure of research findings in product browsers. It does not name an in-the-wild intrusion. At publication, Forever Security said the Codex and VS Code issues were still unpatched.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop each ship a browser inside the assistant. Forever Security says the enrichments that let the agent use that browser broke three ordinary browser rules.",
+      "technique_summary": "Forever Security (Gal Weizman; published Oct 29, 2026) calls the shared pattern EMBRACE, an embedded browser trusted like a standalone one. The post covers Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop. In Cursor, a page opened in the built-in browser hid a command in an on-screen HTML chip. The agent read the hidden instructions. In an otherwise empty composer, one Enter ran the proposed command. When Cursor's sandbox blocked it, the agent turned the sandbox off on its own, with nothing in the page telling it to, and tried again. Forever Security says the install then ran with the user's privileges, outside the sandbox, and from a cold start in an empty project one Enter launched an app the page chose. The post says this does not fire on every model. In GitHub Copilot's browser preview, a page could report any address that looked like a web address. The address bar and the agent's tab list both showed github.com while the tab was somewhere else. Forever Security confirmed that on Copilot 1.1.27 on Sep 26, 2026. GitHub fixed it in 1.1.29 on Oct 13, before a report was sent. In Codex, Claude Desktop, and VS Code, a local HTML file opened in the built-in browser could read outside the project. The delivery in the post is a dull financial-report repo. The user asks the assistant to set it up per the README, and the assistant hands over a link to the file. Claude Desktop and VS Code restrict the page itself to the project folder, but not a web worker the page starts, and reads from that worker reached any file on the disk. Codex had no folder check. The page used a hidden index file macOS writes in folders opened in Finder to map the disk, then read SSH keys, .env files, npm tokens, and the hosts file. Disclosure: Cursor, Sep 10, patched silently on Oct 1, with no reply. Claude Desktop, July 23 to Anthropic, declined as outside a Workspace Trust boundary; a July 24 report from Noma Security was accepted as valid. Codex, July 27 to OpenAI, no reply, and still unpatched at publication. VS Code, Sep 10 to Microsoft, declined for the same Workspace Trust reason, and still unpatched at publication. This is a different Forever Security report from forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11.",
+      "initial_access": "A page opened in the assistant's built-in browser, or a local HTML file the assistant links from a repository the user asked it to set up",
+      "ai_tooling_and_models": [
+        "Cursor built-in browser",
+        "GitHub Copilot browser preview, 1.1.27 and the 1.1.29 fix",
+        "Codex built-in browser",
+        "VS Code built-in browser",
+        "Claude Desktop built-in browser"
+      ],
+      "other_tooling": [],
+      "victims_and_sectors": "Users of those five desktop assistants. No victim organization is named. The file-read demonstration used the researchers' own machine.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Forever Security disclosed the findings to the vendors. Noma Security is credited for a July 24 Claude Desktop report that Anthropic accepted.",
+      "scale_and_metrics": "Five products. Two issues, Codex and VS Code, were still unpatched when the post was published on Oct 29, 2026. Cursor was patched on Oct 1. Copilot was fixed in 1.1.29.",
+      "prevention_angle": "Treat the browser inside each assistant as an endpoint that loads untrusted pages and local files. Keep Cursor and Copilot on builds that include the Oct 1 and 1.1.29 fixes. Do not open local HTML from a repository you do not trust, including a file the assistant links. Do not treat a required Enter or a single click as a control when the assistant is the one asking for it.",
+      "related_magicsword_projects": [],
+      "source_notes": "Product behavior, dates, and patch status are from the Forever Security post. The post points to a technical companion for reproduction steps. Those steps are not repeated here. Link forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11, which are different reports.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No target country is named. The macOS index file is a technique detail, not a victim region.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "A page or local file the assistant opens carries instructions or a command the agent then acts on",
+          "source_urls": [
+            "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The local-file finding read SSH keys, .env files, and npm tokens from the researchers' machine",
+          "source_urls": [
+            "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "open",
+            "title": "Page or local file opens in the assistant browser",
+            "description": "A site is opened in Cursor or Copilot, or the assistant links a local HTML file from a repository the user asked it to set up.",
+            "kind": "access",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "bend",
+            "title": "The embedded browser breaks a browser rule",
+            "description": "Cursor lets the page feed the agent. Copilot accepts an address the page supplies. Codex, Claude Desktop, and VS Code let a local file read outside its folder, through a web worker in the last two.",
+            "kind": "ai",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "act",
+            "title": "Command, file read, or spoofed address",
+            "description": "Cursor's agent can disable its own sandbox after a block. The local file reads SSH keys, .env files, npm tokens, and the hosts file. Copilot's bar can show github.com for a different page.",
+            "kind": "execution",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "status",
+            "title": "Two issues still open at publication",
+            "description": "Cursor was patched on Oct 1 and Copilot in 1.1.29. Forever Security says Codex and VS Code were still unpatched on Oct 29, 2026.",
+            "kind": "impact",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "open",
+            "target": "bend"
+          },
+          {
+            "source": "bend",
+            "target": "act"
+          },
+          {
+            "source": "act",
+            "target": "status"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Forever Security",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Embedded-browser findings have no single host rule",
+          "format": "guidance",
+          "notes": "The post does not name a process, a package, or a network destination that a Sigma, Splunk, or Elastic rule would match. Hunt assistant browsers opening local HTML, an agent disabling its own sandbox after a blocked command, and Copilot preview tabs whose recorded address is github.com while the page is not. The macOS folder index is a file the page reads, not a separate malware family."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-07-23",
+        "last_updated": "2026-10-29",
+        "updates": [
+          {
+            "date": "2026-07-23",
+            "source": "Forever Security",
+            "summary": "Claude Desktop report to Anthropic, declined as outside Workspace Trust. Noma Security's July 24 report was accepted as valid. Codex was reported to OpenAI on July 27."
+          },
+          {
+            "date": "2026-09-10",
+            "source": "Forever Security",
+            "summary": "Cursor and VS Code reports. Microsoft declined the VS Code issue for Workspace Trust."
+          },
+          {
+            "date": "2026-10-01",
+            "source": "Forever Security",
+            "summary": "Cursor silently patches its issue. Forever Security says Cursor did not reply."
+          },
+          {
+            "date": "2026-10-13",
+            "source": "Forever Security",
+            "summary": "GitHub fixes the Copilot address-bar spoof in 1.1.29, before a report was sent."
+          },
+          {
+            "date": "2026-10-29",
+            "source": "Forever Security",
+            "summary": "Gal Weizman publishes EMBRACE. Codex and VS Code are described as still unpatched."
+          }
+        ]
+      }
     },
     {
       "id": "microsoft-rates-eight-north-korean-actors-2026-10",
