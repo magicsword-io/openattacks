@@ -3568,5 +3568,19 @@
     "encrypt": {
       "profile": "impact"
     }
+  },
+  "elastic-cyberstrikeai-aws-cloudtrail-2026-11": {
+    "validate": {
+      "profile": "identity"
+    },
+    "userdata": {
+      "profile": "cloud"
+    },
+    "ssm": {
+      "profile": "cloud"
+    },
+    "return": {
+      "profile": "identity"
+    }
   }
 }
