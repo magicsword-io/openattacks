@@ -32,10 +32,13 @@
     }
   },
   "anthropic-claude-code-trojan-2026-10": {
+    "fireworks-key": {
+      "profile": "credentials"
+    },
     "supply-chain": {
       "profile": "repository",
-      "note": "Review the repository audit trail for the unauthorized extension release. A repository write is the observable event; Claude branding is not a signal.",
-      "reviewed": "2026-11-06"
+      "note": "The observable event is a write of unauthorized extension copies onto the marketplace cache, not a commit to anthropics/anthropic-quickstarts.",
+      "reviewed": "2026-11-15"
     },
     "distribution": {
       "profile": "extension"
@@ -154,7 +157,7 @@
     "step-4": {
       "profile": "windows-shell",
       "control": "script-hosts",
-      "scope": "The Windows wscript → PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
+      "scope": "The Windows wscript \u2192 PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
     }
   },
   "apt41-gemini-c2-osstun-2025-08": {
@@ -3581,6 +3584,76 @@
     },
     "access": {
       "profile": "credentials"
+    }
+  },
+  "elastic-cyberstrikeai-aws-cloudtrail-2026-11": {
+    "validate": {
+      "profile": "identity"
+    },
+    "userdata": {
+      "profile": "cloud"
+    },
+    "ssm": {
+      "profile": "cloud"
+    },
+    "return": {
+      "profile": "identity"
+    }
+  },
+  "socradar-xaocmail-phantom53-claude-code-2026-11": {
+    "phish": {
+      "profile": "phishing"
+    },
+    "clickfix": {
+      "profile": "windows-shell"
+    },
+    "beacon": {
+      "profile": "persistence"
+    },
+    "claude": {
+      "profile": "agent-tools"
+    },
+    "havoc": {
+      "profile": "credentials"
+    }
+  },
+  "island-typoprompting-ai-typosquats-2026-11": {
+    "typo": {
+      "profile": "web"
+    },
+    "clickfix": {
+      "profile": "windows-shell"
+    },
+    "netguard": {
+      "profile": "windows-install"
+    },
+    "extension": {
+      "profile": "extension"
+    }
+  },
+  "huntress-sckit-screenconnect-llm-2026-11": {
+    "blank-key": {
+      "profile": "identity"
+    },
+    "install": {
+      "profile": "windows-install"
+    },
+    "relaytrap": {
+      "profile": "windows-shell"
+    },
+    "spread": {
+      "profile": "unobserved"
+    }
+  },
+  "air-office-party-anthropic-skills-ld-preload-2026-11": {
+    "helper": {
+      "profile": "skill-review"
+    },
+    "preload": {
+      "profile": "linux-fileless-execution"
+    },
+    "plant": {
+      "profile": "linux-fileless-execution"
     }
   }
 }
