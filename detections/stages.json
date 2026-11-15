@@ -3568,5 +3568,19 @@
     "encrypt": {
       "profile": "impact"
     }
+  },
+  "unit42-cairn-cl-sta-1238-2026-11": {
+    "task": {
+      "profile": "agent-tools"
+    },
+    "models": {
+      "profile": "agent-input"
+    },
+    "loop": {
+      "profile": "web"
+    },
+    "access": {
+      "profile": "credentials"
+    }
   }
 }
