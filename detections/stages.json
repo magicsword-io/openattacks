@@ -3655,5 +3655,61 @@
     "plant": {
       "profile": "linux-fileless-execution"
     }
+  },
+  "forever-embrace-embedded-browsers-2026-10": {
+    "open": {
+      "profile": "web"
+    },
+    "bend": {
+      "profile": "agent-input"
+    },
+    "act": {
+      "profile": "unassessed"
+    },
+    "status": {
+      "profile": "unassessed"
+    }
+  },
+  "matan-claude-code-yes-mode-agents-md-2026-11": {
+    "plant": {
+      "profile": "agent-input"
+    },
+    "score": {
+      "profile": "agent-input"
+    },
+    "allow": {
+      "profile": "unassessed"
+    },
+    "bypass": {
+      "profile": "credentials"
+    }
+  },
+  "dynatrace-mcpvenom-tool-poisoning-2026-11": {
+    "install": {
+      "profile": "agent-tools"
+    },
+    "describe": {
+      "profile": "agent-input"
+    },
+    "post": {
+      "profile": "exfil"
+    },
+    "canary": {
+      "profile": "exfil"
+    }
+  },
+  "apiiro-claude-code-settings-local-secrets-2026-11": {
+    "approve": {
+      "profile": "credentials"
+    },
+    "save": {
+      "profile": "repository"
+    },
+    "commit": {
+      "profile": "repository"
+    },
+    "public": {
+      "profile": "credentials"
+    }
   }
 }
