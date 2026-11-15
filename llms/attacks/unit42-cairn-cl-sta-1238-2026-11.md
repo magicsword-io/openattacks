@@ -81,7 +81,7 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 - First seen: 2026-08
 - Last updated: 2026-11-12
 - 2026-09 (Palo Alto Networks Unit 42): CL-STA-1238 completes 25 Cairn operations, August through September 2026, with confirmed access or data retrieval at 10 organizations
-- 2026-11-12 (Palo Alto Networks Unit 42): Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54
+- 2026-11-12 (Palo Alto Networks Unit 42): Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54. A same-/24 address, 154.44.31.104, is an unconfirmed Censys panel lead and is not an IOC.
 
 ## Tools
 ### AI tooling and models
@@ -98,7 +98,7 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 - [LOLSkills](https://lolskills.io)
 
 ## Source notes
-Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 is not in that IOC list and is not attributed here. Link cairn-norforge-2026-10 and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.
+Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.
 
 ## Sources
 - [Attackers Use Autonomous AI to Target Semiconductor, Defense and Civil Society Sectors](https://unit42.paloaltonetworks.com/cairn-framework-ai-autonomous-attacks/) — Palo Alto Networks Unit 42

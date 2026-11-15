@@ -3655,5 +3655,53 @@
     "plant": {
       "profile": "linux-fileless-execution"
     }
+  },
+  "eye-security-artex-gitops-2026-11": {
+    "upload": {
+      "profile": "linux-webshell"
+    },
+    "secrets": {
+      "profile": "credentials"
+    },
+    "tunnel": {
+      "profile": "unassessed"
+    },
+    "gitops": {
+      "profile": "repository"
+    },
+    "escape": {
+      "profile": "privileged-container"
+    },
+    "runner": {
+      "profile": "repository"
+    }
+  },
+  "elastic-sansar-ray-gpu-2026-11": {
+    "probe": {
+      "profile": "agent-tools"
+    },
+    "shell": {
+      "profile": "linux-fileless-execution"
+    },
+    "keys": {
+      "profile": "linux-ssh-persistence"
+    },
+    "hide": {
+      "profile": "unassessed"
+    }
+  },
+  "fbi-facestealer-bluenoroff-deepfake-2026-11": {
+    "account": {
+      "profile": "phishing"
+    },
+    "meeting": {
+      "profile": "phishing"
+    },
+    "deepfake": {
+      "profile": "agent-input"
+    },
+    "clickfix": {
+      "profile": "mac-shell"
+    }
   }
 }
