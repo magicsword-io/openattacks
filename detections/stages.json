@@ -3568,5 +3568,19 @@
     "encrypt": {
       "profile": "impact"
     }
+  },
+  "island-typoprompting-ai-typosquats-2026-11": {
+    "typo": {
+      "profile": "web"
+    },
+    "clickfix": {
+      "profile": "windows-shell"
+    },
+    "netguard": {
+      "profile": "windows-install"
+    },
+    "extension": {
+      "profile": "extension"
+    }
   }
 }
