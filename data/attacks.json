@@ -1,7 +1,276 @@
 {
-  "generated_at": "2026-11-12T00:00:00.000Z",
-  "count": 262,
+  "generated_at": "2026-11-15T00:00:00.000Z",
+  "count": 263,
   "attacks": [
+    {
+      "id": "socradar-xaocmail-phantom53-claude-code-2026-11",
+      "name": "SOCRadar XaocMail ClickFix delivers Phantom53 and HavoX, built with Claude Code",
+      "date_reported": "2026-11-13",
+      "date_activity_start": "2025-10",
+      "researcher": "SOCRadar Threat Research Unit (STRU)",
+      "org": "SOCRadar",
+      "sources": [
+        {
+          "url": "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/",
+          "title": "XaocMail ClickFix Campaign Drops Phantom53 and HavoX Across Latin America, Asia, and Europe",
+          "publisher": "SOCRadar"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "SOCRadar found Claude Code project files, 143 numbered task markdown files, a 117 KB architecture note, and a Russian prompt that frames implant testing as an authorized red-team job.",
+      "technique_summary": "SOCRadar Threat Research Unit (published Nov 13, 2026) describes a Russian-speaking operator chaining XaocMail, Phantom53, and HavoX (Havoc Demon). Preparation began in October 2025. Phishing tests and framework development continued in early 2026. The operation launched in August 2026 and was still active at publication. XaocMail, on 185.224.132.148:8585, builds per-victim document-sharing lures (Google Docs, Adobe Acrobat, Office365, SecuredDocs) and stores landing JSON in Cloudflare KV. Emails point at hxxps://securedoc.[subdomain].workers.dev/?id={linkId}. The ClickFix page offers three Win+R paths: a PowerShell DownloadString cradle, mshta against /h?id=X (an earlier ZIP of GUP.exe sideloading libcurl.dll), and msiexec /i .../m?id=X /qn, which SOCRadar calls the active path. The MSI impersonates names such as Visual Studio Tools, Python, or Node.js and drops Python 3.11 under a random directory in AppData or LocalAppData. A pythonw scheduled task runs the beacon every 12 minutes. A second task runs the watcher every 3 minutes. The beacon is a .pyd named like a real package (cv2.pyd, with PyInit_cv2, and the same pattern for numpy, PIL, and lxml). It beacons over DNS-over-HTTPS to Cloudflare, Google, and ControlD, encoding commands in AAAA records, with UDP/53 as a fallback, and a week-keyed SHA256 DGA on .xyz. CMD_WAKE writes an IPC file so the watcher reflectively loads an AES-GCM HavoX blob in memory. If the MSI is not elevated it can show a UAC prompt for a product-named task, and a separate payload uses fodhelper.exe registry hijacking. Payload aliases include a Level RMM drop from downloads.level.io and an AI-secret stealer covering Claude Code, Codex, Gemini CLI, Cursor, Windsurf, and other AI tools, plus password-manager, browser, SSH, git, wallet, and messaging collection. SOCRadar's AI evidence is on the operator side: .claude/settings.json, 143 numbered NNN-task-name.md files across adminka (25), implant_v3 (31), and implant_v4 (87), a 117 KB implant_v4/arch.md, and implant_v4/.tasks/prompts/noav-beacon-test.md, a Russian prompt for a claudeg5f-tmux Claude wrapper that tells the agent to install a test MSI on a VM named NoAV under an authorized red-team framing. HavoX's login panel and an exfiltration path are on 145.63.138.67. Almost a thousand personalized pages were identified. Named target countries are Brazil, Peru, India, Indonesia, and Spain, across technology, finance, education, government, logistics, and manufacturing. SOCRadar did not confirm attacker intent beyond the footholds.",
+      "initial_access": "Spearphishing links from XaocMail to Cloudflare Worker ClickFix pages that ask the user to run msiexec, mshta, or a PowerShell cradle",
+      "ai_tooling_and_models": [
+        "Claude Code (.claude/settings.json, numbered task files, claudeg5f-tmux prompt wrapper)",
+        "AI-secret stealer aimed at Claude Code, Codex, Gemini CLI, Cursor, and Windsurf"
+      ],
+      "other_tooling": [
+        "XaocMail phishing panel",
+        "Phantom53 DoH beacon and watcher (.pyd under pythonw.exe)",
+        "HavoX / Havoc Demon, reflective load",
+        "Cloudflare Workers and KV",
+        "msiexec, mshta, PowerShell (LOLBAS)",
+        "GUP.exe sideloading libcurl.dll (HijackLibs), earlier path",
+        "fodhelper.exe UAC bypass (LOLBAS)",
+        "Level RMM (LOLRMM)"
+      ],
+      "victims_and_sectors": "Technology, finance, education, government, logistics, and manufacturing. Almost a thousand personalized lure pages. No organization names are listed here.",
+      "regions": [
+        "Brazil",
+        "Peru",
+        "India",
+        "Indonesia",
+        "Spain"
+      ],
+      "attribution_or_cluster": "Unnamed Russian-speaking operator. SOCRadar does not name a country or a tracked cluster.",
+      "scale_and_metrics": "Almost a thousand personalized XaocMail pages. 143 Claude Code task files. implant_v4/arch.md is 117 KB. No victim-host count was published.",
+      "prevention_angle": "Block ClickFix paste-and-run. Alert when explorer.exe starts msiexec.exe with a workers.dev URL, when mshta.exe fetches an HTTP URL, and when pythonw.exe runs a .pyw from AppData and loads a .pyd outside a normal Python install. Hunt scheduled tasks named like MicrosoftEdgeUpdateTask, OneDriveSyncTask, WindowsDefenderScheduledScan, OfficeBackgroundTaskHandler, or AdobeAcrobatUpdateTask with a short random suffix. Treat DoH from pythonw.exe to 1.1.1.1, 8.8.8.8, or 76.76.2.11 as suspicious when paired with those tasks.",
+      "related_magicsword_projects": [
+        "LOLBAS",
+        "HijackLibs",
+        "LOLRMM"
+      ],
+      "source_notes": "Chain, timings, Claude Code artifacts, and IOCs are from the SOCRadar article. Operator mailbox addresses in that IOC table are omitted. Victim names and stolen-file contents are not included. The article lists additional MSI and payload hashes beyond the set below. Havoc is the public framework; HavoX is SOCRadar's name for this operator's Demon build.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Brazil, Peru, India, Indonesia, and Spain are the countries SOCRadar names. The article also describes the set as Latin America, Asia, and Europe. Operator language is not a victim region.",
+      "iocs": {
+        "domains": [
+          "dns.timesyncserver-312453.com",
+          "securedoc.makeneg458.workers.dev",
+          "securedoc.mesuttgulerr573.workers.dev",
+          "linkrot.fypahedupal2-0maz.workers.dev",
+          "sync-node-serv.com",
+          "dns.cdn-syncnode-server.com",
+          "a8f2aac37385.xyz",
+          "kfkwrfdd.xyz",
+          "544504d7fe1e.xyz",
+          "bestutyresdomaonupder.com"
+        ],
+        "ips": [
+          "185.224.132.148",
+          "145.63.138.67",
+          "162.252.198.204",
+          "162.252.199.92",
+          "94.156.152.7",
+          "91.132.93.251",
+          "176.9.154.69"
+        ],
+        "hashes": [
+          "bceeb2d54b6a756c73a3e06617e9e95ad4d8e53da47639bcd6ef3cae98c6da6d",
+          "7055483a77f679ad569c3a9bfe76cdb8e5b96efc44d2bf2a6f08e930add598b0",
+          "4f656834e545c0b44922ce6d8952989c8c0859d8ae8b1f117c06ab07b047e2b4",
+          "8ebb2bf61b48ae7abdcd674413bebd79b30ddd945854e175ba60d56c0a3adf54",
+          "a4ad001c6900176eba43a747ae5d212db6fc78f7ef4e777f276cbbdf8099dbe8",
+          "0aff424f9a02eb9f429119c4caa05e85fc952603549d69849e745293d20235d6"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.002",
+          "rationale": "Claude Code task files, settings, and a Russian test prompt show the operator used a Claude agent to build and test the implant",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0054",
+          "rationale": "The NoAV prompt frames the job as authorized red-team work so the agent stays on task",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "A payload alias steals secrets from Claude Code, Codex, Gemini CLI, Cursor, Windsurf, and other AI tools",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        },
+        {
+          "id": "AML.T0052",
+          "rationale": "XaocMail sends document-sharing phishing links to Cloudflare Worker ClickFix pages",
+          "source_urls": [
+            "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "phish",
+            "title": "XaocMail sends the lure",
+            "description": "A self-hosted panel writes a per-victim landing page to Cloudflare KV and emails a workers.dev link.",
+            "kind": "access",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "clickfix",
+            "title": "ClickFix runs the MSI",
+            "description": "The page asks the user to run msiexec /i against /m?id=, or an older mshta or PowerShell path.",
+            "kind": "execution",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "beacon",
+            "title": "pythonw beacon over DoH",
+            "description": "Python 3.11 in AppData runs cv2.pyd every 12 minutes and a watcher every 3 minutes. Commands return inside DNS AAAA answers.",
+            "kind": "execution",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "claude",
+            "title": "Claude Code built the implant",
+            "description": "The operator tree has .claude/settings.json, 143 numbered task files, a 117 KB arch.md, and a Russian authorized-red-team test prompt.",
+            "kind": "ai",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          },
+          {
+            "id": "havoc",
+            "title": "HavoX in memory and AI-secret theft",
+            "description": "CMD_WAKE loads the Havoc Demon reflectively. Aliases include Level RMM and a stealer for Claude Code, Codex, Gemini CLI, Cursor, and Windsurf.",
+            "kind": "impact",
+            "source_urls": [
+              "https://socradar.io/blog/xaocmail-clickfix-phantom53-havox-america-asia-europe/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "phish",
+            "target": "clickfix"
+          },
+          {
+            "source": "clickfix",
+            "target": "beacon"
+          },
+          {
+            "source": "beacon",
+            "target": "havoc"
+          },
+          {
+            "source": "claude",
+            "target": "beacon"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed Russian-speaking operator",
+        "motivation": "cybercrime",
+        "attributed_by": "SOCRadar Threat Research Unit",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Suspicious Msiexec Quiet Install From Remote Location",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_msiexec_install_remote.yml",
+          "notes": "Windows process creation. msiexec /i against a remote URL with a quiet flag. Matches the active ClickFix path msiexec /i .../m?id= /qn."
+        },
+        {
+          "name": "Windows MSIExec Remote Download",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_msiexec_remote_download.yml",
+          "notes": "Windows endpoint. msiexec retrieving a remote package. Same active delivery path."
+        },
+        {
+          "name": "Remotely Hosted HTA File Executed Via Mshta.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mshta_http.yml",
+          "notes": "Windows process creation. mshta.exe with an http URL. Matches the earlier /h?id= path that fetched GUP.exe and libcurl.dll."
+        },
+        {
+          "name": "Potential DLL Sideloading Of Libcurl.DLL Via GUP.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/image_load/image_load_side_load_gup_libcurl.yml",
+          "notes": "Windows image load. GUP.exe loading libcurl.dll. SOCRadar assigns this to the previous HTA ZIP, not the current MSI."
+        },
+        {
+          "name": "Suspicious Execution of Powershell with Base64",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_encode.yml",
+          "notes": "Windows process creation. Encoded PowerShell. Phantom53 CMD_EXEC runs powershell -EncodedCommand."
+        },
+        {
+          "name": "Bypass UAC via Fodhelper.exe",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_uac_bypass_fodhelper.yml",
+          "notes": "Windows process creation. fodhelper.exe UAC bypass, which SOCRadar lists as a payload alias."
+        },
+        {
+          "name": "Local Scheduled Task Creation",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_local_scheduled_task_creation.toml",
+          "notes": "Windows. New scheduled task. The MSI registers beacon and watcher tasks. Elevated installs use COM ITaskFolder::RegisterTask and do not spawn schtasks.exe."
+        },
+        {
+          "name": "Windows Scheduled Task Created Via XML",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_scheduled_task_created_via_xml.yml",
+          "notes": "Windows. Task registration from XML. SOCRadar says the non-elevated path writes p53_task_a.xml and p53_task_b.xml."
+        },
+        {
+          "name": "pythonw, DoH, and Level RMM",
+          "format": "guidance",
+          "notes": "No cited rule names pythonw.exe loading cv2.pyd from AppData, DoH POST to 1.1.1.1, 8.8.8.8, or 76.76.2.11, or the Level RMM MSI. The schtasks.exe creation rule is not cited because the elevated path does not spawn schtasks.exe. Also hunt 145.63.138.67 and 185.224.132.148."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-10",
+        "last_updated": "2026-11-13",
+        "updates": [
+          {
+            "date": "2025-10",
+            "source": "SOCRadar",
+            "summary": "Operators test malware and Cloudflare infrastructure. Development continues through early 2026."
+          },
+          {
+            "date": "2026-08",
+            "source": "SOCRadar",
+            "summary": "XaocMail phishing launches. The operation is still active at publication."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "SOCRadar",
+            "summary": "STRU publishes the XaocMail, Phantom53, and HavoX chain, including the Claude Code task files and 145.63.138.67"
+          }
+        ]
+      }
+    },
     {
       "id": "kaspersky-citrus-ransomware-llm-2026-11",
       "name": "Kaspersky Citrus ransomware uses LLM-written PowerShell and batch scripts",
