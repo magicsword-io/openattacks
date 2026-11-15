@@ -10,6 +10,7 @@ sources:
     publisher: NorForge
 linked_attacks:
   - cairn-norforge-2026-10
+  - cert-in-crafty-falcon-bfsi-2026-11
   - unit42-cairn-cl-sta-1238-2026-11
 linked_actors:
   - norforge-aia0001

@@ -84,6 +84,9 @@ No timeline is recorded.
 ### Other tooling
 - Proxy IPs listed in CrowdStrike IOC table
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.
 

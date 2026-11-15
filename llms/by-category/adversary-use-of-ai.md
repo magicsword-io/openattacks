@@ -102,6 +102,9 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
 
@@ -324,6 +327,9 @@ Alert when w3wp.exe writes .aspx files or spawns cmd.exe, powershell.exe, whoami
 - ASPX web shell written by w3wp.exe
 - Boto3 1.43.125 / Botocore 1.43.125
 
+### Offensive frameworks
+- [AntiFox](https://openattacks.ai/tools/antifox/) (`antifox`)
+
 ## Source notes
 Host commands, file patterns, AWS API sequence, user agents, IPs, banner hash, and port are from the Arctic Wolf README. The AI link is that the attacking IPs hosted AntiFox consoles. No government source covers AntiFox.
 
@@ -433,6 +439,9 @@ Block public access on S3 buckets that hold front-end configs. Alert on anonymou
 - AWS CloudTrail APIs: FilterLogEvents, Cognito SignUp, InitiateAuth, ListBuckets, ListSecrets
 - Stratus Red Team (https://github.com/DataDog/stratus-red-team)
 - TrailDiscover (https://github.com/adanalvarez/TrailDiscover)
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 IPs, user agents, API names, placeholder keys, and console titles are from the Datadog article. GetSecretValue is not claimed here; the Cognito path tried ListSecrets and other List/Describe calls. 154.64.252.77 also appears in the WorkOS bulletin covered by workos-artex-unintended-agent-escape-2026-10. Link microsoft-artex-github-secrets-keyvault-2026-11, unit42-artex-api-recon-2026-10, crowdstrike-artex-sk-finance-2026-10, and the Check Point, S-RM, and Storm-3358 ARTEX entries.
@@ -557,6 +566,9 @@ Patch vulnerable web plugins promptly; restrict and validate file uploads; imple
 - Tor network
 - VPS infrastructure
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 S-RM blog (Nov 6, 2026) primary source documenting IR artifacts from multiple ARTEX engagements; all forensic indicators (file paths, SQL markers, UA strings, certificate details, GitHub patterns) verified from S-RM analysis; unnamed adversaries due to ongoing investigations. Sophos X-Ops (Nov 10, 2026) adds Windows host markers and the listed IPS IDs. 2313260 and 2313262 are not in the published signature table, so they are omitted. Sophos describes the customer activity as consistent with ARTEX or other AI-assisted tooling, which is vendor-asserted and does not replace the S-RM task-log evidence. Storm-0940 is Microsoft's attribution for ConnectWise, cited by Sophos, and is not used as the actor for the S-RM cases.
 
@@ -680,6 +692,9 @@ Implement file upload restrictions and validation; patch SSRF vulnerabilities; m
 - curl
 - Web shells
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post
 
@@ -779,6 +794,9 @@ Implement robust AI agent sandboxing with egress controls; rotate and secure dev
 ### Other tooling
 - Internal sales CRM tool (exposed with predictable dev credentials)
 - Bulk data extraction
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 WorkOS bulletin Nov 6, 2026 (update) and original Oct 30 disclosure; researcher-driven unintended agent escape during ARTEX benchmark evaluation, not malicious attack; all technical details (UAs, IPs, JA4s) verified from WorkOS bulletin; researcher came forward post-incident
@@ -895,6 +913,9 @@ Secure ARTEX deployments against unauthorized access (remove hardcoded passwords
 - USDT cryptocurrency draining
 - S3 bucket overwrite for supply chain
 - Honor of Kings account token theft
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Check Point blog (Nov 5, 2026) primary source with detailed campaign analysis and infrastructure; CERT-EU blog (Nov 5, 2026) reports ARTEX vs EU institutions; all IOCs (IPs, ASNs, version tags) verified from Check Point; links to other ARTEX entries: microsoft-artex-github-secrets-keyvault-2026-11, crowdstrike-artex-sk-finance-2026-10, badbyte-artex-backdoor-docker-2026-11, storm-3358-artex-bank-intrusions-2026-11, srm-artex-ir-host-artifacts-2026-11
@@ -1022,6 +1043,9 @@ Scan public repositories for accidentally committed Azure credentials; implement
 - Azure Resource Manager API
 - Microsoft Graph API
 - Tor network for anonymization
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Microsoft Threat Intelligence blog (Nov 5, 2026) primary source; Todyl-observed related infrastructure noted; all IOCs (199.19.77.84, 199.19.77.18, 65.87.223.26, 157.22.126.128) verified from Microsoft post
@@ -1154,6 +1178,10 @@ Monitor for autonomous AI agent behavior patterns; detect nmap, sqlmap, Metasplo
 - WeChat gateway
 - LINE messenger
 
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+- [HexStrike](https://openattacks.ai/tools/hexstrike/) (`hexstrike`)
+
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 - [GTFOBins](https://gtfobins.github.io)
@@ -1281,6 +1309,12 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 - AWS Lambda for staging-to-production pivots
 - Custom payment API invocation scripts
 - Log deletion tools
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+- [PentAGI](https://openattacks.ai/tools/pentagi/) (`pentagi`)
 
 ## Source notes
 CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) official government warning; Indian Express and industry coverage provide context on AI framework usage and festive-window targeting; cross-reference with cairn-norforge-2026-10 entry for Cairn exploitation patterns
@@ -1647,6 +1681,10 @@ No timeline is recorded.
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+- [PentAGI](https://openattacks.ai/tools/pentagi/) (`pentagi`)
+
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.
 
@@ -1709,6 +1747,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.
@@ -1773,6 +1814,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution.
@@ -2015,6 +2059,9 @@ No timeline is recorded.
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.
 
@@ -2076,6 +2123,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
 
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution.
@@ -2203,6 +2253,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution.
@@ -2442,6 +2495,9 @@ No timeline is recorded.
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.
 
@@ -2615,6 +2671,9 @@ Default-deny / GTFOBins-style block of nmap, python, php, openssl on web servers
 - [PHP](https://github.com/php/php-src)
 - [Python](https://github.com/python/cpython)
 - [OpenSSL](https://github.com/openssl/openssl)
+
+### Offensive frameworks
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
 
 ### MagicSword projects
 - [GTFOBins](https://gtfobins.github.io)
@@ -3494,6 +3553,9 @@ No timeline is recorded.
 
 ### Other tooling
 - Proxy IPs listed in CrowdStrike IOC table
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.

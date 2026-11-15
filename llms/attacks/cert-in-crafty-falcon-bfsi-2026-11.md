@@ -113,6 +113,12 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 - Custom payment API invocation scripts
 - Log deletion tools
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+- [PentAGI](https://openattacks.ai/tools/pentagi/) (`pentagi`)
+
 ## Source notes
 CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) official government warning; Indian Express and industry coverage provide context on AI framework usage and festive-window targeting; cross-reference with cairn-norforge-2026-10 entry for Cairn exploitation patterns
 

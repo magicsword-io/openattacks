@@ -48,6 +48,9 @@ No timeline is recorded.
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution.
 

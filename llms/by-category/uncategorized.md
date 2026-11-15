@@ -422,6 +422,9 @@ No detections are recorded.
 - Golden Ticket
 - Compromised SQL Server
 
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 
@@ -749,6 +752,9 @@ No timeline is recorded.
 - OAuth redirect abuse attempts
 - Password spraying
 - API self-registration
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Microsoft tracks related activity as Storm-0940 with Oct 21 observations

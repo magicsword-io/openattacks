@@ -17,6 +17,8 @@ ai_tooling_and_models:
   - ARTEX agent framework
   - DeepSeek
   - unnamed subscription-based commercial LLM
+frameworks:
+  - artex
 other_tooling: []
 victims_and_sectors: Government; Defense; Finance; Critical infrastructure; Technology and AI companies; Healthcare
 regions:

@@ -14,6 +14,9 @@ initial_access: unknown
 ai_tooling_and_models:
   - ARTEX, PentAGI, Hexstrike, CAIRN agent frameworks
   - unnamed frontier and open-weight LLM APIs, LLM mixers and local models
+frameworks:
+  - artex
+  - pentagi
 other_tooling: []
 victims_and_sectors: Government; Technology and AI companies; Critical infrastructure; Multiple sectors
 regions:

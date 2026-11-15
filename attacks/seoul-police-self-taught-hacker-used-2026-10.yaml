@@ -18,6 +18,8 @@ initial_access: unknown
 ai_tooling_and_models:
   - Unnamed AI coding agent
   - autonomous AI pentest system (ARTEX AI per BleepingComputer/Yonhap)
+frameworks:
+  - artex
 other_tooling: []
 victims_and_sectors: Healthcare; Education; Finance; Multiple sectors
 regions:

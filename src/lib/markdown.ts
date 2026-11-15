@@ -54,6 +54,11 @@ export function attackMarkdown(
     `- Researcher: ${plain(attack.researcher)}`,
     `- Organization: ${plain(attack.org)}`,
     `- AI role: ${attack.ai_role} (${roles[attack.ai_role].label})`,
+    ...(attack.frameworks?.length
+      ? [
+          `- Offensive frameworks: ${attack.frameworks.join(", ")}`,
+        ]
+      : []),
     `- Confidence in AI involvement: ${attack.confidence || "not assessed"}`,
     `- Research / borderline: ${attack.borderline}`,
     `- Last reviewed: ${attack.last_reviewed || "not assessed"}`,

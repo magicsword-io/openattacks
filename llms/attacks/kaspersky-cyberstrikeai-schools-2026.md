@@ -91,6 +91,9 @@ No detections are recorded.
 - Golden Ticket
 - Compromised SQL Server
 
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 

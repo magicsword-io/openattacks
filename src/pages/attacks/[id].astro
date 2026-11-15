@@ -6,6 +6,7 @@ import { attackFlow } from "../../lib/attack-flow";
 import { stageGuidance } from "../../lib/stage-guidance";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
+import FrameworkBadges from "../../components/FrameworkBadges.astro";
 import ToolingList from "../../components/ToolingList.astro";
 import AttackFlowSection from "../../components/AttackFlowSection.astro";
 import atlas from "../../data/atlas-techniques.json";
@@ -31,6 +32,9 @@ export async function getStaticPaths() {
   }));
 }
 const { attack } = Astro.props as { attack: Attack };
+const toolNames = Object.fromEntries(
+  (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
+);
 const linkedActors = attack.linked_actors
   ? await Promise.all(
       attack.linked_actors.map(async (id) => {
@@ -93,6 +97,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
         <span class={`evidence-badge evidence-${display.evidence}`}>
           {evidenceTypes[display.evidence]}
         </span>
+        <FrameworkBadges ids={attack.frameworks} names={toolNames} />
         {display.environments.filter((id) => id !== "unspecified").length >
           0 && (
           <span>
@@ -185,6 +190,14 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             <dl class="technical-facts">
               <dt>AI's role</dt>
               <dd>{roles[attack.ai_role].label}</dd>
+              {attack.frameworks && attack.frameworks.length > 0 && (
+                <>
+                  <dt>Offensive frameworks</dt>
+                  <dd>
+                    <FrameworkBadges ids={attack.frameworks} names={toolNames} />
+                  </dd>
+                </>
+              )}
               {attack.ai_role_secondary && (
                 <>
                   <dt>Additional role</dt>

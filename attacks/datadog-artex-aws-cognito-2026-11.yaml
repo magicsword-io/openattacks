@@ -18,6 +18,8 @@ initial_access: "Unauthenticated S3 reads, leaked long-term IAM keys, and public
 ai_tooling_and_models:
   - "ARTEX autonomous pentest console (https://github.com/RuoJi6/ARTEX)"
   - "Related console titles ScopeWeaver, LUCK, and Guanlan SEC"
+frameworks:
+  - artex
 other_tooling:
   - "AWS CloudTrail APIs: FilterLogEvents, Cognito SignUp, InitiateAuth, ListBuckets, ListSecrets"
   - "Stratus Red Team (https://github.com/DataDog/stratus-red-team)"

@@ -94,6 +94,9 @@ Alert when w3wp.exe writes .aspx files or spawns cmd.exe, powershell.exe, whoami
 - ASPX web shell written by w3wp.exe
 - Boto3 1.43.125 / Botocore 1.43.125
 
+### Offensive frameworks
+- [AntiFox](https://openattacks.ai/tools/antifox/) (`antifox`)
+
 ## Source notes
 Host commands, file patterns, AWS API sequence, user agents, IPs, banner hash, and port are from the Arctic Wolf README. The AI link is that the attacking IPs hosted AntiFox consoles. No government source covers AntiFox.
 

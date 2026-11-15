@@ -40,6 +40,11 @@ ai_tooling_and_models:
   - CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)
   - Cairn (AI web exploitation harness)
   - On-the-fly AI script generation
+frameworks:
+  - artex
+  - cairn
+  - cyberstrikeai
+  - pentagi
 other_tooling:
   - AWS Lambda for staging-to-production pivots
   - Custom payment API invocation scripts

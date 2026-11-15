@@ -27,6 +27,8 @@ initial_access: "Unknown exploit of an internet-facing IIS application; separate
 ai_tooling_and_models:
   - "AntiFox (https://github.com/AntiFox-AI/antifox), forked from ARTEX"
   - "Anthropic or OpenAI API key required for the agent loop"
+frameworks:
+  - antifox
 other_tooling:
   - "ASPX web shell written by w3wp.exe"
   - "Boto3 1.43.125 / Botocore 1.43.125"

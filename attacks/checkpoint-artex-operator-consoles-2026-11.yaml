@@ -43,6 +43,8 @@ ai_tooling_and_models:
   - Kimi (Chinese LLM)
   - Claude Opus (hit guardrails, operator switched)
   - Custom framework PZZ
+frameworks:
+  - artex
 other_tooling:
   - iOS .p12 certificate theft
   - USDT cryptocurrency draining

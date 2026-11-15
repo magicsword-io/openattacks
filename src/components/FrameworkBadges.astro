@@ -1,0 +1,16 @@
+---
+import { href } from "../lib/catalog";
+const { ids = [], names = {} } = Astro.props as {
+  ids?: string[] | null;
+  names?: Record<string, string>;
+};
+const list = ids || [];
+---
+
+{
+  list.map((id) => (
+    <a class="framework-badge" href={href(`tools/${id}/`)}>
+      {names[id] || id}
+    </a>
+  ))
+}

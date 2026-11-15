@@ -37,6 +37,9 @@
         "DeepSeek V4 Pro",
         "AIScan Runner Skills pack (not in upstream Cairn)"
       ],
+      "frameworks": [
+        "cairn"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "At least 19 organizations in semiconductor and advanced manufacturing, defense and defense policy, and human rights and civil society. Confirmed access or data retrieval at 10.",
       "regions": [
@@ -422,6 +425,9 @@
       "ai_tooling_and_models": [
         "AntiFox (https://github.com/AntiFox-AI/antifox), forked from ARTEX",
         "Anthropic or OpenAI API key required for the agent loop"
+      ],
+      "frameworks": [
+        "antifox"
       ],
       "other_tooling": [
         "ASPX web shell written by w3wp.exe",
@@ -813,6 +819,9 @@
       "ai_tooling_and_models": [
         "ARTEX autonomous pentest console (https://github.com/RuoJi6/ARTEX)",
         "Related console titles ScopeWeaver, LUCK, and Guanlan SEC"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "AWS CloudTrail APIs: FilterLogEvents, Cognito SignUp, InitiateAuth, ListBuckets, ListSecrets",
@@ -1942,6 +1951,9 @@
         "ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)",
         "LLM backends for agent decision-making"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [
         "SQL injection tools",
         "Credential harvesting utilities",
@@ -2169,6 +2181,9 @@
       "ai_tooling_and_models": [
         "ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)",
         "DeepSeek and other LLM backends"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "WISP RAT",
@@ -2541,6 +2556,9 @@
         "ARTEX autonomous offensive agent framework",
         "Agent benchmark evaluation environment (failed containment)"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [
         "Internal sales CRM tool (exposed with predictable dev credentials)",
         "Bulk data extraction"
@@ -2706,6 +2724,9 @@
         "Kimi (Chinese LLM)",
         "Claude Opus (hit guardrails, operator switched)",
         "Custom framework PZZ"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "iOS .p12 certificate theft",
@@ -2906,6 +2927,9 @@
         "ARTEX autonomous agent framework (https://github.com/RuoJi6/ARTEX)",
         "LLM-driven Azure API enumeration with adaptive retry",
         "Langflow (https://github.com/langflow-ai/langflow) - targeted for credential theft via CVE-2025-3248"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "GitHub API for secret search",
@@ -3659,6 +3683,10 @@
         "Abliterated GLM (offensive)",
         "DeepSeek-R1 70B (offensive, later replaced)"
       ],
+      "frameworks": [
+        "cyberstrikeai",
+        "hexstrike"
+      ],
       "other_tooling": [
         "MCP servers: HexStrike AI, Kali Linux, Ghidra, Radare2, Playwright",
         "nmap, sqlmap, Metasploit, Hydra",
@@ -3907,6 +3935,12 @@
         "CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)",
         "Cairn (AI web exploitation harness)",
         "On-the-fly AI script generation"
+      ],
+      "frameworks": [
+        "artex",
+        "cairn",
+        "cyberstrikeai",
+        "pentagi"
       ],
       "other_tooling": [
         "AWS Lambda for staging-to-production pivots",
@@ -4382,6 +4416,9 @@
         "CyberStrikeAI (https://github.com/CyberStrikeAI/CyberStrikeAI)",
         "LLM-driven C2 with MCP tools"
       ],
+      "frameworks": [
+        "cyberstrikeai"
+      ],
       "other_tooling": [
         "SystemUpdate scheduled task",
         "certutil (LOLBAS)",
@@ -4533,6 +4570,9 @@
         "grok-4.6 model (AI_radar monitoring)",
         "PentAGI (github.com/vxcontrol/pentagi)",
         "aipocket (github.com/leepsmarts/aipocket)"
+      ],
+      "frameworks": [
+        "pentagi"
       ],
       "other_tooling": [
         "fadidevv/keyhunter (github.com/fadidevv/keyhunter, Rust, crates.io: github-keyhunter v0.1.0)",
@@ -6106,6 +6146,10 @@
         "ARTEX, PentAGI, Hexstrike, CAIRN agent frameworks",
         "unnamed frontier and open-weight LLM APIs, LLM mixers and local models"
       ],
+      "frameworks": [
+        "artex",
+        "pentagi"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Technology and AI companies; Critical infrastructure; Multiple sectors",
       "regions": [
@@ -6157,6 +6201,9 @@
       "ai_tooling_and_models": [
         "ARTEX planner agent",
         "Autonomous API reconnaissance"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "Source map harvesting",
@@ -6282,6 +6329,9 @@
         "DeepSeek",
         "unnamed subscription-based commercial LLM"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Defense; Finance; Critical infrastructure; Technology and AI companies; Healthcare",
       "regions": [
@@ -6332,6 +6382,9 @@
         "Cursor",
         "ARTEX",
         "unnamed generative and agentic AI platforms"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [],
       "victims_and_sectors": "Finance; Technology and AI companies; Government; Education; Defense; Critical infrastructure",
@@ -7244,6 +7297,9 @@
         "Unnamed AI coding agent",
         "autonomous AI pentest system (ARTEX AI per BleepingComputer/Yonhap)"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Healthcare; Education; Finance; Multiple sectors",
       "regions": [
@@ -7294,6 +7350,9 @@
         "CyberStrikeAI (open-source agent pentest tool)",
         "unnamed LLMs",
         "AI workflow, LLM preprocessing and inference platforms in South Korea"
+      ],
+      "frameworks": [
+        "cyberstrikeai"
       ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Multiple sectors; Technology and AI companies",
@@ -7396,6 +7455,9 @@
       "ai_tooling_and_models": [
         "ARTEX multi-agent pentest framework (LLM backends not named)",
         "Okta, Entra ID, AWS Cognito login flows"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [],
       "victims_and_sectors": "Technology and AI companies",
@@ -7966,6 +8028,9 @@
         "ConnectWise Cloud Backup (SkyKick) app identities",
         "Microsoft 365 / Entra ID"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Defense; Government; Finance; Technology and AI companies; Critical infrastructure; Multiple sectors",
       "regions": [
@@ -8330,6 +8395,9 @@
         "pi_openrouter_deepseek (AIA0002)",
         "--dangerously-skip-permissions",
         "Agent skill .agents/skills/tsec-actions/SKILL.md (CTF leftover)"
+      ],
+      "frameworks": [
+        "cairn"
       ],
       "other_tooling": [
         "Playwright",
@@ -10493,6 +10561,9 @@
         "DeepSeek v4.1-flash via xcai.pro",
         "GLM-5.3",
         "Grok 4.6"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "Proxy IPs listed in CrowdStrike IOC table"

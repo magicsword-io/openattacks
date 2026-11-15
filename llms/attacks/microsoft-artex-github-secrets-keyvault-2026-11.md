@@ -116,6 +116,9 @@ Scan public repositories for accidentally committed Azure credentials; implement
 - Microsoft Graph API
 - Tor network for anonymization
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Microsoft Threat Intelligence blog (Nov 5, 2026) primary source; Todyl-observed related infrastructure noted; all IOCs (199.19.77.84, 199.19.77.18, 65.87.223.26, 157.22.126.128) verified from Microsoft post
 

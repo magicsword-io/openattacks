@@ -14,6 +14,8 @@ initial_access: unknown
 ai_tooling_and_models:
   - ARTEX multi-agent pentest framework (LLM backends not named)
   - Okta, Entra ID, AWS Cognito login flows
+frameworks:
+  - artex
 other_tooling: []
 victims_and_sectors: Technology and AI companies
 regions:

@@ -17,6 +17,8 @@ ai_tooling_and_models:
   - CyberStrikeAI (open-source agent pentest tool)
   - unnamed LLMs
   - AI workflow, LLM preprocessing and inference platforms in South Korea
+frameworks:
+  - cyberstrikeai
 other_tooling: []
 victims_and_sectors: Government; Multiple sectors; Technology and AI companies
 regions:

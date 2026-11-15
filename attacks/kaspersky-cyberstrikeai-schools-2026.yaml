@@ -18,6 +18,8 @@ initial_access: Compromised SQL Server
 ai_tooling_and_models:
   - CyberStrikeAI (https://github.com/CyberStrikeAI/CyberStrikeAI)
   - LLM-driven C2 with MCP tools
+frameworks:
+  - cyberstrikeai
 other_tooling:
   - SystemUpdate scheduled task
   - certutil (LOLBAS)

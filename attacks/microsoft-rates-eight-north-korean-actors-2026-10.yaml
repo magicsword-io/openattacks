@@ -16,6 +16,8 @@ ai_tooling_and_models:
   - Cursor
   - ARTEX
   - unnamed generative and agentic AI platforms
+frameworks:
+  - artex
 other_tooling: []
 victims_and_sectors: Finance; Technology and AI companies; Government; Education; Defense; Critical infrastructure
 regions:

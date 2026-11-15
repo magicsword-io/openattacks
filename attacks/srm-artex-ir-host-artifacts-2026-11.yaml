@@ -21,6 +21,8 @@ initial_access: "Vulnerable web plugins, misconfigured file upload endpoints"
 ai_tooling_and_models:
   - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
   - LLM backends for agent decision-making
+frameworks:
+  - artex
 other_tooling:
   - SQL injection tools
   - Credential harvesting utilities

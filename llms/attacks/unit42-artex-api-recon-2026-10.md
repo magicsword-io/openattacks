@@ -87,6 +87,9 @@ No timeline is recorded.
 - Password spraying
 - API self-registration
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Microsoft tracks related activity as Storm-0940 with Oct 21 observations
 

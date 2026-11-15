@@ -20,6 +20,8 @@ initial_access: Exposed API endpoints without authentication
 ai_tooling_and_models:
   - ARTEX planner agent
   - Autonomous API reconnaissance
+frameworks:
+  - artex
 other_tooling:
   - Source map harvesting
   - OpenAPI specification parsing

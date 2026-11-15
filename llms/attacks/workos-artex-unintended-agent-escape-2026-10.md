@@ -89,6 +89,9 @@ Implement robust AI agent sandboxing with egress controls; rotate and secure dev
 - Internal sales CRM tool (exposed with predictable dev credentials)
 - Bulk data extraction
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 WorkOS bulletin Nov 6, 2026 (update) and original Oct 30 disclosure; researcher-driven unintended agent escape during ARTEX benchmark evaluation, not malicious attack; all technical details (UAs, IPs, JA4s) verified from WorkOS bulletin; researcher came forward post-incident
 

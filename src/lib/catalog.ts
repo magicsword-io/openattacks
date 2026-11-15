@@ -60,6 +60,8 @@ export interface Attack {
   aliases?: string[];
   linked_actors?: string[];
   linked_tools?: string[];
+  /** Tool-page ids for offensive frameworks this attack used. */
+  frameworks?: string[];
 }
 export interface AttackFlowNode {
   id: string;
@@ -206,6 +208,12 @@ export const sectorGroups = (attack: Attack) =>
   sectors
     .filter((group) => group.pattern.test(attack.victims_and_sectors))
     .map((group) => group.id);
+export const usedFrameworks = (attacks: Attack[]) => {
+  const ids = new Set<string>();
+  for (const attack of attacks)
+    for (const id of attack.frameworks || []) ids.add(id);
+  return [...ids];
+};
 export const href = (path = "") =>
   `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 // A partial date sorts at the start of its month; precision is preserved everywhere displayed.
@@ -270,6 +278,7 @@ export function toCSV(attacks: Attack[]) {
     "aliases",
     "linked_actors",
     "linked_tools",
+    "frameworks",
   ];
   const quote = (value: unknown) => {
     let text =

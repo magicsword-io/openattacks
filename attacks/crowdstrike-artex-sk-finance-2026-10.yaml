@@ -20,6 +20,8 @@ ai_tooling_and_models:
   - DeepSeek v4.1-flash via xcai.pro
   - GLM-5.3
   - Grok 4.6
+frameworks:
+  - artex
 other_tooling:
   - Proxy IPs listed in CrowdStrike IOC table
 victims_and_sectors: South Korean financial organizations (multiple banks per industry reports)
