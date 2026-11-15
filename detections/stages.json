@@ -32,10 +32,13 @@
     }
   },
   "anthropic-claude-code-trojan-2026-10": {
+    "fireworks-key": {
+      "profile": "credentials"
+    },
     "supply-chain": {
       "profile": "repository",
-      "note": "Review the repository audit trail for the unauthorized extension release. A repository write is the observable event; Claude branding is not a signal.",
-      "reviewed": "2026-11-06"
+      "note": "The observable event is a write of unauthorized extension copies onto the marketplace cache, not a commit to anthropics/anthropic-quickstarts.",
+      "reviewed": "2026-11-15"
     },
     "distribution": {
       "profile": "extension"

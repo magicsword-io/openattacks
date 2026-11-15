@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T00:00:00.000Z",
+  "generated_at": "2026-11-15T00:00:00.000Z",
   "count": 262,
   "attacks": [
     {
@@ -5533,7 +5533,7 @@
       "name": "Trojanized anthropic.claude-code Cursor extension",
       "date_reported": "2026-10-30",
       "date_activity_start": "2026-10-29",
-      "date_activity_end": "2026-10-29",
+      "date_activity_end": "2026-11-01",
       "researcher": "Microsoft Threat Intelligence, Netskope (Gianpietro Cutolo)",
       "org": "Microsoft, Netskope, Cursor",
       "sources": [
@@ -5551,6 +5551,11 @@
           "url": "https://opensourcemalware.com/analysis/claude-code-trojan-persistent-ssh-backdoor",
           "title": "Claude Code Trojan: Persistent SSH Backdoor Analysis",
           "publisher": "OpenSourceMalware.com"
+        },
+        {
+          "url": "https://cursor.com/blog/security-incident-update",
+          "title": "Security incident update",
+          "publisher": "Cursor"
         }
       ],
       "magicsword_coverage": [],
@@ -5558,9 +5563,9 @@
       "borderline_note": null,
       "ai_role": "ai_agent_or_mcp_as_target",
       "ai_role_secondary": null,
-      "ai_role_detail": null,
-      "technique_summary": "Tampered anthropic.claude-code extension versions 2.1.312 and 2.1.313 served via Cursor marketplace install and auto-update on Oct 29 2026 from ~5:27 AM to 4:35 PM ET. Loader in extension.js collected hostname, username, environment variables matching secret patterns, added SSH key svc-telemetry to authorized_keys, established reverse SSH tunnel to tunnel@134.209.82.225, beaconed to :8099/beacon. Persistence via com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows). GitHub repo https://github.com/anthropics/anthropic-quickstarts compromised.",
-      "initial_access": "Supply-chain compromise of official Cursor marketplace extension via compromised GitHub repository",
+      "ai_role_detail": "The tampered package was a copy of Anthropic's Claude Code extension placed on the cache Cursor used for its VS Code marketplace. Anthropic did not publish that copy.",
+      "technique_summary": "Cursor's Nov 13, 2026 update says the attacker obtained an access key Cursor had issued to Fireworks. Fireworks exposed that key. The attacker copied a read-only bucket used to share data with Fireworks. The bucket held limited coding-agent traces, mostly from 2025, from sessions that were not in Privacy Mode and were permitted for training. A small number of traces had unredacted credentials. Less than 0.01% of customers had API credentials exposed. From those credentials the attacker reached select SaaS tools, then select archived non-production Cursor repositories, limited customer-support data and email, product usage metrics and contact details, summaries of some coding-agent conversations, and credentials users had sent to support. On Oct 29, using a stolen credential, the attacker placed malicious unauthorized copies of Anthropic's Claude Code extension on the cache used to serve the Cursor VS Code extension marketplace. Anthropic did not publish this copy. It was not a vulnerability in Anthropic's product. Open VSX never had the malware. At most 5,000 users who requested specific cached versions that day potentially received it. The copies were available for about 11 hours. The marketplace was taken offline, and a hosting provider took down the attacker's server. The last attacker activity Cursor saw was Nov 1, and it was blocked. Traces were exposed for fewer than 0.05% of non-Privacy-Mode users, who were notified. Privacy Mode prompts and code were not affected. Microsoft's Oct 30 analysis of the copies that were served, anthropic.claude-code 2.1.312 and 2.1.313, describes a loader in extension.js that collected hostname, username, and environment variables matching secret patterns, added SSH key svc-telemetry to authorized_keys, opened a reverse SSH tunnel to tunnel@134.209.82.225, and beaconed to :8099/beacon. Persistence was a com.apple.sysmond LaunchAgent on macOS, an @reboot cron job on Linux, and a SysMon scheduled task on Windows. The marketplace window Microsoft and Cursor's earlier notice described was Oct 29, about 5:27 AM to 4:35 PM ET.",
+      "initial_access": "Stolen access key that Cursor had issued to Fireworks, then a stolen credential used to place unauthorized Claude Code extension copies on the Cursor marketplace cache. Open VSX did not carry the malware.",
       "ai_tooling_and_models": [
         "Cursor IDE",
         "anthropic.claude-code extension"
@@ -5571,15 +5576,15 @@
         "Cron persistence (Linux)",
         "Scheduled task persistence (Windows)"
       ],
-      "victims_and_sectors": "Cursor IDE users who installed or auto-updated anthropic.claude-code extension during compromise window",
+      "victims_and_sectors": "Cursor users who requested the specific cached extension versions on Oct 29, and customers whose non-Privacy-Mode traces or support credentials were in the copied bucket. Production systems and customer code repositories were not described as affected.",
       "regions": [
         "Multiple regions"
       ],
-      "attribution_or_cluster": "unknown",
-      "scale_and_metrics": "Served Oct 29 2026 ~5:27 AM-4:35 PM ET via Cursor marketplace; exact victim count unknown",
-      "prevention_angle": "Monitor extension integrity; review SSH authorized_keys; detect outbound SSH tunnels to suspicious IPs; scan for LaunchAgent/cron/@reboot persistence; review scheduled tasks; monitor environment variable access patterns",
+      "attribution_or_cluster": "Unnamed. Cursor published the Fireworks-key root cause on Nov 13, 2026. No country is stated.",
+      "scale_and_metrics": "At most 5,000 users potentially received the cached copies, which were available for about 11 hours. API credentials were exposed for less than 0.01% of customers. Traces were exposed for fewer than 0.05% of non-Privacy-Mode users. Tampered versions were anthropic.claude-code 2.1.312 and 2.1.313.",
+      "prevention_angle": "Rotate credentials that were in coding-agent traces or sent to support if Cursor notified the account. Review SSH authorized_keys for svc-telemetry, outbound SSH to 134.209.82.225, LaunchAgent com.apple.sysmond, @reboot cron, and a SysMon scheduled task. Do not treat Open VSX as the source of this copy.",
       "related_magicsword_projects": [],
-      "source_notes": "Relevant detection rules:\n- Sigma: Scheduled Task Creation Via Schtasks (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml)\n- Sigma: Suspicious Cron File Created (https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml)\n- Sigma: Persistence Via PlistBuddy (macOS LaunchAgent) (https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml)\n- Sigma: SSH Port Forwarding/Tunneling (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml)\n- Sigma: Suspicious SSH via OpenSSH Scheduled Task (https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml)\n",
+      "source_notes": "The Fireworks access key, the read-only bucket, the 0.01% and 0.05% figures, the marketplace cache, the 5,000-user bound, the 11-hour window, and the Nov 1 last-seen activity are from Cursor's Nov 13, 2026 update. The loader, SSH key svc-telemetry, tunnel 134.209.82.225, beacon on port 8099, and the macOS, Linux, and Windows persistence names are from Microsoft's Oct 30 analysis. The earlier GitHub-repository explanation is not the root cause Cursor published on Nov 13.",
       "iocs": {
         "domains": [],
         "ips": [
@@ -5590,35 +5595,40 @@
       },
       "timeline": {
         "first_seen": "2026-10-29",
-        "last_updated": "2026-11-05",
+        "last_updated": "2026-11-13",
         "updates": [
           {
             "date": "2026-10-29",
-            "source": "Cursor, Microsoft",
-            "summary": "Trojanized anthropic.claude-code extension served via Cursor marketplace for ~11 hours"
+            "source": "Cursor",
+            "summary": "Using a stolen credential, the attacker places unauthorized Claude Code extension copies on the marketplace cache. At most 5,000 users who requested those versions could receive them. The copies are available for about 11 hours."
           },
           {
             "date": "2026-10-30",
             "source": "Microsoft",
-            "summary": "Microsoft Threat Intelligence analysis of persistent SSH backdoor published"
+            "summary": "Microsoft describes the loader, SSH key svc-telemetry, the tunnel to 134.209.82.225, the beacon on port 8099, and persistence via com.apple.sysmond, cron, and a SysMon task. Versions are 2.1.312 and 2.1.313."
           },
           {
             "date": "2026-11-01",
-            "source": "OpenSourceMalware.com",
-            "summary": "Additional technical analysis of Claude Code trojan SSH backdoor persistence mechanisms"
+            "source": "Cursor",
+            "summary": "Last attacker activity Cursor reports. The activity was blocked."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "Cursor",
+            "summary": "Cursor publishes the root cause: an access key issued to Fireworks was exposed, the attacker copied a read-only trace bucket, and Open VSX never had the malware."
           }
         ]
       },
-      "last_reviewed": "2026-11-05",
+      "last_reviewed": "2026-11-15",
       "confidence": "high",
-      "region_notes": "Multiple regions reflects global Cursor user base; specific affected geography unknown",
+      "region_notes": "Multiple regions reflects the global Cursor user base. Cursor did not name affected countries.",
       "atlas_techniques": [
         {
           "id": "AML.T0010.001",
-          "rationale": "Attacker compromised an AI coding assistant extension in the official marketplace",
+          "rationale": "Unauthorized copies of an AI coding extension were placed on the cache that served Cursor's marketplace. Anthropic did not publish them.",
           "source_urls": [
-            "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-            "https://cursor.com/blog/claude-code-extension-security-notice"
+            "https://cursor.com/blog/security-incident-update",
+            "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
           ]
         },
         {
@@ -5630,8 +5640,9 @@
         },
         {
           "id": "AML.T0055",
-          "rationale": "Malicious extension collected environment variables matching secret patterns",
+          "rationale": "The copied bucket included traces with unredacted credentials, and the extension collected environment variables matching secret patterns",
           "source_urls": [
+            "https://cursor.com/blog/security-incident-update",
             "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
           ]
         }
@@ -5639,22 +5650,30 @@
       "attack_flow": {
         "nodes": [
           {
-            "id": "supply-chain",
-            "title": "GitHub repository compromised",
-            "description": "Attacker gained access to anthropics/anthropic-quickstarts GitHub repository and pushed malicious extension versions 2.1.312 and 2.1.313",
+            "id": "fireworks-key",
+            "title": "Exposed Fireworks access key",
+            "description": "The attacker used an access key Cursor had issued to Fireworks and copied a read-only bucket of coding-agent traces. A small number of traces contained credentials.",
             "kind": "access",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://cursor.com/blog/security-incident-update"
+            ]
+          },
+          {
+            "id": "supply-chain",
+            "title": "Malicious copies placed on the marketplace cache",
+            "description": "On Oct 29 a stolen credential was used to place unauthorized copies of Anthropic's Claude Code extension, versions 2.1.312 and 2.1.313, on the cache Cursor used for its marketplace. Open VSX did not have them.",
+            "kind": "access",
+            "source_urls": [
+              "https://cursor.com/blog/security-incident-update"
             ]
           },
           {
             "id": "distribution",
-            "title": "Malicious versions served via marketplace",
-            "description": "Cursor marketplace distributed compromised extension via install and auto-update from Oct 29 5:27 AM to 4:35 PM ET",
+            "title": "Cached versions served for about 11 hours",
+            "description": "At most 5,000 users who requested those cached versions could receive them. Cursor's earlier notice placed the marketplace window at about 5:27 AM to 4:35 PM ET.",
             "kind": "ai",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
+              "https://cursor.com/blog/security-incident-update",
               "https://cursor.com/blog/claude-code-extension-security-notice"
             ]
           },
@@ -5664,8 +5683,7 @@
             "description": "Loader in extension.js collected hostname, username, environment variable names matching secret patterns",
             "kind": "execution",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           },
           {
@@ -5674,8 +5692,7 @@
             "description": "Added svc-telemetry SSH key to authorized_keys and established reverse SSH tunnel to tunnel@134.209.82.225 with beacon to :8099/beacon",
             "kind": "impact",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           },
           {
@@ -5684,12 +5701,15 @@
             "description": "com.apple.sysmond LaunchAgent (macOS), @reboot cron (Linux), SysMon scheduled task (Windows)",
             "kind": "impact",
             "source_urls": [
-              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/",
-              "https://cursor.com/blog/claude-code-extension-security-notice"
+              "https://www.microsoft.com/en-us/security/blog/2026/10/30/inside-malicious-claude-code-branded-cursor-extension-persistent-ssh-backdoor/"
             ]
           }
         ],
         "edges": [
+          {
+            "source": "fireworks-key",
+            "target": "supply-chain"
+          },
           {
             "source": "supply-chain",
             "target": "distribution"
@@ -5707,7 +5727,52 @@
             "target": "persistence"
           }
         ]
-      }
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "unknown",
+        "motivation": "unknown",
+        "attributed_by": "Cursor",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Scheduled Task Creation Via Schtasks.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml",
+          "notes": "Windows process creation. schtasks.exe creating a task. Microsoft describes a SysMon scheduled task. The rule does not name SysMon."
+        },
+        {
+          "name": "New Cron File Created",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml",
+          "notes": "Linux file event. A new cron file. Matches the @reboot cron persistence Microsoft describes."
+        },
+        {
+          "name": "Potential Persistence Via PlistBuddy",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_persistence_via_plistbuddy.yml",
+          "notes": "macOS process creation. PlistBuddy writing a LaunchAgent. Relevant to com.apple.sysmond only if the installer used PlistBuddy. Microsoft names the LaunchAgent, not the tool that wrote it."
+        },
+        {
+          "name": "Port Forwarding Activity Via SSH.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_ssh_port_forward.yml",
+          "notes": "Windows process creation. ssh.exe port forwarding. Matches the reverse tunnel on Windows. The Linux and macOS tunnels are the same destination, 134.209.82.225."
+        },
+        {
+          "name": "Potential SSH Tunnel Persistence Install Using A Scheduled Task",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_openssh_tunnelling.yml",
+          "notes": "Windows process creation. schtasks.exe installing an OpenSSH tunnel. Microsoft describes both a SysMon task and a reverse SSH tunnel."
+        },
+        {
+          "name": "Fireworks key and marketplace cache",
+          "format": "guidance",
+          "notes": "No cited rule covers an exposed vendor access key or a write to the Cursor marketplace cache. Hunt svc-telemetry in authorized_keys and outbound SSH to 134.209.82.225."
+        }
+      ]
     },
     {
       "id": "chainalysis-external-actor-using-offensive-agentic-2026-10",
