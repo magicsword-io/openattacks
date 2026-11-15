@@ -39,4 +39,24 @@ tags:
   - phishing-social-eng
   - ai-infra-intrusion
 category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed operators (three Simplified Chinese-language cases; not linked to each other)
+  country: Unknown
+  motivation: unknown
+  attributed_by: TrendAI (Trend Micro)
+  confidence: low
 ai_involvement_confidence: confirmed
+detections:
+  - name: Attacker-side consoles without a victim command line
+    format: guidance
+    notes: "security-detections-mcp searches for web shells and password spray returned host and identity rules. TrendAI reconstructed three infrastructures from files left on attacker servers and says that material cannot establish identities or, by itself, which attempts succeeded. Case A used CyberStrikeAI against legacy web admin interfaces; many targets were recorded as no session, no web shell, and no exfiltration. A webshell rule would not describe that evidence. Country is Unknown because Simplified Chinese is a working language, not an attributed country."
+timeline:
+  first_seen: "2026-01"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-10-23"
+      source: TrendAI (Trend Micro)
+      summary: "TrendAI's Japanese article, published in English on 27 October, describes three Simplified Chinese-language infrastructures targeting Japan. Case A, in October 2026, ran CyberStrikeAI with 44 agents. TrendAI does not link the three operators."
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged CyberStrikeAI and backfilled attribution, detections, and timeline from the cited TrendAI report."

@@ -17,6 +17,8 @@ Storm-0940
 - Actor: Storm-0940
 - Country: China
 - Motivation: nation-state
+- Attributed by: Microsoft Threat Intelligence
+- Confidence: high
 
 ## AI involvement confidence
 confirmed
@@ -38,10 +40,16 @@ No ATLAS mapping is recorded.
 unknown
 
 ## Detections
-No detections are recorded.
+- [Password Spray Activity](https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/azure/identity_protection/azure_identity_protection_password_spray.yml) (sigma) — Matched password spray with security-detections-mcp. Microsoft says Storm-0940 used ARTEX for an Entra password spray from 144.172.64.99, with more than 151,000 failed logons across eight organizations on 10-14 October 2026.
+- [Azure AD Multiple Users Failing To Authenticate From Ip](https://github.com/splunk/security_content/blob/develop/detections/cloud/azure_ad_multiple_users_failing_to_authenticate_from_ip.yml) (splunk) — Matched T1110.003 with security-detections-mcp. Same Entra password-spray window: many accounts failing from one infrastructure range, then ConnectWise application sign-ins.
+- [Entra ID Application Credential Modified](https://github.com/elastic/detection-rules/blob/main/rules/integrations/azure/persistence_entra_id_application_credential_modification.toml) (elastic) — Matched application credential with security-detections-mcp. Microsoft says the agents added application credentials and changed privileges after authenticating with the stolen ConnectWise app identities.
+- Microsoft Defender titles for this campaign (guidance) — The blog's Defender coverage (unusual Graph activity for the ConnectWise application, application self-assigned Global Administrator, Graph activity from a threat-intelligence IP) is not a Sigma, Splunk, or Elastic rule. security-detections-mcp did not return those titles. Keep them as tenant alerts alongside the three rules above.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-09
+- Last updated: 2026-11-15
+- 2026-10-21 (Microsoft Threat Intelligence): Microsoft attributes the ConnectWise Cloud Backup supply-chain compromise to China-state-aligned Storm-0940 and says the actor used ARTEX to reach more than 2,250 Microsoft 365 tenants. Privileged cloud access followed in under three hours in some tenants.
+- 2026-11-15 (OpenAttacks): Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Microsoft report.
 
 ## Tools
 ### AI tooling and models

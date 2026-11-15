@@ -14,7 +14,11 @@ adversary-use-of-ai
 ## Attribution
 Unnamed South Korean extortion crew (32-year-old ringleader plus accomplices)
 
+- Actor: Unnamed 32-year-old ringleader and six accomplices
+- Country: Unknown
 - Motivation: cybercrime
+- Attributed by: Seoul Metropolitan Police Agency
+- Confidence: high
 
 ## AI involvement confidence
 confirmed
@@ -36,10 +40,13 @@ No ATLAS mapping is recorded.
 unknown
 
 ## Detections
-No detections are recorded.
+- Website extortion case without a named host technique (guidance) — security-detections-mcp searches for password spray and web shells returned identity and webshell rules. Seoul police, Yonhap, Seoul Economic Daily, and BleepingComputer describe website intrusions, an AI coding agent, and ARTEX, then extortion. They do not name a command, webshell type, identity provider, or operating system, so those rules do not match this case. Review web-server access logs for the victim organizations police named by sector.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2025-09
+- Last updated: 2026-11-15
+- 2026-10-26 (Seoul Metropolitan Police Agency): Seoul police say seven suspects stole 8.2 million records from more than 90 organizations. The 32-year-old ringleader, identified only as A, used an AI coding agent and ARTEX to breach 60 of them from 31 August 2026. Police do not publish a legal name.
+- 2026-11-15 (OpenAttacks): Tagged ARTEX and backfilled attribution, detections, and timeline from the cited police reporting. The ringleader's name and nationality are not in those sources, so country is Unknown.
 
 ## Tools
 ### AI tooling and models

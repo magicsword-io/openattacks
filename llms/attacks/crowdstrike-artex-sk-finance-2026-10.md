@@ -14,7 +14,8 @@ adversary-use-of-ai
 ## Attribution
 CrowdStrike did not attribute the activity to a named adversary. It assessed with moderate confidence that the actor was likely a Chinese speaker and financially motivated.
 
-- Country: China
+- Actor: Unknown threat actor
+- Country: Unknown
 - Motivation: financially-motivated
 - Attributed by: CrowdStrike Intelligence
 - Confidence: medium
@@ -68,10 +69,13 @@ Evidence: <https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-arte
 Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 
 ## Detections
-No detections are recorded.
+- ARTEX operator infrastructure is not a victim-side rule (guidance) — security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-09
+- Last updated: 2026-11-15
+- 2026-10-07 (CrowdStrike Intelligence): CrowdStrike reports an unnamed, likely Chinese-speaking, financially motivated actor using ARTEX and Claude Code against South Korean financial organizations from late September to early October 2026. A resume prompt listing Maoming, Guangdong cannot be definitively tied to the actor.
+- 2026-11-15 (OpenAttacks): Tagged ARTEX and backfilled actor name, detections, and timeline from the cited CrowdStrike report. Country stays Unknown because the report attributes language and a financial motive, not a country.
 
 ## Tools
 ### AI tooling and models

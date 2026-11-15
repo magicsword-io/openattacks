@@ -14,6 +14,12 @@ adversary-use-of-ai
 ## Attribution
 Unnamed (three Simplified Chinese-language operators; not linked to each other)
 
+- Actor: Unnamed operators (three Simplified Chinese-language cases; not linked to each other)
+- Country: Unknown
+- Motivation: unknown
+- Attributed by: TrendAI (Trend Micro)
+- Confidence: low
+
 ## AI involvement confidence
 confirmed
 
@@ -34,10 +40,13 @@ No ATLAS mapping is recorded.
 unknown
 
 ## Detections
-No detections are recorded.
+- Attacker-side consoles without a victim command line (guidance) — security-detections-mcp searches for web shells and password spray returned host and identity rules. TrendAI reconstructed three infrastructures from files left on attacker servers and says that material cannot establish identities or, by itself, which attempts succeeded. Case A used CyberStrikeAI against legacy web admin interfaces; many targets were recorded as no session, no web shell, and no exfiltration. A webshell rule would not describe that evidence. Country is Unknown because Simplified Chinese is a working language, not an attributed country.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-01
+- Last updated: 2026-11-15
+- 2026-10-23 (TrendAI (Trend Micro)): TrendAI's Japanese article, published in English on 27 October, describes three Simplified Chinese-language infrastructures targeting Japan. Case A, in October 2026, ran CyberStrikeAI with 44 agents. TrendAI does not link the three operators.
+- 2026-11-15 (OpenAttacks): Tagged CyberStrikeAI and backfilled attribution, detections, and timeline from the cited TrendAI report.
 
 ## Tools
 ### AI tooling and models

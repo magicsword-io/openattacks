@@ -41,4 +41,20 @@ attribution:
   actor_name: Jade Sleet; Coral Sleet; Jasper Sleet; Diamond Sleet; Onyx Sleet; Pearl Sleet; Sapphire Sleet; Emerald Sleet
   country: North Korea
   motivation: nation-state
+  attributed_by: Microsoft Threat Intelligence
+  confidence: high
 ai_involvement_confidence: confirmed
+detections:
+  - name: North Korean AI-adoption activity has no shared host rule
+    format: guidance
+    notes: "security-detections-mcp searches for password spray, web shells, and OAuth returned rules from other ARTEX campaigns. This report does not give a command line, webshell, or cloud API sequence for the eight actors. Onyx Sleet and Pearl Sleet are said to use ARTEX, and the listed Microsoft Defender coverage is actor alerts, phishing-URL alerts, and ProcmacSteal names, which are not Sigma, Splunk, or Elastic rules. Use those Defender detections where the tenant has them."
+timeline:
+  first_seen: "2026-06-08"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-10-29"
+      source: Microsoft Threat Intelligence
+      summary: "Microsoft rates AI adoption across eight North Korean actors as high. Jade, Coral, and Jasper Sleet have operationalized it. Onyx Sleet and Pearl Sleet have used ARTEX since late October 2026. Operations remain human-directed."
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Microsoft report."

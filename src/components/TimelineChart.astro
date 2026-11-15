@@ -325,13 +325,15 @@ const chartHeight = baseline + 49;
         chart
           .querySelectorAll<SVGTextElement>("[data-chart-year-count]")
           .forEach((label) => {
-            label.textContent = String(
-              entries.filter(
-                (entry) =>
-                  entry.dataset.year === label.dataset.chartYearCount &&
-                  matches(entry, role),
-              ).length,
-            ).padStart(2, "0");
+            const yearCount = entries.filter(
+              (entry) =>
+                entry.dataset.year === label.dataset.chartYearCount &&
+                matches(entry, role),
+            ).length;
+            // Unfiltered labels zero-pad on purpose (05, 12). A filtered year
+            // can be empty; padStart would print that as 00, so show 0.
+            label.textContent =
+              yearCount === 0 ? "0" : String(yearCount).padStart(2, "0");
           });
         inspector.textContent = defaultMessage();
         chart.querySelector("[data-chart-status]")!.textContent =

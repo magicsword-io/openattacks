@@ -17,6 +17,8 @@ UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motiv
 - Actor: UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters
 - Country: China
 - Motivation: nation-state
+- Attributed by: Google Threat Intelligence Group and Mandiant
+- Confidence: medium
 
 ## AI involvement confidence
 confirmed
@@ -38,10 +40,18 @@ No ATLAS mapping is recorded.
 unknown
 
 ## Detections
-No detections are recorded.
+- [Kerberoasting Activity - Initial Query](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_kerberoasting_activity.yml) (sigma) — Matched Kerberoasting with security-detections-mcp. GTIG says ARTEX ran Kerberoasting scripts to harvest service tickets.
+- [First Time Seen Account Performing DCSync](https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml) (elastic) — Matched DCSync with security-detections-mcp. GTIG says ARTEX followed Kerberoasting with DCSync scripts for the krbtgt key and domain-controller hashes.
+- [Potential Pass-the-Hash (PtH) Attempt](https://github.com/elastic/detection-rules/blob/main/rules/windows/lateral_movement_alternate_creds_pth.toml) (elastic) — Matched Pass the Hash with security-detections-mcp. GTIG lists Pass-the-Hash among the lateral-movement scripts ARTEX attempted against domain controllers.
+- [Linux Webshell Indicators](https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml) (sigma) — Matched webshell with security-detections-mcp. GTIG describes JSP webshells written through MySQL general_log on a Linux Weaver OA server.
+- [Connection to Commonly Abused Web Services](https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_common_webservices.toml) (elastic) — Matched webhook.site with security-detections-mcp. GTIG says a Windows database server used curl to post command results to rotating webhook.site URLs.
+- MySQL general_log poisoning and artex-probe filenames (guidance) — security-detections-mcp searches for jsp and webshell returned Linux webshell and SAP NetWeaver rules. None encode SET GLOBAL general_log_file writes of JSP content, the cl1217.jsp-style names, or artex-probe filenames. Hunt those strings in web and database logs.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-08
+- Last updated: 2026-11-15
+- 2026-10-30 (Google Threat Intelligence Group and Mandiant): GTIG and Mandiant report ARTEX, PentAGI, Hexstrike, and CAIRN in incident-response engagements since late August 2026. UNC7228 overlaps Microsoft's PRC-nexus Storm-0940; other crews are financially motivated or suspected PRC-nexus.
+- 2026-11-15 (OpenAttacks): Tagged ARTEX and PentAGI and backfilled attribution confidence, detections, and timeline from the cited GTIG report.
 
 ## Tools
 ### AI tooling and models
