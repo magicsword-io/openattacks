@@ -3568,5 +3568,16 @@
     "encrypt": {
       "profile": "impact"
     }
+  },
+  "air-office-party-anthropic-skills-ld-preload-2026-11": {
+    "helper": {
+      "profile": "skill-review"
+    },
+    "preload": {
+      "profile": "linux-fileless-execution"
+    },
+    "plant": {
+      "profile": "linux-fileless-execution"
+    }
   }
 }
