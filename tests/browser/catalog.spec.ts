@@ -186,6 +186,7 @@ test("theme persists and mobile pages fit the viewport", async ({ page }) => {
     "/catalog/",
     "/timeline/",
     "/regions/",
+    "/about/",
     "/attacks/cairn-norforge-2026-10/",
     "/attacks/ghostaction-ai-creds-2026-10/",
   ]) {
@@ -228,6 +229,7 @@ for (const theme of ["dark", "light"]) {
       "/timeline/",
       "/regions/",
       "/patterns/",
+      "/about/",
       "/attacks/cairn-norforge-2026-10/",
       "/attacks/ghostaction-ai-creds-2026-10/",
       "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/",
@@ -367,6 +369,39 @@ test("LLM entry points are discoverable on the landing page", async ({
   expect(guide).toContain(`/llms/attacks/${attacks[0].id}.md`);
   const entry = await request.get(`/api/attacks/${attacks[0].id}.json`);
   expect((await entry.json()).id).toBe(attacks[0].id);
+});
+
+test("about page introduces the maintainers with local portraits", async ({
+  page,
+}) => {
+  await page.goto("/about/");
+  await expect(
+    page.getByRole("heading", { name: "The people behind the project" }),
+  ).toBeVisible();
+  const cards = page.locator(".person-card");
+  await expect(cards).toHaveCount(4);
+  for (const name of [
+    "Kostas",
+    "Michael Haag",
+    "Jose Hernandez",
+    "Nasreddine Bencherchali",
+  ]) {
+    await expect(
+      cards.getByRole("heading", { name, exact: true }),
+    ).toBeVisible();
+  }
+  expect(
+    await cards
+      .locator("img")
+      .evaluateAll((images) =>
+        images.every(
+          (image) =>
+            image.getAttribute("src")?.includes("/images/maintainers/") &&
+            (image as HTMLImageElement).complete &&
+            (image as HTMLImageElement).naturalWidth > 0,
+        ),
+      ),
+  ).toBe(true);
 });
 
 test("network stages expose scoped policy opportunities and all three hunt formats", async ({
