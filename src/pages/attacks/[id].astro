@@ -72,7 +72,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
 <Layout
   title={`${display.title} — OpenAttacks`}
   description={display.summary}
-  lastReviewed={attack.last_reviewed}
+  lastReviewed={attack.last_reviewed ?? null}
 >
   <article class="container entry-focused">
     <nav class="breadcrumb" aria-label="Breadcrumb">
