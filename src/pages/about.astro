@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import AgentAccess from "../components/AgentAccess.astro";
 import { getAttacks, href, repo } from "../lib/catalog";
+import { magicswordURL } from "../lib/magicsword-links.mjs";
 
 const attacks = await getAttacks();
 const years = attacks.map((attack) => Number(attack.date_reported.slice(0, 4)));
@@ -136,7 +137,14 @@ const lastYear = Math.max(...years);
               </p>
             </div>
             <div class="person-links">
-              <a href="https://www.magicsword.io/about">MagicSword</a>
+              <a
+                href={magicswordURL(
+                  "https://www.magicsword.io/about",
+                  "about-michael-haag",
+                )}
+              >
+                MagicSword
+              </a>
               <a href="https://www.youtube.com/@atomicsonafriday">
                 Atomics on a Friday
               </a>
@@ -169,7 +177,14 @@ const lastYear = Math.max(...years);
             </div>
             <div class="person-links">
               <a href="https://github.com/josehelps">GitHub</a>
-              <a href="https://www.magicsword.io/about">MagicSword</a>
+              <a
+                href={magicswordURL(
+                  "https://www.magicsword.io/about",
+                  "about-jose-hernandez",
+                )}
+              >
+                MagicSword
+              </a>
             </div>
           </article>
 
