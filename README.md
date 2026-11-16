@@ -166,6 +166,10 @@ Vercel builds the Astro site from `main` and publishes `dist/`. Pull requests re
 
 See [CI and merge checks](docs/CI.md) for required checks and merge-queue behavior.
 
+## License
+
+OpenAttacks is licensed under the [Apache License 2.0](LICENSE). Catalog entries cite third-party sources that keep their own terms, and imported MITRE ATLAS metadata carries MITRE's license.
+
 ## Contributors
 
 OpenAttacks grows through public research and community review. Source authors and researchers are credited on individual entries, and repository contributions are recorded in the [GitHub contributor graph](https://github.com/magicsword-io/openattacks/graphs/contributors).

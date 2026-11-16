@@ -11,7 +11,7 @@ test("MagicSword attribution preserves destinations, queries and the MCP connect
     "https://magicsword.io/",
     "https://www.magicsword.io/use-cases/application-control?plan=free#policy",
     "https://app.magicsword.io/mcp?utm_source=old&utm_content=existing#connect",
-    "https://magic-portal-git-josehelps-mcp-server-m-a9b665-d1vious-projects.vercel.app/mcp#connect",
+    "https://www.magicsword.io/mcp#connect",
   ]) {
     const original = new URL(destination);
     const tracked = new URL(magicswordURL(destination));

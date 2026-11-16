@@ -1,13 +1,10 @@
-const previewHost =
-  "magic-portal-git-josehelps-mcp-server-m-a9b665-d1vious-projects.vercel.app";
 export function isMagicSwordURL(value) {
   try {
     const url = new URL(value);
     return (
       ["https:", "http:"].includes(url.protocol) &&
       (url.hostname === "magicsword.io" ||
-        url.hostname.endsWith(".magicsword.io") ||
-        url.hostname === previewHost)
+        url.hostname.endsWith(".magicsword.io"))
     );
   } catch {
     return false;
