@@ -28,7 +28,7 @@ confirmed
 - Victims and sectors: South Korean financial organizations (multiple banks per industry reports)
 - Regions: South Korea
 - Region notes: South Korea describes victim financial organizations. Chinese language concerns actor attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
-- Scale and metrics: Active late Sep–early Oct 2026; number of orgs unconfirmed
+- Scale and metrics: Active late September through early October 2026. The number of organizations was not confirmed in the 7 October CrowdStrike report. FBI FLASH-20261113-001 says this South Korean financial campaign exfiltrated personal information of approximately 67,000 individuals, citing CrowdStrike, Zscaler, and CERT-EU.
 
 ## Attack flow
 ### step-1: Initial access is not established (unknown)
@@ -69,17 +69,18 @@ Evidence: <https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-arte
 Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
 
 ## Detections
-- ARTEX operator infrastructure is not a victim-side rule (guidance) — security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites.
+- ARTEX operator infrastructure is not a victim-side rule (guidance) — security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. A 16 November 2026 search of the new proxy addresses and of personal-information exfiltration also returned no Sigma, Splunk, or Elastic rule that encodes those IPs or the 67,000-person transfer. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites.
 
 ## Timeline
 - First seen: 2026-09
-- Last updated: 2026-11-15
+- Last updated: 2026-11-16
 - 2026-10-07 (CrowdStrike Intelligence): CrowdStrike reports an unnamed, likely Chinese-speaking, financially motivated actor using ARTEX and Claude Code against South Korean financial organizations from late September to early October 2026. A resume prompt listing Maoming, Guangdong cannot be definitively tied to the actor.
 - 2026-11-15 (OpenAttacks): Tagged ARTEX and backfilled actor name, detections, and timeline from the cited CrowdStrike report. Country stays Unknown because the report attributes language and a financial motive, not a country.
+- 2026-11-16 (FBI): FLASH-20261113-001 is added. It reports personal information of approximately 67,000 individuals exfiltrated in this campaign, and the CSV contributes 38.244.50.120 plus nine proxy addresses that match the FLASH table for the South Korean financial activity.
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - [Claude Code](https://github.com/anthropics/claude-code)
 - [DeepSeek](https://github.com/deepseek-ai) v4.1-flash via xcai.pro
 - [GLM-5.3](https://github.com/zai-org)
@@ -92,7 +93,9 @@ Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys 
 - [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
-CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.
+CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign. The approximately 67,000-person figure is from FBI FLASH-20261113-001, which cites the CrowdStrike report, a Zscaler ThreatLabz report, and a CERT-EU report. This entry's 7 October CrowdStrike source did not state that count. The FLASH table, and the same values in the CSV, list 38.244.50.120 as an ARTEX host and open directory for this campaign, sourced to CrowdStrike and Censys, and 101.53.80.20, 205.214.59.31, 124.155.252.63, 154.201.79.246, 23.248.249.90, 23.158.220.98, 103.248.148.84, 203.160.133.172, and 209.209.85.38 as proxy addresses sourced to CrowdStrike. The CSV says these artifacts are not standalone indicators of ARTEX, and the FLASH says addresses can later be reassigned.
 
 ## Sources
 - [CrowdStrike Oct 7 - Unknown threat actor uses ARTEX vs South Korean finance](https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/)
+- [FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework](https://www.ic3.gov/CSA/2026/261113.pdf) — FBI
+- [FLASH-20261113-001 indicators](https://www.ic3.gov/CSA/2026/261113.csv) — FBI

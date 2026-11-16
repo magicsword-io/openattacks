@@ -3760,5 +3760,66 @@
     "clickfix": {
       "profile": "mac-shell"
     }
+  },
+  "amazon-artex-madpot-campaigns-2026-11": {
+    "instruct": {
+      "profile": "unassessed",
+      "note": "Standing instructions were recovered from agent requests to MadPot, not from a victim host."
+    },
+    "gateways": {
+      "profile": "web",
+      "note": "The records describe hunting exposed AI gateways. Amazon did not verify each outcome."
+    },
+    "keys": {
+      "profile": "credentials"
+    },
+    "kyc": {
+      "profile": "unassessed",
+      "note": "Deepfake liveness attempts were described in agent memory. No host query for a rejected vendor verdict was mapped."
+    },
+    "rejected": {
+      "profile": "unobserved",
+      "note": "Amazon says every recorded liveness verdict rejected the deepfake. That rejection is not a local execution event."
+    }
+  },
+  "gtig-exploit-agent-staging-server-2026-11": {
+    "staging": {
+      "profile": "unassessed",
+      "note": "The exposed server is attacker infrastructure. GTIG published no address."
+    },
+    "diff": {
+      "profile": "unassessed",
+      "note": "Differential analysis ran on the attacker's framework. A victim prompt log would not show it."
+    },
+    "run": {
+      "profile": "web"
+    },
+    "post": {
+      "profile": "web",
+      "note": "Webshell install and removal, reconnaissance, and brute-force scripts. The report does not name the operating system."
+    },
+    "victims": {
+      "profile": "unassessed"
+    }
+  },
+  "gtig-midnight-neptune-claude-settings-2026-11": {
+    "recruit": {
+      "profile": "phishing"
+    },
+    "clickfix": {
+      "profile": "phishing",
+      "note": "GTIG named ClickFix diagnostic scripts and did not publish the command or the operating system."
+    },
+    "settings": {
+      "profile": "mcp-config",
+      "note": "The reported file is .claude/settings.json in an internal repository."
+    },
+    "somber": {
+      "profile": "agent-tools"
+    },
+    "pats": {
+      "profile": "credentials",
+      "note": "GitHub personal access tokens named after Microsoft Copilot. The creation event is the observable, not the display name by itself."
+    }
   }
 }

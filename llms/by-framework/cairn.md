@@ -87,9 +87,10 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 
 ## Timeline
 - First seen: 2026-08
-- Last updated: 2026-11-12
+- Last updated: 2026-11-16
 - 2026-09 (Palo Alto Networks Unit 42): CL-STA-1238 completes 25 Cairn operations, August through September 2026, with confirmed access or data retrieval at 10 organizations
 - 2026-11-12 (Palo Alto Networks Unit 42): Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54. A same-/24 address, 154.44.31.104, is an unconfirmed Censys panel lead and is not an IOC.
+- 2026-11-16 (Google Threat Intelligence Group): GTIG's quarterly tracker says Cairn was used in an intrusion with targets including a US aerospace organization. No indicators are published, and GTIG does not identify the activity as CL-STA-1238.
 
 ## Tools
 ### AI tooling and models
@@ -109,11 +110,12 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 - [LOLSkills](https://lolskills.io)
 
 ## Source notes
-Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.
+Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published. The 16 November 2026 GTIG tracker says GTIG observed Cairn used in intrusion activity against targets including a US aerospace organization. GTIG does not name CL-STA-1238, does not give indicators, and does not say that intrusion is this cluster. The note is recorded here because this is the catalog's Cairn intrusion entry. frameworks remains cairn.
 
 ## Sources
 - [Attackers Use Autonomous AI to Target Semiconductor, Defense and Civil Society Sectors](https://unit42.paloaltonetworks.com/cairn-framework-ai-autonomous-attacks/) — Palo Alto Networks Unit 42
 - [Cairn](https://github.com/oritera/Cairn) — oritera
+- [GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold](https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/) — Google Threat Intelligence Group
 
 ---
 
@@ -222,8 +224,8 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
-- PentAGI (https://github.com/vxcontrol/pentagi)
+- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
+- [PentAGI](https://github.com/vxcontrol/pentagi) (https://github.com/vxcontrol/pentagi)
 - CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)
 - [Cairn](https://github.com/oritera/Cairn) (AI web exploitation harness)
 - On-the-fly AI script generation

@@ -3,12 +3,19 @@ name: ARTEX
 type: agentic-offensive-framework
 github_url: null
 project_url: null
-description: Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation.
+description: Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation. FBI FLASH-20261113-001 (13 November 2026) is a government summary of ARTEX use since at least August 2026. Amazon Threat Intelligence (13 November 2026) captured ARTEX agent campaign memory on MadPot sensors that posed as LLM chat-completion APIs.
 sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
     title: Unknown Threat Actor Uses ARTEX to Target South Korean Finance
     publisher: CrowdStrike
+  - url: https://www.ic3.gov/CSA/2026/261113.pdf
+    title: "FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework"
+    publisher: FBI
+  - url: https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/
+    title: Amazon Threat Intelligence observes threat actors running cybercrime campaigns with ARTEX AI agents
+    publisher: Amazon
 linked_attacks:
+  - amazon-artex-madpot-campaigns-2026-11
   - cert-in-crafty-falcon-bfsi-2026-11
   - checkpoint-artex-operator-consoles-2026-11
   - crowdstrike-artex-sk-finance-2026-10

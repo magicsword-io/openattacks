@@ -1,13 +1,19 @@
 id: pentagi
 name: PentAGI
 type: agentic-offensive-framework
-github_url: null
-project_url: null
-description: AI-powered penetration testing framework that leverages language models to automate security testing and vulnerability discovery. Represents the emerging class of agentic offensive security tools.
+github_url: https://github.com/vxcontrol/pentagi
+project_url: https://github.com/vxcontrol/pentagi
+description: AI-powered penetration testing framework that leverages language models to automate security testing and vulnerability discovery. Represents the emerging class of agentic offensive security tools. The public repository https://github.com/vxcontrol/pentagi returned HTTP 200 on 16 November 2026. GTIG did not publish a repository URL. On 16 November 2026 GTIG reported a customized orchestration platform built on the open-source version, used from late August to early October 2026 for reconnaissance and vulnerability scanning against organizations in Asia.
 sources:
   - url: https://github.com/topics/pentest-ai
     title: AI Penetration Testing Tools
     publisher: GitHub
+  - url: https://github.com/vxcontrol/pentagi
+    title: PentAGI
+    publisher: vxcontrol
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/
+    title: "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold"
+    publisher: Google Threat Intelligence Group
 linked_attacks:
   - cert-in-crafty-falcon-bfsi-2026-11
   - gtig-mandiant-unc7228-other-crews-run-2026-10

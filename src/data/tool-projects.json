@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-04",
+  "reviewed_on": "2026-11-16",
   "projects": [
     {
       "name": "Amass",
@@ -30,10 +30,12 @@
       "name": "ARTEX",
       "url": "https://github.com/RuoJi6/ARTEX",
       "aliases": ["ARTEX"],
-      "note": "Community-maintained fork; the original repository is unavailable.",
+      "note": "Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.",
       "source_urls": [
         "https://github.com/RuoJi6/ARTEX",
-        "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/"
+        "https://github.com/MoLeft/ARTEX",
+        "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/",
+        "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
       ]
     },
     {
@@ -248,6 +250,15 @@
       "name": "OpenSSL",
       "url": "https://github.com/openssl/openssl",
       "aliases": ["OpenSSL"]
+    },
+    {
+      "name": "PentAGI",
+      "url": "https://github.com/vxcontrol/pentagi",
+      "aliases": ["PentAGI"],
+      "source_urls": [
+        "https://github.com/vxcontrol/pentagi",
+        "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+      ]
     },
     {
       "name": "PHP",

@@ -103,7 +103,7 @@ Patch vulnerable web plugins promptly; restrict and validate file uploads; imple
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - LLM backends for agent decision-making
 
 ### Other tooling
