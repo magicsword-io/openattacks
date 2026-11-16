@@ -14,6 +14,7 @@ interface Props {
   active?: string;
   lastReviewed?: string;
   canonicalPath?: string;
+  bodyClass?: string;
 }
 const {
   title = "OpenAttacks — The open catalog of AI attacks",
@@ -21,6 +22,7 @@ const {
   active = "catalog",
   lastReviewed = reviewed,
   canonicalPath = Astro.url.pathname,
+  bodyClass,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
@@ -84,7 +86,7 @@ const imageAlt =
       } catch {}
     </script>
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main" class="skip-link">
       Skip to content
     </a>
