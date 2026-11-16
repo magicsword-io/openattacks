@@ -27,6 +27,9 @@ ai_tooling_and_models:
   - Abliterated Qwen 3.5 122B (offensive)
   - Abliterated GLM (offensive)
   - DeepSeek-R1 70B (offensive, later replaced)
+frameworks:
+  - cyberstrikeai
+  - hexstrike
 other_tooling:
   - "MCP servers: HexStrike AI, Kali Linux, Ghidra, Radare2, Playwright"
   - "nmap, sqlmap, Metasploit, Hydra"

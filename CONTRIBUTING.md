@@ -35,7 +35,13 @@ borderline: false
 last_reviewed: "2026-10-20"
 ```
 
-`schema.yaml` is the source of truth. Unknown fields fail validation. Optional fields include `aliases`, `ai_role_secondary`, `ai_role_detail`, `date_activity_start`, `date_activity_end`, `atlas_techniques`, `source_notes`, `iocs`, `tags`, `confidence`, `borderline_note`, and `magicsword_coverage`.
+`schema.yaml` is the source of truth. Unknown fields fail validation. Optional fields include `aliases`, `ai_role_secondary`, `ai_role_detail`, `frameworks`, `date_activity_start`, `date_activity_end`, `atlas_techniques`, `source_notes`, `iocs`, `tags`, `confidence`, `borderline_note`, and `magicsword_coverage`.
+
+## Offensive frameworks
+
+`frameworks` is an optional list of tool-page ids for an offensive or testing framework the operation used, such as `artex`, `antifox`, `cairn`, `cyberstrikeai`, `hexstrike`, or `pentagi`. Each id must match `tools/<id>.yaml`. The check fails when the id does not. The same attack id must appear in that tool's `linked_attacks`, and every `linked_attacks` entry must list the tool in `frameworks`. The site badges, the dot-chart ring, and `llms/by-framework/<id>.md` all read this field.
+
+Leave the field off when a report only mentions a framework in passing, describes a lookalike ("ARTEX-like"), or the framework is the target of the attack rather than the operator's tool. Do not add a framework because a different product shares the name. Cisco Talos's CAIRN hunting program is not the Cairn offensive framework (`cairn`).
 
 ## Tool project links
 
@@ -102,7 +108,7 @@ Do not convert actor language, actor nationality, hosting infrastructure, a pare
 
 ## Automatic AI-readable publishing
 
-After changing `attacks/*.yaml`, run `npm run llm:build` and commit the generated files. That command refreshes `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, `data/attacks.json`, and `data/attacks.schema.json`. Do not edit those files by hand. `npm run llm:check` fails when they are stale; CI runs that check on every pull request. A push to `main` regenerates and commits them if a merge still drifted, using a `[skip ci]` bot commit.
+After changing `attacks/*.yaml`, run `npm run llm:build` and commit the generated files. That command refreshes `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, `llms/by-framework/<id>.md`, `data/attacks.json`, and `data/attacks.schema.json`. Do not edit those files by hand. `npm run llm:check` fails when they are stale; CI runs that check on every pull request. A push to `main` regenerates and commits them if a merge still drifted, using a `[skip ci]` bot commit.
 
 The site build also generates `api/attacks.json`, `api/attacks.csv`, `api/schema.json`, `api/relevance.json`, and individual `api/attacks/<id>.json` and `.md` files from the YAML collection and reviewed sidecars. It serves the committed LLM files at the same paths. Merging a valid attack PR into `main` triggers Vercel's connected Git deployment and rebuilds the site outputs together. GitHub Pages is an optional manual workflow.
 

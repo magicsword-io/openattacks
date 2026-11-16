@@ -6,16 +6,22 @@
 - Entry: https://openattacks.ai/attacks/unit42-artex-api-recon-2026-10/
 
 ## Summary
-ARTEX planner agent activity observed Sep 24-Oct 27 2026 by Unit 42. Agent autonomously harvested source maps, OpenAPI specifications, and runtime-config.json files. Attempted OAuth redirect URI abuse and password spraying. Successfully self-registered on exposed APIs without authentication. Read approximately 50 MB of data. Wrote data to an unauthenticated development document store. Attack demonstrates autonomous API reconnaissance and exploitation capabilities. Microsoft tracks related activity as Storm-0940 with Oct 21 observations.
+ARTEX planner agent activity observed Sep 24-Oct 27 2026 by Unit 42. Agent autonomously harvested source maps, OpenAPI specifications, and runtime-config.json files. Attempted OAuth redirect URI abuse and password spraying. Successfully self-registered on exposed APIs without authentication. Read approximately 50 MB of data. Wrote data to an unauthenticated development document store. Microsoft tracks related activity as Storm-0940 with Oct 21 observations. Unit 42's Nov 11, 2026 post (Cuong Dinh, Richard Emerson, Samantha Stallings), ARTEX and AI-Powered Red Teaming Tools, adds incident-response and Managed Threat Hunting cases where ARTEX turned password-reset pages and exposed APIs into cloud access in under a day. Behavioral hallmarks in that post: bursts of one to 14 requests about a second apart, then a pause of 25 to 31 seconds; a pivot within a minute of a credential download; more than 200 client secrets validated in about three minutes; a GET to the same path after almost every successful write; canary values evil.com, test@example.com, and deadbeefdeadbeefdeadbeef12; and polling every 48 seconds. As of October 2026 Unit 42 counted 609 internet-facing ARTEX hosts and 1,323 CyberStrikeAI hosts, with 21 running both. The framework is https://github.com/RuoJi6/ARTEX.
 
 ## Category
-uncategorized
+adversary-use-of-ai
 
 ## Attribution
 Microsoft Storm-0940 (related activity Oct 21)
 
+- Actor: Unnamed ARTEX operators; Microsoft tracks related activity as Storm-0940
+- Country: Unknown
+- Motivation: unknown
+- Attributed by: Unit 42, Microsoft
+- Confidence: medium
+
 ## AI involvement confidence
-not assessed
+confirmed
 
 ## Scope and targeting
 - Initial access: Exposed API endpoints without authentication
@@ -70,10 +76,13 @@ Evidence: <https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/m
 Authenticate all API endpoints including development; remove source maps from production; restrict OpenAPI spec access; validate OAuth redirect URIs; implement API registration controls; monitor for automated reconnaissance patterns; detect bulk configuration file access; alert on unauthenticated document store writes; review Storm-0940 indicators
 
 ## Detections
-No detections are recorded.
+- ARTEX API hallmarks (guidance) — security-detections-mcp searches for password spray returned Azure Identity Protection and dsacls rules. Those do not match ARTEX spraying an exposed application API. No cited rule encodes the canary values evil.com, test@example.com, or deadbeefdeadbeefdeadbeef12, the 25 to 31 second pause, or the 48 second recheck. Hunt OpenAPI and source-map downloads followed by a write and an immediate read of the same path.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-09-24
+- Last updated: 2026-11-11
+- 2026-10-30 (Unit 42): Unit 42 publishes the Sep 24-Oct 27 ARTEX planner activity: source maps, OpenAPI files, unauthenticated self-registration, and about 50 MB read.
+- 2026-11-11 (Unit 42): Unit 42 publishes the defender hallmarks, including canary values, 1-14 request bursts with 25-31 second pauses, and the October host counts of 609 ARTEX and 1,323 CyberStrikeAI.
 
 ## Tools
 ### AI tooling and models
@@ -86,6 +95,9 @@ No timeline is recorded.
 - OAuth redirect abuse attempts
 - Password spraying
 - API self-registration
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Microsoft tracks related activity as Storm-0940 with Oct 21 observations
@@ -103,3 +115,4 @@ Relevant detection rules:
 
 ## Sources
 - [Activity using ARTEX agentic AI](https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-10-30-activity-using-ARTEX-agentic-AI.txt) — Unit 42 (Palo Alto Networks)
+- [ARTEX and AI-Powered Red Teaming Tools: What Defenders Need to Know](https://unit42.paloaltonetworks.com/artex-and-ai-powered-red-teaming-tools/) — Unit 42 (Palo Alto Networks)

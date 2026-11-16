@@ -21,6 +21,8 @@ initial_access: "Anonymous file upload exploitation, SSRF vulnerabilities"
 ai_tooling_and_models:
   - ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)
   - DeepSeek and other LLM backends
+frameworks:
+  - artex
 other_tooling:
   - WISP RAT
   - vshell

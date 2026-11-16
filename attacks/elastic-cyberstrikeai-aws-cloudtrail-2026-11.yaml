@@ -23,6 +23,8 @@ initial_access: "Stolen AWS credentials for five IAM users and three EC2 instanc
 ai_tooling_and_models:
   - "CyberStrikeAI (https://github.com/AIPentest/CyberStrikeAI), web interface on TCP 8080"
   - "24 SKILL.md files in the repository, including unlimited-attack-scope and cloud-attack-methods"
+frameworks:
+  - cyberstrikeai
 other_tooling:
   - "AWS APIs GetCallerIdentity, GetSessionToken, GetSecretValue, DescribeInstanceAttribute, GetParameter, SendCommand"
 victims_and_sectors: "Four AWS accounts. Account and identity names were replaced with aliases. No sector was named."
@@ -90,6 +92,7 @@ attack_flow:
 category: adversary-use-of-ai
 attribution:
   actor_name: "Unnamed CyberStrikeAI operator"
+  country: Unknown
   motivation: unknown
   attributed_by: Elastic Security Labs
   confidence: medium
@@ -128,7 +131,7 @@ detections:
     notes: "The article also names AWS STS GetSessionToken Usage (3 low alerts). The public rule titled AWS IAM API Calls via Temporary Session Tokens describes later IAM calls that use a temporary token, not the GetSessionToken API itself, so it is not cited. Also hunt instance-role credentials whose source IP is not the instance or the organization's NAT, and the certificate serial 3356730520974368630."
 timeline:
   first_seen: "2026-09-30"
-  last_updated: "2026-11-13"
+  last_updated: "2026-11-15"
   updates:
     - date: "2026-09-30"
       source: Elastic Security Labs
@@ -142,5 +145,8 @@ timeline:
     - date: "2026-11-13"
       source: Elastic Security Labs
       summary: "Elastic publishes the CloudTrail write-up and two high-severity bulk enumeration rules"
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged CyberStrikeAI. Country is Unknown because Elastic states no country."
 linked_tools:
   - cyberstrikeai

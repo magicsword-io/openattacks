@@ -815,6 +815,66 @@ p {
 :root[data-theme="light"] .role-badge {
   color: color-mix(in srgb, var(--role-color) 40%, var(--text));
 }
+.framework-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: var(--accent-bg);
+  font: 11px/1.4 var(--mono);
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.framework-badge:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.framework-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  pointer-events: none;
+}
+.chart-framework {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding: 0 0 16px;
+}
+.framework-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.framework-legend svg {
+  flex-shrink: 0;
+  color: var(--text);
+}
+.chart-framework label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.timeline-entry h3 a {
+  color: inherit;
+}
+.timeline-entry h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
 .table-date {
   color: var(--muted);
   font: 9px var(--mono);

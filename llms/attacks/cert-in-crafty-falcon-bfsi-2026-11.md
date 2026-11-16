@@ -97,8 +97,9 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 
 ## Timeline
 - First seen: 2026-10-01
-- Last updated: 2026-11-04
+- Last updated: 2026-11-15
 - 2026-11-04 (CERT-In): CERT-In Advisory CIAD-2026-0058 issued warning Indian BFSI sector on CRAFTY FALCON campaign using ARTEX, PentAGI, Cairn, CyberStrikeAI; festive-window targeting pattern noted
+- 2026-11-15 (OpenAttacks): Tagged ARTEX, Cairn, CyberStrikeAI, and PentAGI from the CERT-In advisory. Category was already adversary-use-of-ai; the detail-page badge was the missing browse annotation, now set to a reported campaign.
 
 ## Tools
 ### AI tooling and models
@@ -112,6 +113,12 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 - AWS Lambda for staging-to-production pivots
 - Custom payment API invocation scripts
 - Log deletion tools
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+- [PentAGI](https://openattacks.ai/tools/pentagi/) (`pentagi`)
 
 ## Source notes
 CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) official government warning; Indian Express and industry coverage provide context on AI framework usage and festive-window targeting; cross-reference with cairn-norforge-2026-10 entry for Cairn exploitation patterns

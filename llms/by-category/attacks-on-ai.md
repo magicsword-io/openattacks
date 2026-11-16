@@ -1414,6 +1414,9 @@ Secure .env files and cloud configurations; never expose API keys in GitHub repo
 - Harmony ONE crypto drainer (modified fork)
 - CVE-2026-41940 exploit (4-stage, pre-staged SSH key)
 
+### Offensive frameworks
+- [PentAGI](https://openattacks.ai/tools/pentagi/) (`pentagi`)
+
 ## Source notes
 SOCRadar STRU analysis. Attribution via open directory at 209.112.91.74, Telegram bot tokens exposing @leepsmartsx, GitHub PRO account leepsmarts with forked repositories. Infrastructure: 209.112.91.74 (primary C2, US), 173.231.39.244 (Hermes Agent, US), 123.60.2.245 (PentAGI, Huawei Cloud CN), 14.47.118.194 (Open WebUI + Wazuh, Korea Telecom KR), 66.42.94.67 (Vultr relay), Malaysia Oracle Cloud (OpenClaw). Domains: senhai.store, astrdark.cyou, xxtt.me, sajuai.xyz, 712019.xyz, bfvdoor.com. Telegram bots: LEEP group messages through Oct 13, 2026. CVV source: 卷王二手CVV Chinese underground market (>60% live rate claim).
 

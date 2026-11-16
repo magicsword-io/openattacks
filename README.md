@@ -170,10 +170,11 @@ The static files are available under the deployment base path at `api/attacks.js
 | `llms/attacks/<id>.md` | https://openattacks.ai/llms/attacks/<id>.md |
 | `llms/by-category/<category>.md` | https://openattacks.ai/llms/by-category/<category>.md |
 | `llms/by-month/<YYYY-MM>.md` | https://openattacks.ai/llms/by-month/<YYYY-MM>.md |
+| `llms/by-framework/<id>.md` | https://openattacks.ai/llms/by-framework/<id>.md |
 | `data/attacks.json` | https://openattacks.ai/data/attacks.json |
 | `data/attacks.schema.json` | https://openattacks.ai/data/attacks.schema.json |
 
-`llms.txt` is a short index: one line per attack with title, id, category, actor, date, and a link to `llms/attacks/<id>.md`. Category and month bundles split the same Markdown for smaller context windows. `llms-full.txt` is the complete catalog in one file. `data/attacks.json` is the public records plus `generated_at` and `count`; `generated_at` is the latest source review or report date at UTC midnight, not the wall clock, so a rebuild is byte-stable. `data/attacks.schema.json` describes that document.
+`llms.txt` is a short index: one line per attack with title, id, category, actor, date, and a link to `llms/attacks/<id>.md`. Entries that used an offensive framework also list `frameworks:` on that line. Category, month, and framework bundles split the same Markdown for smaller context windows. `llms-full.txt` is the complete catalog in one file. `data/attacks.json` is the public records plus `generated_at` and `count`; `generated_at` is the latest source review or report date at UTC midnight, not the wall clock, so a rebuild is byte-stable. `data/attacks.schema.json` describes that document.
 
 Each entry also has `api/attacks/<id>.json` and `api/attacks/<id>.md`. `api/attacks.json` remains a JSON array of the same public records. `api/schema.json` publishes the public entry schema and `api/atlas.json` describes the referenced MITRE ATLAS definitions.
 

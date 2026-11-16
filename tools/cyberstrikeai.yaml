@@ -9,5 +9,9 @@ sources:
     title: AI Penetration Testing Tools
     publisher: GitHub
 linked_attacks:
+  - bossai-12-agent-attack-mesh-2026-11
+  - cert-in-crafty-falcon-bfsi-2026-11
   - elastic-cyberstrikeai-aws-cloudtrail-2026-11
+  - kaspersky-cyberstrikeai-schools-2026
+  - trendai-chinese-language-operators-used-cyberstrikeais-2026-10
 linked_actors: []

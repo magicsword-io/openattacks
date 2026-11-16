@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { parse } from "yaml";
-import { entryErrors } from "../src/lib/schema.mjs";
+import { entryErrors, frameworkLinkErrors } from "../src/lib/schema.mjs";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
@@ -26,6 +26,27 @@ test("all catalog entries validate and IDs are unique", () => {
     assert.deepEqual(entryErrors(seeds[index], filename), []),
   );
   assert.equal(new Set(seeds.map((entry) => entry.id)).size, seeds.length);
+});
+test("framework ids must match a tool page and agree with linked_attacks", () => {
+  assert.match(
+    entryErrors(
+      { ...sample, frameworks: ["not-a-real-tool"] },
+      `${sample.id}.yaml`,
+    ).join("\n"),
+    /unknown tool id not-a-real-tool/,
+  );
+  const tools = readdirSync(new URL("../tools/", import.meta.url))
+    .filter((name) => name.endsWith(".yaml"))
+    .map((name) =>
+      parse(readFileSync(new URL(`../tools/${name}`, import.meta.url), "utf8")),
+    );
+  assert.deepEqual(frameworkLinkErrors(seeds, tools), []);
+  assert.ok(
+    frameworkLinkErrors(
+      [{ id: "example", frameworks: ["artex"] }],
+      tools,
+    ).some((error) => error.includes("missing example")),
+  );
 });
 test("unknown fields and invalid enums fail with field-level errors", () => {
   assert.match(

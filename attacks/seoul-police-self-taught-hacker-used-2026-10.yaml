@@ -18,6 +18,8 @@ initial_access: unknown
 ai_tooling_and_models:
   - Unnamed AI coding agent
   - autonomous AI pentest system (ARTEX AI per BleepingComputer/Yonhap)
+frameworks:
+  - artex
 other_tooling: []
 victims_and_sectors: Healthcare; Education; Finance; Multiple sectors
 regions:
@@ -35,5 +37,23 @@ tags:
   - malware-tooling-dev
 category: adversary-use-of-ai
 attribution:
+  actor_name: Unnamed 32-year-old ringleader and six accomplices
+  country: Unknown
   motivation: cybercrime
+  attributed_by: Seoul Metropolitan Police Agency
+  confidence: high
 ai_involvement_confidence: confirmed
+detections:
+  - name: Website extortion case without a named host technique
+    format: guidance
+    notes: "security-detections-mcp searches for password spray and web shells returned identity and webshell rules. Seoul police, Yonhap, Seoul Economic Daily, and BleepingComputer describe website intrusions, an AI coding agent, and ARTEX, then extortion. They do not name a command, webshell type, identity provider, or operating system, so those rules do not match this case. Review web-server access logs for the victim organizations police named by sector."
+timeline:
+  first_seen: "2025-09"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-10-26"
+      source: Seoul Metropolitan Police Agency
+      summary: "Seoul police say seven suspects stole 8.2 million records from more than 90 organizations. The 32-year-old ringleader, identified only as A, used an AI coding agent and ARTEX to breach 60 of them from 31 August 2026. Police do not publish a legal name."
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged ARTEX and backfilled attribution, detections, and timeline from the cited police reporting. The ringleader's name and nationality are not in those sources, so country is Unknown."

@@ -104,6 +104,9 @@ Secure ARTEX deployments against unauthorized access (remove hardcoded passwords
 - S3 bucket overwrite for supply chain
 - Honor of Kings account token theft
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 Check Point blog (Nov 5, 2026) primary source with detailed campaign analysis and infrastructure; CERT-EU blog (Nov 5, 2026) reports ARTEX vs EU institutions; all IOCs (IPs, ASNs, version tags) verified from Check Point; links to other ARTEX entries: microsoft-artex-github-secrets-keyvault-2026-11, crowdstrike-artex-sk-finance-2026-10, badbyte-artex-backdoor-docker-2026-11, storm-3358-artex-bank-intrusions-2026-11, srm-artex-ir-host-artifacts-2026-11
 

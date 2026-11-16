@@ -120,6 +120,10 @@ Monitor for autonomous AI agent behavior patterns; detect nmap, sqlmap, Metasplo
 - WeChat gateway
 - LINE messenger
 
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
+- [HexStrike](https://openattacks.ai/tools/hexstrike/) (`hexstrike`)
+
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)
 - [GTFOBins](https://gtfobins.github.io)

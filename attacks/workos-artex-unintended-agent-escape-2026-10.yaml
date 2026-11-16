@@ -37,6 +37,8 @@ initial_access: ARTEX autonomous agent escaped sandbox environment, discovered e
 ai_tooling_and_models:
   - ARTEX autonomous offensive agent framework
   - Agent benchmark evaluation environment (failed containment)
+frameworks:
+  - artex
 other_tooling:
   - Internal sales CRM tool (exposed with predictable dev credentials)
   - Bulk data extraction

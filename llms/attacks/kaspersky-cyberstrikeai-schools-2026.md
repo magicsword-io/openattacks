@@ -9,13 +9,19 @@
 Financially motivated attacks against schools in Africa and Latin America used the open-source CyberStrikeAI implant. Initial access was through a compromised SQL Server. A C2-side LLM using MCP tools selected attack commands and achieved domain administrator privileges in three to four days. Techniques included a SystemUpdate scheduled task, certutil downloads, comsvcs.dll LSASS memory dumping, DCSync, and Golden Ticket generation.
 
 ## Category
-uncategorized
+adversary-use-of-ai
 
 ## Attribution
-Financially motivated; attribution otherwise unknown
+Unnamed. Kaspersky could not link the activity to a known group. Chinese-language script comments and UTC+8 control-server restarts suggest a Chinese-speaking operator.
+
+- Actor: Unnamed operators
+- Country: Unknown
+- Motivation: unknown
+- Attributed by: Kaspersky
+- Confidence: low
 
 ## AI involvement confidence
-not assessed
+confirmed
 
 ## Scope and targeting
 - Initial access: Compromised SQL Server
@@ -70,13 +76,19 @@ Evidence: <https://securelist.com/cyberstrikeai-attacks/121715/>
 Harden SQL Server; monitor for CyberStrikeAI indicators; detect SystemUpdate scheduled task creation; alert on certutil downloads; monitor comsvcs.dll LSASS dumps; detect DCSync activity; hunt for Golden Ticket use; block C2 infrastructure; review LOLBAS execution (certutil, comsvcs)
 
 ## Detections
-No detections are recorded.
+- [Suspicious Child Process Of SQL Server](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mssql_susp_child_process.yml) (sigma) — Matched sqlservr with security-detections-mcp. Kaspersky says the first commands in these incidents ran as children of sqlservr.exe.
+- [Scheduled Task Creation Via Schtasks.EXE](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml) (sigma) — Matched schtasks with security-detections-mcp. The implant's first persistence step was a scheduled task named SystemUpdate.
+- [File Decoded From Base64/Hex Via Certutil.EXE](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_decode.yml) (sigma) — Matched certutil decode with security-detections-mcp. Kaspersky says certutil decoded the assembled payload. The direct-IP download rule previously noted on this entry does not match that command.
+- [Process Memory Dump Via Comsvcs.DLL](https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml) (sigma) — Matched comsvcs with security-detections-mcp. The agent dumped lsass with comsvcs.dll MiniDump, passing the PID rather than the process name.
+- [First Time Seen Account Performing DCSync](https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml) (elastic) — Matched DCSync with security-detections-mcp. After the domain administrator account was taken, the agent ran DCSync.
+- Renamed Mimikatz and the implant token (guidance) — security-detections-mcp's Mimikatz hits key on the binary name or command line. Kaspersky says this activity used a renamed Mimikatz for DCSync and a Golden Ticket, so those name-based rules do not fit. No Sigma, Splunk, or Elastic rule encodes the X-Implant-Token header or the CyberStrikeAI certificate issuer.
 
 ## Timeline
 - First seen: 2026-10-01
-- Last updated: 2026-11-05
+- Last updated: 2026-11-15
 - 2026-10-23 (Trend Micro): TrendAI reports CyberStrikeAI campaign by Chinese-language operators targeting Japan
 - 2026-11-04 (Kaspersky): CyberStrikeAI attacks against schools in Africa and Latin America disclosed
+- 2026-11-15 (OpenAttacks): Tagged CyberStrikeAI and backfilled category, attribution, AI-involvement confidence, detections, and this timeline note from the cited Securelist report. Kaspersky does not name a group, country, or motive.
 
 ## Tools
 ### AI tooling and models
@@ -90,6 +102,9 @@ No detections are recorded.
 - DCSync
 - Golden Ticket
 - Compromised SQL Server
+
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
 
 ### MagicSword projects
 - [LOLBAS](https://lolbas-project.github.io)

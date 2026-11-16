@@ -1,11 +1,19 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import TimelineChart from "../components/TimelineChart.astro";
 import ViewTabs from "../components/ViewTabs.astro";
 import RoleBadge from "../components/RoleBadge.astro";
+import FrameworkBadges from "../components/FrameworkBadges.astro";
 import CommunityBanner from "../components/CommunityBanner.astro";
-import { getAttacks, roles, href, formatDate } from "../lib/catalog";
+import { getAttacks, roles, href, formatDate, usedFrameworks } from "../lib/catalog";
 const attacks = await getAttacks();
+const toolNames = Object.fromEntries(
+  (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
+);
+const frameworkOptions = usedFrameworks(attacks)
+  .map((id) => ({ id, name: toolNames[id] || id }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
   .sort()
   .reverse();
@@ -46,6 +54,18 @@ const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
             <option value={id}>{role.label}</option>
           ))}
         </select>
+        {frameworkOptions.length > 0 && (
+          <select
+            class="filter-select"
+            id="timeline-framework"
+            aria-label="Filter timeline by offensive framework"
+          >
+            <option value="">Any framework</option>
+            {frameworkOptions.map((framework) => (
+              <option value={framework.id}>Used {framework.name}</option>
+            ))}
+          </select>
+        )}
         <span
           class="muted"
           style="font-size:11px;align-self:center"
@@ -68,24 +88,27 @@ const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
             {attacks
               .filter((a) => a.date_reported.startsWith(year))
               .map((attack) => (
-                <a
+                <article
                   class="timeline-entry"
-                  href={href(`attacks/${attack.id}/`)}
                   style={`--role-color:${roles[attack.ai_role].color}`}
                   data-role={attack.ai_role}
+                  data-frameworks={JSON.stringify(attack.frameworks || [])}
                 >
                   <div class="timeline-entry-head">
                     <time class="table-date" datetime={attack.date_reported}>
                       {formatDate(attack.date_reported)}
                     </time>
                     <RoleBadge role={attack.ai_role} />
+                    <FrameworkBadges ids={attack.frameworks} names={toolNames} />
                     {attack.borderline && (
                       <span class="research-marker">RESEARCH / BORDERLINE</span>
                     )}
                   </div>
-                  <h3>{attack.name}</h3>
+                  <h3>
+                    <a href={href(`attacks/${attack.id}/`)}>{attack.name}</a>
+                  </h3>
                   <p>{attack.technique_summary}</p>
-                </a>
+                </article>
               ))}
           </div>
         </section>
@@ -102,8 +125,19 @@ const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
     document.querySelector<HTMLSelectElement>("#timeline-year")!;
   const roleSelect =
     document.querySelector<HTMLSelectElement>("#timeline-role")!;
+  const frameworkSelect = document.querySelector<HTMLSelectElement>(
+    "#timeline-framework",
+  );
+  const entryFrameworks = (entry: HTMLElement) => {
+    try {
+      return JSON.parse(entry.dataset.frameworks || "[]") as string[];
+    } catch {
+      return [];
+    }
+  };
   function filterTimeline(update = true) {
     let total = 0;
+    const framework = frameworkSelect?.value || "";
     document
       .querySelectorAll<HTMLElement>("[data-timeline-year]")
       .forEach((group) => {
@@ -114,7 +148,8 @@ const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
             entry.hidden = !!(
               (yearSelect.value &&
                 group.dataset.timelineYear !== yearSelect.value) ||
-              (roleSelect.value && entry.dataset.role !== roleSelect.value)
+              (roleSelect.value && entry.dataset.role !== roleSelect.value) ||
+              (framework && !entryFrameworks(entry).includes(framework))
             );
             if (!entry.hidden) count++;
           });
@@ -131,17 +166,42 @@ const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
       url.search = "";
       if (yearSelect.value) url.searchParams.set("year", yearSelect.value);
       if (roleSelect.value) url.searchParams.set("role", roleSelect.value);
+      if (framework) url.searchParams.set("framework", framework);
       history.replaceState(null, "", url);
+      document.dispatchEvent(
+        new CustomEvent("openattacks:framework", {
+          detail: { id: framework, source: "timeline-list" },
+        }),
+      );
     }
   }
   function readTimelineURL() {
     const params = new URLSearchParams(location.search);
     yearSelect.value = params.get("year") || "";
     roleSelect.value = params.get("role") || "";
+    if (frameworkSelect)
+      frameworkSelect.value = params.get("framework") || "";
     filterTimeline(false);
+    document.dispatchEvent(
+      new CustomEvent("openattacks:framework", {
+        detail: {
+          id: frameworkSelect?.value || "",
+          source: "timeline-list",
+        },
+      }),
+    );
   }
   yearSelect.addEventListener("change", () => filterTimeline());
   roleSelect.addEventListener("change", () => filterTimeline());
+  frameworkSelect?.addEventListener("change", () => filterTimeline());
+  document.addEventListener("openattacks:framework", ((
+    event: CustomEvent<{ id: string; source?: string }>,
+  ) => {
+    if (event.detail.source === "timeline-list" || !frameworkSelect) return;
+    if (frameworkSelect.value === event.detail.id) return;
+    frameworkSelect.value = event.detail.id;
+    filterTimeline(false);
+  }) as EventListener);
   window.addEventListener("popstate", readTimelineURL);
   readTimelineURL();
 </script>

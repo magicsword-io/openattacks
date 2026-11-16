@@ -113,6 +113,9 @@ Patch vulnerable web plugins promptly; restrict and validate file uploads; imple
 - Tor network
 - VPS infrastructure
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 S-RM blog (Nov 6, 2026) primary source documenting IR artifacts from multiple ARTEX engagements; all forensic indicators (file paths, SQL markers, UA strings, certificate details, GitHub patterns) verified from S-RM analysis; unnamed adversaries due to ongoing investigations. Sophos X-Ops (Nov 10, 2026) adds Windows host markers and the listed IPS IDs. 2313260 and 2313262 are not in the published signature table, so they are omitted. Sophos describes the customer activity as consistent with ARTEX or other AI-assisted tooling, which is vendor-asserted and does not replace the S-RM task-log evidence. Storm-0940 is Microsoft's attribution for ConnectWise, cited by Sophos, and is not used as the actor for the S-RM cases.
 

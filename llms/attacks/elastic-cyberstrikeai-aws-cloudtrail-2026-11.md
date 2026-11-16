@@ -15,6 +15,7 @@ adversary-use-of-ai
 Unnamed operator. Elastic confirms the source IP served CyberStrikeAI. No country or motivation is stated. Hong Kong is the hosting location.
 
 - Actor: Unnamed CyberStrikeAI operator
+- Country: Unknown
 - Motivation: unknown
 - Attributed by: Elastic Security Labs
 - Confidence: medium
@@ -83,11 +84,12 @@ Rotate every identity that touched 43.240.29.11 and revoke active sessions. Repl
 
 ## Timeline
 - First seen: 2026-09-30
-- Last updated: 2026-11-13
+- Last updated: 2026-11-15
 - 2026-09-30 (Elastic Security Labs): 43.240.29.11 validates IAM users, reads Secrets Manager, and issues 56 userData calls in 141 milliseconds
 - 2026-10-02 (Elastic Security Labs): container-role reads a decrypted SSM parameter and calls SendCommand 29 seconds later
 - 2026-10-16 (Elastic Security Labs): The same server returns after 14 days and revalidates credentials, including a fourth account
 - 2026-11-13 (Elastic Security Labs): Elastic publishes the CloudTrail write-up and two high-severity bulk enumeration rules
+- 2026-11-15 (OpenAttacks): Tagged CyberStrikeAI. Country is Unknown because Elastic states no country.
 
 ## Tools
 ### AI tooling and models
@@ -96,6 +98,9 @@ Rotate every identity that touched 43.240.29.11 and revoke active sessions. Repl
 
 ### Other tooling
 - AWS APIs GetCallerIdentity, GetSessionToken, GetSecretValue, DescribeInstanceAttribute, GetParameter, SendCommand
+
+### Offensive frameworks
+- [CyberStrikeAI](https://openattacks.ai/tools/cyberstrikeai/) (`cyberstrikeai`)
 
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)

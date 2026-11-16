@@ -2,7 +2,11 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseDocument } from "yaml";
-import { actorErrors, toolErrors } from "../src/lib/schema.mjs";
+import {
+  actorErrors,
+  frameworkLinkErrors,
+  toolErrors,
+} from "../src/lib/schema.mjs";
 import { readCatalog } from "./lib/catalog.mjs";
 
 const { entries, errors } = readCatalog();
@@ -15,6 +19,7 @@ function readCollection(relativeDirectory, validate) {
     .filter((name) => /\.ya?ml$/.test(name))
     .sort();
   const ids = new Set();
+  const records = [];
 
   for (const filename of files) {
     try {
@@ -38,6 +43,7 @@ function readCollection(relativeDirectory, validate) {
             `${relativeDirectory}/${filename}: duplicate id ${data.id}`,
           );
         ids.add(data.id);
+        records.push(data);
       }
     } catch (error) {
       errors.push(`${relativeDirectory}/${filename}: ${error.message}`);
@@ -45,11 +51,17 @@ function readCollection(relativeDirectory, validate) {
   }
 
   if (!files.length) errors.push(`${relativeDirectory}/: no YAML entries found`);
-  return files.length;
+  return records;
 }
 
-const actorCount = readCollection("actors", actorErrors);
-const toolCount = readCollection("tools", toolErrors);
+const actors = readCollection("actors", actorErrors);
+const tools = readCollection("tools", toolErrors);
+errors.push(
+  ...frameworkLinkErrors(
+    entries.map((entry) => entry.data),
+    tools,
+  ),
+);
 
 if (errors.length) {
   console.error(
@@ -58,6 +70,6 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Validated ${entries.length} attack entries, ${actorCount} actor entries, and ${toolCount} tool entries.`,
+    `Validated ${entries.length} attack entries, ${actors.length} actor entries, and ${tools.length} tool entries.`,
   );
 }

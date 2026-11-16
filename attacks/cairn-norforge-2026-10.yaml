@@ -24,6 +24,8 @@ ai_tooling_and_models:
   - pi_openrouter_deepseek (AIA0002)
   - --dangerously-skip-permissions
   - Agent skill .agents/skills/tsec-actions/SKILL.md (CTF leftover)
+frameworks:
+  - cairn
 other_tooling:
   - Playwright
   - PHPGGC
