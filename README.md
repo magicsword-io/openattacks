@@ -4,6 +4,16 @@
 
 [Explore the catalog](https://openattacks.ai/) · [Browse the timeline](https://openattacks.ai/timeline/) · [Use with an LLM](https://openattacks.ai/use/) · [JSON API](https://openattacks.ai/api/attacks.json) · [RSS](https://openattacks.ai/rss.xml)
 
+## Contents
+
+- [Overview](#what-you-can-do)
+- [Run locally](#run-locally)
+- [Contributing](#contributing)
+- [Use with an LLM and API](#use-with-an-llm-and-api)
+- [Validation](#validation)
+- [Simulations](#simulations)
+- [Contributors](#contributors)
+
 <p align="center">
   <a href="https://openattacks.ai/">
     <img src="docs/screenshots/landing-desktop.png" alt="OpenAttacks landing page with the interactive report timeline and attack categories" width="100%">
@@ -89,9 +99,9 @@ When changing generated detections, simulations, or LLM exports, edit their sour
 | `skills/openattacks/`              | Installable agent skill for catalog discovery                         |
 | `scripts/`                         | Validation and export builders                                        |
 
-## Data and agent access
+## Use with an LLM and API
 
-All public formats are generated from the validated catalog. The site is static and does not require an account or runtime API server.
+OpenAttacks publishes chat-sized discovery files, a full Markdown catalog, an installable agent skill, and structured APIs. All formats are generated from the validated catalog; the site is static and does not require an account or runtime API server.
 
 | Resource              | URL                                                                |
 | --------------------- | ------------------------------------------------------------------ |
