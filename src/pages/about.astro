@@ -213,6 +213,36 @@ const lastYear = Math.max(...years);
               <a href="https://nasbench.medium.com">Research</a>
             </div>
           </article>
+
+          <article class="person-card">
+            <img
+              src={href("images/maintainers/scott-roberts.png")}
+              alt="Portrait of Scott Roberts"
+              width="512"
+              height="512"
+            />
+            <div class="person-copy">
+              <h3>
+                <a
+                  href="https://www.linkedin.com/in/scottroberts/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Scott Roberts
+                </a>
+              </h3>
+              <p>
+                Scott is a network defender, developer, educator, and author of
+                O'Reilly's <em>Intelligence-Driven Incident Response</em>. He
+                brings more than 15 years of experience in threat research,
+                detection, and incident response.
+              </p>
+            </div>
+            <div class="person-links">
+              <a href="https://github.com/sroberts">GitHub</a>
+              <a href="https://sroberts.io/">Website</a>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -362,7 +392,7 @@ const lastYear = Math.max(...years);
 
   .people-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 14px;
   }
 
