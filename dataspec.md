@@ -46,6 +46,7 @@ Generated at build time (do not edit by hand):
   /api/attacks/<id>.json, /api/attacks/<id>.md, /api/defenses/<id>.json
   /llms.txt, /llms-full.txt, /llms/attacks/<id>.md,
   /llms/by-category/<category>.md, /llms/by-month/<YYYY-MM>.md,
+  /llms/by-framework/<framework>.md,
   /data/attacks.json, /data/attacks.schema.json, /rss.xml, sitemap
 ```
 
@@ -66,7 +67,7 @@ Generated at build time (do not edit by hand):
 | `ai_role`                     | enum              | `attacker_uses_ai_as_operator`, `ai_tool_as_lure`, `ai_agent_or_mcp_as_target`, `ai_infra_as_c2`, `llm_generated_malware`, `ai_credential_theft`, `other`                                                              |
 | `technique_summary`           | string            | Non-empty. Describe the attack and the evidence for AI involvement.                                                                                                                                                    |
 | `initial_access`              | string            | Or `unknown`.                                                                                                                                                                                                          |
-| `ai_tooling_and_models`       | string[]          | Can be `[]`. Also drives the platform filter groups (regexes in `catalog.ts`: Claude, ChatGPT, Gemini, MCP, Cursor, and others).                                                                                       |
+| `ai_tooling_and_models`       | string[]          | Can be `[]`. Also drives the platform filter groups (regexes in `catalog.ts`: Claude, ChatGPT, Gemini, MCP, Cursor, and others). The optional `frameworks` field is the structured subset for offensive frameworks.   |
 | `other_tooling`               | string[]          | Can be `[]`.                                                                                                                                                                                                           |
 | `victims_and_sectors`         | string            | Free text. Drives the sector filters by regex (government, finance, technology, and others).                                                                                                                           |
 | `regions`                     | string[]          | At least 1 item, unique, from the canonical enum in `schema.yaml` (country names such as `United States`, `Bosnia and Herz.`; broader regions such as `Europe`; plus `Multiple regions`, `unknown`, `Not applicable`). |
@@ -80,6 +81,7 @@ Generated at build time (do not edit by hand):
 
 | Field                                       | Type                        | Rules / notes                                                                               |
 | ------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
+| `frameworks`                                | string[]                    | Ids such as `artex` or `cairn`. `minItems: 1` when present, unique, and each id must be `tools/<id>.yaml`. `linked_attacks` on that tool must list this attack, and the reverse. Do not set it for a passing mention, a lookalike, or a framework that was the target. |
 | `aliases`                                   | string[]                    |                                                                                             |
 | `date_activity_start` / `date_activity_end` | string or null              | If both are set, start must be ≤ end.                                                       |
 | `borderline_note`                           | string or null              | Explain the qualification when `borderline: true`. Shown as "qualification" in the exports. |
@@ -171,6 +173,8 @@ These cover required fields, types, enums, the `report-date` format (a real cale
 - The flow graph rules in §2.4.
 - Every `attack_flow` node URL and every `atlas_techniques` URL appears in `sources`.
 - `date_activity_start` ≤ `date_activity_end`.
+- Every `frameworks` id has a matching `tools/<id>.yaml` file (`entryErrors`, so `npm run check` fails on an unknown id).
+- `frameworks` and each tool's `linked_attacks` describe the same links (`frameworkLinkErrors` in `scripts/validate.mjs`).
 
 ### 3.4 Test-enforced consistency (`tests/*.test.mjs`, run on the built `dist/`)
 

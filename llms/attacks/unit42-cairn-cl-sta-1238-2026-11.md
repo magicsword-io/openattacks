@@ -94,6 +94,9 @@ Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit 
 ### Other tooling
 - unknown
 
+### Offensive frameworks
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+
 ### MagicSword projects
 - [LOLSkills](https://lolskills.io)
 

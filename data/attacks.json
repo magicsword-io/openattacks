@@ -192,6 +192,9 @@
         "CyberStrikeAI (https://github.com/AIPentest/CyberStrikeAI), web interface on TCP 8080",
         "24 SKILL.md files in the repository, including unlimited-attack-scope and cloud-attack-methods"
       ],
+      "frameworks": [
+        "cyberstrikeai"
+      ],
       "other_tooling": [
         "AWS APIs GetCallerIdentity, GetSessionToken, GetSecretValue, DescribeInstanceAttribute, GetParameter, SendCommand"
       ],
@@ -298,6 +301,7 @@
       "category": "adversary-use-of-ai",
       "attribution": {
         "actor_name": "Unnamed CyberStrikeAI operator",
+        "country": "Unknown",
         "motivation": "unknown",
         "attributed_by": "Elastic Security Labs",
         "confidence": "medium"
@@ -354,7 +358,7 @@
       ],
       "timeline": {
         "first_seen": "2026-09-30",
-        "last_updated": "2026-11-13",
+        "last_updated": "2026-11-15",
         "updates": [
           {
             "date": "2026-09-30",
@@ -375,6 +379,11 @@
             "date": "2026-11-13",
             "source": "Elastic Security Labs",
             "summary": "Elastic publishes the CloudTrail write-up and two high-severity bulk enumeration rules"
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged CyberStrikeAI. Country is Unknown because Elastic states no country."
           }
         ]
       },
@@ -1646,6 +1655,9 @@
         "DeepSeek V4 Pro",
         "AIScan Runner Skills pack (not in upstream Cairn)"
       ],
+      "frameworks": [
+        "cairn"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "At least 19 organizations in semiconductor and advanced manufacturing, defense and defense policy, and human rights and civil society. Confirmed access or data retrieval at 10.",
       "regions": [
@@ -2242,6 +2254,9 @@
         "AntiFox (https://github.com/AntiFox-AI/antifox), forked from ARTEX",
         "Anthropic or OpenAI API key required for the agent loop"
       ],
+      "frameworks": [
+        "antifox"
+      ],
       "other_tooling": [
         "ASPX web shell written by w3wp.exe",
         "Boto3 1.43.125 / Botocore 1.43.125"
@@ -2632,6 +2647,9 @@
       "ai_tooling_and_models": [
         "ARTEX autonomous pentest console (https://github.com/RuoJi6/ARTEX)",
         "Related console titles ScopeWeaver, LUCK, and Guanlan SEC"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "AWS CloudTrail APIs: FilterLogEvents, Cognito SignUp, InitiateAuth, ListBuckets, ListSecrets",
@@ -3761,6 +3779,9 @@
         "ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)",
         "LLM backends for agent decision-making"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [
         "SQL injection tools",
         "Credential harvesting utilities",
@@ -3988,6 +4009,9 @@
       "ai_tooling_and_models": [
         "ARTEX autonomous offensive agent (https://github.com/RuoJi6/ARTEX)",
         "DeepSeek and other LLM backends"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "WISP RAT",
@@ -4359,6 +4383,9 @@
       "ai_tooling_and_models": [
         "ARTEX autonomous offensive agent framework",
         "Agent benchmark evaluation environment (failed containment)"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "Internal sales CRM tool (exposed with predictable dev credentials)",
@@ -4864,6 +4891,9 @@
         "Claude Opus (hit guardrails, operator switched)",
         "Custom framework PZZ"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [
         "iOS .p12 certificate theft",
         "USDT cryptocurrency draining",
@@ -5063,6 +5093,9 @@
         "ARTEX autonomous agent framework (https://github.com/RuoJi6/ARTEX)",
         "LLM-driven Azure API enumeration with adaptive retry",
         "Langflow (https://github.com/langflow-ai/langflow) - targeted for credential theft via CVE-2025-3248"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "GitHub API for secret search",
@@ -5816,6 +5849,10 @@
         "Abliterated GLM (offensive)",
         "DeepSeek-R1 70B (offensive, later replaced)"
       ],
+      "frameworks": [
+        "cyberstrikeai",
+        "hexstrike"
+      ],
       "other_tooling": [
         "MCP servers: HexStrike AI, Kali Linux, Ghidra, Radare2, Playwright",
         "nmap, sqlmap, Metasploit, Hydra",
@@ -6065,6 +6102,12 @@
         "Cairn (AI web exploitation harness)",
         "On-the-fly AI script generation"
       ],
+      "frameworks": [
+        "artex",
+        "cairn",
+        "cyberstrikeai",
+        "pentagi"
+      ],
       "other_tooling": [
         "AWS Lambda for staging-to-production pivots",
         "Custom payment API invocation scripts",
@@ -6222,12 +6265,17 @@
       ],
       "timeline": {
         "first_seen": "2026-10-01",
-        "last_updated": "2026-11-04",
+        "last_updated": "2026-11-15",
         "updates": [
           {
             "date": "2026-11-04",
             "source": "CERT-In",
             "summary": "CERT-In Advisory CIAD-2026-0058 issued warning Indian BFSI sector on CRAFTY FALCON campaign using ARTEX, PentAGI, Cairn, CyberStrikeAI; festive-window targeting pattern noted"
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX, Cairn, CyberStrikeAI, and PentAGI from the CERT-In advisory. Category was already adversary-use-of-ai; the detail-page badge was the missing browse annotation, now set to a reported campaign."
           }
         ]
       }
@@ -6539,6 +6587,9 @@
         "CyberStrikeAI (https://github.com/CyberStrikeAI/CyberStrikeAI)",
         "LLM-driven C2 with MCP tools"
       ],
+      "frameworks": [
+        "cyberstrikeai"
+      ],
       "other_tooling": [
         "SystemUpdate scheduled task",
         "certutil (LOLBAS)",
@@ -6552,7 +6603,7 @@
         "Africa",
         "South America"
       ],
-      "attribution_or_cluster": "Financially motivated; attribution otherwise unknown",
+      "attribution_or_cluster": "Unnamed. Kaspersky could not link the activity to a known group. Chinese-language script comments and UTC+8 control-server restarts suggest a Chinese-speaking operator.",
       "scale_and_metrics": "Domain admin achieved in 3-4 days; multiple schools targeted",
       "prevention_angle": "Harden SQL Server; monitor for CyberStrikeAI indicators; detect SystemUpdate scheduled task creation; alert on certutil downloads; monitor comsvcs.dll LSASS dumps; detect DCSync activity; hunt for Golden Ticket use; block C2 infrastructure; review LOLBAS execution (certutil, comsvcs)",
       "related_magicsword_projects": [
@@ -6569,9 +6620,55 @@
         "hashes": [],
         "urls": []
       },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed operators",
+        "country": "Unknown",
+        "motivation": "unknown",
+        "attributed_by": "Kaspersky",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Suspicious Child Process Of SQL Server",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mssql_susp_child_process.yml",
+          "notes": "Matched sqlservr with security-detections-mcp. Kaspersky says the first commands in these incidents ran as children of sqlservr.exe."
+        },
+        {
+          "name": "Scheduled Task Creation Via Schtasks.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml",
+          "notes": "Matched schtasks with security-detections-mcp. The implant's first persistence step was a scheduled task named SystemUpdate."
+        },
+        {
+          "name": "File Decoded From Base64/Hex Via Certutil.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_decode.yml",
+          "notes": "Matched certutil decode with security-detections-mcp. Kaspersky says certutil decoded the assembled payload. The direct-IP download rule previously noted on this entry does not match that command."
+        },
+        {
+          "name": "Process Memory Dump Via Comsvcs.DLL",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_rundll32_process_dump_via_comsvcs.yml",
+          "notes": "Matched comsvcs with security-detections-mcp. The agent dumped lsass with comsvcs.dll MiniDump, passing the PID rather than the process name."
+        },
+        {
+          "name": "First Time Seen Account Performing DCSync",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml",
+          "notes": "Matched DCSync with security-detections-mcp. After the domain administrator account was taken, the agent ran DCSync."
+        },
+        {
+          "name": "Renamed Mimikatz and the implant token",
+          "format": "guidance",
+          "notes": "security-detections-mcp's Mimikatz hits key on the binary name or command line. Kaspersky says this activity used a renamed Mimikatz for DCSync and a Golden Ticket, so those name-based rules do not fit. No Sigma, Splunk, or Elastic rule encodes the X-Implant-Token header or the CyberStrikeAI certificate issuer."
+        }
+      ],
       "timeline": {
         "first_seen": "2026-10-01",
-        "last_updated": "2026-11-05",
+        "last_updated": "2026-11-15",
         "updates": [
           {
             "date": "2026-10-23",
@@ -6582,6 +6679,11 @@
             "date": "2026-11-04",
             "source": "Kaspersky",
             "summary": "CyberStrikeAI attacks against schools in Africa and Latin America disclosed"
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged CyberStrikeAI and backfilled category, attribution, AI-involvement confidence, detections, and this timeline note from the cited Securelist report. Kaspersky does not name a group, country, or motive."
           }
         ]
       },
@@ -6690,6 +6792,9 @@
         "grok-4.6 model (AI_radar monitoring)",
         "PentAGI (github.com/vxcontrol/pentagi)",
         "aipocket (github.com/leepsmarts/aipocket)"
+      ],
+      "frameworks": [
+        "pentagi"
       ],
       "other_tooling": [
         "fadidevv/keyhunter (github.com/fadidevv/keyhunter, Rust, crates.io: github-keyhunter v0.1.0)",
@@ -8528,6 +8633,10 @@
         "ARTEX, PentAGI, Hexstrike, CAIRN agent frameworks",
         "unnamed frontier and open-weight LLM APIs, LLM mixers and local models"
       ],
+      "frameworks": [
+        "artex",
+        "pentagi"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Technology and AI companies; Critical infrastructure; Multiple sectors",
       "regions": [
@@ -8549,9 +8658,64 @@
       "attribution": {
         "actor_name": "UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters",
         "country": "China",
-        "motivation": "nation-state"
+        "motivation": "nation-state",
+        "attributed_by": "Google Threat Intelligence Group and Mandiant",
+        "confidence": "medium"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Kerberoasting Activity - Initial Query",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_kerberoasting_activity.yml",
+          "notes": "Matched Kerberoasting with security-detections-mcp. GTIG says ARTEX ran Kerberoasting scripts to harvest service tickets."
+        },
+        {
+          "name": "First Time Seen Account Performing DCSync",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml",
+          "notes": "Matched DCSync with security-detections-mcp. GTIG says ARTEX followed Kerberoasting with DCSync scripts for the krbtgt key and domain-controller hashes."
+        },
+        {
+          "name": "Potential Pass-the-Hash (PtH) Attempt",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/lateral_movement_alternate_creds_pth.toml",
+          "notes": "Matched Pass the Hash with security-detections-mcp. GTIG lists Pass-the-Hash among the lateral-movement scripts ARTEX attempted against domain controllers."
+        },
+        {
+          "name": "Linux Webshell Indicators",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml",
+          "notes": "Matched webshell with security-detections-mcp. GTIG describes JSP webshells written through MySQL general_log on a Linux Weaver OA server."
+        },
+        {
+          "name": "Connection to Commonly Abused Web Services",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_common_webservices.toml",
+          "notes": "Matched webhook.site with security-detections-mcp. GTIG says a Windows database server used curl to post command results to rotating webhook.site URLs."
+        },
+        {
+          "name": "MySQL general_log poisoning and artex-probe filenames",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for jsp and webshell returned Linux webshell and SAP NetWeaver rules. None encode SET GLOBAL general_log_file writes of JSP content, the cl1217.jsp-style names, or artex-probe filenames. Hunt those strings in web and database logs."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-08",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-30",
+            "source": "Google Threat Intelligence Group and Mandiant",
+            "summary": "GTIG and Mandiant report ARTEX, PentAGI, Hexstrike, and CAIRN in incident-response engagements since late August 2026. UNC7228 overlaps Microsoft's PRC-nexus Storm-0940; other crews are financially motivated or suspected PRC-nexus."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and PentAGI and backfilled attribution confidence, detections, and timeline from the cited GTIG report."
+          }
+        ]
+      }
     },
     {
       "id": "unit42-artex-api-recon-2026-10",
@@ -8584,6 +8748,9 @@
       "ai_tooling_and_models": [
         "ARTEX planner agent",
         "Autonomous API reconnaissance"
+      ],
+      "frameworks": [
+        "artex"
       ],
       "other_tooling": [
         "Source map harvesting",
@@ -8741,6 +8908,9 @@
         "DeepSeek",
         "unnamed subscription-based commercial LLM"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Defense; Finance; Critical infrastructure; Technology and AI companies; Healthcare",
       "regions": [
@@ -8763,9 +8933,52 @@
       "attribution": {
         "actor_name": "VAPOR PANDA (CrowdStrike; THN says previously VexatiousTemper, overlaps Earth Estries)",
         "country": "China",
-        "motivation": "nation-state"
+        "motivation": "nation-state",
+        "attributed_by": "CrowdStrike",
+        "confidence": "high"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Detect Password Spray Attempts",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/application/detect_password_spray_attempts.yml",
+          "notes": "Matched password spray with security-detections-mcp. The Hacker News account of CrowdStrike's report says VAPOR PANDA password-sprayed credentials, including against at least 12 further organizations."
+        },
+        {
+          "name": "Antivirus - Web Shell Detection Signature",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/category/antivirus/av_webshell.yml",
+          "notes": "Matched web shell with security-detections-mcp. The same account says the operators wrote web shells. It does not name IIS or a file extension, so this is the generic antivirus signature rather than an IIS-only rule."
+        },
+        {
+          "name": "Suspicious Instance Metadata Service (IMDS) API Command Line Execution",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/credential_access_suspicious_instance_metadata_service_api_cli.toml",
+          "notes": "Matched Instance Metadata with security-detections-mcp. CrowdStrike, via The Hacker News, describes a SAML assertion chained with XXE to query the cloud instance metadata service."
+        },
+        {
+          "name": "BLOODALCHEMY and the container-root path",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for web shell, password spray, and IMDS did not return a rule for BLOODALCHEMY, its ShadowPad lineage, or root access through an unauthenticated orchestration service. Those are named in the CrowdStrike account and need a campaign hunt rather than a generic host rule."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-10-17",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-29",
+            "source": "CrowdStrike",
+            "summary": "CrowdStrike attributes ARTEX use from 17 October 2026 against more than 200 organizations to China-nexus VAPOR PANDA, previously VexatiousTemper, overlapping Earth Estries. Post-exploitation was confirmed at nine organizations."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited CrowdStrike, CyberScoop, and The Hacker News reports."
+          }
+        ]
+      }
     },
     {
       "id": "forever-embrace-embedded-browsers-2026-10",
@@ -8957,6 +9170,9 @@
         "ARTEX",
         "unnamed generative and agentic AI platforms"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Finance; Technology and AI companies; Government; Education; Defense; Critical infrastructure",
       "regions": [
@@ -8981,9 +9197,34 @@
       "attribution": {
         "actor_name": "Jade Sleet; Coral Sleet; Jasper Sleet; Diamond Sleet; Onyx Sleet; Pearl Sleet; Sapphire Sleet; Emerald Sleet",
         "country": "North Korea",
-        "motivation": "nation-state"
+        "motivation": "nation-state",
+        "attributed_by": "Microsoft Threat Intelligence",
+        "confidence": "high"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "North Korean AI-adoption activity has no shared host rule",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for password spray, web shells, and OAuth returned rules from other ARTEX campaigns. This report does not give a command line, webshell, or cloud API sequence for the eight actors. Onyx Sleet and Pearl Sleet are said to use ARTEX, and the listed Microsoft Defender coverage is actor alerts, phishing-URL alerts, and ProcmacSteal names, which are not Sigma, Splunk, or Elastic rules. Use those Defender detections where the tenant has them."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-06-08",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-29",
+            "source": "Microsoft Threat Intelligence",
+            "summary": "Microsoft rates AI adoption across eight North Korean actors as high. Jade, Coral, and Jasper Sleet have operationalized it. Onyx Sleet and Pearl Sleet have used ARTEX since late October 2026. Operations remain human-directed."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Microsoft report."
+          }
+        ]
+      }
     },
     {
       "id": "talos-nik-c2-implant-runs-operator-2026-10",
@@ -9868,6 +10109,9 @@
         "Unnamed AI coding agent",
         "autonomous AI pentest system (ARTEX AI per BleepingComputer/Yonhap)"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Healthcare; Education; Finance; Multiple sectors",
       "regions": [
@@ -9887,9 +10131,36 @@
       ],
       "category": "adversary-use-of-ai",
       "attribution": {
-        "motivation": "cybercrime"
+        "actor_name": "Unnamed 32-year-old ringleader and six accomplices",
+        "country": "Unknown",
+        "motivation": "cybercrime",
+        "attributed_by": "Seoul Metropolitan Police Agency",
+        "confidence": "high"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Website extortion case without a named host technique",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for password spray and web shells returned identity and webshell rules. Seoul police, Yonhap, Seoul Economic Daily, and BleepingComputer describe website intrusions, an AI coding agent, and ARTEX, then extortion. They do not name a command, webshell type, identity provider, or operating system, so those rules do not match this case. Review web-server access logs for the victim organizations police named by sector."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2025-09",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-26",
+            "source": "Seoul Metropolitan Police Agency",
+            "summary": "Seoul police say seven suspects stole 8.2 million records from more than 90 organizations. The 32-year-old ringleader, identified only as A, used an AI coding agent and ARTEX to breach 60 of them from 31 August 2026. Police do not publish a legal name."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled attribution, detections, and timeline from the cited police reporting. The ringleader's name and nationality are not in those sources, so country is Unknown."
+          }
+        ]
+      }
     },
     {
       "id": "trendai-chinese-language-operators-used-cyberstrikeais-2026-10",
@@ -9919,6 +10190,9 @@
         "unnamed LLMs",
         "AI workflow, LLM preprocessing and inference platforms in South Korea"
       ],
+      "frameworks": [
+        "cyberstrikeai"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Government; Multiple sectors; Technology and AI companies",
       "regions": [
@@ -9941,7 +10215,37 @@
         "ai-infra-intrusion"
       ],
       "category": "adversary-use-of-ai",
-      "ai_involvement_confidence": "confirmed"
+      "attribution": {
+        "actor_name": "Unnamed operators (three Simplified Chinese-language cases; not linked to each other)",
+        "country": "Unknown",
+        "motivation": "unknown",
+        "attributed_by": "TrendAI (Trend Micro)",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Attacker-side consoles without a victim command line",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for web shells and password spray returned host and identity rules. TrendAI reconstructed three infrastructures from files left on attacker servers and says that material cannot establish identities or, by itself, which attempts succeeded. Case A used CyberStrikeAI against legacy web admin interfaces; many targets were recorded as no session, no web shell, and no exfiltration. A webshell rule would not describe that evidence. Country is Unknown because Simplified Chinese is a working language, not an attributed country."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-01",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-23",
+            "source": "TrendAI (Trend Micro)",
+            "summary": "TrendAI's Japanese article, published in English on 27 October, describes three Simplified Chinese-language infrastructures targeting Japan. Case A, in October 2026, ran CyberStrikeAI with 44 agents. TrendAI does not link the three operators."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged CyberStrikeAI and backfilled attribution, detections, and timeline from the cited TrendAI report."
+          }
+        ]
+      }
     },
     {
       "id": "uk-aisi-anthropic-claude-mythos-5-2026-10",
@@ -10021,6 +10325,9 @@
         "ARTEX multi-agent pentest framework (LLM backends not named)",
         "Okta, Entra ID, AWS Cognito login flows"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Technology and AI companies",
       "regions": [
@@ -10041,9 +10348,52 @@
       "attribution": {
         "actor_name": "Storm-0940 (overlap per Wiz)",
         "country": "China",
-        "motivation": "nation-state"
+        "motivation": "nation-state",
+        "attributed_by": "Wiz Research",
+        "confidence": "medium"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Potential Okta Password Spray (Single Source)",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/okta/credential_access_okta_password_spray_single_source.toml",
+          "notes": "Matched Okta password spray with security-detections-mcp. Wiz describes one-second Okta and Entra login bursts lasting 20 to 60 minutes. Wiz also names its own Okta password-spray alert, which is not this rule."
+        },
+        {
+          "name": "Potential Okta Password Spray (Multi-Source)",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/okta/credential_access_okta_password_spray_multi_source.toml",
+          "notes": "Matched Okta password spray with security-detections-mcp. Wiz says a new address appeared within minutes after an IP was blocked, so the spray is not confined to one source."
+        },
+        {
+          "name": "Azure AD Multiple Users Failing To Authenticate From Ip",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/cloud/azure_ad_multiple_users_failing_to_authenticate_from_ip.yml",
+          "notes": "Matched T1110.003 with security-detections-mcp. Wiz says the same actor password-sprayed Entra ID as well as Okta, using infrastructure Microsoft attributes to Storm-0940."
+        },
+        {
+          "name": "Cognito SignUp and source-map harvesting",
+          "format": "guidance",
+          "notes": "security-detections-mcp's Cognito search returned only unauthenticated identity-pool credentials. Wiz describes Cognito SignUp, ForgotPassword, and InitiateAuth, plus downloads of JavaScript source maps and OpenAPI documents. That identity-pool rule does not match. Hunt those API events and the source-map requests Wiz lists."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-10",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-22",
+            "source": "Wiz Research",
+            "summary": "Wiz reports an ARTEX operator, overlapping Microsoft's Storm-0940, password-spraying Okta and Entra and probing Cognito at IT and software vendors through October 2026. Most attempts failed."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Wiz report."
+          }
+        ]
+      }
     },
     {
       "id": "abnormal-athena-stealthroute-phishing-service-sells-2026-10",
@@ -10590,6 +10940,9 @@
         "ConnectWise Cloud Backup (SkyKick) app identities",
         "Microsoft 365 / Entra ID"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [],
       "victims_and_sectors": "Defense; Government; Finance; Technology and AI companies; Critical infrastructure; Multiple sectors",
       "regions": [
@@ -10610,9 +10963,52 @@
       "attribution": {
         "actor_name": "Storm-0940",
         "country": "China",
-        "motivation": "nation-state"
+        "motivation": "nation-state",
+        "attributed_by": "Microsoft Threat Intelligence",
+        "confidence": "high"
       },
-      "ai_involvement_confidence": "confirmed"
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Password Spray Activity",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/azure/identity_protection/azure_identity_protection_password_spray.yml",
+          "notes": "Matched password spray with security-detections-mcp. Microsoft says Storm-0940 used ARTEX for an Entra password spray from 144.172.64.99, with more than 151,000 failed logons across eight organizations on 10-14 October 2026."
+        },
+        {
+          "name": "Azure AD Multiple Users Failing To Authenticate From Ip",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/cloud/azure_ad_multiple_users_failing_to_authenticate_from_ip.yml",
+          "notes": "Matched T1110.003 with security-detections-mcp. Same Entra password-spray window: many accounts failing from one infrastructure range, then ConnectWise application sign-ins."
+        },
+        {
+          "name": "Entra ID Application Credential Modified",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/azure/persistence_entra_id_application_credential_modification.toml",
+          "notes": "Matched application credential with security-detections-mcp. Microsoft says the agents added application credentials and changed privileges after authenticating with the stolen ConnectWise app identities."
+        },
+        {
+          "name": "Microsoft Defender titles for this campaign",
+          "format": "guidance",
+          "notes": "The blog's Defender coverage (unusual Graph activity for the ConnectWise application, application self-assigned Global Administrator, Graph activity from a threat-intelligence IP) is not a Sigma, Splunk, or Elastic rule. security-detections-mcp did not return those titles. Keep them as tenant alerts alongside the three rules above."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-21",
+            "source": "Microsoft Threat Intelligence",
+            "summary": "Microsoft attributes the ConnectWise Cloud Backup supply-chain compromise to China-state-aligned Storm-0940 and says the actor used ARTEX to reach more than 2,250 Microsoft 365 tenants. Privileged cloud access followed in under three hours in some tenants."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Microsoft report."
+          }
+        ]
+      }
     },
     {
       "id": "symantec-skynet-llmjacking-2026-10",
@@ -10954,6 +11350,9 @@
         "pi_openrouter_deepseek (AIA0002)",
         "--dangerously-skip-permissions",
         "Agent skill .agents/skills/tsec-actions/SKILL.md (CTF leftover)"
+      ],
+      "frameworks": [
+        "cairn"
       ],
       "other_tooling": [
         "Playwright",
@@ -13118,6 +13517,9 @@
         "GLM-5.3",
         "Grok 4.6"
       ],
+      "frameworks": [
+        "artex"
+      ],
       "other_tooling": [
         "Proxy IPs listed in CrowdStrike IOC table"
       ],
@@ -13132,12 +13534,36 @@
       "source_notes": "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.",
       "category": "adversary-use-of-ai",
       "attribution": {
-        "country": "China",
+        "actor_name": "Unknown threat actor",
+        "country": "Unknown",
         "motivation": "financially-motivated",
         "attributed_by": "CrowdStrike Intelligence",
         "confidence": "medium"
       },
       "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "ARTEX operator infrastructure is not a victim-side rule",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09",
+        "last_updated": "2026-11-15",
+        "updates": [
+          {
+            "date": "2026-10-07",
+            "source": "CrowdStrike Intelligence",
+            "summary": "CrowdStrike reports an unnamed, likely Chinese-speaking, financially motivated actor using ARTEX and Claude Code against South Korean financial organizations from late September to early October 2026. A resume prompt listing Maoming, Guangdong cannot be definitively tied to the actor."
+          },
+          {
+            "date": "2026-11-15",
+            "source": "OpenAttacks",
+            "summary": "Tagged ARTEX and backfilled actor name, detections, and timeline from the cited CrowdStrike report. Country stays Unknown because the report attributes language and a financial motive, not a country."
+          }
+        ]
+      },
       "last_reviewed": "2026-11-04",
       "attack_flow": {
         "nodes": [

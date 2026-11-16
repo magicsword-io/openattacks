@@ -17,13 +17,14 @@ Published site:
 - One attack: `https://openattacks.ai/llms/attacks/<id>.md`
 - One category: `https://openattacks.ai/llms/by-category/<category>.md`
 - One month: `https://openattacks.ai/llms/by-month/<YYYY-MM>.md`
+- One offensive framework: `https://openattacks.ai/llms/by-framework/<id>.md`
 - Structured records: `https://openattacks.ai/api/attacks.json`
 - Field definitions: `https://openattacks.ai/api/schema.json`
 - Human page: `https://openattacks.ai/attacks/<id>/`
 
 `https://openattacks.ai/llms-full.txt` is the entire catalog in one file. It is larger than most chat context windows. Do not fetch it unless the user explicitly asks for the complete file.
 
-A git checkout of the catalog uses the same relative paths: `llms.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, and `llms/by-month/<YYYY-MM>.md`. The structured export in the repo is `data/attacks.json` (the same records as `api/attacks.json` on the site). If those generated files are not in the checkout, fetch the site URLs above. Do not invent entries to fill a missing file.
+A git checkout of the catalog uses the same relative paths: `llms.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, and `llms/by-framework/<id>.md`. The structured export in the repo is `data/attacks.json` (the same records as `api/attacks.json` on the site). If those generated files are not in the checkout, fetch the site URLs above. Do not invent entries to fill a missing file.
 
 Category ids are `adversary-use-of-ai` and `attacks-on-ai`. Month files use the report month, `YYYY-MM`.
 
@@ -40,6 +41,7 @@ Useful filters:
 - `ai_role` is one of `ai_agent_or_mcp_as_target`, `ai_credential_theft`, `ai_infra_as_c2`, `ai_tool_as_lure`, `attacker_uses_ai_as_operator`, `llm_generated_malware`, `other`. `ai_role_secondary` uses the same values.
 - `category` is `adversary-use-of-ai`, `attacks-on-ai`, or empty. Empty means uncategorized, not either side.
 - `ai_tooling_and_models` lists reported AI tools and models. Match the tool the user named; do not treat a shared tool as shared attribution.
+- `frameworks` lists tool-page ids for an offensive or testing framework the attack used (`artex`, `antifox`, `cairn`, `cyberstrikeai`, `hexstrike`, `pentagi`). Absent means none was recorded, not that the report never said the name. Use `llms/by-framework/<id>.md` for that set. Do not treat a passing mention, a lookalike, or a framework that was the target as a `frameworks` value.
 - `victims_and_sectors`, `regions`, and `region_notes` describe what the sources report. `regions` is target geography. "Multiple regions" is not a list of countries.
 - `attribution.actor_name`, `attribution.country`, `attribution.motivation`, `attribution.attributed_by`, and `attribution.confidence` (`high`, `medium`, `low`). Missing attribution is unknown.
 - `ai_involvement_confidence` is `confirmed`, `vendor-asserted`, or `unverified`. Missing means unassessed.

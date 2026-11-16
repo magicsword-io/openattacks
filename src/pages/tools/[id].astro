@@ -12,8 +12,9 @@ export async function getStaticPaths() {
 }
 
 const { tool } = Astro.props;
+// frameworks on each attack is the source of truth. linked_attacks is checked to match it.
 const attacks = (await getAttacks()).filter((attack) =>
-  tool.linked_attacks?.includes(attack.id),
+  attack.frameworks?.includes(tool.id),
 );
 const actors = tool.linked_actors
   ? await Promise.all(
@@ -78,7 +79,7 @@ const actors = tool.linked_actors
     )}
     {attacks.length > 0 && (
       <section>
-        <h2>Linked attacks</h2>
+        <h2>Attacks using {tool.name}</h2>
         <ul class="linked-list">
           {attacks.map((attack) => (
             <li>

@@ -97,6 +97,9 @@ Block public access on S3 buckets that hold front-end configs. Alert on anonymou
 - Stratus Red Team (https://github.com/DataDog/stratus-red-team)
 - TrailDiscover (https://github.com/adanalvarez/TrailDiscover)
 
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
+
 ## Source notes
 IPs, user agents, API names, placeholder keys, and console titles are from the Datadog article. GetSecretValue is not claimed here; the Cognito path tried ListSecrets and other List/Describe calls. 154.64.252.77 also appears in the WorkOS bulletin covered by workos-artex-unintended-agent-escape-2026-10. Link microsoft-artex-github-secrets-keyvault-2026-11, unit42-artex-api-recon-2026-10, crowdstrike-artex-sk-finance-2026-10, and the Check Point, S-RM, and Storm-3358 ARTEX entries.
 

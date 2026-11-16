@@ -102,6 +102,9 @@ Default-deny / GTFOBins-style block of nmap, python, php, openssl on web servers
 - [Python](https://github.com/python/cpython)
 - [OpenSSL](https://github.com/openssl/openssl)
 
+### Offensive frameworks
+- [Cairn](https://openattacks.ai/tools/cairn/) (`cairn`)
+
 ### MagicSword projects
 - [GTFOBins](https://gtfobins.github.io)
 - [LOLSkills](https://lolskills.io)

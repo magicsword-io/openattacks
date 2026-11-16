@@ -100,6 +100,16 @@ test("index, bundles, and JSON cover every attack exactly once", () => {
     assert.ok(doc.includes("## Detections"));
     assert.ok(doc.includes("## Timeline"));
     assert.ok(doc.includes("## Tools"));
+    if (seed.frameworks?.length) {
+      assert.ok(doc.includes("### Offensive frameworks"), seed.id);
+      assert.ok(line.includes(`frameworks: ${seed.frameworks.join(", ")}`), seed.id);
+      for (const id of seed.frameworks) {
+        assert.ok(doc.includes(`/tools/${id}/`), `${seed.id} ${id}`);
+        assert.ok(outputs.has(`llms/by-framework/${id}.md`));
+      }
+    } else {
+      assert.equal(doc.includes("### Offensive frameworks"), false, seed.id);
+    }
     assert.ok(doc.includes("## Source notes"));
     assert.ok(doc.includes("## Sources"));
     for (const source of seed.sources) assert.ok(doc.includes(source.url));
@@ -145,5 +155,9 @@ test("the site build serves the committed export bytes", () => {
     const month = `llms/by-month/${monthKey(seed.date_reported)}.md`;
     assert.equal(read(`dist/${category}`), outputs.get(category));
     assert.equal(read(`dist/${month}`), outputs.get(month));
+  }
+  for (const path of outputs.keys()) {
+    if (path.startsWith("llms/by-framework/"))
+      assert.equal(read(`dist/${path}`), outputs.get(path), path);
   }
 });

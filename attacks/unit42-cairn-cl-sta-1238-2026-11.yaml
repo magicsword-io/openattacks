@@ -26,6 +26,8 @@ ai_tooling_and_models:
   - "DeepSeek V4 Flash"
   - "DeepSeek V4 Pro"
   - "AIScan Runner Skills pack (not in upstream Cairn)"
+frameworks:
+  - cairn
 other_tooling: []
 victims_and_sectors: "At least 19 organizations in semiconductor and advanced manufacturing, defense and defense policy, and human rights and civil society. Confirmed access or data retrieval at 10."
 regions:

@@ -1,9 +1,20 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { formatDate, getAttacks, href, repo, roles } from "../lib/catalog";
+import { formatDate, getAttacks, href, repo, roles, usedFrameworks } from "../lib/catalog";
 import { buildPromptGroups, catalogSlices } from "../lib/llm-prompts.mjs";
 
 const attacks = await getAttacks();
+const toolNames = Object.fromEntries(
+  (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
+);
+const frameworkBundles = usedFrameworks(attacks)
+  .map((id) => ({
+    id,
+    name: toolNames[id] || id,
+    count: attacks.filter((attack) => attack.frameworks?.includes(id)).length,
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const slices = catalogSlices(attacks);
 const groups = buildPromptGroups(attacks);
 const months = slices.months.slice(0, 6);
@@ -17,7 +28,7 @@ const categoryLabel: Record<string, string> = {
   "adversary-use-of-ai": "Adversary use of AI — attackers using AI in the operation",
   "attacks-on-ai": "Attacks on AI — the model, agent, or AI tool is the target",
 };
-const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only the entries this question needs at ${publicBase.href}llms/attacks/<id>.md. For a whole category or month, open ${publicBase.href}llms/by-category/<category>.md or ${publicBase.href}llms/by-month/<YYYY-MM>.md instead. Do not load llms-full.txt. Cite the catalog page and the original source URL. Say when attribution or AI involvement is unknown. Do not invent detection rules or MITRE ATLAS mappings.`;
+const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only the entries this question needs at ${publicBase.href}llms/attacks/<id>.md. For a whole category or month, open ${publicBase.href}llms/by-category/<category>.md or ${publicBase.href}llms/by-month/<YYYY-MM>.md instead. For attacks that used one offensive framework, open ${publicBase.href}llms/by-framework/<id>.md. Do not load llms-full.txt. Cite the catalog page and the original source URL. Say when attribution or AI involvement is unknown. Do not invent detection rules or MITRE ATLAS mappings.`;
 ---
 
 <Layout
@@ -323,6 +334,25 @@ const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only th
       </ul>
       <p>
         {attacks.length - slices.categories.reduce((sum, category) => sum + category.count, 0)} entries have no category. They stay in the index and in their month bundle.
+      </p>
+
+      <h3>Offensive framework bundles</h3>
+      <ul class="bundle-list">
+        {frameworkBundles.map((framework) => (
+          <li>
+            <a href={href(`llms/by-framework/${framework.id}.md`)}>
+              <code>llms/by-framework/{framework.id}.md</code>
+            </a>
+            <span>
+              {framework.name} · {framework.count}{" "}
+              {framework.count === 1 ? "entry" : "entries"}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p>
+        A bundle exists only when an attack's <code>frameworks</code> field
+        names that tool. A passing mention does not.
       </p>
 
       <h3>Recent month bundles</h3>

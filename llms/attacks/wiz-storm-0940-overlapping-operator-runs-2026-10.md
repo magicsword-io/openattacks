@@ -17,6 +17,8 @@ Storm-0940 (overlap per Wiz)
 - Actor: Storm-0940 (overlap per Wiz)
 - Country: China
 - Motivation: nation-state
+- Attributed by: Wiz Research
+- Confidence: medium
 
 ## AI involvement confidence
 confirmed
@@ -38,10 +40,16 @@ No ATLAS mapping is recorded.
 unknown
 
 ## Detections
-No detections are recorded.
+- [Potential Okta Password Spray (Single Source)](https://github.com/elastic/detection-rules/blob/main/rules/integrations/okta/credential_access_okta_password_spray_single_source.toml) (elastic) — Matched Okta password spray with security-detections-mcp. Wiz describes one-second Okta and Entra login bursts lasting 20 to 60 minutes. Wiz also names its own Okta password-spray alert, which is not this rule.
+- [Potential Okta Password Spray (Multi-Source)](https://github.com/elastic/detection-rules/blob/main/rules/integrations/okta/credential_access_okta_password_spray_multi_source.toml) (elastic) — Matched Okta password spray with security-detections-mcp. Wiz says a new address appeared within minutes after an IP was blocked, so the spray is not confined to one source.
+- [Azure AD Multiple Users Failing To Authenticate From Ip](https://github.com/splunk/security_content/blob/develop/detections/cloud/azure_ad_multiple_users_failing_to_authenticate_from_ip.yml) (splunk) — Matched T1110.003 with security-detections-mcp. Wiz says the same actor password-sprayed Entra ID as well as Okta, using infrastructure Microsoft attributes to Storm-0940.
+- Cognito SignUp and source-map harvesting (guidance) — security-detections-mcp's Cognito search returned only unauthenticated identity-pool credentials. Wiz describes Cognito SignUp, ForgotPassword, and InitiateAuth, plus downloads of JavaScript source maps and OpenAPI documents. That identity-pool rule does not match. Hunt those API events and the source-map requests Wiz lists.
 
 ## Timeline
-No timeline is recorded.
+- First seen: 2026-10
+- Last updated: 2026-11-15
+- 2026-10-22 (Wiz Research): Wiz reports an ARTEX operator, overlapping Microsoft's Storm-0940, password-spraying Okta and Entra and probing Cognito at IT and software vendors through October 2026. Most attempts failed.
+- 2026-11-15 (OpenAttacks): Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Wiz report.
 
 ## Tools
 ### AI tooling and models
@@ -50,6 +58,9 @@ No timeline is recorded.
 
 ### Other tooling
 - unknown
+
+### Offensive frameworks
+- [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
 Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution.

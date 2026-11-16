@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import {
   roles,
   href,
@@ -9,12 +10,20 @@ import {
   sectors as sectorOptions,
   platformGroups,
   sectorGroups,
+  usedFrameworks,
 } from "../lib/catalog";
 import { present, environments, evidenceTypes } from "../lib/presentation";
 import Icon from "./Icon.astro";
+import FrameworkBadges from "./FrameworkBadges.astro";
 import { simulationPreview } from "../lib/simulation-preview.mjs";
 import ViewTabs from "./ViewTabs.astro";
 const { attacks } = Astro.props as { attacks: Attack[] };
+const toolNames = Object.fromEntries(
+  (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
+);
+const frameworkOptions = usedFrameworks(attacks)
+  .map((id) => ({ id, name: toolNames[id] || id }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 const years = [...new Set(attacks.map((a) => a.date_reported.slice(0, 4)))]
   .sort()
   .reverse();
@@ -78,6 +87,18 @@ attacks.slice(0, 10).forEach((attack) => {
           <option value={id}>{role.short}</option>
         ))}
       </select>
+      {frameworkOptions.length > 0 && (
+        <select
+          class="filter-select"
+          name="framework"
+          aria-label="Filter by offensive framework"
+        >
+          <option value="">Any framework</option>
+          {frameworkOptions.map((framework) => (
+            <option value={framework.id}>Used {framework.name}</option>
+          ))}
+        </select>
+      )}
       <select
         class="filter-select"
         name="evidence"
@@ -239,6 +260,7 @@ attacks.slice(0, 10).forEach((attack) => {
             data-regions={JSON.stringify(attack.regions)}
             data-tools={JSON.stringify(attack.ai_tooling_and_models)}
             data-platforms={JSON.stringify(platformGroups(attack))}
+            data-frameworks={JSON.stringify(attack.frameworks || [])}
             data-sector={attack.victims_and_sectors}
             data-sector-groups={JSON.stringify(sectorGroups(attack))}
             data-confidence={
@@ -256,6 +278,10 @@ attacks.slice(0, 10).forEach((attack) => {
               attack.attribution_or_cluster,
               ...attack.ai_tooling_and_models,
               ...attack.other_tooling,
+              ...(attack.frameworks || []).flatMap((id) => [
+                id,
+                toolNames[id] || id,
+              ]),
               attack.victims_and_sectors,
               ...attack.regions,
               ...(attack.tags || []),
@@ -288,6 +314,7 @@ attacks.slice(0, 10).forEach((attack) => {
                   </span>
                 )}
                 <span>{roles[attack.ai_role].short}</span>
+                <FrameworkBadges ids={attack.frameworks} names={toolNames} />
                 {simulationPreview(attack.id) && (
                   <a
                     class="simulation-available simulation-catalog-badge"
