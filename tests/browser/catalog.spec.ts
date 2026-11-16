@@ -379,12 +379,13 @@ test("about page introduces the maintainers with local portraits", async ({
     page.getByRole("heading", { name: "The people behind the project" }),
   ).toBeVisible();
   const cards = page.locator(".person-card");
-  await expect(cards).toHaveCount(4);
+  await expect(cards).toHaveCount(5);
   for (const name of [
     "Kostas",
     "Michael Haag",
     "Jose Hernandez",
     "Nasreddine Bencherchali",
+    "Scott Roberts",
   ]) {
     await expect(
       cards.getByRole("heading", { name, exact: true }),
