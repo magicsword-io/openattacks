@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-11-15T00:00:00.000Z",
-  "count": 272,
+  "count": 275,
   "attacks": [
     {
       "id": "dynatrace-mcpvenom-tool-poisoning-2026-11",
@@ -661,6 +661,774 @@
       }
     },
     {
+      "id": "elastic-sansar-ray-gpu-2026-11",
+      "name": "Elastic REF3364 SANSAR takes over exposed Ray GPU hosts and hides utilization",
+      "date_reported": "2026-11-12",
+      "researcher": "Salim Bitam",
+      "org": "Elastic Security Labs",
+      "sources": [
+        {
+          "url": "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware",
+          "title": "0% GPU utilization: How SANSAR hides Linux cryptomining",
+          "publisher": "Elastic Security Labs"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "ai_agent_or_mcp_as_target",
+      "ai_role_secondary": null,
+      "ai_role_detail": "The target is Ray, a distributed Python framework used for AI training and inference. The attacker is not described as using a model. The NVML wrapper is aimed at the GPU telemetry ML operators watch.",
+      "technique_summary": "Elastic Security Labs (Salim Bitam, Nov 12, 2026) tracks REF3364. The Ray dashboard was bound to loopback, but the job agent was reachable from the internet and accepted unauthenticated Jobs API submissions. External probes appeared in the Ray logs on October 22, 2026. On October 24 a submitted job ran nvidia-smi and sent the GPU inventory out. On October 25 a Python reverse-shell job connected to an external listener under the account that owned the Ray session. The actor added an SSH key to that account's authorized_keys, obtained root, and staged SANSAR under /opt/vadi_ on three GPU hosts. SANSAR is a Rust orchestrator (v0.1.3) with Tor/Arti command and control and Lyrebird obfs4/WebTunnel. It supervises XMRig, stored as kurt, and SRBMiner-MULTI, stored as tilki (https://github.com/xmrig/xmrig and https://github.com/doktor83/SRBMiner-Multi). A replaced libnvidia-ml.so.1 wraps the real NVML library and reports GPU use as 0 percent, randomizes temperature between 36 and 46 C and power between 100 and 200 W, and filters process lists, so nvidia-smi and other NVML clients lie. An ftrace rootkit, acpi_thermal_mgr.ko, is built with DKMS, loaded through the initramfs, and hides processes, files, and sockets. A systemd backdoor named netns reads its command-and-control address from an Ethereum smart contract and connects on TCP 8080. Elastic publishes YARA rules for SANSAR and netns. Link shadowray-2-0-hijacks-exposed-ray-2025-11.",
+      "initial_access": "Unauthenticated Ray Jobs API on an internet-reachable job agent",
+      "ai_tooling_and_models": [
+        "Ray (https://github.com/ray-project/ray)"
+      ],
+      "other_tooling": [
+        "SANSAR orchestrator",
+        "XMRig, filename kurt (https://github.com/xmrig/xmrig)",
+        "SRBMiner-MULTI, filename tilki (https://github.com/doktor83/SRBMiner-Multi)",
+        "Lyrebird obfs4/WebTunnel",
+        "NVML wrapper libnvidia-ml.so.1"
+      ],
+      "victims_and_sectors": "Three GPU hosts running Ray. Elastic did not name the organizations.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "REF3364. Elastic does not attribute the activity to a named group or country.",
+      "scale_and_metrics": "Three GPU hosts. Activity from October 22 through October 25, 2026, from probe to persistent access.",
+      "prevention_angle": "Do not expose the Ray job agent. Require authentication on the Jobs API. Alert on a Python reverse shell from the Ray account, a new authorized_keys entry, an out-of-tree kernel module, and a miner command line even when the binary is named kurt or tilki. Compare nvidia-smi with a second GPU telemetry source so a wrapped libnvidia-ml.so.1 cannot be the only reading.",
+      "related_magicsword_projects": [],
+      "source_notes": "Dates, paths, component names, and the seven SHA-256 hashes are from the Elastic Security Labs article. The miners are renamed, so a rule that requires the process name xmrig or srbminer will miss kurt and tilki. The NVML change is a replaced libnvidia-ml.so.1, not an LD_PRELOAD or ld.so.preload edit, so those rules are not cited.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Elastic did not name the countries of the GPU hosts.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [
+          "00c9ac44291f83c72d54302e99d155a3e26d02225a3e516764d5833a99657c9e",
+          "96fc528ca5e7d1c2b3add5e31b8797cb126f704976c8fbeaecdbf0aa4309ad46",
+          "acc706afc9322a3eae1ef49049749e0a7c9f1a123895ac56dc8a289beb2fb5b7",
+          "cc1ad7f14777a098ccc91fd4e8f6143da14418c2b6fdf23b7f8f6b3d1b0b7f1d",
+          "675c24728f87f7aa0fa07527027c95c24c246049c65eaef89270ab04ea50a180",
+          "6ba1aa275e0e2826e8b48b36473539ca56cbdc41f429e539a45f8532b084d7a4",
+          "df8ab6fd699e6ae90e63e9696bae8f01342708bafc2ed88af414337e4f237194"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0049",
+          "rationale": "The internet-reachable Ray Jobs API accepted unauthenticated job submissions.",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+          ]
+        },
+        {
+          "id": "AML.T0050",
+          "rationale": "Submitted jobs ran nvidia-smi and a Python reverse shell.",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+          ]
+        },
+        {
+          "id": "AML.T0072",
+          "rationale": "The October 25 job was a Python reverse shell to an external listener.",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+          ]
+        },
+        {
+          "id": "AML.T0034",
+          "rationale": "SANSAR mined on the stolen GPU capacity while reporting 0 percent utilization.",
+          "source_urls": [
+            "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "probe",
+            "title": "Unauthenticated Ray job",
+            "description": "October 22 probes, then an October 24 job that runs nvidia-smi and sends the GPU inventory out.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+            ]
+          },
+          {
+            "id": "shell",
+            "title": "Python reverse shell",
+            "description": "On October 25 a Python reverse-shell job connects out as the Ray session account.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+            ]
+          },
+          {
+            "id": "keys",
+            "title": "SSH key and root",
+            "description": "An SSH key is added to authorized_keys. The actor then stages SANSAR under /opt/vadi_.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+            ]
+          },
+          {
+            "id": "hide",
+            "title": "NVML wrapper and DKMS rootkit",
+            "description": "libnvidia-ml.so.1 reports 0 percent GPU use. acpi_thermal_mgr.ko is loaded through DKMS and the initramfs.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.elastic.co/security-labs/threat-command/sansar-linux-cryptomining-malware"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "probe",
+            "target": "shell"
+          },
+          {
+            "source": "shell",
+            "target": "keys"
+          },
+          {
+            "source": "keys",
+            "target": "hide"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "REF3364",
+        "country": "Unknown",
+        "motivation": "financially-motivated",
+        "attributed_by": "Elastic Security Labs",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Python Reverse Shell Execution Via PTY And Socket Modules",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_python_reverse_shell.yml",
+          "notes": "Linux process creation. python -c with import, pty, socket, spawn, and connect. Matches that common reverse-shell form. A job that is a script file without those strings on one command line will not match."
+        },
+        {
+          "name": "Linux SSH Authorized Keys Modification",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml",
+          "notes": "Linux endpoint. Modification of authorized_keys, which is how the actor kept access after the reverse shell."
+        },
+        {
+          "name": "Linux Install Kernel Module Using Modprobe Utility",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_install_kernel_module_using_modprobe_utility.yml",
+          "notes": "Linux endpoint. modprobe loading a kernel module. DKMS loads acpi_thermal_mgr.ko this way."
+        },
+        {
+          "name": "Tainted Out-Of-Tree Kernel Module Load",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_tainted_kernel_module_out_of_tree_load.toml",
+          "notes": "Linux endpoint. An out-of-tree module that taints the kernel. Fits the DKMS-built acpi_thermal_mgr.ko rootkit."
+        },
+        {
+          "name": "Linux Crypto Mining Indicators",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_crypto_mining.yml",
+          "notes": "Linux process creation. Stratum URLs, --donate-level=0, and related miner flags. The binaries are renamed kurt and tilki, so a process-name rule for xmrig does not match. These command-line flags still can."
+        },
+        {
+          "name": "NVML wrapper and netns contract",
+          "format": "guidance",
+          "notes": "No cited rule looks for a replaced libnvidia-ml.so.1, the path /opt/vadi_, or a systemd unit that reads an Ethereum contract. LD_PRELOAD rules do not match this library replacement."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-10-22",
+        "last_updated": "2026-11-12",
+        "updates": [
+          {
+            "date": "2026-10-22",
+            "source": "Elastic Security Labs",
+            "summary": "External probes appear in the Ray job logs."
+          },
+          {
+            "date": "2026-10-24",
+            "source": "Elastic Security Labs",
+            "summary": "A submitted job runs nvidia-smi and sends the GPU inventory to an external server."
+          },
+          {
+            "date": "2026-10-25",
+            "source": "Elastic Security Labs",
+            "summary": "A Python reverse-shell job connects out. The actor adds an SSH key, gains root, and stages SANSAR under /opt/vadi_."
+          },
+          {
+            "date": "2026-11-12",
+            "source": "Elastic Security Labs",
+            "summary": "Elastic publishes REF3364, the seven file hashes, the NVML wrapper, and the DKMS rootkit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "eye-security-artex-gitops-2026-11",
+      "name": "Eye Security ARTEX intrusion from a PHP webshell to GitOps and CI runners",
+      "date_reported": "2026-11-12",
+      "researcher": "Bas van den Berg",
+      "org": "Eye Security",
+      "sources": [
+        {
+          "url": "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/",
+          "title": "Machine speed: how we defended against an AI-driven attack",
+          "publisher": "Eye Security"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Eye Security recovered ARTEX markers in pod names, files, data probes, and user agents during a multi-day incident at a payment and gift-card company. The agents adapted a rate-limit bypass in about three minutes.",
+      "technique_summary": "Eye Security (Bas van den Berg, Nov 12, 2026) describes a multi-day ARTEX intrusion that started at a vulnerable custom PHP upload function. Uploads were extension-fuzzed (.phtml, .php5, .php7, .phar, .inc, .PHP) into webshells such as artx_s5.php and zzartx0000.php. The shell accepted header X-ARTX-KEY or parameter k, used key k=x9f3c2b7e, and returned ### ARTX-AGENT. Environment variables on the pod leaked API keys, and the first call with a stolen key landed within minutes. When a rate limiter engaged, the agents rewrote their client in about three minutes to rotate a spoofed client-IP header and peaked at over 9,000 requests a minute. After that path was blocked they used a pool of more than 17,000 residential proxies. They pulled Neo-reGeorg (https://github.com/L-codes/Neo-reGeorg) and changed it to keep state in the internal cache so it worked across load-balanced pods. Its default user agent is Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0. With an engineer's Git hosting identity they changed the deployment repo so GitOps deployed attacker pods, including artx-pod and a privileged pod on a staging host. Deleting the pod brought it back within a second. From the privileged pod they broke out to the node with nsenter. Separately, Eye counted thirteen logins in under three minutes, one socket per login, asking a file-transfer server to forward Docker, containerd, CRI-O, lightweight Kubernetes, the system bus, the PHP worker pool, the process supervisor, and sshd. The server refused every one of those forwards. A CI app key from the secret store was used to register self-hosted GitHub runners named sink-*, re-registered about every eight minutes through the night. Backdoor admins looked like QA or audit accounts (qa_probe_*, qa.audit29a). In phpMyAdmin they used LOAD DATA LOCAL INFILE into databases named artx_* and INTO OUTFILE write tests at /tmp/x.php5. The operators went after gift-card codes. Eye also publishes OSINT infrastructure from similar ARTEX activity: 207.5.195.93, artex.lol, staging.artex.lol, artex.tokena2b.top, artex.ok7777.eu.cc, artex.noog2infra.site, images tomicdd/artex and congdonglinux/artex, and callbacks on dnslog.cn, oast.me, and webhook.site. Data markers include ARTEX_WRITE_PROBE, ARTEX-PROBE-0001, ARTX_PERSIST_OK, and artex_control_marker_zz9q. Link srm-artex-ir-host-artifacts-2026-11, datadog-artex-aws-cognito-2026-11, arctic-wolf-antifox-iis-aws-2026-11, microsoft-artex-github-secrets-keyvault-2026-11, and badbyte-artex-backdoor-docker-2026-11.",
+      "initial_access": "Vulnerable custom PHP upload function, then extension-fuzzed webshells",
+      "ai_tooling_and_models": [
+        "ARTEX (https://github.com/RuoJi6/ARTEX)"
+      ],
+      "other_tooling": [
+        "Neo-reGeorg (https://github.com/L-codes/Neo-reGeorg)",
+        "nsenter container breakout",
+        "Self-hosted GitHub Actions runners"
+      ],
+      "victims_and_sectors": "A company running payment and gift-card services. Eye did not name the company.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "Unnamed. Eye ties one address to public ARTEX reporting on payment-API abuse. No country is given.",
+      "scale_and_metrics": "Peak over 9,000 requests a minute. More than 17,000 residential proxy addresses. Thirteen socket-forward logins in under three minutes, all refused by the server. GitOps recreated a deleted attacker pod within a second. Runners were re-registered about every eight minutes.",
+      "prevention_angle": "Block the published webshell names and the X-ARTX-KEY header. Alert on php-fpm or the web server spawning a shell, nsenter into the host PID namespace, a privileged pod, and a new self-hosted GitHub runner such as sink-*. Treat GitOps reconciliation as a persistence path: a deleted artx-pod that returns immediately is the deployment repo, not a restart.",
+      "related_magicsword_projects": [
+        "LOTTunnels"
+      ],
+      "source_notes": "File names, the shell key, the request peak, the proxy count, the GitHub runner names, and the nsenter breakout are from the Eye Security incident write-up. 207.5.195.93 and the artex.* domains are in Eye's OSINT infrastructure list for similar ARTEX activity, not described as addresses observed inside this victim. Neo-reGeorg is tracked by LOTTunnels at https://lottunnels.github.io/lottunnels/Binaries/neo-regeorg/. The Sigma ReGeorg web-log rule requires a null user agent, and this tunnel used Firefox/38.0, so that rule is not cited.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "Eye did not name the victim's country. Infrastructure countries are not recorded as victim regions.",
+      "iocs": {
+        "domains": [
+          "artex.lol",
+          "staging.artex.lol",
+          "artex.tokena2b.top",
+          "artex.ok7777.eu.cc",
+          "artex.noog2infra.site",
+          "webhook.site"
+        ],
+        "ips": [
+          "207.5.195.93"
+        ],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016",
+          "rationale": "The operators deployed the ARTEX agent framework and Neo-reGeorg.",
+          "source_urls": [
+            "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+          ]
+        },
+        {
+          "id": "AML.T0049",
+          "rationale": "Initial access was a vulnerable PHP upload function turned into webshells.",
+          "source_urls": [
+            "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "Pod environment variables and the cloud secret store exposed API keys and a CI app key.",
+          "source_urls": [
+            "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+          ]
+        },
+        {
+          "id": "AML.T0012",
+          "rationale": "Stolen keys and an engineer's Git hosting identity were reused for API calls, GitOps, and runner registration.",
+          "source_urls": [
+            "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "upload",
+            "title": "PHP upload becomes a webshell",
+            "description": "Extension-fuzzed uploads such as artx_s5.php and zzartx0000.php accept X-ARTX-KEY and return ### ARTX-AGENT.",
+            "kind": "access",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          },
+          {
+            "id": "secrets",
+            "title": "Pod secrets used within minutes",
+            "description": "Environment variables and the secret store yield API keys. A rate limiter is bypassed in about three minutes.",
+            "kind": "execution",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          },
+          {
+            "id": "tunnel",
+            "title": "Neo-reGeorg across pods",
+            "description": "Neo-reGeorg is modified to keep state in the internal cache so the tunnel survives load-balanced pods.",
+            "kind": "execution",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          },
+          {
+            "id": "gitops",
+            "title": "GitOps restores the attacker pod",
+            "description": "A deployment-repo change creates artx-pod. Deleting it brings the pod back within a second.",
+            "kind": "impact",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          },
+          {
+            "id": "escape",
+            "title": "Privileged pod to the node",
+            "description": "A privileged staging pod is used with nsenter to reach the host node.",
+            "kind": "execution",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          },
+          {
+            "id": "runner",
+            "title": "Self-hosted runners named sink-*",
+            "description": "A CI app key registers self-hosted GitHub runners that are re-registered through the night.",
+            "kind": "impact",
+            "source_urls": [
+              "https://labs.eye.security/how-we-defended-against-an-ai-driven-attack/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "upload",
+            "target": "secrets"
+          },
+          {
+            "source": "secrets",
+            "target": "tunnel"
+          },
+          {
+            "source": "secrets",
+            "target": "gitops"
+          },
+          {
+            "source": "gitops",
+            "target": "escape"
+          },
+          {
+            "source": "secrets",
+            "target": "runner"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed ARTEX operators",
+        "country": "Unknown",
+        "motivation": "financially-motivated",
+        "attributed_by": "Eye Security",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Linux Webshell Indicators",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml",
+          "notes": "Linux process creation. A web server parent spawning a shell utility. Parent images in the rule include httpd, nginx, and apache2. php-fpm is not in that parent list, so a shell whose parent is only php-fpm will not match."
+        },
+        {
+          "name": "Potential Docker Escape via Nsenter",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/privilege_escalation_docker_escape_via_nsenter.toml",
+          "notes": "Linux endpoint. nsenter changing into another namespace, including the host breakout Eye saw from the privileged pod."
+        },
+        {
+          "name": "Kubernetes Privileged Pod Created",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/privilege_escalation_privileged_pod_created.toml",
+          "notes": "Kubernetes audit. Creation of a privileged pod. Matches the staging pod used before nsenter."
+        },
+        {
+          "name": "Remote GitHub Actions Runner Registration",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/execution_register_github_actions_runner.toml",
+          "notes": "Endpoint, cross-platform. Runner.Listener registering a self-hosted runner. Matches the sink-* runners."
+        },
+        {
+          "name": "New GitHub Self Hosted Action Runner",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/github/initial_access_github_register_self_hosted_runner.toml",
+          "notes": "GitHub audit log. A new self-hosted runner registered on a repository."
+        },
+        {
+          "name": "ARTEX shell key and Neo-reGeorg user agent",
+          "format": "guidance",
+          "notes": "No cited rule contains X-ARTX-KEY, k=x9f3c2b7e, ### ARTX-AGENT, artx_s5.php, or the Firefox/38.0 Neo-reGeorg agent. The Sigma ReGeorg web-log rule requires a null user agent, so it misses this tunnel."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-11-12",
+        "last_updated": "2026-11-12",
+        "updates": [
+          {
+            "date": "2026-11-12",
+            "source": "Eye Security",
+            "summary": "Eye publishes the incident: PHP webshells, a three-minute rate-limit bypass, Neo-reGeorg, GitOps pod restoration, nsenter, and sink-* GitHub runners."
+          }
+        ]
+      }
+    },
+    {
+      "id": "fbi-facestealer-bluenoroff-deepfake-2026-11",
+      "name": "FBI FLASH FaceStealer uses stolen webcam video and BlueNoroff deepfakes",
+      "date_reported": "2026-11-12",
+      "researcher": "FBI",
+      "org": "FBI",
+      "sources": [
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261112.pdf",
+          "title": "FBI FLASH AC-111226-MS: FaceStealer",
+          "publisher": "FBI"
+        },
+        {
+          "url": "https://arcticwolf.com/resources/blog/still-in-the-meeting-bluenoroff-six-months-on/",
+          "title": "Still in the Meeting: BlueNoroff Six Months On",
+          "publisher": "Arctic Wolf Labs"
+        },
+        {
+          "url": "https://arcticwolf.com/wp-content/bluenoroff_still_in_the_meeting.pdf",
+          "title": "Still in the Meeting: BlueNoroff Six Months On (white paper)",
+          "publisher": "Arctic Wolf Labs"
+        },
+        {
+          "url": "https://arcticwolf.com/resources/blog/bluenoroff-uses-clickfix-fileless-powershell-and-ai-generated-zoom-meetings-to-target-web3-sector/",
+          "title": "BlueNoroff uses ClickFix, fileless PowerShell, and AI-generated Zoom meetings",
+          "publisher": "Arctic Wolf Labs"
+        },
+        {
+          "url": "https://www.jumpsec.com/guides/inside-a-dprk-bluenoroff-clickfix-kit/",
+          "title": "Inside a DPRK BlueNoroff ClickFix kit",
+          "publisher": "Jumpsec"
+        },
+        {
+          "url": "https://therecord.media/stolen-binance-crypto-recovered-doj-facestealer-disrupted",
+          "title": "Coverage of the FaceStealer disruption",
+          "publisher": "The Record"
+        },
+        {
+          "url": "https://www.helpnetsecurity.com/2026/11/13/fbi-north-korean-fake-zoom-calls/",
+          "title": "FBI warns of North Korean fake Zoom calls",
+          "publisher": "Help Net Security"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": null,
+      "ai_role_detail": "The FBI FLASH says the operators use what it calls super intelligence to make deepfake video of well-known crypto and web3 figures from public photos and video, and that stolen real footage is still most of the scheme. Arctic Wolf is the generator provenance: 122 assets from seven generators, identified from embedded tags and C2PA data rather than appearance. Grok Imagine and Google Generative AI were nearly two-thirds, with Wondershare AIGC, GPT-4o, GPT Image, and BytePlus ModelArk making up the rest.",
+      "technique_summary": "FBI FLASH AC-111226-MS (Nov 12, 2026) describes FaceStealer, attributed to Sapphire Sleet / BlueNoroff / APT38 / UNC1069. The operators take over a victim's Telegram, LinkedIn, Slack, or Discord account, read the chat history, and message contacts to catch up or talk investment. A Calendly invite sets the time. Shortly before the call, the link points at a typosquat such as uu01webzoom.us or teams.livemeet.us. The copycat Zoom or Teams page plays the trusted contact's stolen webcam recording, often next to other participants. A chat message says the target cannot be heard and walks them through an update, script, or terminal paste that installs a cookie harvester, keyloggers, a screen capturer, and a backdoor. The target's webcam is recorded from the moment the link opens and feeds the next round. The FBI says the group has begun using what it calls super intelligence to make deepfakes of crypto and web3 figures alongside stolen footage. Earlier in 2026 a maintainer of a widely downloaded JavaScript library ran the fix during a fake Teams call, and the operators then published malicious dependencies that were caught quickly. The FBI has also seen attempts against npm maintainers and, recently, Rust crate maintainers. Arctic Wolf's Nov 12 paper adds lures that end in a ClickFix command: NovaStream Player at vip.novaplayer.online (HTML SHA-256 ca14040cc48fbc3b00ea5f74e891266128f7bb3058be400782c5b08436f7668a), a Chrome PDF Viewer kit at chromeupdate.docdock.online and calendly.docdock.online, and calendly.idcheck.watch. The macOS idcheck command is curl piped to osacompile. The Windows cradle is curl piped to powershell -c with [Console]::In.ReadToEnd()|iex. Hosting includes Hostwinds 104.168.149.21, 104.168.149.182, and 104.168.149.230, and Petrosky 83.136.210.38 for docdock.online. Arctic Wolf's appendix lists 98 high-confidence domains. The domains below are that table plus the FBI examples and the lure hosts named in the paper. Link bluenoroff-uses-deepfaked-executives-fake-zoom-2025-06 and unc1069-gemini-deepfake-crypto-2025.",
+      "initial_access": "Hijacked messenger accounts, then a typosquat Zoom or Teams page and a ClickFix paste",
+      "ai_tooling_and_models": [
+        "Grok Imagine",
+        "Google Generative AI",
+        "Wondershare AIGC",
+        "GPT-4o and GPT Image",
+        "BytePlus ModelArk"
+      ],
+      "other_tooling": [
+        "Stolen webcam recordings",
+        "ClickFix terminal paste",
+        "NovaStream Player lure"
+      ],
+      "victims_and_sectors": "Cryptocurrency and web3 individuals and companies, plus open-source maintainers. The FBI says the group stole more than $400 million in 18 months.",
+      "regions": [
+        "Multiple regions"
+      ],
+      "attribution_or_cluster": "Sapphire Sleet, BlueNoroff, APT38, UNC1069, Dangerous Password, CryptoCore, Stardust Chollima. FBI FLASH AC-111226-MS. Arctic Wolf independently attributes the activity to BlueNoroff.",
+      "scale_and_metrics": "More than $400 million stolen in 18 months, per the FBI. Arctic Wolf: 122 AI-generated assets from seven generators, and 98 high-confidence domains on the Hostwinds cluster.",
+      "prevention_angle": "Treat a meeting link that arrives in chat just before the call as hostile until the domain is the vendor's. Do not paste a command from a call. On Windows, hunt curl.exe piped into powershell with ReadToEnd and iex. On macOS, hunt curl and osacompile in the same command line. Block the domains and the four IPs below.",
+      "related_magicsword_projects": [],
+      "source_notes": "The takeover loop, the two example typosquats, the deepfake statement, and the maintainer supply-chain note are from the FBI PDF. Generator counts, the ClickFix command lines, the Hostwinds and Petrosky addresses, the NovaStream hash, and the high-confidence domain table are from the Arctic Wolf white paper. The Sigma IEX rules require a space in '| iex' or 'iex ', and the published cradle is ReadToEnd()|iex with no space, so those rules are not cited. The osacompile run-only rule requires -x and -e, and the idcheck command uses osacompile -o, so that rule is not cited either. There is no attacker GitHub repository.",
+      "last_reviewed": "2026-11-15",
+      "region_notes": "North Korea is the actor origin from the FBI, not a victim region. Arctic Wolf's target countries are not listed as a closed set, so the entry uses Multiple regions.",
+      "iocs": {
+        "domains": [
+          "02live.com.co",
+          "02live.us.com",
+          "05live.us.com",
+          "live-teams.com.co",
+          "me-0live.com",
+          "me-live.it.com",
+          "me-live.online",
+          "me-live.xyz",
+          "microso1t.com",
+          "ms-live.cc",
+          "ms-live.co.com",
+          "ms-live.online",
+          "ms-meet.store",
+          "ms-meeting.co",
+          "ms-meeting.com.co",
+          "ms-meeting.live",
+          "ms-room.online",
+          "ms-teams.co",
+          "ms-teams.in",
+          "protected-view.online",
+          "teams-live.cam",
+          "teams-live.com.co",
+          "teams-live.com.im",
+          "teams-live.eu.com",
+          "teams-live.it.com",
+          "teams-live.vip",
+          "teams-live.work",
+          "teams-meet.cc",
+          "teams-meet.cloud",
+          "teams-meet.co",
+          "teams-meet.com.co",
+          "teams-meet.in",
+          "teams-meeting.co",
+          "teams-meeting.in",
+          "teams-meets.cc",
+          "teams-meets.com",
+          "teams-meets.in",
+          "teams-meets.online",
+          "teams-meets.us.com",
+          "teams-room.us",
+          "teams02live.com",
+          "teams02live.us",
+          "teams02live.us.com",
+          "teams05live.com",
+          "teams05live.us.com",
+          "teams06live.com",
+          "teams07live.com",
+          "teams0live.com",
+          "teamscloud.us.com",
+          "teamslive.cloud",
+          "teamslive.us.com",
+          "us02live.co",
+          "us05cloud.co",
+          "us05cloud.com",
+          "us05cloud.live",
+          "us09live.us",
+          "web-live.com.co",
+          "web-live.us",
+          "call-in.co",
+          "call-in.online",
+          "call-live.com",
+          "call-on.online",
+          "call-room.online",
+          "meet-in.co",
+          "meet-on.online",
+          "meet-room.online",
+          "meet-room.xyz",
+          "meeting-on.online",
+          "room-live.com",
+          "room-meet.us",
+          "room-meet.xyz",
+          "room-on.online",
+          "room-on.xyz",
+          "team-meet.xyz",
+          "web-meet.us",
+          "web-teams.us",
+          "novaplayer.online",
+          "novaplayer.xyz",
+          "videolan.online",
+          "videolan.store",
+          "videoviewer.online",
+          "instantsecscan.online",
+          "instantsecscan.xyz",
+          "ipblock.watch",
+          "scanmypc.online",
+          "scanmypc.xyz",
+          "securealliance.xyz",
+          "securemypc.life",
+          "securemypc.xyz",
+          "ashnote.blog",
+          "cloud-docs.online",
+          "cobolabs.cloud",
+          "docsend.space",
+          "notionshare.online",
+          "agenda.pw",
+          "idcheck.watch",
+          "ipcheck.watch",
+          "sealteam911.online",
+          "theworldofluck.online",
+          "uu01webzoom.us",
+          "teams.livemeet.us",
+          "docdock.online",
+          "vip.novaplayer.online",
+          "updatesdk.novaplayer.online",
+          "chromeupdate.docdock.online",
+          "calendly.docdock.online",
+          "calendly.idcheck.watch",
+          "updatesdk.ashnote.blog",
+          "updatesdk.teams-meeting.co",
+          "updatesdk.ms-teams.co",
+          "updatesdk.ms-teams.in",
+          "updatesdk.me-live.online",
+          "updatesdk.ms-meet.store"
+        ],
+        "ips": [
+          "104.168.149.21",
+          "104.168.149.182",
+          "104.168.149.230",
+          "83.136.210.38"
+        ],
+        "hashes": [
+          "ca14040cc48fbc3b00ea5f74e891266128f7bb3058be400782c5b08436f7668a"
+        ],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0088",
+          "rationale": "The FBI says the operators generate deepfake video of crypto and web3 figures from public images, and Arctic Wolf ties 122 assets to generator tags and C2PA data.",
+          "source_urls": [
+            "https://www.ic3.gov/CSA/2026/261112.pdf",
+            "https://arcticwolf.com/wp-content/bluenoroff_still_in_the_meeting.pdf"
+          ]
+        },
+        {
+          "id": "AML.T0016.002",
+          "rationale": "Arctic Wolf attributes the generated media to Grok Imagine, Google Generative AI, Wondershare AIGC, GPT-4o, GPT Image, and BytePlus ModelArk.",
+          "source_urls": [
+            "https://arcticwolf.com/wp-content/bluenoroff_still_in_the_meeting.pdf"
+          ]
+        },
+        {
+          "id": "AML.T0052",
+          "rationale": "Hijacked accounts and typosquat Zoom and Teams pages deliver the lure.",
+          "source_urls": [
+            "https://www.ic3.gov/CSA/2026/261112.pdf"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "account",
+            "title": "Hijacked messenger account",
+            "description": "A prior victim's Telegram, LinkedIn, Slack, or Discord account messages contacts and sends a Calendly invite.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.ic3.gov/CSA/2026/261112.pdf"
+            ]
+          },
+          {
+            "id": "meeting",
+            "title": "Typosquat meeting page",
+            "description": "The link, such as uu01webzoom.us or teams.livemeet.us, plays stolen webcam video and starts recording the new target.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.ic3.gov/CSA/2026/261112.pdf"
+            ]
+          },
+          {
+            "id": "deepfake",
+            "title": "Generator-tagged deepfakes",
+            "description": "Arctic Wolf found 122 assets from seven generators, identified by embedded tags and C2PA rather than appearance. Stolen footage is still most of the scheme.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.ic3.gov/CSA/2026/261112.pdf",
+              "https://arcticwolf.com/wp-content/bluenoroff_still_in_the_meeting.pdf"
+            ]
+          },
+          {
+            "id": "clickfix",
+            "title": "ClickFix paste",
+            "description": "Windows uses curl piped to powershell ReadToEnd|iex. macOS uses curl piped to osacompile.",
+            "kind": "execution",
+            "source_urls": [
+              "https://arcticwolf.com/wp-content/bluenoroff_still_in_the_meeting.pdf"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "account",
+            "target": "meeting"
+          },
+          {
+            "source": "meeting",
+            "target": "deepfake"
+          },
+          {
+            "source": "meeting",
+            "target": "clickfix"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Sapphire Sleet / BlueNoroff / APT38 / UNC1069",
+        "country": "North Korea",
+        "motivation": "financially-motivated",
+        "attributed_by": "FBI, Arctic Wolf Labs",
+        "confidence": "high"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "detections": [
+        {
+          "name": "Potential In-Memory Download And Compile Of Payloads",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_susp_in_memory_download_and_compile.yml",
+          "notes": "macOS process creation. A command line that contains both curl and osacompile. Matches the calendly.idcheck.watch cradle."
+        },
+        {
+          "name": "Suspicious Curl.EXE Download",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_curl_susp_download.yml",
+          "notes": "Windows process creation. curl.exe downloading a payload. Matches the front half of the Windows ClickFix cradle. It does not see the powershell ReadToEnd|iex half."
+        },
+        {
+          "name": "ReadToEnd stdin cradle",
+          "format": "guidance",
+          "notes": "security-detections-mcp and a corpus search found no Sigma, Splunk, or Elastic rule for [Console]::In.ReadToEnd()|iex. The Sigma IEX rules require a space that this cradle omits. Also hunt the NovaStream HTML hash and the four IPs."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-05-20",
+        "last_updated": "2026-11-12",
+        "updates": [
+          {
+            "date": "2026-05-20",
+            "source": "Arctic Wolf Labs",
+            "summary": "A self-signed certificate generated at 15:04 UTC is later served by all three Hostwinds addresses. Lure domains resolve over the following days."
+          },
+          {
+            "date": "2026-11-12",
+            "source": "FBI",
+            "summary": "FBI FLASH describes FaceStealer, including deepfakes of crypto figures and the uu01webzoom.us and teams.livemeet.us examples."
+          },
+          {
+            "date": "2026-11-12",
+            "source": "Arctic Wolf Labs",
+            "summary": "Arctic Wolf publishes the six-month update, generator provenance for 122 assets, the ClickFix command lines, and the high-confidence domain table."
+          }
+        ]
+      }
+    },
+    {
       "id": "island-typoprompting-ai-typosquats-2026-11",
       "name": "Island TypoPrompting turns AI-brand typos into ClickFix, Net Guard, and search hijacks",
       "date_reported": "2026-11-12",
@@ -901,7 +1669,7 @@
       "related_magicsword_projects": [
         "LOLSkills"
       ],
-      "source_notes": "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 is not in that IOC list and is not attributed here. Link cairn-norforge-2026-10 and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.",
+      "source_notes": "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.",
       "last_reviewed": "2026-11-15",
       "region_notes": "Named targets include U.S. defense-policy organizations, a U.S. teachers' union, and a Canadian human-rights body. Other organizations' countries were not stated. Hong Kong and the U.S. egress host are infrastructure, not victim regions, so the entry uses Multiple regions.",
       "iocs": {
@@ -1025,7 +1793,7 @@
           {
             "date": "2026-11-12",
             "source": "Palo Alto Networks Unit 42",
-            "summary": "Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54"
+            "summary": "Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54. A same-/24 address, 154.44.31.104, is an unconfirmed Censys panel lead and is not an IOC."
           }
         ]
       },
@@ -1046,6 +1814,16 @@
           "url": "https://www.huntress.com/blog/sckit-worm-rogue-screenconnect",
           "title": "SCKit Worm Installs Rogue ScreenConnect Clients and Session Cookie Relays Across Hundreds of Endpoints",
           "publisher": "Huntress"
+        },
+        {
+          "url": "https://www.bleepingcomputer.com/news/security/new-worm-like-sckit-malware-targets-msps-in-screenconnect-attacks/",
+          "title": "New worm-like SCKit malware targets MSPs in ScreenConnect attacks",
+          "publisher": "BleepingComputer"
+        },
+        {
+          "url": "https://blackpointcyber.com/blog/screenconnect-attack-sckit/",
+          "title": "ScreenConnect attack: SCKit",
+          "publisher": "Blackpoint Cyber"
         }
       ],
       "magicsword_coverage": [],
@@ -1053,8 +1831,8 @@
       "borderline_note": null,
       "ai_role": "llm_generated_malware",
       "ai_role_secondary": null,
-      "ai_role_detail": "Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM, based on detailed comments that explain what the code is intended to do. No prompts were published.",
-      "technique_summary": "Huntress (Ben Nahorney, Susannah Matt, Lindsey O'Donnell-Welch; published Nov 11, 2026, updated Nov 13) observed Run commands on cloud-hosted ScreenConnect panels installing rogue ScreenConnect clients. On Nov 11, from about 17:47 UTC, at least 288 managed endpoints across 48 organizations were hit in about 90 minutes. ScreenConnect 26.6.6.9747 and 26.7.6.9783 were affected. Huntress ties the activity to the third-party RMM+ extension, versions 1.0.31 and 1.0.32: if the access key was never set, the extension accepted a blank key, bypassing ScreenConnect user accounts, roles, and MFA. Commands showed up as RMM+ with no matching login. ConnectWise said it had disabled five extensions (Labtech Plus, RMM Plus, RMM+, RMM Plus Password Link, and RMM+ Password Link) across more than 400 partner environments and had not yet identified an initial access vector when the Nov 11 advisory posted. The Run command, as SYSTEM, downloaded an attacker ScreenConnect installer to C:\\Windows\\TEMP\\sc.msi, installed it silently, and wrote C:\\Windows\\Temp\\sckit-run.bat. The dropper fetches sckit-decoder.ps1 and a kit keyed by the Windows UUID. Components extract to C:\\ProgramData\\RelayTrap. TrapWatch.ps1 runs as SYSTEM, compiles RelayTrap.cs into a host-specific RelayTrap.exe, and creates a scheduled task named TrapWatch that runs every 10 seconds. The legitimate ScreenConnect client is stopped and set to manual start. Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM because of detailed source comments explaining intent. A separate path, seen in the kit and not observed succeeding, steals the technician .aspxauth cookie with sqlite3.exe and tries to push WithUninstall.ps1 through the Shared Toolbox. On Nov 13 at 16:12 UTC Huntress saw another spike, 205 hosts across 41 organizations, with the client hosted at 185.241.211.197 and an installer URL ending in c=ExploitedNOTUSA. Huntress also saw c=Exploited529 and c=Exploited809. One incident used a self-hosted RMM+ plugin, a netsh portproxy from 127.0.0.1:88 to 185.241.211.197:80, and a service named Windows Update Agent running UpdateConnect.ClientService.exe from C:\\ProgramData\\Windows Update Agent (de362a425905bcc4)\\. ConnectWise also pointed on-premises partners at ScreenConnect 26.6.5 or later for CVE-2026-84869, a separate client file-transfer flaw. Primary panel indicators include sc.payproofkit.com (155.94.150.39) and 185.99.255.28.",
+      "ai_role_detail": "Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM, based on detailed comments that explain what the code is intended to do. BleepingComputer reports the same inference. No prompts were published. The schema has no inferred value, so this is recorded as vendor-asserted.",
+      "technique_summary": "Huntress (Ben Nahorney, Susannah Matt, Lindsey O'Donnell-Welch; published Nov 11, 2026, updated Nov 13) observed Run commands on cloud-hosted ScreenConnect panels installing rogue ScreenConnect clients. On Nov 11, from about 17:47 UTC, at least 288 managed endpoints across 48 organizations were hit in about 90 minutes. ScreenConnect 26.6.6.9747 and 26.7.6.9783 were affected. Huntress ties the activity to the third-party RMM+ extension, versions 1.0.31 and 1.0.32: if the access key was never set, the extension accepted a blank key, bypassing ScreenConnect user accounts, roles, and MFA. Commands showed up as RMM+ with no matching login. ConnectWise said it had disabled five extensions (Labtech Plus, RMM Plus, RMM+, RMM Plus Password Link, and RMM+ Password Link) across more than 400 partner environments and had not yet identified an initial access vector when the Nov 11 advisory posted. The Run command, as SYSTEM, downloaded an attacker ScreenConnect installer to C:\\Windows\\TEMP\\sc.msi, installed it silently, and wrote C:\\Windows\\Temp\\sckit-run.bat. The dropper fetches sckit-decoder.ps1 and a kit keyed by the Windows UUID. Components extract to C:\\ProgramData\\RelayTrap. TrapWatch.ps1 runs as SYSTEM, compiles RelayTrap.cs into a host-specific RelayTrap.exe, and creates a scheduled task named TrapWatch that runs every 10 seconds. The legitimate ScreenConnect client is stopped and set to manual start. Huntress Figure 6 says the RelayTrap C# source appears to have been generated by an LLM because of detailed source comments explaining intent. A separate path, seen in the kit and not observed succeeding, steals the technician .aspxauth cookie with sqlite3.exe and tries to push WithUninstall.ps1 through the Shared Toolbox. On Nov 13 at 16:12 UTC Huntress saw another spike, 205 hosts across 41 organizations, with the client hosted at 185.241.211.197 and an installer URL ending in c=ExploitedNOTUSA. Huntress also saw c=Exploited529 and c=Exploited809. One incident used a self-hosted RMM+ plugin, a netsh portproxy from 127.0.0.1:88 to 185.241.211.197:80, and a service named Windows Update Agent running UpdateConnect.ClientService.exe from C:\\ProgramData\\Windows Update Agent (de362a425905bcc4)\\. ConnectWise also pointed on-premises partners at ScreenConnect 26.6.5 or later for CVE-2026-84869, a separate client file-transfer flaw. Huntress does not say this wave exploited that flaw. Blackpoint Cyber (Sam Decker, Nevan Beal) says RelayTrap.cs is compiled on the endpoint by TrapWatch.ps1, not shipped as a precompiled binary. When a technician connects, the replacement Guest sends TransferFilesMessage FileAction.Run after a 2.5 second delay, which is the CVE-2026-84869 file-transfer-back path. Blackpoint's test against a current ScreenConnect Host queued the transfer on the Guest, and the Host did not request or run the payload. They report no successful technician compromise. Primary panel indicators include sc.payproofkit.com (155.94.150.39) and 185.99.255.28.",
       "initial_access": "Blank access key on RMM+ 1.0.31 or 1.0.32, then ScreenConnect Run Command as SYSTEM. ConnectWise had not identified a single initial-access vector in the Nov 11 advisory.",
       "ai_tooling_and_models": [
         "RelayTrap.cs, which Huntress says appears LLM-generated from its explanatory comments"
@@ -1075,7 +1853,7 @@
       "related_magicsword_projects": [
         "LOLRMM"
       ],
-      "source_notes": "Counts, the blank-key behavior, Figure 6's LLM comment, paths, and IOCs are from the Huntress article, including the Nov 13 update. The console-takeover and Shared Toolbox spread were recovered from the kit and were not seen succeeding. Additional acknowledged contributors include John Hammond, Tanner Filip, Tyler Marzen, Austin Worline, Ethan Williams, Sharon Martin, Ben Bernstein, Andrew Brandt, Jamie Levy, Max Rogers, Aaron Deal, and Mendy Green. File hashes are weak because scripts are rebuilt per host. CVE-2026-84869 is a separate ScreenConnect client issue that ConnectWise told partners to patch; Huntress does not say this wave exploited it.",
+      "source_notes": "Counts, the blank-key behavior, Figure 6's LLM comment, paths, and IOCs are from the Huntress article, including the Nov 13 update. BleepingComputer reports the same LLM-looking comments. The console-takeover and Shared Toolbox spread were recovered from the kit and were not seen succeeding. Blackpoint's patched-host test is the source for the 2.5 second TransferFilesMessage and the result that a current Host did not fetch the payload. Additional acknowledged contributors include John Hammond, Tanner Filip, Tyler Marzen, Austin Worline, Ethan Williams, Sharon Martin, Ben Bernstein, Andrew Brandt, Jamie Levy, Max Rogers, Aaron Deal, and Mendy Green. File hashes are weak because scripts are rebuilt per host. ScreenConnect is tracked by LOLRMM at https://lolrmm.io/tools/screenconnect.",
       "last_reviewed": "2026-11-15",
       "region_notes": "Huntress did not name the countries of the affected organizations.",
       "iocs": {
@@ -1213,7 +1991,7 @@
         {
           "name": "SCKit paths and the blank RMM+ key",
           "format": "guidance",
-          "notes": "No cited rule names RMM+ 1.0.31, TrapWatch, C:\\ProgramData\\RelayTrap, or sckit-run.bat. ScreenConnect path-traversal rules describe CVE-class bugs, not the blank access key, so they are not cited. Also hunt sqlite3.exe reading ScreenConnect cookies and c=Exploited in the installer URL."
+          "notes": "No cited rule names RMM+ 1.0.31, TrapWatch, C:\\ProgramData\\RelayTrap, or sckit-run.bat. Sigma csc.exe rules key on Temp, Public, or PerfLogs paths, or on an encoded PowerShell parent, so they miss TrapWatch.ps1 compiling under C:\\ProgramData\\RelayTrap. The Splunk on-the-fly csc rule also requires /noconfig, /fullpaths, and a response file, which the write-up does not show. ScreenConnect path-traversal rules describe CVE-class bugs, not the blank access key, so they are not cited. Also hunt sqlite3.exe reading ScreenConnect cookies and c=Exploited in the installer URL."
         }
       ],
       "timeline": {
@@ -1228,7 +2006,7 @@
           {
             "date": "2026-11-13",
             "source": "Huntress",
-            "summary": "A second wave at 16:12 UTC hits 205 hosts across 41 organizations from 185.241.211.197, including c=ExploitedNOTUSA"
+            "summary": "A second wave at 16:12 UTC hits 205 hosts across 41 organizations from 185.241.211.197, including c=ExploitedNOTUSA. Blackpoint reports that a patched ScreenConnect Host did not fetch the file RelayTrap tried to send back with CVE-2026-84869."
           }
         ]
       }
@@ -6983,6 +7761,31 @@
           "url": "https://vibevulns.com/issues/malicious-npm-mcp-servers-mnm-doc-mcp-weather-contract-tester-2026-11/",
           "title": "Roundup of November 2026 malicious npm MCP servers",
           "publisher": "VibeVulns"
+        },
+        {
+          "url": "https://osv.dev/vulnerability/MAL-2026-19204",
+          "title": "MAL-2026-19204: malicious code in my-mcp-server-driving-license-ocr",
+          "publisher": "Amazon Inspector / OSV"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-wg5f-m5mv-gmjg",
+          "title": "my-mcp-server-driving-license-ocr malware advisory",
+          "publisher": "GitHub Advisory Database"
+        },
+        {
+          "url": "https://pypi.org/project/my-mcp-server-driving-license-ocr/0.1.3",
+          "title": "my-mcp-server-driving-license-ocr 0.1.3",
+          "publisher": "PyPI"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-72xc-q3v8-7grp",
+          "title": "karma365-mcp malware advisory",
+          "publisher": "GitHub Advisory Database"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-gfpg-48q7-c68h",
+          "title": "@go-gost/mcp-darwin-x64 malware advisory",
+          "publisher": "GitHub Advisory Database"
         }
       ],
       "magicsword_coverage": [],
@@ -6991,11 +7794,12 @@
       "ai_role": "ai_agent_or_mcp_as_target",
       "ai_role_secondary": null,
       "ai_role_detail": null,
-      "technique_summary": "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. Attack exploits trust in the MCP ecosystem and npm package distribution.",
+      "technique_summary": "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. The entry now covers PyPI as well. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204, GHSA-wg5f-m5mv-gmjg, Amazon Inspector, Nov 12) exposes an MCP tool, analyze_image, described as driving-license OCR. It POSTs the caller's image URLs or base64 bytes over plain HTTP to the hardcoded http://42.193.222.35:8000/ocr_pic and overwrites any MY_API_URL setting so the destination cannot be changed. karma365-mcp 2.1.0 (GHSA-72xc-q3v8-7grp, Nov 13) and @go-gost/mcp-darwin-x64 0.1.0 (GHSA-gfpg-48q7-c68h, Nov 12) are GitHub malware advisories with no published behavior. Attack exploits trust in the MCP ecosystem and in npm and PyPI.",
       "initial_access": "User installs malicious MCP server from npm",
       "ai_tooling_and_models": [
         "MCP servers",
-        "npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp, @rfewqa-fes/mnm-doc-mcp, @lemili9804/mcp-weather-server, mcp-contract-tester, @bestcoolman/dev-mcp)"
+        "npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp, @rfewqa-fes/mnm-doc-mcp, @lemili9804/mcp-weather-server, mcp-contract-tester, @bestcoolman/dev-mcp, karma365-mcp, @go-gost/mcp-darwin-x64)",
+        "PyPI package my-mcp-server-driving-license-ocr 0.1.3"
       ],
       "other_tooling": [
         "Cloud metadata probing (AWS, GCP, Azure)",
@@ -7016,7 +7820,8 @@
       "iocs": {
         "domains": [],
         "ips": [
-          "121.199.24.94"
+          "121.199.24.94",
+          "42.193.222.35"
         ],
         "hashes": [
           "f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d",
@@ -7028,7 +7833,7 @@
       },
       "timeline": {
         "first_seen": "2026-02-20",
-        "last_updated": "2026-11-12",
+        "last_updated": "2026-11-13",
         "updates": [
           {
             "date": "2026-02-20",
@@ -7063,11 +7868,16 @@
           {
             "date": "2026-11-12",
             "source": "Amazon Inspector",
-            "summary": "@rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148) pulls node-health-utils over plain HTTP from 121.199.24.94. index.js is an inert MCP stub."
+            "summary": "@rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148) pulls node-health-utils over plain HTTP from 121.199.24.94. index.js is an inert MCP stub. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204) POSTs images to http://42.193.222.35:8000/ocr_pic. @go-gost/mcp-darwin-x64 0.1.0 is marked malware with no behavior write-up."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "GitHub Advisory Database",
+            "summary": "karma365-mcp 2.1.0 marked malware (GHSA-72xc-q3v8-7grp). No behavior write-up published."
           }
         ]
       },
-      "last_reviewed": "2026-11-05",
+      "last_reviewed": "2026-11-15",
       "confidence": "high",
       "region_notes": "Multiple regions reflects global npm and MCP user base",
       "atlas_techniques": [
@@ -7169,7 +7979,7 @@
       },
       "category": "attacks-on-ai",
       "attribution": {
-        "actor_name": "Unknown npm publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel)",
+        "actor_name": "Unknown npm and PyPI publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel, karma365, go-gost)",
         "country": "Unknown",
         "motivation": "cybercrime",
         "attributed_by": "OpenSSF, Leitwacht, GitHub Advisory Database, Amazon Inspector, Pillar Security, Socket",
@@ -7177,6 +7987,12 @@
       },
       "ai_involvement_confidence": "confirmed",
       "detections": [
+        {
+          "name": "Curl Download Activity from npm Package Install",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml",
+          "notes": "Endpoint, cross-platform. curl spawned from an npm or npx process tree. Fits packages whose install fetches an off-registry tarball. It does not see the PyPI OCR tool's runtime HTTP POST."
+        },
         {
           "name": "Suspicious PowerShell from npm Package Install",
           "format": "elastic",
@@ -7186,7 +8002,7 @@
         {
           "name": "Plain-HTTP tarball and GHSA-only packages",
           "format": "guidance",
-          "notes": "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and alert on package.json dependencies that are bare http:// tarball URLs. @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior, so no tighter rule is cited for them."
+          "notes": "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and http://42.193.222.35:8000/ocr_pic. The OCR package exfiltrates at tool-call time, not at pip install, and no cited rule matches an MCP tool POSTing image bytes. karma365-mcp, @go-gost/mcp-darwin-x64, @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior."
         }
       ]
     },

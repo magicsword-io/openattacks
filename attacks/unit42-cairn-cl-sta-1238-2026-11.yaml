@@ -37,7 +37,7 @@ scale_and_metrics: "25 operations, at least 19 organizations, confirmed unauthor
 prevention_angle: "Treat agent-driven scanning as ordinary vulnerability volume, not a new exploit class. Remove weak and default credentials, close unauthenticated registration and cloud-storage writes, and patch known public-facing flaws. Block the two published IPs. Do not treat a same-/24 scan lead as this cluster without Unit 42's indicators."
 related_magicsword_projects:
   - LOLSkills
-source_notes: "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 is not in that IOC list and is not attributed here. Link cairn-norforge-2026-10 and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published."
+source_notes: "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published."
 last_reviewed: 2026-11-15
 region_notes: "Named targets include U.S. defense-policy organizations, a U.S. teachers' union, and a Canadian human-rights body. Other organizations' countries were not stated. Hong Kong and the U.S. egress host are infrastructure, not victim regions, so the entry uses Multiple regions."
 iocs:
@@ -115,6 +115,6 @@ timeline:
       summary: "CL-STA-1238 completes 25 Cairn operations, August through September 2026, with confirmed access or data retrieval at 10 organizations"
     - date: "2026-11-12"
       source: Palo Alto Networks Unit 42
-      summary: "Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54"
+      summary: "Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54. A same-/24 address, 154.44.31.104, is an unconfirmed Censys panel lead and is not an IOC."
 linked_tools:
   - cairn
