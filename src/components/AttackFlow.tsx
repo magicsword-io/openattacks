@@ -232,7 +232,7 @@ function positions(flow: FlowData, mobile: boolean) {
     ).length;
     return mobile
       ? { x: lane * 245, y: depth * 275 }
-      : { x: depth * 255, y: lane * 320 + (maxLane - count) * 160 };
+      : { x: depth * 225, y: lane * 320 + (maxLane - count) * 160 };
   });
 }
 
@@ -309,7 +309,7 @@ export default function AttackFlow({
       loopOut: flow.edges.some((e) => e.loop && e.source === node.id),
     },
     width: 182,
-    height: 255,
+    height: 280,
     draggable: false,
     selectable: false,
     focusable: false,
@@ -349,7 +349,7 @@ export default function AttackFlow({
   useEffect(() => {
     if (!instance || mobile) return;
     const frame = requestAnimationFrame(() => {
-      instance.fitView({ padding: 0.18, maxZoom: 1.15 });
+      instance.fitView({ padding: 0.1, maxZoom: 1.25 });
     });
     return () => cancelAnimationFrame(frame);
   }, [instance, mobile, coords]);
@@ -470,7 +470,7 @@ export default function AttackFlow({
             zoomOnScroll={false}
             panOnScroll={false}
             fitView={!mobile}
-            fitViewOptions={{ padding: 0.18, maxZoom: 1.15 }}
+            fitViewOptions={{ padding: 0.1, maxZoom: 1.25 }}
             proOptions={{ hideAttribution: true }}
           >
             <Background
