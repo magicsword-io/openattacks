@@ -3847,6 +3847,27 @@ p {
   max-width: 850px;
   line-height: 1.8;
 }
+/* Easter egg link to /pewpew/: quiet until hovered. */
+.pew-egg {
+  font: 9px var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--subtle);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  transition:
+    color 0.2s,
+    text-shadow 0.2s;
+}
+.pew-egg:hover,
+.pew-egg:focus-visible {
+  color: #ff4d6d;
+  text-shadow: 0 0 6px rgba(255, 77, 109, 0.7);
+}
+:root[data-theme="light"] .pew-egg:hover,
+:root[data-theme="light"] .pew-egg:focus-visible {
+  color: #be123c;
+  text-shadow: none;
+}
 .environment-shortcuts {
   display: flex;
   align-items: center;

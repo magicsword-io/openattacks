@@ -45,7 +45,14 @@ const attacks = await getAttacks();
         <p class="timeline-context">
           Each dot opens a sourced entry. Years reflect report dates and catalog
           coverage, including research; they do not measure global attack
-          prevalence.
+          prevalence.{" "}
+          <a
+            class="pew-egg"
+            href={href("pewpew/")}
+            title="Prefer lasers to nuance? (Or type “pew” anywhere.)"
+          >
+            pew pew
+          </a>
         </p>
       </section>
     )}
@@ -65,4 +72,24 @@ const attacks = await getAttacks();
       location.replace(legacyStackURL.href);
     }
   </script>
+  {showTimeline && (
+    <script is:inline define:vars={{ pewURL: href("pewpew/") }}>
+      // Easter egg: typing "pew" outside a text field opens the pew pew map.
+      let typed = "";
+      document.addEventListener("keydown", (event) => {
+        const target = event.target;
+        if (
+          event.metaKey ||
+          event.ctrlKey ||
+          event.altKey ||
+          (target instanceof HTMLElement &&
+            (target.isContentEditable ||
+              /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)))
+        )
+          return;
+        typed = (typed + event.key.toLowerCase()).slice(-3);
+        if (typed === "pew") location.href = pewURL;
+      });
+    </script>
+  )}
 </Layout>

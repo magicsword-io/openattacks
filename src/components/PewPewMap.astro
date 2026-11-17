@@ -1,0 +1,1057 @@
+---
+import { geoEqualEarth, geoPath, geoGraticule10 } from "d3-geo";
+import { worldFeatures, countryName, regionMetadata } from "../lib/geography";
+import { buildPewPew } from "../lib/country-refs.mjs";
+import { present } from "../lib/presentation";
+import { href, type Attack } from "../lib/catalog";
+
+const { attacks } = Astro.props as { attacks: Attack[] };
+const known = new Set(
+  Object.entries(regionMetadata)
+    .filter(([, meta]) => meta.kind === "country")
+    .map(([name]) => name),
+);
+const { countries, arcs } = buildPewPew(attacks, known);
+const byId = new Map(attacks.map((attack) => [attack.id, attack]));
+const referenced = new Set(countries.map((c) => c.country));
+const projection = geoEqualEarth().fitExtent(
+  [
+    [20, 15],
+    [940, 440],
+  ],
+  { type: "Sphere" },
+);
+const path = geoPath(projection);
+const point = (country: string) =>
+  projection(regionMetadata[country].coordinates)!;
+const slug = (country: string) =>
+  `country-${country.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
+// A quadratic arc that always bows upward, like every vendor map ever.
+const arcPath = (from: string, to: string) => {
+  const [x1, y1] = point(from);
+  const [x2, y2] = point(to);
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const length = Math.hypot(dx, dy) || 1;
+  let nx = -dy / length;
+  let ny = dx / length;
+  if (ny > 0) [nx, ny] = [-nx, -ny];
+  const lift = Math.min(140, length * 0.35);
+  const cx = (x1 + x2) / 2 + nx * lift;
+  const cy = (y1 + y2) / 2 + ny * lift;
+  return `M${x1.toFixed(1)},${y1.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+};
+const drawn = arcs.map((arc, index) => {
+  const [tx, ty] = point(arc.to);
+  return {
+    ...arc,
+    index,
+    d: arcPath(arc.from, arc.to),
+    tx,
+    ty,
+    title: present(byId.get(arc.id)!).title,
+  };
+});
+const reported = drawn.filter((arc) => arc.kind === "reported").length;
+const strongest = (refs: { role: string }[]) =>
+  refs.some((r) => r.role === "origin")
+    ? "origin"
+    : refs.some((r) => r.role === "target")
+      ? "target"
+      : "mentioned";
+const roleLabel: Record<string, string> = {
+  origin: "Attributed origin",
+  target: "Reported target",
+  mentioned: "Mentioned",
+};
+const entryCount = new Set(countries.flatMap((c) => c.refs.map((r) => r.id)))
+  .size;
+const talkers = countries.slice(0, 8).map(({ country, refs }) => ({
+  country,
+  slug: slug(country),
+  total: refs.length,
+  origin: refs.filter((r) => r.role === "origin").length,
+  target: refs.filter((r) => r.role === "target").length,
+  mentioned: refs.filter((r) => r.role === "mentioned").length,
+}));
+const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
+---
+
+<div class="pewpew-screen" data-pewpew>
+  <header class="pp-topbar">
+    <div class="pp-brand" aria-hidden="true">
+      <span class="pp-led"></span>
+      <strong>OPENATTACKS // GLOBAL PEW OPERATIONS CENTER</strong>
+      <span class="pp-sub">Unclassified · Mostly vibes</span>
+    </div>
+    <div class="pp-actions">
+      <button
+        type="button"
+        class="pp-btn"
+        data-pew-toggle
+        aria-pressed="false"
+      >
+        Pause the lasers
+      </button>
+      <button type="button" class="pp-btn pp-btn-ghost" data-pew-wall>
+        Full screen
+      </button>
+    </div>
+  </header>
+
+  <div class="pp-tiles" aria-hidden="true">
+    <div class="pp-tile">
+      <span>PEWS FIRED</span>
+      <output class="pp-hot" data-pew-count>0</output>
+    </div>
+    <div class="pp-tile">
+      <span>THREAT LEVEL</span>
+      <strong class="pp-hot pewpew-blink">VIBES</strong>
+    </div>
+    <div class="pp-tile">
+      <span>EVIDENCE-BACKED ARCS</span>
+      <strong>{reported}<small> / {drawn.length}</small></strong>
+    </div>
+    <div class="pp-tile">
+      <span>COUNTRIES · ENTRIES</span>
+      <strong>{countries.length}<small> · {entryCount}</small></strong>
+    </div>
+    <div class="pp-tile">
+      <span>ATTRIBUTION CONFIDENCE</span>
+      <strong class="pp-cool">lol</strong>
+    </div>
+    <div class="pp-tile">
+      <span>ZULU</span>
+      <strong data-pew-clock>--:--:--</strong>
+    </div>
+  </div>
+
+  <div class="pp-main">
+    <div class="pp-map-frame">
+      <svg
+        class="pewpew-map"
+        viewBox="0 10 960 380"
+        role="group"
+        aria-labelledby="pewpew-title"
+      >
+        <title id="pewpew-title"
+          >Decorative attack map. {countries.length} countries referenced by {
+            entryCount
+          } entries. {reported} arcs connect an attributed origin to a reported
+          target; the rest connect countries mentioned in the same entry and
+          imply nothing. The country list below the map holds the same
+          information.</title
+        >
+        <g aria-hidden="true">
+          <path class="pp-graticule" d={path(geoGraticule10())!} />
+          {
+            worldFeatures.features
+              .filter((country) => country.properties!.name !== "Antarctica")
+              .map((country) => (
+                <path
+                  class:list={[
+                    "pp-country",
+                    {
+                      "pp-referenced": referenced.has(
+                        countryName(country.properties!.name),
+                      ),
+                    },
+                  ]}
+                  d={path(country)!}
+                />
+              ))
+          }
+          {
+            drawn.map((arc) => (
+              <path
+                class:list={["pp-trail", `pp-${arc.kind}`]}
+                d={arc.d}
+                data-arc={arc.index}
+                data-kind={arc.kind}
+                data-from={arc.from}
+                data-to={arc.to}
+                data-title={arc.title}
+                data-tx={arc.tx}
+                data-ty={arc.ty}
+              />
+            ))
+          }
+          <g data-bolts></g>
+        </g>
+        {
+          countries.map(({ country, refs }) => {
+            const [x, y] = point(country);
+            const role = strongest(refs);
+            return (
+              <a
+                href={`#${slug(country)}`}
+                class:list={["pp-marker", `pp-marker-${role}`]}
+                aria-label={`${country}: referenced by ${refs.length} ${refs.length === 1 ? "entry" : "entries"}. Show them.`}
+                data-country={slug(country)}
+              >
+                <circle class="pp-ping" cx={x} cy={y} r="9" />
+                <circle class="pp-core" cx={x} cy={y} r="3.5" />
+                <circle class="pp-hit" cx={x} cy={y} r="12" />
+              </a>
+            );
+          })
+        }
+      </svg>
+      <div class="pp-sweep" aria-hidden="true"></div>
+    </div>
+
+    <div class="pp-rail">
+      <section class="pp-panel" aria-labelledby="pp-talkers-title">
+        <h2 id="pp-talkers-title">Top talkers</h2>
+        <ol class="pp-talkers">
+          {
+            talkers.map((t) => (
+              <li>
+                <a href={`#${t.slug}`}>
+                  <span class="pp-talker-name">{t.country}</span>
+                  <span class="pp-talker-bar" aria-hidden="true">
+                    <i
+                      class="pp-seg-origin"
+                      style={`width:${(t.origin / maxTalk) * 100}%`}
+                    />
+                    <i
+                      class="pp-seg-target"
+                      style={`width:${(t.target / maxTalk) * 100}%`}
+                    />
+                    <i
+                      class="pp-seg-mentioned"
+                      style={`width:${(t.mentioned / maxTalk) * 100}%`}
+                    />
+                  </span>
+                  <span class="pp-talker-count">{t.total}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="pp-panel-note">Entries referencing each country, by role.</p>
+      </section>
+      <section class="pp-panel pp-log-panel" aria-hidden="true">
+        <h2>Event log</h2>
+        <ol class="pp-log" data-pew-log>
+          <li class="pp-log-idle">Awaiting pews…</li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <footer class="pp-bottombar">
+    <div class="pewpew-ticker" aria-hidden="true">
+      <span class="pewpew-prompt">&gt;</span>
+      <span data-pew-ticker>Warming up the lasers…</span>
+    </div>
+    <span class="pewpew-legend">
+      <i class="pp-key-reported"></i>Origin → reported target
+      <i class="pp-key-vibes"></i>Same article, no claim
+      <i class="pp-key-origin"></i>Origin
+      <i class="pp-key-target"></i>Target
+      <i class="pp-key-mentioned"></i>Mentioned
+    </span>
+  </footer>
+</div>
+
+<section class="pewpew-index" aria-labelledby="pewpew-index-title">
+  <div class="section-title">
+    <h2 id="pewpew-index-title">Entries by country</h2>
+    <span class="eyebrow">{countries.length} COUNTRIES</span>
+  </div>
+  <p class="pewpew-index-note">
+    One entry can reference several countries. Counts are entries, not victims,
+    attacks or risk.
+  </p>
+  <div class="pewpew-index-grid">
+    {
+      countries.map(({ country, refs }) => (
+        <details class="pewpew-country" id={slug(country)}>
+          <summary>
+            <span>{country}</span>
+            <strong class="mono">{refs.length}</strong>
+          </summary>
+          <ul>
+            {refs.map(({ id, role }) => (
+              <li>
+                <a href={href(`attacks/${id}/`)}>
+                  {present(byId.get(id)!).title}
+                </a>
+                <span class:list={["pp-role", `pp-role-${role}`]}>
+                  {roleLabel[role]}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const screen = document.querySelector<HTMLElement>("[data-pewpew]");
+  const bolts = screen?.querySelector<SVGGElement>("[data-bolts]");
+  const trails = [
+    ...(screen?.querySelectorAll<SVGPathElement>("[data-arc]") ?? []),
+  ];
+  const counter = screen?.querySelector<HTMLOutputElement>("[data-pew-count]");
+  const ticker = screen?.querySelector<HTMLElement>("[data-pew-ticker]");
+  const log = screen?.querySelector<HTMLOListElement>("[data-pew-log]");
+  const clock = screen?.querySelector<HTMLElement>("[data-pew-clock]");
+  const toggle = screen?.querySelector<HTMLButtonElement>("[data-pew-toggle]");
+  const wallButton = screen?.querySelector<HTMLButtonElement>("[data-pew-wall]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const SVG = "http://www.w3.org/2000/svg";
+  const quips = [
+    "attribution pending",
+    "source: trust me",
+    "geolocated to a VPN, probably",
+    "very scary, much red",
+    "add to board deck",
+    "not to scale (emotionally)",
+    "escalate to whoever is awake",
+    "confidence: medium-rare",
+  ];
+  let fired = 0;
+  let timer: number | undefined;
+  let paused = reduced.matches;
+  const zulu = () => new Date().toISOString().slice(11, 19);
+
+  const record = (line: string, kind: string) => {
+    if (!log) return;
+    log.querySelector(".pp-log-idle")?.remove();
+    const item = document.createElement("li");
+    item.className = `pp-log-${kind}`;
+    const time = document.createElement("time");
+    time.textContent = zulu();
+    item.append(time, ` ${line}`);
+    log.prepend(item);
+    while (log.children.length > 14) log.lastElementChild?.remove();
+  };
+
+  const fire = () => {
+    if (!bolts || !trails.length) return;
+    // Evidence-backed arcs fire more often. It's only fair.
+    const pool = trails.flatMap((t) =>
+      t.dataset.kind === "reported" ? [t, t, t] : [t],
+    );
+    const trail = pool[Math.floor(Math.random() * pool.length)];
+    const bolt = trail.cloneNode() as SVGPathElement;
+    bolt.removeAttribute("data-arc");
+    bolt.setAttribute("class", `pp-bolt pp-bolt-${trail.dataset.kind}`);
+    bolt.setAttribute("pathLength", "1");
+    const impact = document.createElementNS(SVG, "circle");
+    impact.setAttribute("class", `pp-impact pp-impact-${trail.dataset.kind}`);
+    impact.setAttribute("cx", trail.dataset.tx!);
+    impact.setAttribute("cy", trail.dataset.ty!);
+    impact.setAttribute("r", "4");
+    bolts.append(bolt, impact);
+    window.setTimeout(() => {
+      bolt.remove();
+      impact.remove();
+    }, 1800);
+    fired += 1;
+    if (counter) counter.textContent = fired.toLocaleString();
+    const quip =
+      trail.dataset.kind === "reported"
+        ? "reported in the source"
+        : quips[fired % quips.length];
+    if (ticker)
+      ticker.textContent = `PEW ${trail.dataset.from} → ${trail.dataset.to} · ${trail.dataset.title} · ${quip}`;
+    record(
+      `${trail.dataset.from} → ${trail.dataset.to} · ${quip}`,
+      trail.dataset.kind!,
+    );
+  };
+  const start = () => {
+    window.clearInterval(timer);
+    if (!paused) timer = window.setInterval(fire, 700);
+  };
+  const render = () => {
+    if (!toggle) return;
+    toggle.setAttribute("aria-pressed", String(paused));
+    toggle.textContent = paused ? "Resume the lasers" : "Pause the lasers";
+    if (paused && ticker && !fired)
+      ticker.textContent = "Lasers paused. The list is where the evidence is.";
+  };
+  toggle?.addEventListener("click", () => {
+    paused = !paused;
+    render();
+    start();
+  });
+  render();
+  start();
+
+  const tick = () => {
+    if (clock) clock.textContent = zulu();
+  };
+  tick();
+  window.setInterval(tick, 1000);
+
+  // Wall mode: the screen fills the viewport. Real fullscreen when the
+  // browser allows it; `?wall` opens straight into it for kiosk displays,
+  // where fullscreen would need a click first.
+  const setWall = (on: boolean) => {
+    screen?.classList.toggle("is-wall", on);
+    document.documentElement.classList.toggle("pp-wall-open", on);
+    if (wallButton) wallButton.textContent = on ? "Exit full screen" : "Full screen";
+  };
+  wallButton?.addEventListener("click", async () => {
+    if (!screen) return;
+    if (document.fullscreenElement) return void document.exitFullscreen();
+    if (screen.classList.contains("is-wall")) return setWall(false);
+    setWall(true);
+    try {
+      await screen.requestFullscreen?.();
+    } catch {
+      // The viewport-filling wall mode is already on.
+    }
+  });
+  document.addEventListener("fullscreenchange", () =>
+    setWall(document.fullscreenElement === screen),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && screen?.classList.contains("is-wall"))
+      setWall(false);
+  });
+  if (new URLSearchParams(location.search).has("wall")) setWall(true);
+
+  // Markers and leaderboard rows jump to and open the matching country.
+  const openFromHash = () => {
+    const target = document.getElementById(location.hash.slice(1));
+    if (!(target instanceof HTMLDetailsElement)) return;
+    if (screen?.classList.contains("is-wall") && !document.fullscreenElement)
+      setWall(false);
+    target.open = true;
+    target.scrollIntoView({ block: "start" });
+  };
+  window.addEventListener("hashchange", openFromHash);
+  openFromHash();
+</script>
+
+<style>
+  /* The screen is a fixed dark "SOC wall" in both site themes, and breaks
+     out of the page container to use the width of the monitor. */
+  .pewpew-screen {
+    --pp-bg: #04070a;
+    --pp-land: #0f1c24;
+    --pp-edge: #1b3240;
+    --pp-hot: #ff4d6d;
+    --pp-cool: #22d3ee;
+    --pp-go: #34d399;
+    --pp-text: #cfe9e2;
+    --pp-dim: #8fb0a8;
+    --pp-panel: rgba(8, 20, 26, 0.72);
+    --pp-scale: 1;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(12px * var(--pp-scale));
+    width: min(1680px, 100vw - 48px);
+    margin: 0 0 30px calc(50% - min(840px, 50vw - 24px));
+    overflow: hidden;
+    border: 1px solid #1b3240;
+    border-radius: 8px;
+    background: radial-gradient(ellipse at 40% 45%, #0a1a20 0%, var(--pp-bg) 70%);
+    color: var(--pp-text);
+    padding: calc(16px * var(--pp-scale)) calc(20px * var(--pp-scale));
+    font-family: var(--mono);
+  }
+  .pewpew-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0 1px,
+      transparent 1px 3px
+    );
+  }
+  .pewpew-screen.is-wall {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: auto;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  :global(html.pp-wall-open) {
+    overflow: hidden;
+  }
+  /* Type and chrome grow with the wall, so it reads from across the room. */
+  @media (min-width: 1800px) {
+    .pewpew-screen.is-wall {
+      --pp-scale: 1.3;
+    }
+  }
+  @media (min-width: 2400px) {
+    .pewpew-screen.is-wall {
+      --pp-scale: 1.7;
+    }
+  }
+  @media (min-width: 3200px) {
+    .pewpew-screen.is-wall {
+      --pp-scale: 2.3;
+    }
+  }
+
+  .pp-topbar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 20px;
+    border-bottom: 1px solid #13303a;
+    padding-bottom: calc(10px * var(--pp-scale));
+  }
+  .pp-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 14px;
+  }
+  .pp-brand strong {
+    font-size: calc(12px * var(--pp-scale));
+    letter-spacing: 0.12em;
+    color: var(--pp-go);
+    overflow-wrap: anywhere;
+  }
+  .pp-sub {
+    font-size: calc(10px * var(--pp-scale));
+    color: var(--pp-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pp-led {
+    align-self: center;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pp-hot);
+    box-shadow: 0 0 8px var(--pp-hot);
+    animation: pp-blink 1.2s steps(2, start) infinite;
+  }
+  .pp-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .pp-btn {
+    font: 600 calc(10px * var(--pp-scale)) var(--mono);
+    color: var(--pp-bg);
+    background: var(--pp-go);
+    border: 1px solid var(--pp-go);
+    border-radius: 4px;
+    padding: 7px 11px;
+    cursor: pointer;
+  }
+  .pp-btn-ghost {
+    color: var(--pp-go);
+    background: transparent;
+  }
+  .pp-btn:focus-visible {
+    outline: 2px solid var(--pp-text);
+    outline-offset: 2px;
+  }
+
+  .pp-tiles {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: calc(10px * var(--pp-scale));
+  }
+  .pp-tile {
+    border: 1px solid #13303a;
+    background: var(--pp-panel);
+    border-radius: 5px;
+    padding: calc(9px * var(--pp-scale)) calc(12px * var(--pp-scale));
+    min-width: 0;
+  }
+  .pp-tile span {
+    display: block;
+    font-size: calc(9px * var(--pp-scale));
+    letter-spacing: 0.08em;
+    color: var(--pp-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pp-tile strong,
+  .pp-tile output {
+    display: block;
+    margin-top: 4px;
+    font-size: calc(22px * var(--pp-scale));
+    font-weight: 600;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pp-tile small {
+    font-size: 0.55em;
+    color: var(--pp-dim);
+  }
+  .pp-hot {
+    color: var(--pp-hot);
+  }
+  .pp-cool {
+    color: var(--pp-cool);
+  }
+
+  .pp-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 22%, calc(460px * var(--pp-scale)));
+    gap: calc(14px * var(--pp-scale));
+    min-height: 0;
+  }
+  .pp-map-frame {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pewpew-map {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .is-wall .pewpew-map {
+    height: 100%;
+  }
+  /* A radar sweep, because a static map would not get the budget approved. */
+  .pp-sweep {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(52, 211, 153, 0.07) 48%,
+      rgba(52, 211, 153, 0.16) 50%,
+      transparent 50.4%
+    );
+    background-size: 200% 100%;
+    mask-image: radial-gradient(ellipse at center, #000 45%, transparent 75%);
+    animation: pp-sweep 7s linear infinite;
+  }
+  .pp-graticule {
+    fill: none;
+    stroke: #10262f;
+    stroke-width: 0.5;
+  }
+  .pp-country {
+    fill: var(--pp-land);
+    stroke: var(--pp-edge);
+    stroke-width: 0.6;
+  }
+  .pp-country.pp-referenced {
+    fill: #0f3330;
+    stroke: #1f6b5d;
+  }
+  .pp-trail {
+    fill: none;
+    stroke-width: 0.8;
+    opacity: 0.38;
+  }
+  .pp-trail.pp-reported {
+    stroke: var(--pp-hot);
+  }
+  .pp-trail.pp-vibes {
+    stroke: var(--pp-cool);
+    stroke-dasharray: 2 4;
+  }
+  :global(.pp-bolt) {
+    fill: none;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    /* One dash per 2.12 pattern: starts just before the path, ends past it. */
+    stroke-dasharray: 0.12 2;
+    stroke-dashoffset: 0.12;
+    animation: pp-fly 1.1s cubic-bezier(0.5, 0, 0.6, 1) forwards;
+  }
+  :global(.pp-bolt-reported) {
+    stroke: var(--pp-hot);
+    filter: drop-shadow(0 0 4px var(--pp-hot));
+  }
+  :global(.pp-bolt-vibes) {
+    stroke: var(--pp-cool);
+    filter: drop-shadow(0 0 4px var(--pp-cool));
+  }
+  :global(.pp-impact) {
+    fill: none;
+    stroke-width: 1.5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pp-impact 0.7s ease-out 1s forwards;
+  }
+  :global(.pp-impact-reported) {
+    stroke: var(--pp-hot);
+  }
+  :global(.pp-impact-vibes) {
+    stroke: var(--pp-cool);
+  }
+  .pp-marker {
+    --pp-marker: var(--pp-cool);
+  }
+  .pp-marker-origin {
+    --pp-marker: var(--pp-hot);
+  }
+  .pp-marker-target {
+    --pp-marker: var(--pp-go);
+  }
+  .pp-core {
+    fill: var(--pp-marker);
+  }
+  .pp-ping {
+    fill: var(--pp-marker);
+    opacity: 0.18;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pp-ping 2.4s ease-out infinite;
+  }
+  .pp-hit {
+    fill: transparent;
+    stroke: transparent;
+  }
+  .pp-marker:focus {
+    outline: none;
+  }
+  .pp-marker:hover .pp-hit,
+  .pp-marker:focus-visible .pp-hit {
+    stroke: var(--pp-marker);
+    stroke-dasharray: 3 3;
+  }
+
+  .pp-rail {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: calc(12px * var(--pp-scale));
+    min-height: 0;
+  }
+  .pp-panel {
+    position: relative;
+    z-index: 1;
+    border: 1px solid #13303a;
+    background: var(--pp-panel);
+    border-radius: 5px;
+    padding: calc(10px * var(--pp-scale)) calc(12px * var(--pp-scale));
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pp-panel h2 {
+    margin: 0 0 calc(8px * var(--pp-scale));
+    font: 600 calc(10px * var(--pp-scale)) var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pp-dim);
+  }
+  .pp-panel-note {
+    margin: calc(8px * var(--pp-scale)) 0 0;
+    font-size: calc(9px * var(--pp-scale));
+    color: var(--pp-dim);
+  }
+  .pp-talkers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: calc(5px * var(--pp-scale));
+  }
+  .pp-talkers a {
+    display: grid;
+    grid-template-columns: 9.5em minmax(0, 1fr) 2em;
+    align-items: center;
+    gap: 8px;
+    color: var(--pp-text);
+    text-decoration: none;
+    font-size: calc(11px * var(--pp-scale));
+  }
+  .pp-talkers a:hover .pp-talker-name,
+  .pp-talkers a:focus-visible .pp-talker-name {
+    color: var(--pp-go);
+  }
+  .pp-talkers a:focus-visible {
+    outline: 1px dashed var(--pp-go);
+    outline-offset: 2px;
+  }
+  .pp-talker-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pp-talker-bar {
+    display: flex;
+    height: calc(7px * var(--pp-scale));
+    background: #0c1c22;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .pp-talker-bar i {
+    display: block;
+    height: 100%;
+  }
+  .pp-seg-origin {
+    background: var(--pp-hot);
+  }
+  .pp-seg-target {
+    background: var(--pp-go);
+  }
+  .pp-seg-mentioned {
+    background: var(--pp-cool);
+    opacity: 0.75;
+  }
+  .pp-talker-count {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .pp-log-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(120px * var(--pp-scale));
+  }
+  .pp-log {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    font-size: calc(10px * var(--pp-scale));
+    line-height: 1.7;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .pp-log :global(li) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pp-log :global(time) {
+    color: var(--pp-dim);
+  }
+  .pp-log :global(.pp-log-reported) {
+    color: var(--pp-hot);
+  }
+  .pp-log :global(.pp-log-vibes) {
+    color: var(--pp-cool);
+  }
+  .pp-log :global(.pp-log-idle) {
+    color: var(--pp-dim);
+  }
+
+  .pp-bottombar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 20px;
+    border-top: 1px solid #13303a;
+    padding-top: calc(10px * var(--pp-scale));
+  }
+  .pewpew-ticker {
+    display: flex;
+    gap: 8px;
+    flex: 1 1 420px;
+    min-width: 0;
+    font-size: calc(11px * var(--pp-scale));
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .pewpew-ticker span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pewpew-prompt {
+    color: var(--pp-go);
+  }
+  .pewpew-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: calc(9px * var(--pp-scale));
+    color: var(--pp-dim);
+  }
+  .pewpew-legend i {
+    display: inline-block;
+    width: 14px;
+    height: 8px;
+    margin-left: 8px;
+  }
+  .pp-key-reported {
+    border-top: 2px solid var(--pp-hot);
+  }
+  .pp-key-vibes {
+    border-top: 2px dashed var(--pp-cool);
+  }
+  .pp-key-origin,
+  .pp-key-target,
+  .pp-key-mentioned {
+    width: 8px !important;
+    border-radius: 50%;
+  }
+  .pp-key-origin {
+    background: var(--pp-hot);
+  }
+  .pp-key-target {
+    background: var(--pp-go);
+  }
+  .pp-key-mentioned {
+    background: var(--pp-cool);
+  }
+
+  .pewpew-index {
+    margin-bottom: 30px;
+  }
+  .pewpew-index-note {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0 0 12px;
+  }
+  .pewpew-index-grid {
+    columns: 3 280px;
+    column-gap: 28px;
+  }
+  .pewpew-country {
+    break-inside: avoid;
+    border-top: 1px solid var(--line-soft);
+  }
+  .pewpew-country summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding: 9px 2px;
+    font-size: 12px;
+  }
+  .pewpew-country summary strong {
+    color: var(--accent);
+    font-size: 11px;
+  }
+  .pewpew-country:target summary {
+    color: var(--accent);
+  }
+  .pewpew-country ul {
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .pewpew-country li {
+    display: grid;
+    gap: 3px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .pewpew-country li a {
+    color: var(--text);
+  }
+  .pp-role {
+    justify-self: start;
+    font: 8px/1.6 var(--mono);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1px 6px;
+    color: var(--muted);
+  }
+  .pp-role-origin {
+    color: #fb7185;
+    border-color: color-mix(in srgb, #fb7185 35%, transparent);
+  }
+  :global(:root[data-theme="light"]) .pp-role-origin {
+    color: #be123c;
+    border-color: color-mix(in srgb, #be123c 35%, transparent);
+  }
+  .pp-role-target {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  @keyframes pp-fly {
+    to {
+      stroke-dashoffset: -1;
+    }
+  }
+  @keyframes pp-impact {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(4);
+    }
+  }
+  @keyframes pp-ping {
+    0% {
+      opacity: 0.35;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+  @keyframes pp-blink {
+    to {
+      visibility: hidden;
+    }
+  }
+  @keyframes pp-sweep {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: -100% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pp-ping,
+    .pewpew-blink,
+    .pp-led,
+    .pp-sweep {
+      animation: none;
+    }
+    .pp-sweep {
+      display: none;
+    }
+    .pp-trail {
+      opacity: 0.5;
+    }
+  }
+  @media (max-width: 1100px) {
+    .pp-tiles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .pp-main {
+      grid-template-columns: 1fr;
+    }
+    .pp-rail {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .pewpew-screen {
+      width: calc(100vw - 32px);
+      margin-left: calc(50% - 50vw + 16px);
+      padding: 12px;
+    }
+    .pp-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .pp-rail {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
