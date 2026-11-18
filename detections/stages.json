@@ -157,7 +157,7 @@
     "step-4": {
       "profile": "windows-shell",
       "control": "script-hosts",
-      "scope": "The Windows wscript \u2192 PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
+      "scope": "The Windows wscript → PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
     }
   },
   "apt41-gemini-c2-osstun-2025-08": {
@@ -1848,14 +1848,25 @@
     }
   },
   "chainstack-intruder-reached-production-user-password-2026-11": {
-    "entry": {
-      "profile": "unassessed"
+    "grafana": {
+      "profile": "identity",
+      "note": "Default Grafana administrator login and data-source proxy use. Chainstack says no software vulnerability was exploited.",
+      "reviewed": "2026-11-17"
     },
-    "activity": {
-      "profile": "unassessed"
+    "mcp-exec": {
+      "profile": "agent-tools",
+      "note": "The MCP server's service account already had cluster-admin. Individual tool calls were not recovered.",
+      "reviewed": "2026-11-17"
     },
-    "ai": {
-      "profile": "unassessed"
+    "prod-secrets": {
+      "profile": "credentials",
+      "note": "Production secrets-manager bulk reads, Kubernetes secret lists, and the node cloud token. Development credentials were valid in production.",
+      "reviewed": "2026-11-17"
+    },
+    "persist": {
+      "profile": "persistence",
+      "note": "Cron launched Chisel and the artx-guard systemd timer beaconed. This is the persistence write, not the tunnel protocol.",
+      "reviewed": "2026-11-17"
     }
   },
   "chainalysis-external-actor-using-offensive-agentic-2026-10": {
@@ -3712,7 +3723,6 @@
       "profile": "credentials"
     }
   },
-
   "eye-security-artex-gitops-2026-11": {
     "upload": {
       "profile": "linux-webshell"
@@ -3820,6 +3830,72 @@
     "pats": {
       "profile": "credentials",
       "note": "GitHub personal access tokens named after Microsoft Copilot. The creation event is the observable, not the display name by itself."
+    }
+  },
+  "barracuda-artex-cloud-key-intrusion-2026-11": {
+    "vendor-key": {
+      "profile": "identity",
+      "note": "The first calls used a still-valid cloud key issued to a vendor. The GitHub config file is where the key was found, not a commit on a Barracuda repository.",
+      "reviewed": "2026-11-17"
+    },
+    "secret-chain": {
+      "profile": "credentials",
+      "note": "Secret-store reads, infrastructure-as-code state, and Kubernetes secret lists. Instance-metadata credential requests are a separate metadata hunt.",
+      "reviewed": "2026-11-17"
+    },
+    "artex-match": {
+      "profile": "agent-tools",
+      "note": "Barracuda did not recover the tool. Resource names and probe order are a hunt clue, not a tool-call audit record.",
+      "reviewed": "2026-11-17"
+    },
+    "ci-and-mount": {
+      "profile": "privileged-container",
+      "note": "The read-only host filesystem mount is the pod event. A short-lived branch that prints secrets into a build log is a CI event this pod query does not cover.",
+      "reviewed": "2026-11-17"
+    }
+  },
+  "symantec-ai-revived-retailer-intrusion-2026-11": {
+    "sql-and-iis": {
+      "profile": "windows-shell",
+      "note": "cmd.exe under sqlservr.exe and commands under w3wp.exe. The initial entry vector is unknown.",
+      "reviewed": "2026-11-17"
+    },
+    "stalled": {
+      "profile": "windows-dll-sideload",
+      "note": "bdreinit.exe with log.dll and ask.exe with ask.dll loaded from the same directory. Hand-typed typos are not a detection.",
+      "reviewed": "2026-11-17"
+    },
+    "ai-scripts": {
+      "profile": "windows-shell",
+      "note": "Long PowerShell submitted through the existing shell. Section banners are content, not a process-name signal.",
+      "reviewed": "2026-11-17"
+    },
+    "orion-move": {
+      "profile": "payload",
+      "note": "The second-server command used Orion's bundled erl.exe. Later hive saves came from an EfsPotato payload. The generic payload query does not name either.",
+      "reviewed": "2026-11-17"
+    }
+  },
+  "eset-guardbreaker-uac-0099-decoy-prompt-2026-08": {
+    "vbs-stage": {
+      "profile": "windows-shell",
+      "note": "wscript or cscript running the group's VBS. How this script arrived is not described.",
+      "reviewed": "2026-11-17"
+    },
+    "decoy-comment": {
+      "profile": "analysis-review",
+      "note": "The comment is inert and is meant to make an LLM code scanner refuse. ESET did not test a product. A refusal on a malware sample should start a review.",
+      "reviewed": "2026-11-17"
+    },
+    "loader": {
+      "profile": "payload",
+      "note": "If the script runs, it still downloads MATCHBOIL. The comment does not change that behavior.",
+      "reviewed": "2026-11-17"
+    },
+    "scanner-gap": {
+      "profile": "analysis-review",
+      "note": "DugganUSA's one-day test is independent of ESET and used a synthetic script. One refusal is not a measurement of this incident file.",
+      "reviewed": "2026-11-17"
     }
   }
 }

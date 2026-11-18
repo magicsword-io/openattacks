@@ -14,9 +14,17 @@ sources:
   - url: https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/
     title: Amazon Threat Intelligence observes threat actors running cybercrime campaigns with ARTEX AI agents
     publisher: Amazon
+  - url: https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion
+    title: "Forty-four hours: Anatomy of a machine-speed intrusion"
+    publisher: Barracuda
+  - url: https://chainstack.com/security-incident-nov-2026/
+    title: "Incident report: what happened and what customers need to do"
+    publisher: Chainstack
 linked_attacks:
   - amazon-artex-madpot-campaigns-2026-11
+  - barracuda-artex-cloud-key-intrusion-2026-11
   - cert-in-crafty-falcon-bfsi-2026-11
+  - chainstack-intruder-reached-production-user-password-2026-11
   - checkpoint-artex-operator-consoles-2026-11
   - crowdstrike-artex-sk-finance-2026-10
   - crowdstrike-china-nexus-vapor-panda-ran-2026-10
