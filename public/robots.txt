@@ -1,0 +1,18 @@
+# OpenAttacks is a public catalog. Search engines and AI answer engines may crawl and cite it.
+# User-agent: * already allows every other crawler. The named agents are listed so the allow is explicit.
+# Disallow: /404 also covers /404/ and /404.html, the not-found page.
+
+User-agent: *
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /404
+
+Sitemap: https://openattacks.ai/sitemap-index.xml
