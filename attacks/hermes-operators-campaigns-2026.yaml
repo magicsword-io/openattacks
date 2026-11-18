@@ -8,11 +8,14 @@ sources:
     title: "Unit 42: knaithe/KnYuan Using Hermes Agent in 1DayNews Campaign"
   - url: https://hunt.io/blog/thailand-ministry-finance-targeted-with-hermes-ai-agent
     title: "Hunt.io: Thailand Ministry of Finance Intrusion Using Hermes Agent"
+  - url: https://github.com/NousResearch/hermes-agent
+    title: Hermes Agent
+    publisher: Nous Research
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
-ai_role_detail: "Multiple threat actors deploying Hermes autonomous agent framework (github.com/Hermes-Autonomous-Intelligence/hermes) for post-compromise operations"
+ai_role_detail: "Multiple threat actors deploying the Hermes autonomous agent framework (https://github.com/NousResearch/hermes-agent) for post-compromise operations. The previously cited github.com/Hermes-Autonomous-Intelligence/hermes returned HTTP 404 on 2026-11-18."
 technique_summary: "Multiple 2026 campaigns using Hermes agent: (1) knaithe/KnYuan '1DayNews' campaign (Unit 42, Jul 30): Exploits public 1-day vulnerabilities; deploys Hermes with DeepSeek for autonomous exploitation and lateral movement; targets technology companies. (2) Hunt.io Thailand Ministry of Finance (Jul 23, vendor-asserted): Hermes agent used in government intrusion; autonomous reconnaissance and data exfiltration. Both demonstrate Hermes becoming commodity tool for various threat actors."
 initial_access: "1-day vulnerability exploitation (knaithe); unknown (Thailand campaign)"
 ai_tooling_and_models:
@@ -30,7 +33,7 @@ attribution_or_cluster: "knaithe/KnYuan (Unit 42 tracking); Thailand campaign ac
 scale_and_metrics: "Multiple organizations compromised across both campaigns Jul-Aug 2026"
 prevention_angle: "Patch 1-day vulnerabilities rapidly; monitor for Hermes agent indicators; detect autonomous agent behavior; segment sensitive networks"
 related_magicsword_projects: []
-source_notes: "Unit 42 analysis of knaithe/KnYuan; Hunt.io vendor assertion for Thailand campaign. Hermes agent GitHub github.com/Hermes-Autonomous-Intelligence/hermes. Detection: monitor for Hermes Python processes, autonomous reconnaissance patterns, DeepSeek API calls from infrastructure hosts."
+source_notes: "Unit 42 analysis of knaithe/KnYuan; Hunt.io vendor assertion for Thailand campaign. The Hermes URL previously stored here, github.com/Hermes-Autonomous-Intelligence/hermes, returned HTTP 404 on 2026-11-18. It is replaced with https://github.com/NousResearch/hermes-agent, the live Hermes Agent project (Telegram gateway, cron, and model routing). Unit 42 and Hunt.io did not publish that URL. Detection: monitor for Hermes Python processes, autonomous reconnaissance patterns, DeepSeek API calls from infrastructure hosts."
 category: adversary-use-of-ai
 attribution:
   actor_name: knaithe/KnYuan (Unit 42), Unknown (Thailand)
@@ -56,7 +59,7 @@ timeline:
     - date: "2026-07-30"
       source: Unit 42
       summary: "knaithe/KnYuan 1DayNews campaign disclosed using Hermes + DeepSeek"
-last_reviewed: 2026-11-05
+last_reviewed: 2026-11-18
 iocs:
   domains: []
   ips: []

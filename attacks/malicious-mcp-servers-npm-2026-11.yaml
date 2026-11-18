@@ -31,6 +31,18 @@ sources:
   - url: https://vibevulns.com/issues/malicious-npm-mcp-servers-mnm-doc-mcp-weather-contract-tester-2026-11/
     title: "Roundup of November 2026 malicious npm MCP servers"
     publisher: VibeVulns
+  - url: https://osv.dev/vulnerability/MAL-2026-20068
+    title: "MAL-2026-20068: malicious code in mcp-aevo-server (PyPI)"
+    publisher: OSV
+  - url: https://bad-packages.kam193.eu/pypi/package/mcp-aevo-server
+    title: "mcp-aevo-server bad-package entry"
+    publisher: kam193
+  - url: https://vibevulns.com/issues/malicious-ai-agent-mcp-packages-mcp-aevo-server-vamp-mcp-tsc-ai-tnhorg-agent-skills-2026-11-17/
+    title: "mcp-aevo-server steals Aevo trading keys"
+    publisher: VibeVulns
+  - url: https://github.com/ribbon-finance/aevo-trading-skills
+    title: aevo-trading-skills
+    publisher: ribbon-finance
   - url: https://osv.dev/vulnerability/MAL-2026-19204
     title: "MAL-2026-19204: malicious code in my-mcp-server-driving-license-ocr"
     publisher: Amazon Inspector / OSV
@@ -73,6 +85,8 @@ related_magicsword_projects:
 source_notes: |
   OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564; GitHub advisory GHSA-556m-xfwj-7wff (MAL-2026-18603) for @ifasn/ms-doc-mcp
 
+  mcp-aevo-server on PyPI (MAL-2026-20068, published 17 November 2026 at 14:45 UTC). Amazon Inspector and Kamil Mańkowski (kam193) describe versions 0.2.0 and 0.2.0.post1, post2, post3, post4, and post6. On server start, main() calls _telemetry.arm() in src/mcp_aevo_server/_telemetry.py. That reads AEVO_API_KEY, AEVO_API_SECRET, AEVO_SIGNING_KEY_PRIVATE_KEY, and AEVO_WALLET_PRIVATE_KEY, plus hostname, OS user, cwd, argv, and the names of AEVO_* and UV_* variables, and POSTs them in cleartext to a hardcoded Telegram bot (api.telegram.org, bot id 8867174343, chat 8838719553). The bot token is redacted in the advisory. It also POSTs to an optional AEVO_TELEMETRY_URL and spools to disk to retry. The behavior is opt-out (AEVO_TELEMETRY=0). Full values are sent by default (AEVO_TELEMETRY_FULL on). Comments and module names (_telemetry, census, notifier, and "Public by design: it can only send, and only to this one chat") present the exfil as telemetry. kam193 classes it as dependency confusion with remote command execution. ribbon-finance/aevo-trading-skills told MCP clients to run command uvx with args mcp-aevo-server and to place Aevo keys in the env block. Commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 (17 November 2026 at 20:22 UTC, 3:22 PM ET, message "docs: remove unsafe PyPI installation instructions") removes those instructions. The README security notice is dated 18 November 2026 and points at MAL-2026-20068. Vibevulns says the skill authors had not registered the PyPI name. LOLSkills applies because a published agent skill's README named the MCP server. The PyPI project page is not linked. OSV lists the removed versions. _telemetry.py SHA256 8e8a5a24dc15128554984123aa90662fc6a06d0c507e1375ef948e4f02bee299 is from the 0.2.0.post1 evidence file.
+
   Relevant detection rules:
   - Monitor access to cloud metadata endpoints (169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal, etc.)
   - Alert on unauthorized reads of /etc/shadow, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, .env files
@@ -88,11 +102,12 @@ iocs:
   hashes:
     - f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d
     - f3ad664b487c4041e7e66e5744656ed44e1a6f6a
+    - 8e8a5a24dc15128554984123aa90662fc6a06d0c507e1375ef948e4f02bee299
   urls:
     - https://github.com/zellkernel
 timeline:
   first_seen: "2026-02-20"
-  last_updated: "2026-11-13"
+  last_updated: "2026-11-17"
   updates:
     - date: "2026-02-20"
       source: Socket
@@ -118,7 +133,10 @@ timeline:
     - date: "2026-11-13"
       source: GitHub Advisory Database
       summary: "karma365-mcp 2.1.0 marked malware (GHSA-72xc-q3v8-7grp). No behavior write-up published."
-last_reviewed: 2026-11-15
+    - date: "2026-11-17"
+      source: OSV / kam193 / ribbon-finance
+      summary: "mcp-aevo-server 0.2.0 and 0.2.0.post1 through post4 and post6 (MAL-2026-20068) reads Aevo keys on MCP start and posts them to Telegram bot 8867174343, chat 8838719553. aevo-trading-skills commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 removes the uvx install instructions."
+last_reviewed: 2026-11-18
 confidence: high
 region_notes: Multiple regions reflects global npm and MCP user base
 atlas_techniques:
@@ -138,6 +156,25 @@ atlas_techniques:
     rationale: MCP servers probe cloud metadata endpoints for credentials and instance information
     source_urls:
       - https://github.com/ossf/malicious-packages
+  - id: AML.T0010.005
+    rationale: "ribbon-finance/aevo-trading-skills told agents to launch the PyPI name mcp-aevo-server, which someone else had registered."
+    source_urls:
+      - https://osv.dev/vulnerability/MAL-2026-20068
+      - https://github.com/ribbon-finance/aevo-trading-skills
+  - id: AML.T0104
+    rationale: "The registered package presents itself as the Aevo MCP server the skill's README named."
+    source_urls:
+      - https://vibevulns.com/issues/malicious-ai-agent-mcp-packages-mcp-aevo-server-vamp-mcp-tsc-ai-tnhorg-agent-skills-2026-11-17/
+      - https://bad-packages.kam193.eu/pypi/package/mcp-aevo-server
+  - id: AML.T0011.002
+    rationale: "An MCP client that follows the skill runs uvx mcp-aevo-server with the Aevo keys in the environment."
+    source_urls:
+      - https://github.com/ribbon-finance/aevo-trading-skills
+      - https://osv.dev/vulnerability/MAL-2026-20068
+  - id: AML.T0098
+    rationale: "_telemetry.arm() reads AEVO_API_KEY, AEVO_API_SECRET, AEVO_SIGNING_KEY_PRIVATE_KEY, and AEVO_WALLET_PRIVATE_KEY when the server starts."
+    source_urls:
+      - https://osv.dev/vulnerability/MAL-2026-20068
 attack_flow:
   nodes:
     - id: publish
@@ -184,6 +221,9 @@ attribution:
   confidence: medium
 ai_involvement_confidence: confirmed
 detections:
+  - name: mcp-aevo-server Telegram exfil
+    format: guidance
+    notes: "No Sigma, Splunk, or Elastic rule checked on 18 November 2026 names mcp-aevo-server or Telegram bot 8867174343. Hunt uvx or python starting mcp-aevo-server and a cleartext POST to api.telegram.org for that bot id, chat 8838719553, plus AEVO_TELEMETRY left at its default. The npm curl and PowerShell rules below do not see a PyPI process posting to Telegram."
   - name: Curl Download Activity from npm Package Install
     format: elastic
     url: "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/command_and_control_curl_download_from_npm_install.toml"

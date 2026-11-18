@@ -1187,6 +1187,26 @@
       "profile": "unassessed"
     }
   },
+  "microsoft-agent-framework-pypi-pth-stealer-2026-11": {
+    "upload": {
+      "profile": "package",
+      "note": "PyPI releases 1.26.1 and 1.26.2. Pinning and lockfile review are the control. The publish itself is off-host.",
+      "reviewed": "2026-11-18"
+    },
+    "pth-hook": {
+      "profile": "python-startup-persistence",
+      "note": "Linux file creation of a .pth under site-packages. The Elastic rule is Linux-only. Windows and macOS interpreters are a gap.",
+      "reviewed": "2026-11-18"
+    },
+    "collect": {
+      "profile": "credentials",
+      "note": "Environment secrets, credential files, and cloud identity token requests, including OpenAI, Hugging Face, and Foundry names."
+    },
+    "webhook": {
+      "profile": "exfil",
+      "note": "Single HTTPS POST to webhook.site. The free-tier host is shared with legitimate debugging."
+    }
+  },
   "microsoft-artex-github-secrets-keyvault-2026-11": {
     "github-search": {
       "profile": "unassessed"
@@ -1845,6 +1865,27 @@
     },
     "ai": {
       "profile": "unassessed"
+    }
+  },
+  "cloudsek-silent-lynx-hermes-strix-2026-11": {
+    "lure": {
+      "profile": "phishing",
+      "note": "LNK, ZIP, and ISO lures. The PowerShell cradle is covered on the next stage.",
+      "reviewed": "2026-11-18"
+    },
+    "powershell": {
+      "profile": "windows-shell",
+      "control": "script-hosts",
+      "scope": "The Windows script host that runs the downloaded P.ps1. A signed or allowlisted PowerShell path can still run this stage.",
+      "note": "Sigma download-and-execute cradle matches IEX (DownloadString) when the command line is logged."
+    },
+    "strix": {
+      "profile": "unobserved",
+      "note": "Strix ran on the operator server. Victim telemetry does not show the DeepSeek or Gemini calls."
+    },
+    "collect": {
+      "profile": "credentials",
+      "note": "Document collection and credential dumps are described at a high level. No query names the railway or forestry hosts."
     }
   },
   "chainstack-intruder-reached-production-user-password-2026-11": {
@@ -3567,6 +3608,26 @@
     },
     "resale": {
       "profile": "exfil"
+    }
+  },
+  "kaspersky-auditteam-opsagent-2026-11": {
+    "loaders": {
+      "profile": "windows-shell",
+      "note": "C and .NET loaders inject into msiexec.exe. The initial access vector is not described.",
+      "reviewed": "2026-11-18"
+    },
+    "implant": {
+      "profile": "unassessed",
+      "note": "C2 can be read from a public GitHub repository. No stage query names the dead-drop repo or the CloudFront hosts."
+    },
+    "llm-patterns": {
+      "profile": "unobserved",
+      "note": "Kaspersky infers LLM-assisted development from code patterns. That judgment is not a runtime event on the victim."
+    },
+    "killer": {
+      "profile": "impact",
+      "note": "kvcore.sys is not in the public vulnerable-driver name list checked for this entry. The cryptor impact is file encryption plus the consulting-fee note.",
+      "reviewed": "2026-11-18"
     }
   },
   "kaspersky-citrus-ransomware-llm-2026-11": {
