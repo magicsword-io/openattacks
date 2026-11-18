@@ -1,0 +1,189 @@
+id: symantec-ai-revived-retailer-intrusion-2026-11
+name: Symantec - AI-assisted commands revived a stalled intrusion at a US retailer
+date_reported: 2026-11-16
+date_activity_start: 2026-09-18
+date_activity_end: 2026-09-29
+researcher: Symantec Threat Hunter Team
+org: Broadcom
+sources:
+  - url: https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+    title: How AI revived a stalled attack on a U.S. retailer
+    publisher: Symantec Threat Hunter Team
+  - url: https://www.security.com/blog-post/ai-assisted-attack-us-retailer
+    title: How AI revived a stalled attack on a U.S. retailer
+    publisher: SECURITY.COM
+  - url: https://www.broadcom.com/support/security-center/protection-bulletin/how-ai-revived-a-stalled-attack-on-a-u-s-retailer
+    title: How AI revived a stalled attack on a U.S. retailer
+    publisher: Broadcom
+  - url: https://github.com/zcgonvh/EfsPotato
+    title: EfsPotato
+    publisher: zcgonvh
+  - url: https://github.com/jpillora/chisel
+    title: Chisel
+    publisher: jpillora
+  - url: https://github.com/P001water/yuze
+    title: Yuze
+    publisher: P001water
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Symantec rates AI assistance high confidence and an operator-in-the-loop, rather than an autonomous agent, at moderate confidence. The model was not identified. Gaps between scripts never fell below seven seconds."
+technique_summary: "Symantec Threat Hunter Team (Broadcom; SECURITY.COM article created Nov 16, 2026) describes a September 2026 intrusion at a U.S. retailer. The initial access vector is unknown. The earliest activity, Sep 18, was on three Microsoft SQL Server hosts, with cmd.exe running under sqlservr.exe, which Symantec treats as likely xp_cmdshell. Some of those commands were already long PowerShell scripts with quoted section labels. The scripts searched point-of-sale synchronization directories for stored passwords and connection strings, tested egress to 155.254.22[.]215:9458, and on one host appended base64 text under ProgramData, decoded it with Certutil, and compiled it with csc.exe. The source was EfsPotato (https://github.com/zcgonvh/EfsPotato). The payload saved the SAM, SYSTEM, and SECURITY hives. On Sep 21 an internet-facing IIS server appeared, with commands under w3wp.exe. On Sep 22 the commands looked hand-typed: 110 actions, three typos including systemifo and pwoershell, average length about 45 characters. Loaders were killed by security software, including a Bitdefender bdreinit.exe sideload of log.dll and log.txt from 204.194.49[.]129:8080, a pairing also seen with ShadowPad loaders and not unique to one actor. The operators reran that loader about five times in 20 minutes. They also staged an AES PowerShell reverse shell, server.ps1, toward 166.0.25[.]106:443 with a fallback host at 154.81.37[.]136, and wrote ASP webshells filemanager.asp and qwdajhsd.asp. On Sep 23 they staged a G DATA ask.exe/ask.dll sideload and BreakChainC.exe, then switched to about 50 long, error-free PowerShell scripts over about two hours. Banners included ===FILES MENTIONING CONN STRINGS===. Comments stated a hypothesis, cited earlier results, and revised a conclusion, which Symantec reads as model reasoning pasted into a webshell. The scripts collected connection strings, the FileZilla Server user database, WinSCP, PuTTY, and RDP settings, IIS configuration, and Windows logon registry values. They found SolarWinds Orion, read its bundled RabbitMQ .erlang.cookie, and ran Orion's erl.exe so rpc:call reached os:cmd on a second server. The command was passed as decimal character codes. That was about 10 minutes after the first Orion query. Later the same day BreakChainCs.exe relaunched the sideloaded binaries through WMI and shell modes so they were no longer children of w3wp.exe. From Sep 24 to Sep 29 the activity reached more SQL servers, a host that looks like a domain controller, Chisel, a password sprayer, and searches for NTDS.dit, Group Policy Preferences passwords, and LAPS. No data theft or encryption was observed. Symantec's financial-motive reading rests on the point-of-sale password search, contact with 155.254.22[.]215 (named in a separate Sep 22 Gambit Security report as an AI console tied to card-skimming activity), and later domain-credential theft that could be ransomware preparation. Loader files and the staging server overlap an August intrusion elsewhere and a July intrusion at a securities firm; neither of those showed AI assistance. Yuze (https://github.com/P001water/yuze) was used in the August case back to 204.194.49[.]129. Trend Micro has documented Yuze use by Warlock operators (Symantec Longlegs, also known as Storm-2603). Symantec does not attribute this intrusion to them. ATT&CK techniques in the report include T1574.002, T1505.003, T1552.001, T1021, and T1003.002."
+initial_access: "Unknown. The first observed commands were cmd.exe under sqlservr.exe on SQL Server, consistent with xp_cmdshell, and later cmd.exe under w3wp.exe on IIS."
+ai_tooling_and_models:
+  - "Unidentified model. Symantec assesses AI-written PowerShell with an operator relaying output, not an autonomous agent."
+other_tooling:
+  - "EfsPotato (https://github.com/zcgonvh/EfsPotato), compiled on the server with csc.exe"
+  - "Chisel (https://github.com/jpillora/chisel)"
+  - "Yuze (https://github.com/P001water/yuze), seen in the overlapping August intrusion"
+  - "Bitdefender bdreinit.exe sideloading log.dll"
+  - "G DATA ask.exe sideloading ask.dll"
+  - "BreakChainC.exe and BreakChainCs.exe"
+  - "ASP webshells filemanager.asp and qwdajhsd.asp"
+  - "PowerShell"
+victims_and_sectors: "A U.S. retail organization. Internet-facing IIS and at least six further servers, most of them Microsoft SQL Server. Point-of-sale synchronization scripts were searched for passwords."
+regions:
+  - United States
+region_notes: "The primary victim is a U.S. retailer. The August and July overlaps are different organizations and are not given countries in the retailer write-up."
+attribution_or_cluster: "Unnamed. Symantec does not tie the activity to Warlock, Longlegs, or Storm-2603. ShadowPad-associated sideloading and Yuze are shared with other actors and are not treated as an attribution."
+scale_and_metrics: "Sep 18 through at least Sep 29, 2026. On Sep 23, about 50 scripts in about two hours, median length over 500 characters, against about 45 characters for the earlier hand-typed commands. About 10 minutes from the first Orion query to command execution on a second server. No theft or encryption observed in this intrusion."
+prevention_angle: "Alert when w3wp.exe or sqlservr.exe spawns cmd.exe or PowerShell, and when xp_cmdshell is used. Treat a same-directory unsigned DLL next to bdreinit.exe or ask.exe as sideloading. Alert on csc.exe compiling from ProgramData or a user-writable path, on Chisel client arguments, and on reg save of SAM, SYSTEM, or SECURITY. Hunt Orion's bundled erl.exe making rpc:call with a cookie, and ASP files dropped in the web application's image directory. A sudden change from short mistyped commands to long labelled scripts is an investigation lead, not a benign automation signature. Restrict xp_cmdshell, the Erlang distribution port, and the RabbitMQ cookie file."
+related_magicsword_projects: []
+source_notes: "Dates, typos, script counts, the Orion cookie path, the decimal-encoded rpc:call, and the published hashes are from the Symantec article at https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer (canonical; the blog-post URL serves the same title). The article's createdDate is 2026-11-16. Symantec lists many additional file hashes; the set below is the named tooling from that table, not every unnamed suspicious file. Yuze's Warlock reporting is Symantec's summary of Trend Micro, and Symantec says it is not an attribution. Link the August staging overlap only as Symantec describes it."
+last_reviewed: 2026-11-17
+iocs:
+  domains: []
+  ips:
+    - 204.194.49[.]129
+    - 166.0.25[.]106
+    - 154.81.37[.]136
+    - 155.254.22[.]215
+    - 108.165.20[.]205
+  hashes:
+    - 54fb493822bcd832f7b2256015f13e3dfde815e1931e7fd39a90ea8ad3fdbd0a
+    - 9c866c403e6bd5778fa3788cac9aac39aab1bf2d18a22c9999a4c27e30c0abf3
+    - e95a265bf220a4330f77f842b3eeed8b1ed8c61f51d7e3f2fd33bac14b6b26af
+    - 7265d69dd8d8939dc888ce5f05190ce200ee2660f928f3b84f60e6a7b3383205
+    - 3d79628bf7804dbf17e7b396ecd62ebf5d66518940c6d23daccf59a20953438a
+    - f8b67854d119da08c704b78f7c9fae0501417f5e63ffece86d2e811f1c7dea68
+    - 5db5e7f655c4ee94411df8110d1b6d02bb15574ac199fa7a553ce6c3cb25bf03
+  urls:
+    - hxxp://166[.]0[.]25[.]106/server.ps1
+    - hxxp://154[.]81[.]37[.]136/server.ps1
+    - hxxp://204[.]194[.]49[.]129:8080/log.dll
+    - hxxp://204[.]194[.]49[.]129:8080/bdreinit.exe
+    - hxxp://108[.]165[.]20[.]205:8080/sqlrun2.ps1
+atlas_techniques:
+  - id: AML.T0016
+    rationale: "Symantec says the operators obtained working PowerShell, including the Orion cookie handoff, from an AI tool after hand-typed commands failed."
+    source_urls:
+      - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+  - id: AML.T0050
+    rationale: "The AI-assisted phase was long PowerShell submitted through the webshell and through SQL Server command execution."
+    source_urls:
+      - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+  - id: AML.T0055
+    rationale: "The scripts collected connection strings, client settings, the Erlang cookie, and registry hives that hold credential material."
+    source_urls:
+      - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+attack_flow:
+  nodes:
+    - id: sql-and-iis
+      title: SQL Server and IIS command shells
+      description: "From Sep 18, cmd.exe runs under sqlservr.exe. From Sep 21, commands run under w3wp.exe. Symantec does not identify the initial entry vector."
+      kind: access
+      source_urls:
+        - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+    - id: stalled
+      title: Hand-typed commands stall
+      description: "Sep 22 commands include typos such as systemifo and pwoershell. Security software kills staged loaders, including the bdreinit.exe and log.dll pair, and the operators retry without changing approach."
+      kind: execution
+      source_urls:
+        - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+    - id: ai-scripts
+      title: Long labelled scripts
+      description: "On Sep 23 about 50 error-free PowerShell scripts run in about two hours, with section banners and comments Symantec reads as model reasoning. Pauses fit an operator pasting the next script."
+      kind: ai
+      source_urls:
+        - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+    - id: orion-move
+      title: Orion cookie reaches a second server
+      description: "About 10 minutes after the first Orion query, the operators read the RabbitMQ cookie and use the bundled erl.exe rpc:call path to run a command on a second server. Later activity dumps credential hives. No encryption was observed."
+      kind: impact
+      source_urls:
+        - https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer
+  edges:
+    - source: sql-and-iis
+      target: stalled
+    - source: stalled
+      target: ai-scripts
+    - source: ai-scripts
+      target: orion-move
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unnamed"
+  country: Unknown
+  motivation: financially-motivated
+  attributed_by: "Symantec Threat Hunter Team (Broadcom)"
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Suspicious Process By Web Server Process
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_webshell_susp_process_spawned_from_webserver.yml"
+    notes: "Selected from a security-detections-mcp search for w3wp. Windows process creation. A web-server parent, including w3wp.exe, spawning a suspicious child. Matches commands Symantec saw under the IIS worker. It does not match sqlservr.exe as the parent."
+  - name: Suspicious Child Process Of SQL Server
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mssql_susp_child_process.yml"
+    notes: "Selected from a security-detections-mcp search for sqlservr. Windows process creation. sqlservr.exe spawning cmd.exe, PowerShell, or another listed child. Matches the Sep 18 pattern Symantec reads as xp_cmdshell."
+  - name: MSSQL XPCmdshell Suspicious Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/application/mssqlserver/win_mssql_xp_cmdshell_audit_log.yml"
+    notes: "Selected from a security-detections-mcp search for xp_cmdshell. Windows application log. MSSQL audit event 33205 whose data contains object_name:xp_cmdshell and statement:EXEC. Requires the xp_cmdshell audit policy. The process-creation rule above still applies when that audit policy is off."
+  - name: Windows Unsigned DLL Side-Loading In Same Process Path
+    format: splunk
+    url: "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_unsigned_dll_side_loading_in_same_process_path.yml"
+    notes: "Selected from a security-detections-mcp search for DLL side-loading. Sysmon image load. An unsigned DLL loaded from the same directory as the process, outside Windows and Program Files. Fits bdreinit.exe with log.dll and ask.exe with ask.dll staged in the same folder. A signed decoy executable does not have to be on a named-binary list."
+  - name: Privilege Escalation via Rogue Named Pipe Impersonation
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/privilege_escalation_via_rogue_named_pipe.toml"
+    notes: "Selected from a security-detections-mcp search for Potato. The rule cites https://github.com/zcgonvh/EfsPotato and alerts on Sysmon pipe-creation event 17 when the pipe path contains a nested Pipe segment. It does not match the string EfsPotato. The Splunk Potato-family rule's file-name list does not include EfsPotato, so that rule is not cited. A renamed compile can still miss a name-based hunt."
+  - name: Dynamic .NET Compilation Via Csc.EXE
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_csc_susp_dynamic_compilation.yml"
+    notes: "Selected from a security-detections-mcp search for csc.exe. Windows process creation. csc.exe whose command line points at ProgramData, Temp, or another listed user-writable location. Symantec compiled under ProgramData. The rule filters a w3wp.exe parent, so a compile whose parent is only the IIS worker does not match."
+  - name: PUA - Chisel Tunneling Tool Execution
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_pua_chisel.yml"
+    notes: "Selected from a security-detections-mcp search for chisel. Windows process creation. Image ending in chisel.exe, or command lines with client/server and reverse, socks, or r: arguments. Symantec's Chisel detection on Sep 25 was on a Windows host. The Linux Chisel rule is not cited."
+  - name: Windows Registry Entries Exported Via Reg
+    format: splunk
+    url: "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_registry_entries_exported_via_reg.yml"
+    notes: "Selected from a security-detections-mcp search under T1003.002. Endpoint process data. reg.exe with save or export. Symantec says the EfsPotato payload saved the SAM, SYSTEM, and SECURITY hives. This matches that copy when it is reg.exe. A custom writer that does not call reg.exe will not match."
+  - name: Erlang rpc:call and the Orion cookie
+    format: guidance
+    notes: "security-detections-mcp search for erl.exe returned no rule. Nothing in the index alerts on Orion's bundled erl.exe, rpc:call, or a read of .erlang.cookie. Hunt process creation for erl.exe under the Orion Erlang path with -setcookie and rpc:call. ASP names filemanager.asp and qwdajhsd.asp, and BreakChainC.exe, are also absent from the index; the w3wp child-process rule covers shells spawned from the web worker, not the ASP file drop by itself."
+timeline:
+  first_seen: "2026-09-18"
+  last_updated: "2026-11-16"
+  updates:
+    - date: "2026-09-18"
+      source: Symantec Threat Hunter Team
+      summary: "First activity on three SQL Server hosts. Labelled PowerShell searches point-of-sale sync folders, tests egress to 155.254.22[.]215:9458, and compiles EfsPotato on one host."
+    - date: "2026-09-21"
+      source: Symantec Threat Hunter Team
+      summary: "Commands start under w3wp.exe on the internet-facing web server, then pause for about 12 hours."
+    - date: "2026-09-22"
+      source: Symantec Threat Hunter Team
+      summary: "Hand-typed commands with typos. bdreinit.exe/log.dll from 204.194.49[.]129:8080 is killed on each retry. server.ps1 and two ASP webshells are staged."
+    - date: "2026-09-23"
+      source: Symantec Threat Hunter Team
+      summary: "About 50 long scripts in about two hours. Orion's Erlang cookie is used to run a command on a second server roughly 10 minutes after the first Orion query. BreakChainCs.exe follows."
+    - date: "2026-09-24"
+      source: Symantec Threat Hunter Team
+      summary: "Further SQL hosts save registry hives. Activity continues through at least Sep 29, including Chisel, NTDS.dit searches, and a password sprayer."
+    - date: "2026-11-16"
+      source: Symantec Threat Hunter Team
+      summary: "SECURITY.COM publishes the retailer write-up. AI assistance is high confidence; the operator-in-the-loop reading is moderate; the model is unidentified."
