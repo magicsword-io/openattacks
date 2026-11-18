@@ -74,11 +74,18 @@ const imageAlt =
     <meta name="twitter:image" content={imageURL} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="sitemap" href={href("sitemap-index.xml")} />
+    <link rel="describedby" href={href("llms.txt")} />
     <link
       rel="alternate"
       type="text/plain"
       title="LLM discovery guide"
       href={href("llms.txt")}
+    />
+    <link
+      rel="alternate"
+      type="text/markdown"
+      title="OpenAttacks agent skill"
+      href={href("skills/openattacks/SKILL.md")}
     />
     <link
       rel="alternate"

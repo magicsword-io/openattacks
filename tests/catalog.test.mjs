@@ -180,6 +180,70 @@ test("browse annotations preserve raw evidence and use valid, consistent categor
   );
   assert.ok(guide.includes("/api/catalog.json"));
 });
+test("robots.txt allows crawlers and the sitemap lists canonical pages", () => {
+  const robots = readFileSync(
+    new URL("../dist/robots.txt", import.meta.url),
+    "utf8",
+  );
+  for (const agent of [
+    "*",
+    "GPTBot",
+    "OAI-SearchBot",
+    "ChatGPT-User",
+    "ClaudeBot",
+    "Claude-User",
+    "PerplexityBot",
+    "Google-Extended",
+    "Applebot-Extended",
+    "CCBot",
+  ]) {
+    assert.match(
+      robots,
+      new RegExp(`^User-agent: ${agent.replaceAll("*", "\\*")}$`, "m"),
+    );
+  }
+  assert.match(robots, /^Allow: \/$/m);
+  assert.match(robots, /^Disallow: \/404$/m);
+  assert.match(
+    robots,
+    /^Sitemap: https:\/\/openattacks\.ai\/sitemap-index\.xml$/m,
+  );
+  for (const url of [
+    "https://openattacks.ai/llms.txt",
+    "https://openattacks.ai/llms-full.txt",
+    "https://openattacks.ai/skills/openattacks/SKILL.md",
+  ]) {
+    assert.match(robots, new RegExp(`^# ${url.replaceAll(".", "\\.")}$`, "m"));
+  }
+  assert.equal(
+    readFileSync(
+      new URL("../dist/skills/openattacks/SKILL.md", import.meta.url),
+      "utf8",
+    ),
+    readFileSync(
+      new URL("../skills/openattacks/SKILL.md", import.meta.url),
+      "utf8",
+    ),
+  );
+  const sitemap = readFileSync(
+    new URL("../dist/sitemap-0.xml", import.meta.url),
+    "utf8",
+  );
+  const locs = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(
+    (match) => match[1],
+  );
+  assert.ok(locs.length > seeds.length);
+  for (const loc of locs) {
+    assert.ok(loc.startsWith("https://openattacks.ai/"), loc);
+    assert.ok(loc.endsWith("/"), loc);
+    assert.ok(!loc.includes("/404"), loc);
+    assert.ok(!loc.endsWith("/catalog/"), loc);
+  }
+  assert.ok(locs.includes("https://openattacks.ai/"));
+  assert.ok(locs.includes("https://openattacks.ai/about/"));
+  assert.ok(locs.some((loc) => loc.includes("/attacks/")));
+});
+
 test("build includes one page per entry, CSV and sitemap", () => {
   assert.equal(
     readdirSync(new URL("../dist/attacks/", import.meta.url)).length,

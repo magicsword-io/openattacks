@@ -3,6 +3,7 @@
 > 278 entries, generated from the same attacks/*.yaml records as the site and the JSON export.
 
 Discovery index: https://openattacks.ai/llms.txt
+Agent skill: https://openattacks.ai/skills/openattacks/SKILL.md
 Structured catalog: https://openattacks.ai/data/attacks.json
 
 Scope: attacks observed in the wild or concrete cases documented in public reporting. Published research demonstrations retain their qualifications and do not establish exploitation in the wild.
