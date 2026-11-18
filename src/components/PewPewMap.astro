@@ -487,19 +487,19 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     overflow: hidden;
   }
   /* Type and chrome grow with the wall, so it reads from across the room. */
-  @media (min-width: 1800px) {
+  @media (min-width: 1600px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 1.3;
+      --pp-scale: 1.45;
     }
   }
   @media (min-width: 2400px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 1.7;
+      --pp-scale: 2;
     }
   }
   @media (min-width: 3200px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 2.3;
+      --pp-scale: 2.7;
     }
   }
 
@@ -527,7 +527,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     overflow-wrap: anywhere;
   }
   .pp-sub {
-    font-size: calc(10px * var(--pp-scale));
+    font-size: calc(11px * var(--pp-scale));
     color: var(--pp-dim);
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -546,7 +546,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     gap: 8px;
   }
   .pp-btn {
-    font: 600 calc(10px * var(--pp-scale)) var(--mono);
+    font: 600 calc(11px * var(--pp-scale)) var(--mono);
     color: var(--pp-bg);
     background: var(--pp-go);
     border: 1px solid var(--pp-go);
@@ -577,7 +577,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
   }
   .pp-tile span {
     display: block;
-    font-size: calc(9px * var(--pp-scale));
+    font-size: calc(11px * var(--pp-scale));
     letter-spacing: 0.08em;
     color: var(--pp-dim);
     white-space: nowrap;
@@ -625,19 +625,31 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     height: 100%;
   }
   /* A radar sweep, because a static map would not get the budget approved. */
+  /* The beam moves with transform only, so the GPU slides one painted layer
+     instead of repainting the whole map every frame. */
   .pp-sweep {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(52, 211, 153, 0.07) 48%,
-      rgba(52, 211, 153, 0.16) 50%,
-      transparent 50.4%
+  }
+  .pp-sweep::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    /* One radial glow, brightest at the leading edge and fading up, down
+       and behind, so no mask (and no extra compositing pass) is needed. */
+    background: radial-gradient(
+      ellipse 100% 60% at 100% 50%,
+      rgba(52, 211, 153, 0.16) 0%,
+      rgba(52, 211, 153, 0.07) 30%,
+      transparent 70%
     );
-    background-size: 200% 100%;
-    mask-image: radial-gradient(ellipse at center, #000 45%, transparent 75%);
+    transform: translateX(-100%);
+    will-change: transform;
     animation: pp-sweep 7s linear infinite;
   }
   .pp-graticule {
@@ -720,6 +732,11 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     fill: transparent;
     stroke: transparent;
   }
+  @media (pointer: coarse) {
+    .pp-hit {
+      r: 35px;
+    }
+  }
   .pp-marker:focus {
     outline: none;
   }
@@ -747,14 +764,14 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
   }
   .pp-panel h2 {
     margin: 0 0 calc(8px * var(--pp-scale));
-    font: 600 calc(10px * var(--pp-scale)) var(--mono);
+    font: 600 calc(11px * var(--pp-scale)) var(--mono);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--pp-dim);
   }
   .pp-panel-note {
     margin: calc(8px * var(--pp-scale)) 0 0;
-    font-size: calc(9px * var(--pp-scale));
+    font-size: calc(11px * var(--pp-scale));
     color: var(--pp-dim);
   }
   .pp-talkers {
@@ -769,6 +786,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     grid-template-columns: 9.5em minmax(0, 1fr) 2em;
     align-items: center;
     gap: 8px;
+    min-height: calc(24px * var(--pp-scale));
     color: var(--pp-text);
     text-decoration: none;
     font-size: calc(11px * var(--pp-scale));
@@ -823,7 +841,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    font-size: calc(10px * var(--pp-scale));
+    font-size: calc(11px * var(--pp-scale));
     line-height: 1.7;
     mask-image: linear-gradient(to bottom, #000 60%, transparent);
   }
@@ -877,7 +895,7 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
-    font-size: calc(9px * var(--pp-scale));
+    font-size: calc(11px * var(--pp-scale));
     color: var(--pp-dim);
   }
   .pewpew-legend i {
@@ -954,11 +972,14 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     line-height: 1.5;
   }
   .pewpew-country li a {
+    /* Block with padding: a 24px tap target that stays clear of the summary. */
+    display: block;
+    padding-block: 4px;
     color: var(--text);
   }
   .pp-role {
     justify-self: start;
-    font: 8px/1.6 var(--mono);
+    font: 11px/1.6 var(--mono);
     border: 1px solid var(--line);
     border-radius: 3px;
     padding: 1px 6px;
@@ -1009,17 +1030,17 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
   }
   @keyframes pp-sweep {
     from {
-      background-position: 100% 0;
+      transform: translateX(-100%);
     }
     to {
-      background-position: -100% 0;
+      transform: translateX(167%);
     }
   }
   @media (prefers-reduced-motion: reduce) {
     .pp-ping,
     .pewpew-blink,
     .pp-led,
-    .pp-sweep {
+    .pp-sweep::before {
       animation: none;
     }
     .pp-sweep {

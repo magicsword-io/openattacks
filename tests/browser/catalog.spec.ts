@@ -239,7 +239,7 @@ for (const theme of ["dark", "light"]) {
         await page.goto(path);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
         const result = await new AxeBuilder({ page })
-          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
           .analyze();
         expect(
           result.violations,
@@ -420,7 +420,7 @@ test("network stages expose scoped policy opportunities and all three hunt forma
     if (theme === "light")
       await page.getByRole("button", { name: "Switch to light mode" }).click();
     const result = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
       .analyze();
     expect(result.violations, `${theme} native query`).toEqual([]);
   }
@@ -589,7 +589,7 @@ test("qualifications stay before the diagram and custom schema guidance stays ex
   for (const name of ["Evidence", "Prevent", "Hunt"]) {
     await page.getByRole("tab", { name: new RegExp(`^${name}`) }).click();
     const result = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
       .analyze();
     expect(result.violations, name).toEqual([]);
   }

@@ -100,7 +100,7 @@ for (const theme of ["dark", "light"]) {
     await page.goto("/pewpew/");
     await page.locator("#country-ukraine summary").click();
     const result = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
       .analyze();
     expect(
       result.violations,

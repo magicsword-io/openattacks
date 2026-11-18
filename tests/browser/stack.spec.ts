@@ -180,7 +180,7 @@ test("personalization is keyboard operable and accessible on mobile in both them
         ),
       ).toBe(true);
       const result = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
         .analyze();
       expect(result.violations, `${theme} ${width}`).toEqual([]);
     }

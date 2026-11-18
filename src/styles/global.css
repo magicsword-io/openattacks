@@ -3849,7 +3849,7 @@ p {
 }
 /* Easter egg link to /pewpew/: quiet until hovered. */
 .pew-egg {
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   letter-spacing: 0.08em;
   color: var(--subtle);
   text-decoration: underline dotted;
