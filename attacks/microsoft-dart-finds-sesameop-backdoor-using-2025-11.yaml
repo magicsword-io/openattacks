@@ -1,0 +1,32 @@
+id: microsoft-dart-finds-sesameop-backdoor-using-2025-11
+name: Microsoft DART finds SesameOp backdoor using OpenAI Assistants API as covert C2 channel
+date_reported: 2025-11-03
+researcher: unknown
+org: Microsoft (Defender Experts / DART)
+sources:
+  - url: https://microsoft.com/en-us/security/blog/2025/11/03/sesameop-novel-backdoor-uses-openai-assistants-api-for-command-and-control
+    publisher: Microsoft (Defender Experts / DART)
+  - url: https://thehackernews.com/2025/11/microsoft-detects-sesameop-backdoor.html
+  - url: https://securityaffairs.com/184197/malware/sesameop-new-backdoor-exploits-openai-api-for-covert-c2.html
+borderline: false
+ai_role: ai_infra_as_c2
+technique_summary: An espionage-focused intrusion used a .NET backdoor that relays commands and results through the OpenAI Assistants API, hiding C2 inside legitimate AI SaaS traffic.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI Assistants API (abused as C2 relay)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (SesameOp operators)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - api-key-account-abuse
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

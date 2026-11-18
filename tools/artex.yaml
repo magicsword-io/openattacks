@@ -8,6 +8,28 @@ sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
     title: Unknown Threat Actor Uses ARTEX to Target South Korean Finance
     publisher: CrowdStrike
+  - url: https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion
+    title: "Forty-four hours: Anatomy of a machine-speed intrusion"
+    publisher: Barracuda
+  - url: https://chainstack.com/security-incident-nov-2026/
+    title: "Incident report: what happened and what customers need to do"
+    publisher: Chainstack
 linked_attacks:
+  - barracuda-artex-cloud-key-intrusion-2026-11
+  - cert-in-crafty-falcon-bfsi-2026-11
+  - chainstack-intruder-reached-production-user-password-2026-11
+  - checkpoint-artex-operator-consoles-2026-11
   - crowdstrike-artex-sk-finance-2026-10
+  - crowdstrike-china-nexus-vapor-panda-ran-2026-10
+  - datadog-artex-aws-cognito-2026-11
+  - gtig-mandiant-unc7228-other-crews-run-2026-10
+  - microsoft-artex-github-secrets-keyvault-2026-11
+  - microsoft-rates-eight-north-korean-actors-2026-10
+  - seoul-police-self-taught-hacker-used-2026-10
+  - srm-artex-ir-host-artifacts-2026-11
+  - storm-0940-used-artex-agentic-ai-2026-10
+  - storm-3358-artex-bank-intrusions-2026-11
+  - unit42-artex-api-recon-2026-10
+  - wiz-storm-0940-overlapping-operator-runs-2026-10
+  - workos-artex-unintended-agent-escape-2026-10
 linked_actors: []

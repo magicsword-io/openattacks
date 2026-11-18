@@ -1,0 +1,45 @@
+id: gtig-ai-threat-tracker-criminals-built-2026-05
+name: "GTIG AI Threat Tracker: criminals built a likely AI-generated 2FA-bypass zero-day for mass exploitation"
+date_reported: 2026-05-11
+researcher: unknown
+org: Google Threat Intelligence Group
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/ai-vulnerability-exploitation-initial-access
+    publisher: Google Threat Intelligence Group
+  - url: https://helpnetsecurity.com/2026/05/11/google-ai-vulnerability-exploitation
+  - url: https://www.fortune.com/2026/05/12/google-hackers-using-ai-to-weaponize-zero-day-vulnerabilities/
+  - url: https://www.techmeme.com/260511/p33
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: GTIG reported its first criminal zero-day it believes was AI-developed, a 2FA bypass whose planned mass exploitation was likely disrupted, alongside state actors scaling AI vulnerability research and AI-driven malware.
+initial_access: unknown
+ai_tooling_and_models:
+  - Google Gemini (incl. gemini-2.5-flash-lite via PROMPTSPY)
+  - account-pooling proxies for Gemini, Claude and OpenAI
+  - Hexstrike, Strix, OpenClaw skills
+  - LiteLLM
+other_tooling: []
+victims_and_sectors: Multiple sectors; Technology and AI companies; Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed cybercrime actor; APT45; APT27; UNC2814; UNC6201; UNC5673; TeamPCP (UNC6780); Operation Overload
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - vuln-discovery-exploit
+  - malware-tooling-dev
+  - agentic-operations
+  - influence-ops
+  - deepfake-voice
+  - api-key-account-abuse
+  - ai-supply-chain
+  - jailbreak-misuse
+category: adversary-use-of-ai
+attribution:
+  motivation: nation-state
+ai_involvement_confidence: confirmed

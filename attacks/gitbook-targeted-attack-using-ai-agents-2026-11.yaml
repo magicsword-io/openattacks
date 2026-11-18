@@ -1,0 +1,34 @@
+id: gitbook-targeted-attack-using-ai-agents-2026-11
+name: GitBook says a targeted attack 'using AI agents' stole infrastructure credentials; customer API, Git Sync and integration tokens possibly exposed
+date_reported: 2026-11-03
+researcher: unknown
+org: GitBook
+sources:
+  - url: https://www.gitbook.com/status/security-incident-2026-11-03
+    publisher: GitBook
+  - url: https://decrypt.co/382465/crypto-docs-gitbook-ai-agent-security-breach
+  - url: https://crypto.news/gitbook-ai-cyberattack-api-tokens-secrets/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_credential_theft
+technique_summary: Docs platform GitBook joins the run of victims blaming AI agents for an intrusion, rotating all secrets and revoking every customer API token, but gives no evidence of how AI was used.
+initial_access: unknown
+ai_tooling_and_models:
+  - GitBook platform incl. GitBook Assistant (visitor questions possibly exposed) and GitBook MCP server (re-auth advised)
+  - attacker's AI agents unnamed
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - agentic-operations
+  - api-key-account-abuse
+category: adversary-use-of-ai
+ai_involvement_confidence: vendor-asserted

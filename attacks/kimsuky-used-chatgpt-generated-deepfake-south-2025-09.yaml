@@ -1,0 +1,39 @@
+id: kimsuky-used-chatgpt-generated-deepfake-south-2025-09
+name: Kimsuky used ChatGPT-generated deepfake South Korean military ID cards as spear-phishing lures
+date_reported: 2025-09-15
+researcher: unknown
+org: Genians Security Center
+sources:
+  - url: https://www.genians.co.kr/en/blog/threat_intelligence/deepfake
+    publisher: Genians Security Center
+  - url: https://www.theregister.com/2025/09/15/north_korea_chatgpt_fake_id/
+  - url: https://www.infosecurity-magazine.com/news/ai-military-ids-north-korea/
+  - url: https://genians.com/news/chatgpt-exploited-in-north-korean-cyber-espionage-campaign-genians-reveals/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: A DPRK espionage group used ChatGPT to forge military ID images that lent credibility to a malware-laden phishing email.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI ChatGPT image generation
+other_tooling: []
+victims_and_sectors: Defense; Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Kimsuky
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - jailbreak-misuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: Kimsuky
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

@@ -1,0 +1,41 @@
+id: openai-february-2025-report-china-linked-2025-02
+name: "OpenAI February 2025 report: China-linked surveillance tool, DPRK IT workers and hackers, scams and IO banned"
+date_reported: 2025-02-21
+researcher: unknown
+org: OpenAI
+sources:
+  - url: https://cdn.openai.com/threat-intelligence-reports/disrupting-malicious-uses-of-our-models-february-2025-update.pdf
+    publisher: OpenAI
+  - url: https://openai.com/global-affairs/disrupting-malicious-uses-of-ai/
+  - url: https://thehackernews.com/2025/02/openai-bans-accounts-misusing-chatgpt.html
+  - url: https://www.eweek.com/news/openai-ai-surveillance-china/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: OpenAI disclosed eight disrupted operations, headlined by a likely China-origin effort that used ChatGPT to build and pitch a social media surveillance tool.
+initial_access: unknown
+ai_tooling_and_models:
+  - ChatGPT (OpenAI models)
+  - code referenced Meta Llama 3.1 8B via Ollama
+other_tooling: []
+victims_and_sectors: Multiple sectors; Government; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Peer Review; Sponsored Discontent; DPRK-linked IT workers; VELVET CHOLLIMA (Kimsuky) and STARDUST CHOLLIMA-linked actor; IUVM / STORM-2035; DigitSol; Cambodia-based scam operators
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - influence-ops
+  - fraud-it-worker-schemes
+  - phishing-social-eng
+  - recon-osint
+category: adversary-use-of-ai
+attribution:
+  actor_name: Peer Review; Sponsored Discontent; DPRK-linked IT workers; VELVET CHOLLIMA (Kimsuky) and STARDUST CHOLLIMA-linked actor; IUVM / STORM-2035; DigitSol; Cambodia-based scam operators
+  motivation: nation-state
+ai_involvement_confidence: confirmed

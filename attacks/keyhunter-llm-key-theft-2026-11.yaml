@@ -19,6 +19,8 @@ ai_tooling_and_models:
   - grok-4.6 model (AI_radar monitoring)
   - PentAGI (github.com/vxcontrol/pentagi)
   - aipocket (github.com/leepsmarts/aipocket)
+frameworks:
+  - pentagi
 other_tooling:
   - "fadidevv/keyhunter (github.com/fadidevv/keyhunter, Rust, crates.io: github-keyhunter v0.1.0)"
   - "bigzooooz/KeyHunter (github.com/bigzooooz/KeyHunter)"

@@ -1,0 +1,38 @@
+id: microsoft-north-korean-it-workers-use-2024-11
+name: "Microsoft: North Korean IT workers use Faceswap and AI-built profiles; Sapphire Sleet steals USD 10M"
+date_reported: 2024-11-22
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://microsoft.com/en-us/security/blog/2024/11/22/microsoft-shares-latest-intelligence-on-north-korean-and-chinese-threat-actors-at-cyberwarcon
+    publisher: Microsoft Threat Intelligence
+  - url: https://thehackernews.com/2024/11/north-korean-hackers-steal-10m-with-ai.html
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Microsoft reported North Korean remote IT workers using AI face-swapping on stolen IDs, AI-assisted fake GitHub and LinkedIn personas, and experimenting with voice changers.
+initial_access: unknown
+ai_tooling_and_models:
+  - Faceswap and other AI image tools
+  - voice-changing software
+  - AI-assisted profile generation
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: North Korean IT workers (Jasper Sleet cluster); Sapphire Sleet; Ruby Sleet; Storm-2077
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+  - deepfake-voice
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: North Korean IT workers (Jasper Sleet cluster); Sapphire Sleet; Ruby Sleet; Storm-2077
+  motivation: nation-state
+ai_involvement_confidence: confirmed

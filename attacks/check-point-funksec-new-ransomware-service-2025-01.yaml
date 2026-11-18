@@ -1,0 +1,35 @@
+id: check-point-funksec-new-ransomware-service-2025-01
+name: "Check Point: FunkSec, a new ransomware-as-a-service crew, built its Rust encryptor and tools with AI help"
+date_reported: 2025-01-10
+researcher: unknown
+org: Check Point Research
+sources:
+  - url: https://research.checkpoint.com/2025/funksec-alleged-top-ransomware-group-powered-by-ai/
+    publisher: Check Point Research
+  - url: https://thehackernews.com/2025/01/ai-driven-ransomware-funksec-targets-85.html
+  - url: https://securityaffairs.com/173018/cyber-crime/funksec-ransomware-was-developed-using-ai-tools.html
+borderline: false
+ai_role: llm_generated_malware
+technique_summary: Check Point assessed that an inexperienced, likely Algeria-based actor used AI assistance to rapidly build FunkSec's Rust ransomware and tooling, claiming 85 victims in December 2024.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified AI coding assistants
+  - a FunkSec chatbot built on the Miniapps platform
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: FunkSec (Scorpion / DesertStorm, El_Farado; possible links to XTN, Blako, Bjorka)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: FunkSec (Scorpion / DesertStorm, El_Farado; possible links to XTN, Blako, Bjorka)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

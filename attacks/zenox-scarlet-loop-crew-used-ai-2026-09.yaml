@@ -1,0 +1,35 @@
+id: zenox-scarlet-loop-crew-used-ai-2026-09
+name: "ZenoX: SCARLET LOOP crew used AI agents to pick fintech targets and validate 11,800+ stolen logins"
+date_reported: 2026-09-23
+researcher: unknown
+org: ZenoX (reported by TI Inside)
+sources:
+  - url: https://tiinside.com.br/en/23/09/2026/cibercriminosos-usam-agentes-de-ia-para-atacar-mais-de-6-mil-alvos-em-107-paises/
+    publisher: ZenoX (reported by TI Inside)
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: A criminal group used LLM agents to score 84,660 URLs for revenue potential, locate login pages across 6,171 domains and validate at least 11,832 leaked credentials.
+initial_access: unknown
+ai_tooling_and_models:
+  - "Multiple unnamed LLMs (tiered: capable models for judgment, cheap model for browsing)"
+other_tooling: []
+victims_and_sectors: Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: SCARLET LOOP
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  actor_name: SCARLET LOOP
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

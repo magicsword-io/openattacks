@@ -5,30 +5,33 @@ import "../styles/global.css";
 import "../styles/catalog.css";
 import Icon from "../components/Icon.astro";
 import MagicSwordLogo from "../components/MagicSwordLogo.astro";
-import { href, repo, reviewed, formatDate } from "../lib/catalog";
+import { href, repo, formatDate } from "../lib/catalog";
+import { siteUpdated } from "../lib/site-updated";
 import { preventionURL } from "../lib/site-links";
 import { magicswordURL } from "../lib/magicsword-links.mjs";
 interface Props {
   title?: string;
   description?: string;
   active?: string;
-  lastReviewed?: string;
+  // A string shows that review date; null marks an entry nobody has reviewed yet.
+  // Omit it to show when the site was last updated.
+  lastReviewed?: string | null;
   canonicalPath?: string;
 }
 const {
   title = "OpenAttacks — The open catalog of AI attacks",
   description = "How attackers actually use AI, sourced and mapped to prevention. Explore a community-maintained catalog of AI-enabled attacks from MagicSword.",
   active = "catalog",
-  lastReviewed = reviewed,
+  lastReviewed,
   canonicalPath = Astro.url.pathname,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
-  href("openattacks-share.png"),
+  href("openattacks-share-v2.png"),
   Astro.site || Astro.url.origin,
 );
 const imageAlt =
-  "OpenAttacks by MagicSword. One technology. Many attack paths. A colorful dot graph on a dark grid.";
+  "OpenAttacks by MagicSword. The open catalog of AI attacks, shown with a mapped attack flow on a dark grid.";
 ---
 
 <!doctype html>
@@ -36,6 +39,20 @@ const imageAlt =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Google Tag Manager -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+    </script>
+    <!-- End Google Tag Manager -->
     <meta name="theme-color" content="#08080a" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
@@ -57,6 +74,7 @@ const imageAlt =
     <meta name="twitter:image" content={imageURL} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="sitemap" href={href("sitemap-index.xml")} />
+    <link rel="describedby" href={href("llms.txt")} />
     <link
       rel="alternate"
       type="text/plain"
@@ -65,9 +83,21 @@ const imageAlt =
     />
     <link
       rel="alternate"
+      type="text/markdown"
+      title="OpenAttacks agent skill"
+      href={href("skills/openattacks/SKILL.md")}
+    />
+    <link
+      rel="alternate"
       type="application/json"
       title="Complete attack catalog"
       href={href("api/attacks.json")}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="OpenAttacks RSS feed"
+      href={href("rss.xml")}
     />
     <script is:inline>
       try {
@@ -116,6 +146,10 @@ const imageAlt =
           >
             About
           </a>
+          <a class:list={{ active: active === "use" }} href={href("use/")}>
+            Use with an LLM
+          </a>
+          <a href={href("api/attacks.json")}>JSON API</a>
           <a
             class="nav-prevent"
             href={preventionURL}
@@ -175,7 +209,9 @@ const imageAlt =
             Contribute
           </a>
           <a href={href("llms.txt")}>llms.txt</a>
+          <a href={href("use/")}>Use with an LLM</a>
           <a href={href("api/attacks.json")}>JSON API</a>
+          <a href={href("rss.xml")}>RSS</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -183,8 +219,19 @@ const imageAlt =
           Built in the open. Maintained by MagicSword & the community.
         </span>
         <span>
-          Last reviewed{" "}
-          <time datetime={lastReviewed}>{formatDate(lastReviewed)}</time>
+          {lastReviewed === null ? (
+            "Not yet reviewed"
+          ) : lastReviewed ? (
+            <>
+              Last reviewed{" "}
+              <time datetime={lastReviewed}>{formatDate(lastReviewed)}</time>
+            </>
+          ) : (
+            <>
+              Last updated{" "}
+              <time datetime={siteUpdated}>{formatDate(siteUpdated)}</time>
+            </>
+          )}
         </span>
       </div>
     </footer>

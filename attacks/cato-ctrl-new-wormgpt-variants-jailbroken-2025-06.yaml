@@ -1,0 +1,39 @@
+id: cato-ctrl-new-wormgpt-variants-jailbroken-2025-06
+name: "Cato CTRL: new WormGPT variants are jailbroken wrappers around xAI Grok and Mistral Mixtral"
+date_reported: 2025-06-17
+researcher: unknown
+org: Cato Networks (Cato CTRL)
+sources:
+  - url: https://www.catonetworks.com/blog/cato-ctrl-wormgpt-variants-powered-by-grok-and-mixtral/
+    publisher: Cato Networks (Cato CTRL)
+  - url: https://securityboulevard.com/2025/06/wormgpt-variants-powered-by-grok-and-mixtral-have-emerged/
+  - url: https://www.techrepublic.com/article/news-wormgpt-variants-ai-models-grok-mixtral/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_credential_theft
+technique_summary: Underground WormGPT clones sold via Telegram were shown to be guardrail-bypassing system prompts layered on Grok's API and on a likely fine-tuned Mixtral.
+initial_access: unknown
+ai_tooling_and_models:
+  - xAI Grok API (keanu-WormGPT)
+  - Mistral Mixtral (xzin0vich-WormGPT)
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: keanu; xzin0vich (BreachForums sellers)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - jailbreak-misuse
+  - api-key-account-abuse
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: keanu; xzin0vich (BreachForums sellers)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

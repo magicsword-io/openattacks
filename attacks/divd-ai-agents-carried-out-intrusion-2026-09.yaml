@@ -1,0 +1,32 @@
+id: divd-ai-agents-carried-out-intrusion-2026-09
+name: DIVD says AI agents carried out intrusion into its network after Zammad zero-day chain
+date_reported: 2026-09-24
+researcher: unknown
+org: DIVD (Dutch Institute for Vulnerability Disclosure)
+sources:
+  - url: https://csirt.divd.nl/cases/DIVD-2026-00014/
+    publisher: DIVD (Dutch Institute for Vulnerability Disclosure)
+  - url: https://csirt.divd.nl/cases/DIVD-2026-00015/
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-zammad-ai-agent-breach-20261001-csa-styled/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: The Dutch vulnerability-disclosure CSIRT was breached via two Zammad zero-days, after which AI agents, judged by volume and self-talking code comments, ran the intrusion.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unidentified AI agents
+other_tooling: []
+victims_and_sectors: Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: vendor-asserted

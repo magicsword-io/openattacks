@@ -20,6 +20,7 @@ if (root) {
     environment: "environments",
     region: "regions",
     tool: "tools",
+    framework: "frameworks",
   };
 
   function updateURL() {

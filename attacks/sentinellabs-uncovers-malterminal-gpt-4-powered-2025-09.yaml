@@ -1,0 +1,34 @@
+id: sentinellabs-uncovers-malterminal-gpt-4-powered-2025-09
+name: SentinelLABS uncovers MalTerminal, GPT-4-powered malware, and hunts LLM malware by embedded keys and prompts
+date_reported: 2025-09-19
+researcher: unknown
+org: SentinelLABS
+sources:
+  - url: https://www.sentinelone.com/labs/prompts-as-code-embedded-keys-the-hunt-for-llm-enabled-malware/
+    publisher: SentinelLABS
+  - url: https://thehackernews.com/2025/09/researchers-uncover-gpt-4-powered.html
+  - url: https://securityaffairs.com/182433/malware/researchers-expose-malterminal-an-llm-enabled-malware-pioneer.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_credential_theft
+technique_summary: SentinelLABS identified possibly the earliest LLM-enabled malware and showed that embedded API keys and prompts give defenders a reliable hunting handle.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI GPT-4 chat completions API (deprecated endpoint)
+  - Hugging Face keys in LameHug
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unknown author of MalTerminal
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - api-key-account-abuse
+category: adversary-use-of-ai
+ai_involvement_confidence: confirmed

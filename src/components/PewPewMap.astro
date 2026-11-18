@@ -451,8 +451,10 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     grid-template-rows: auto auto minmax(0, 1fr) auto;
     grid-template-columns: minmax(0, 1fr);
     gap: calc(12px * var(--pp-scale));
-    width: min(1680px, 100vw - 48px);
-    margin: 0 0 30px calc(50% - min(840px, 50vw - 24px));
+    /* Viewport units are divided by the page zoom so the screen stays
+       inside the window on wide displays, where the body is zoomed. */
+    width: min(1680px, (100vw - 48px) / var(--page-zoom, 1));
+    margin: 0 0 30px calc(50% - min(840px, (50vw - 24px) / var(--page-zoom, 1)));
     overflow: hidden;
     border: 1px solid #1b3240;
     border-radius: 8px;
@@ -477,8 +479,8 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
     inset: 0;
     z-index: 1000;
     width: auto;
-    height: 100vh;
-    height: 100dvh;
+    height: calc(100vh / var(--page-zoom, 1));
+    height: calc(100dvh / var(--page-zoom, 1));
     margin: 0;
     border: 0;
     border-radius: 0;
@@ -489,17 +491,17 @@ const maxTalk = Math.max(1, ...talkers.map((t) => t.total));
   /* Type and chrome grow with the wall, so it reads from across the room. */
   @media (min-width: 1600px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 1.45;
+      --pp-scale: calc(1.45 / var(--page-zoom, 1));
     }
   }
   @media (min-width: 2400px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 2;
+      --pp-scale: calc(2 / var(--page-zoom, 1));
     }
   }
   @media (min-width: 3200px) {
     .pewpew-screen.is-wall {
-      --pp-scale: 2.7;
+      --pp-scale: calc(2.7 / var(--page-zoom, 1));
     }
   }
 

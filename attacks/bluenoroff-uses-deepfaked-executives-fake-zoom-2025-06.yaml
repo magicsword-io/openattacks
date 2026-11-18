@@ -1,0 +1,39 @@
+id: bluenoroff-uses-deepfaked-executives-fake-zoom-2025-06
+name: BlueNoroff uses deepfaked executives in fake Zoom call to infect crypto-firm employee's Mac
+date_reported: 2025-06-18
+researcher: unknown
+org: Huntress
+sources:
+  - url: https://www.huntress.com/blog/inside-bluenoroff-web3-intrusion-analysis
+    publisher: Huntress
+  - url: https://www.bleepingcomputer.com/news/security/north-korean-hackers-deepfake-execs-in-zoom-call-to-spread-mac-malware/
+  - url: https://www.csoonline.com/article/4009603/north-koreas-bluenoroff-uses-ai-deepfakes-to-push-mac-malware-in-fake-zoom-calls.html
+  - url: https://thehackernews.com/2025/06/bluenoroff-deepfake-zoom-scam-hits.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: North Korean BlueNoroff staged a Zoom meeting with deepfakes of the victim's own leaders to trick them into running a fake Zoom extension that deployed eight macOS implants.
+initial_access: unknown
+ai_tooling_and_models:
+  - Deepfake video of company leadership (tooling unspecified)
+other_tooling: []
+victims_and_sectors: Finance; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: BlueNoroff (TA444, Sapphire Sleet)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: BlueNoroff (TA444, Sapphire Sleet)
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

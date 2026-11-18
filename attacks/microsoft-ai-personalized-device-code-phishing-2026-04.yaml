@@ -1,0 +1,31 @@
+id: microsoft-ai-personalized-device-code-phishing-2026-04
+name: "Microsoft: AI-personalized device code phishing tied to EvilTokens kit compromises accounts at scale"
+date_reported: 2026-04-06
+researcher: unknown
+org: Microsoft
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/04/06/ai-enabled-device-code-phishing-campaign-april-2026/
+    publisher: Microsoft
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Microsoft describes a large device code phishing wave using AI-written, role-tailored lures and dynamically generated codes to hijack Microsoft 365 accounts.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unnamed generative AI used to craft lures
+other_tooling: []
+victims_and_sectors: Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed operators using the EvilTokens phishing-as-a-service kit
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

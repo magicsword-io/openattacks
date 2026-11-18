@@ -186,6 +186,7 @@ test("theme persists and mobile pages fit the viewport", async ({ page }) => {
     "/catalog/",
     "/timeline/",
     "/regions/",
+    "/about/",
     "/attacks/cairn-norforge-2026-10/",
     "/attacks/ghostaction-ai-creds-2026-10/",
   ]) {
@@ -193,6 +194,22 @@ test("theme persists and mobile pages fit the viewport", async ({ page }) => {
     expect(
       await page.evaluate(() => document.body.scrollWidth <= innerWidth),
     ).toBe(true);
+  }
+});
+
+test("wide pages share the landing page scale", async ({ page }) => {
+  await page.setViewportSize({ width: 1800, height: 1000 });
+  for (const path of [
+    "/",
+    "/about/",
+    "/attacks/kaspersky-cyberstrikeai-schools-2026/",
+  ]) {
+    await page.goto(path);
+    expect(
+      await page.locator("body").evaluate((body) =>
+        getComputedStyle(body).getPropertyValue("zoom"),
+      ),
+    ).toBe("1.25");
   }
 });
 
@@ -228,6 +245,7 @@ for (const theme of ["dark", "light"]) {
       "/timeline/",
       "/regions/",
       "/patterns/",
+      "/about/",
       "/attacks/cairn-norforge-2026-10/",
       "/attacks/ghostaction-ai-creds-2026-10/",
       "/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/",
@@ -364,9 +382,43 @@ test("LLM entry points are discoverable on the landing page", async ({
   const guide = await response.text();
   expect(guide).toContain(`${attacks.length} reported`);
   expect(guide).toContain("/llms-full.txt");
-  expect(guide).toContain(`/api/attacks/${attacks[0].id}.md`);
+  expect(guide).toContain(`/llms/attacks/${attacks[0].id}.md`);
   const entry = await request.get(`/api/attacks/${attacks[0].id}.json`);
   expect((await entry.json()).id).toBe(attacks[0].id);
+});
+
+test("about page introduces the maintainers with local portraits", async ({
+  page,
+}) => {
+  await page.goto("/about/");
+  await expect(
+    page.getByRole("heading", { name: "The people behind the project" }),
+  ).toBeVisible();
+  const cards = page.locator(".person-card");
+  await expect(cards).toHaveCount(5);
+  for (const name of [
+    "Kostas",
+    "Michael Haag",
+    "Jose Hernandez",
+    "Nasreddine Bencherchali",
+    "Scott Roberts",
+  ]) {
+    await expect(
+      cards.getByRole("heading", { name, exact: true }),
+    ).toBeVisible();
+  }
+  expect(
+    await cards
+      .locator("img")
+      .evaluateAll((images) =>
+        images.every(
+          (image) =>
+            image.getAttribute("src")?.includes("/images/maintainers/") &&
+            (image as HTMLImageElement).complete &&
+            (image as HTMLImageElement).naturalWidth > 0,
+        ),
+      ),
+  ).toBe(true);
 });
 
 test("network stages expose scoped policy opportunities and all three hunt formats", async ({

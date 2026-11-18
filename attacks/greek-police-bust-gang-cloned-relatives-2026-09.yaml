@@ -1,0 +1,34 @@
+id: greek-police-bust-gang-cloned-relatives-2026-09
+name: Greek police bust gang that cloned relatives' voices with AI to con victims; over EUR 1M taken
+date_reported: 2026-09-18
+researcher: unknown
+org: Euronews
+sources:
+  - url: https://euronews.com/my-europe/2026/09/18/greece-police-bust-gang-using-ai-to-clone-relatives-voices-for-cash
+    publisher: Euronews
+  - url: https://greekcitytimes.com/2026/09/19/greece-police-ai-voice-cloning-scam-gang
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Greek organised-crime police arrested two members of a gang that recorded relatives' voices under a telecom pretext, cloned them with AI and used the clones to vouch for fake technicians, taking over EUR 1 million.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI voice-cloning tool (not named)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed Attica-based fraud gang
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

@@ -1,0 +1,36 @@
+id: unit-42-attackers-register-ai-hallucinated-2026-06
+name: "Unit 42: attackers register AI-hallucinated domains for phishing kits and malicious Android apps"
+date_reported: 2026-06-30
+researcher: unknown
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/
+    publisher: Unit 42 (Palo Alto Networks)
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-phantom-squatting-ai-hallucinated-domains/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Unit 42 observed criminals registering domains that LLMs hallucinate for real brands, including a postal-service lookalike used for phishing and malicious APK delivery.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLM hallucinated URLs from AI assistants
+  - AI coding assistant used to build phishing kit
+other_tooling: []
+victims_and_sectors: Government; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Montana Empire phishing kit operator; unnamed APK distributor
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Montana Empire phishing kit operator; unnamed APK distributor
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

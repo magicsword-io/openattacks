@@ -1,0 +1,114 @@
+id: air-office-party-anthropic-skills-ld-preload-2026-11
+name: AIR Office Party, Anthropic document skills load an unchecked LD_PRELOAD library
+date_reported: 2026-11-05
+date_activity_start: "2026-05"
+researcher: Omri Saxena, Or Nevo
+org: Air Security
+sources:
+  - url: https://www.air.security/blog-posts/office-party
+    title: "Office Party: Anthropic's Document Skills Load an Unchecked Shared Library"
+    publisher: Air Security
+  - url: https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py
+    title: skills/docx/scripts/office/soffice.py
+    publisher: anthropics
+magicsword_coverage: []
+borderline: true
+borderline_note: "Air Security published a proof of concept. The article does not describe in-the-wild exploitation. Anthropic acknowledged the report and said the helper only runs inside a sandbox, which Anthropic treats as outside its security boundary."
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "The official Anthropic docx, pptx, and xlsx skills call scripts/office/soffice.py. If a Unix socket cannot be opened, that helper sets LD_PRELOAD to whatever file is already at the temp-directory path lo_socket_shim.so."
+technique_summary: 'Air Security (Omri Saxena and Or Nevo; article dated Nov 5, 2026) found the issue in May 2026 and reported it to Anthropic. The docx, pptx, and xlsx skills, used by Claude document features and by the Claude Code document-skills marketplace, convert documents with python scripts/office/soffice.py --headless --convert-to pdf. The docx skill renders every written document to PDF through that helper. The same helper is used by the pptx and xlsx skills. If the helper cannot open a Unix socket, including under a sandbox, seccomp, or EMFILE, it sets LD_PRELOAD to a path under the process temp directory, lo_socket_shim.so, and execs LibreOffice. The helper does not check who owns that file or what is in it. Whoever writes it first is loaded into the LibreOffice process. Air''s proof of concept planted the library directly in a Claude Code sandbox temp directory, and a second proof used a companion skill that unpacked the .so into /tmp while the agent wrote marketing copy. The load is Linux-only. macOS ignores LD_PRELOAD, so the library is not loaded there. Air writes that Anthropic acknowledged the report and considers the behavior outside its security boundary because the helper runs in a sandbox. As of the Nov 5 article, scripts/office/soffice.py on the repository main branch was unchanged since July 17 and still loaded the file at that path. A check of the same file on Nov 15, 2026 still showed _SHIM_SO built from tempfile.gettempdir() joined with lo_socket_shim.so, an early return when that file exists, and env["LD_PRELOAD"] set to it.'
+initial_access: "A local writer places lo_socket_shim.so in the temp directory before the document skill runs soffice.py. Air demonstrated a direct plant and a companion skill. No remote exploitation is described."
+ai_tooling_and_models:
+  - "Anthropic skills repository, skills/docx, skills/pptx, and skills/xlsx (https://github.com/anthropics/skills)"
+  - "Claude Code document-skills and Claude document features that call soffice.py"
+other_tooling:
+  - "LD_PRELOAD of lo_socket_shim.so"
+  - "LibreOffice via soffice.py"
+victims_and_sectors: "Users of the official Anthropic document skills on Linux, including Claude Code sandboxes where the socket open fails. No victim organizations are named."
+regions:
+  - Not applicable
+attribution_or_cluster: "No threat actor. Air Security reported the behavior in the official skill. Anthropic's response, as quoted by Air, is that the helper is outside Anthropic's security boundary."
+scale_and_metrics: "One helper shared by the docx, pptx, and xlsx skills. No exploitation count was published."
+prevention_angle: "Pin document skills and review scripts/office/soffice.py before enabling them. On Linux, alert when a process sets LD_PRELOAD to lo_socket_shim.so, and when a compiler writes that filename under /tmp before soffice.py runs. Do not treat an /etc/ld.so.preload file rule as coverage for this env-var path. macOS does not honor LD_PRELOAD for this load."
+related_magicsword_projects:
+  - LOLSkills
+source_notes: "The May 2026 discovery, the Nov 5, 2026 article date, Anthropic's sandbox response, and the July 17 unchanged claim are from Air Security. The Nov 15, 2026 file check is a read of https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py. The pptx and xlsx helpers were not re-read on that date; Air says they share this helper."
+last_reviewed: 2026-11-15
+region_notes: "No target geography. The behavior is in published skill code."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0010.001
+    rationale: "The load is in the official Anthropic document skills, not a third-party copy"
+    source_urls:
+      - https://www.air.security/blog-posts/office-party
+      - https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py
+  - id: AML.T0053
+    rationale: "The docx skill invokes soffice.py as part of rendering a document the agent just wrote"
+    source_urls:
+      - https://www.air.security/blog-posts/office-party
+attack_flow:
+  nodes:
+    - id: helper
+      title: Document skill calls soffice.py
+      description: "docx, pptx, and xlsx skills run scripts/office/soffice.py --headless --convert-to pdf. The docx skill does this for every document it writes."
+      kind: ai
+      source_urls:
+        - https://www.air.security/blog-posts/office-party
+    - id: preload
+      title: Failed socket sets LD_PRELOAD
+      description: "If the Unix socket cannot be opened, soffice.py sets LD_PRELOAD to tempfile.gettempdir()/lo_socket_shim.so with no ownership or content check."
+      kind: execution
+      source_urls:
+        - https://www.air.security/blog-posts/office-party
+        - https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py
+    - id: plant
+      title: First writer of the shim is loaded
+      description: "Air planted the library in a Claude Code sandbox temp directory, and also unpacked it from a companion skill. Linux loads it. macOS ignores LD_PRELOAD."
+      kind: impact
+      source_urls:
+        - https://www.air.security/blog-posts/office-party
+  edges:
+    - source: helper
+      target: preload
+    - source: preload
+      target: plant
+category: attacks-on-ai
+attribution:
+  actor_name: unknown
+  motivation: unknown
+  attributed_by: Air Security
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Unusual LD_PRELOAD/LD_LIBRARY_PATH Command Line Arguments
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_ld_preload_cmdline.toml"
+    notes: "Linux. A command line that sets LD_PRELOAD. Matches soffice.py when the env assignment is visible on the command line. It does not match a library path that exists only inside the Python process."
+  - name: Unusual Preload Environment Variable Process Execution
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/defense_evasion_unusual_preload_env_vars.toml"
+    notes: "Linux. A process started with an unusual LD_PRELOAD or LD_LIBRARY_PATH. Matches the LibreOffice process the helper execs after setting the variable."
+  - name: lo_socket_shim.so is not an ld.so.preload file edit
+    format: guidance
+    notes: "Rules for writes to /etc/ld.so.preload describe a different technique and are not cited. Hunt for lo_socket_shim.so under the temp directory, and for a compiler writing that file before soffice.py. Sigma has no rule for the LD_PRELOAD environment variable."
+timeline:
+  first_seen: "2026-05"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-05"
+      source: Air Security
+      summary: "Omri Saxena and Or Nevo find the unchecked shim and report it to Anthropic"
+    - date: "2026-07-17"
+      source: Air Security
+      summary: "Air says scripts/office/soffice.py on main last changed on this date and still loads the temp-directory library"
+    - date: "2026-11-05"
+      source: Air Security
+      summary: "Air publishes Office Party. Anthropic's stated position is that the sandboxed helper is outside its security boundary."
+    - date: "2026-11-15"
+      source: https://github.com/anthropics/skills/blob/main/skills/docx/scripts/office/soffice.py
+      summary: "The docx soffice.py on main still defines _SHIM_SO as tempfile.gettempdir()/lo_socket_shim.so and sets LD_PRELOAD to it"

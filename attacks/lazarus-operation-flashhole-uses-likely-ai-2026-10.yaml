@@ -1,0 +1,33 @@
+id: lazarus-operation-flashhole-uses-likely-ai-2026-10
+name: Lazarus Operation FlashHole uses likely AI-generated résumé site and photo to lure South Korean firms
+date_reported: 2026-10-21
+researcher: unknown
+org: Kaspersky GReAT (Securelist)
+sources:
+  - url: https://securelist.com/lazarus-operation-flashhole/121541/
+    publisher: Kaspersky GReAT (Securelist)
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Kaspersky assesses Lazarus likely used AI to generate a fake job-seeker photo and portfolio site as spear-phishing lures in an espionage campaign against South Korean companies.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified image and text generation tools (lure photo and portfolio site)
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Lazarus Group
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Low. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: Lazarus Group
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

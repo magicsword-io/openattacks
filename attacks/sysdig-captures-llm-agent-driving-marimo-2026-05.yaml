@@ -1,0 +1,32 @@
+id: sysdig-captures-llm-agent-driving-marimo-2026-05
+name: Sysdig captures LLM agent driving a marimo exploit to an internal database dump in four pivots
+date_reported: 2026-05-26
+researcher: unknown
+org: Sysdig Threat Research Team
+sources:
+  - url: https://sysdig.com/blog/ai-agent-at-the-wheel-how-an-attacker-used-llms-to-move-from-a-cve-to-an-internal-database-in-4-pivots/
+    publisher: Sysdig Threat Research Team
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-llm-agent-postexploit-marimo-20260602-csa/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Sysdig documented what it calls its first captured LLM-agent-driven intrusion, chaining a marimo RCE to AWS secrets, SSH and a PostgreSQL credential-table dump in about an hour.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM agent used by attacker
+  - victim ran marimo Python notebook
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (source IP in Indonesia)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+ai_involvement_confidence: vendor-asserted

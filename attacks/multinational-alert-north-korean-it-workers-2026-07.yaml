@@ -1,0 +1,37 @@
+id: multinational-alert-north-korean-it-workers-2026-07
+name: "Multinational alert: North Korean IT workers integrate AI and LLMs to fake identities and communications"
+date_reported: 2026-07-31
+researcher: unknown
+org: FBI / IC3 (multinational alert)
+sources:
+  - url: https://www.ic3.gov/CSA/2026/260731.pdf
+    publisher: FBI / IC3 (multinational alert)
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: A multinational government alert says DPRK IT workers use AI integration and LLMs to obscure identities and craft convincing profiles.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLMs and translation services
+  - possibly AI-generated video in interviews
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: North Korean IT workers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+  - deepfake-voice
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: North Korean IT workers
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

@@ -1,0 +1,35 @@
+id: fbi-warns-north-korean-it-workers-2025-01
+name: FBI warns North Korean IT workers now extort employers, using AI and face-swapping in job interviews
+date_reported: 2025-01-23
+researcher: unknown
+org: FBI / IC3
+sources:
+  - url: https://www.ic3.gov/PSA/2025/PSA250123
+    publisher: FBI / IC3
+  - url: https://www.ic3.gov/PSA/2025/PSA250723-4
+borderline: false
+ai_role: other
+technique_summary: FBI says DPRK remote IT workers have moved to data theft and extortion and use AI and face-swapping to pass video interviews.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI and face-swapping tools used during video interviews
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: North Korean IT workers
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: North Korean IT workers
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: confirmed

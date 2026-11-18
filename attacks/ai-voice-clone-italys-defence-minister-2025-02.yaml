@@ -1,0 +1,34 @@
+id: ai-voice-clone-italys-defence-minister-2025-02
+name: AI voice clone of Italy's defence minister tricks business leaders; nearly EUR 1M sent, then frozen
+date_reported: 2025-02-13
+researcher: unknown
+org: StratNews Global
+sources:
+  - url: https://stratnewsglobal.com/europe/italian-police-freeze-cash-from-ai-voice-scam-that-targeted-business-leaders
+    publisher: StratNews Global
+  - url: https://www.nssmag.com/en/lifestyle/39882/crosetto-scam-what-is-going-on-giorgio-armani-massimo-moratti
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Fraudsters cloned Defence Minister Guido Crosetto's voice to solicit ransom money from Italian tycoons; Massimo Moratti paid nearly EUR 1 million.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI voice cloning
+other_tooling: []
+victims_and_sectors: Finance; Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed fraudsters
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - deepfake-voice
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed
