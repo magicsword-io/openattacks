@@ -1,11 +1,22 @@
 ---
-import { roles, href, formatDate, type Attack } from "../lib/catalog";
+import { getCollection } from "astro:content";
+import { roles, href, formatDate, type Attack, usedFrameworks } from "../lib/catalog";
 import Icon from "./Icon.astro";
 import { present } from "../lib/presentation";
 const { attacks, large = false } = Astro.props as {
   attacks: Attack[];
   large?: boolean;
 };
+const toolNames = Object.fromEntries(
+  (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
+);
+const frameworkOptions = usedFrameworks(attacks)
+  .map((id) => ({ id, name: toolNames[id] || id }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+const frameworkLabel = (entry: Attack) =>
+  (entry.frameworks || [])
+    .map((id) => toolNames[id] || id)
+    .join(", ");
 const years = [
   ...new Set(attacks.map((a) => a.date_reported.slice(0, 4))),
 ].sort();
@@ -16,8 +27,16 @@ const groups = years.map((year) => ({
     .sort((a, b) => a.ai_role.localeCompare(b.ai_role)),
 }));
 const chartID = large ? "timeline-overview" : "home-overview";
-const columns = 4;
-const rowHeight = 19;
+const chartWidth = 1000;
+const plotInset = 13;
+const plotWidth = chartWidth - plotInset * 2;
+const yearWidth = plotWidth / years.length;
+const columnGap = 14;
+const columns = Math.max(
+  4,
+  Math.min(14, Math.floor((yearWidth - 30) / columnGap)),
+);
+const rowHeight = 16;
 const baseline = Math.max(
   205,
   Math.ceil(
@@ -58,7 +77,7 @@ const chartHeight = baseline + 49;
   </div>
   <svg
     class="dot-chart"
-    viewBox={`0 0 800 ${chartHeight}`}
+    viewBox={`0 0 ${chartWidth} ${chartHeight}`}
     role="group"
     aria-labelledby={`${chartID}-title`}
   >
@@ -76,32 +95,33 @@ const chartHeight = baseline + 49;
       </pattern>
     </defs>
     <rect
-      x="13"
+      x={plotInset}
       y="10"
-      width="774"
+      width={plotWidth}
       height={baseline - 10}
       fill={`url(#${chartID}-grid)`}
     />
     {groups.map((_, index) => (
       <line
-        x1={index * (780 / years.length) + 10}
+        x1={plotInset + index * yearWidth}
         y1="10"
-        x2={index * (780 / years.length) + 10}
+        x2={plotInset + index * yearWidth}
         y2={baseline + 6}
         stroke="currentColor"
         opacity=".1"
       />
     ))}
     <line
-      x1="13"
+      x1={plotInset}
       y1={baseline + 7}
-      x2="787"
+      x2={chartWidth - plotInset}
       y2={baseline + 7}
       stroke="currentColor"
       opacity=".2"
     />
     {groups.map((group, i) => {
-      const center = 10 + (i + 0.5) * (780 / years.length);
+      const center = plotInset + (i + 0.5) * yearWidth;
+      const dotStart = center - ((columns - 1) * columnGap) / 2;
       return (
         <g>
           {group.entries.map((entry, j) => (
@@ -109,8 +129,9 @@ const chartHeight = baseline + 49;
               class="chart-entry"
               data-attack-id={entry.id}
               href={href(`attacks/${entry.id}/`)}
-              aria-label={`${present(entry).title}, ${formatDate(entry.date_reported)}`}
+              aria-label={`${present(entry).title}, ${formatDate(entry.date_reported)}${frameworkLabel(entry) ? `, used ${frameworkLabel(entry)}` : ""}`}
               data-role={entry.ai_role}
+              data-frameworks={JSON.stringify(entry.frameworks || [])}
               data-year={group.year}
               data-name={present(entry).title}
               data-date={formatDate(entry.date_reported)}
@@ -126,13 +147,21 @@ const chartHeight = baseline + 49;
               <g class="dot-arrival">
                 <circle
                   class="attack-dot"
-                  cx={center - 30 + (j % columns) * 20}
+                  cx={dotStart + (j % columns) * columnGap}
                   cy={baseline - 12 - Math.floor(j / columns) * rowHeight}
-                  r="6"
+                  r="5"
                   fill={roles[entry.ai_role].color}
                 >
-                  <title>{entry.name} · {roles[entry.ai_role].label}</title>
+                  <title>{entry.name} · {roles[entry.ai_role].label}{frameworkLabel(entry) ? ` · ${frameworkLabel(entry)}` : ""}</title>
                 </circle>
+                {entry.frameworks?.length ? (
+                  <circle
+                    class="framework-ring"
+                    cx={dotStart + (j % columns) * columnGap}
+                    cy={baseline - 12 - Math.floor(j / columns) * rowHeight}
+                    r="7.1"
+                  />
+                ) : null}
               </g>
             </a>
           ))}
@@ -167,7 +196,11 @@ const chartHeight = baseline + 49;
     <h2>Attack categories</h2>
     <p>Select a category to highlight its reports.</p>
   </div>
-  <div class="chart-legend" role="group" aria-label="Highlight timeline by AI role">
+  <div
+    class="chart-legend"
+    role="group"
+    aria-label="Highlight timeline by AI role"
+  >
     <button
       class="legend-button legend-all"
       aria-pressed="true"
@@ -184,14 +217,45 @@ const chartHeight = baseline + 49;
       >
         <i aria-hidden="true"></i>
         {role.short}
-        <span class="legend-count">{attacks.filter((attack) => attack.ai_role === id).length}</span>
+        <span class="legend-count">
+          {attacks.filter((attack) => attack.ai_role === id).length}
+        </span>
       </button>
     ))}
   </div>
+  {frameworkOptions.length > 0 && (
+    <div class="chart-framework">
+      <p class="framework-legend">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="3.2" fill="currentColor"></circle>
+          <circle
+            cx="8"
+            cy="8"
+            r="6.2"
+            fill="none"
+            stroke="var(--accent)"
+            stroke-width="1.6"></circle>
+        </svg>
+        A ring marks an attack that used an offensive AI framework. Dot color
+        still shows the AI role.
+      </p>
+      <label>
+        Framework
+        <select
+          class="filter-select"
+          data-framework-filter
+          aria-label="Filter dots by offensive framework"
+        >
+          <option value="">Any framework</option>
+          {frameworkOptions.map((framework) => (
+            <option value={framework.id}>Used {framework.name}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+  )}
   <div class="chart-bottom">
-    <span class="chart-inspector" data-chart-inspector>
-      One dot. One documented entry. Select a dot to read the research.
-    </span>
+    <span class="chart-inspector" data-chart-inspector></span>
     <a href={href("timeline/")}>Explore timeline</a>
   </div>
   <span class="sr-only" data-chart-status aria-live="polite"></span>
@@ -210,24 +274,43 @@ const chartHeight = baseline + 49;
         "[data-chart-inspector]",
       )!;
       let activeRole = "";
+      let activeFramework = "";
       let stackIDs: Set<string> | null = null;
+      const frameworkSelect = chart.querySelector<HTMLSelectElement>(
+        "[data-framework-filter]",
+      );
+      const chartSource =
+        chart.querySelector("svg title")?.id || "dot-chart";
       const inStack = (entry: SVGAElement) =>
         !stackIDs || stackIDs.has(entry.dataset.attackId!);
+      const entryFrameworks = (entry: SVGAElement) => {
+        try {
+          return JSON.parse(entry.dataset.frameworks || "[]") as string[];
+        } catch {
+          return [];
+        }
+      };
+      const matches = (entry: SVGAElement, role = activeRole) =>
+        inStack(entry) &&
+        (!role || entry.dataset.role === role) &&
+        (!activeFramework || entryFrameworks(entry).includes(activeFramework));
       const period = chart.querySelector<HTMLElement>(".chart-period")!;
       const originalPeriod = period.textContent;
-      const defaultMessage = () =>
-        stackIDs
-          ? `${entries.filter((entry) => inStack(entry) && (!activeRole || entry.dataset.role === activeRole)).length} highlighted${activeRole ? " in this role" : ""} · ${stackIDs.size} of ${entries.length} reports match your selections. Check their conditions below.`
-          : activeRole
-            ? `${entries.filter((entry) => entry.dataset.role === activeRole).length} entries highlighted. Select a dot to explore.`
-            : "One dot. One documented entry. Select a dot to read the research.";
+      const defaultMessage = () => {
+        const shown = entries.filter((entry) => matches(entry)).length;
+        const frameworkNote = activeFramework
+          ? ` using ${frameworkSelect?.selectedOptions[0]?.textContent || activeFramework}`
+          : "";
+        if (stackIDs)
+          return `${shown} highlighted${activeRole ? " in this role" : ""}${frameworkNote} · ${stackIDs.size} of ${entries.length} reports match your selections. Check their conditions below.`;
+        if (activeRole || activeFramework)
+          return `${shown} entries highlighted${frameworkNote}. Select a dot to explore.`;
+        return "";
+      };
       function highlight(role: string) {
         activeRole = role;
         entries.forEach(
-          (entry) =>
-            (entry.dataset.muted = String(
-              !inStack(entry) || (!!role && entry.dataset.role !== role),
-            )),
+          (entry) => (entry.dataset.muted = String(!matches(entry, role))),
         );
         legend.forEach((button) => {
           button.setAttribute(
@@ -235,11 +318,11 @@ const chartHeight = baseline + 49;
             String(button.dataset.highlight === role),
           );
           button.querySelector(".legend-count")!.textContent = String(
-            entries.filter(
-              (entry) =>
-                inStack(entry) &&
-                (!button.dataset.highlight ||
-                  entry.dataset.role === button.dataset.highlight),
+            entries.filter((entry) =>
+              matches(
+                entry,
+                button.dataset.highlight ? button.dataset.highlight : "",
+              ),
             ).length,
           );
         });
@@ -249,19 +332,40 @@ const chartHeight = baseline + 49;
         chart
           .querySelectorAll<SVGTextElement>("[data-chart-year-count]")
           .forEach((label) => {
-            label.textContent = String(
-              entries.filter(
-                (entry) =>
-                  entry.dataset.year === label.dataset.chartYearCount &&
-                  inStack(entry) &&
-                  (!role || entry.dataset.role === role),
-              ).length,
-            ).padStart(2, "0");
+            const yearCount = entries.filter(
+              (entry) =>
+                entry.dataset.year === label.dataset.chartYearCount &&
+                matches(entry, role),
+            ).length;
+            // Unfiltered labels zero-pad on purpose (05, 12). A filtered year
+            // can be empty; padStart would print that as 00, so show 0.
+            label.textContent =
+              yearCount === 0 ? "0" : String(yearCount).padStart(2, "0");
           });
         inspector.textContent = defaultMessage();
         chart.querySelector("[data-chart-status]")!.textContent =
           defaultMessage();
       }
+      const applyFramework = (id: string) => {
+        activeFramework = id;
+        if (frameworkSelect && frameworkSelect.value !== id)
+          frameworkSelect.value = id;
+        highlight(activeRole);
+      };
+      frameworkSelect?.addEventListener("change", () => {
+        applyFramework(frameworkSelect.value);
+        document.dispatchEvent(
+          new CustomEvent("openattacks:framework", {
+            detail: { id: frameworkSelect.value, source: chartSource },
+          }),
+        );
+      });
+      document.addEventListener("openattacks:framework", ((
+        event: CustomEvent<{ id: string; source?: string }>,
+      ) => {
+        if (event.detail.source === chartSource) return;
+        applyFramework(event.detail.id || "");
+      }) as EventListener);
       const applyStack = (detail: { active: boolean; ids: string[] }) => {
         stackIDs = detail.active ? new Set(detail.ids) : null;
         highlight(activeRole);

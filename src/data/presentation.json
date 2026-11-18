@@ -77,6 +77,12 @@
     "environments": ["web"],
     "evidence": "campaign"
   },
+  "cert-in-crafty-falcon-bfsi-2026-11": {
+    "title": "CRAFTY FALCON campaign against Indian finance",
+    "summary": "CERT-In advisory CIAD-2026-0058 describes CRAFTY FALCON chaining ARTEX, PentAGI, Cairn, and CyberStrikeAI against Indian NBFCs, fintechs, payment firms, and crypto exchanges.",
+    "environments": ["cloud", "web"],
+    "evidence": "campaign"
+  },
   "cl-unk-1211-unit42-2026-10": {
     "title": "CL-UNK-1211 AI-assisted campaign on government Linux servers",
     "summary": "Espionage-style intrusions on government Linux servers used web shells, privilege escalation, SysGoRAT and tunnels. The code looks LLM-generated, but a live AI operator is not confirmed.",

@@ -93,9 +93,6 @@
 .home-timeline .dot-chart {
   max-height: 240px;
 }
-.home-timeline .timeline-context {
-  margin-top: 10px;
-}
 .catalog-controls {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -301,6 +298,41 @@
 }
 @media (max-width: 900px) {
   .header-credit {
+    display: none;
+  }
+  .site-header.site-header {
+    height: auto;
+  }
+  .site-header .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 12px;
+    height: auto;
+    padding-inline: 19px;
+  }
+  .site-header .header-wordmark {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 65px;
+  }
+  .site-header .header-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .site-header .header-inner nav {
+    grid-column: 1/-1;
+    grid-row: 2;
+    height: 44px;
+    margin-left: 0;
+    justify-content: space-between;
+    gap: clamp(8px, 2.5vw, 15px);
+    padding: 0;
+  }
+  .site-header .header-inner nav a {
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .site-header .header-inner nav a.nav-about {
     display: none;
   }
 }

@@ -1,0 +1,38 @@
+id: north-koreas-konni-targets-blockchain-developers-2026-01
+name: North Korea's KONNI targets blockchain developers with AI-generated PowerShell backdoor
+date_reported: 2026-01-22
+researcher: unknown
+org: Check Point Research
+sources:
+  - url: https://blog.checkpoint.com/research/ai-powered-north-korean-konni-malware-targets-developers/
+    publisher: Check Point Research
+  - url: https://www.bleepingcomputer.com/news/security/konni-hackers-target-blockchain-engineers-with-ai-built-malware/
+  - url: https://thehackernews.com/2026/01/konni-hackers-deploy-ai-generated.html
+  - url: https://securityaffairs.com/187317/apt/north-korea-linked-konni-uses-ai-to-build-stealthy-malware-tooling.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: KONNI shifted from South Korean diplomatic targets to APAC blockchain developers, delivering a PowerShell backdoor with clear LLM-generated code traits.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM used to write the backdoor
+other_tooling: []
+victims_and_sectors: Finance; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: KONNI (Opal Sleet, TA406)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: KONNI (Opal Sleet, TA406)
+  country: North Korea
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

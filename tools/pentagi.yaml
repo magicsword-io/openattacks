@@ -8,5 +8,8 @@ sources:
   - url: https://github.com/topics/pentest-ai
     title: AI Penetration Testing Tools
     publisher: GitHub
-linked_attacks: []
+linked_attacks:
+  - cert-in-crafty-falcon-bfsi-2026-11
+  - gtig-mandiant-unc7228-other-crews-run-2026-10
+  - keyhunter-llm-key-theft-2026-11
 linked_actors: []

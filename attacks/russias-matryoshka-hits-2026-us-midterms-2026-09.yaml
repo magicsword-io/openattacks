@@ -1,0 +1,39 @@
+id: russias-matryoshka-hits-2026-us-midterms-2026-09
+name: Russia's Matryoshka hits 2026 US midterms with deepfaked celebrities and fake CNN and Mother Jones videos
+date_reported: 2026-09-24
+researcher: unknown
+org: Mother Jones
+sources:
+  - url: https://www.motherjones.com/politics/2026/09/how-a-russian-attack-on-the-midterms-deepfaked-mother-jones-matryoshka-putin-trump/
+    publisher: Mother Jones
+  - url: https://lavocedinewyork.com/en/news/2026/09/16/new-russian-disinformation-campaign-targets-u-s-midterms/
+  - url: https://www.nytimes.com/2026/09/18/us/politics/russia-election-disinformation-us-intelligence.html
+  - url: https://incidentdatabase.ai/cite/1702/
+  - url: https://meduza.io/en/feature/2026/10/23/for-weeks-deepfake-celebrities-have-been-telling-americans-not-to-vote-for-democrats-in-the-midterm-elections-u-s-intelligence-says-russia-is-behind-it
+  - url: https://www.politico.com/news/2026/10/21/himes-warner-russia-election-interference-report-01130967
+borderline: false
+ai_role: other
+technique_summary: From 10 September 2026, Matryoshka posted deepfake and voice-cloned celebrity clips and fake news-branded reports attacking Democratic Senate candidates in the first major Russian push into the 2026 midterms.
+initial_access: unknown
+ai_tooling_and_models:
+  - AI voice cloning and video manipulation tools (unspecified)
+other_tooling: []
+victims_and_sectors: Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Matryoshka / Operation Overload / Storm-1679
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Matryoshka / Operation Overload / Storm-1679
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

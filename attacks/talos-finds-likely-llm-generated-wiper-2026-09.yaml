@@ -1,0 +1,33 @@
+id: talos-finds-likely-llm-generated-wiper-2026-09
+name: Talos finds likely LLM-generated wiper and backup-kill scripts in Qilin ransomware toolkit
+date_reported: 2026-09-17
+researcher: unknown
+org: Cisco Talos
+sources:
+  - url: https://blog.talosintelligence.com/ransomware-incidents-in-japan-in-the-first-half-of-2026/
+    publisher: Cisco Talos
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-japan-ransomware-qilin-ai-20260918-csa-sty/
+borderline: false
+ai_role: llm_generated_malware
+technique_summary: Talos assessed with medium-to-high confidence that Qilin's GPO wiper, Veeam-killing and locker-deployment scripts were AI-generated.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unnamed LLM ('llm_chatbot' tool)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Qilin (formerly Agenda)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: Qilin (formerly Agenda)
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

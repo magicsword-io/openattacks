@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
@@ -92,7 +93,62 @@ export function entryErrors(data, filename) {
     data.date_activity_start > data.date_activity_end
   )
     errors.push(`${filename}: activity start must precede activity end`);
+  if (Array.isArray(data?.frameworks)) {
+    const known = toolIds();
+    for (const id of data.frameworks)
+      if (!known.has(id))
+        errors.push(
+          `${filename}/frameworks: unknown tool id ${id} (no tools/${id}.yaml)`,
+        );
+  }
   return errors;
+}
+
+const toolsDirectory = fileURLToPath(new URL("../../tools/", import.meta.url));
+
+/** Tool-page ids. Read on each call so a new tools/*.yaml file is visible to astro check. */
+export function toolIds() {
+  return new Set(
+    readdirSync(toolsDirectory)
+      .filter((name) => name.endsWith(".yaml"))
+      .map((name) => name.slice(0, -".yaml".length)),
+  );
+}
+
+/**
+ * frameworks on an attack and linked_attacks on that tool page are the same edge.
+ * Pass the parsed public records. Unknown framework ids are reported by entryErrors.
+ */
+export function frameworkLinkErrors(attacks, tools) {
+  const errors = [];
+  const linked = new Map(
+    tools
+      .filter((tool) => tool && typeof tool.id === "string")
+      .map((tool) => [tool.id, new Set(tool.linked_attacks || [])]),
+  );
+  const used = new Map();
+  for (const attack of attacks) {
+    if (!attack || typeof attack.id !== "string") continue;
+    for (const id of attack.frameworks || []) {
+      if (!used.has(id)) used.set(id, new Set());
+      used.get(id).add(attack.id);
+      const listed = linked.get(id);
+      if (listed && !listed.has(attack.id))
+        errors.push(
+          `tools/${id}.yaml/linked_attacks: missing ${attack.id} (frameworks lists ${id})`,
+        );
+    }
+  }
+  for (const tool of tools) {
+    if (!tool || typeof tool.id !== "string") continue;
+    const fromAttacks = used.get(tool.id) || new Set();
+    for (const attackId of tool.linked_attacks || [])
+      if (!fromAttacks.has(attackId))
+        errors.push(
+          `tools/${tool.id}.yaml/linked_attacks: ${attackId} does not list ${tool.id} in frameworks`,
+        );
+  }
+  return errors.sort();
 }
 
 export function actorErrors(data, filename) {

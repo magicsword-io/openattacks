@@ -1,12 +1,17 @@
 id: cyberstrikeai
 name: CyberStrikeAI
 type: ai-pentest-tool
-github_url: null
+github_url: https://github.com/AIPentest/CyberStrikeAI
 project_url: null
 description: AI-powered cybersecurity tool focused on automated threat detection and penetration testing capabilities. Leverages machine learning models to assist security operations and vulnerability assessment.
 sources:
   - url: https://github.com/topics/pentest-ai
     title: AI Penetration Testing Tools
     publisher: GitHub
-linked_attacks: []
+linked_attacks:
+  - bossai-12-agent-attack-mesh-2026-11
+  - cert-in-crafty-falcon-bfsi-2026-11
+  - elastic-cyberstrikeai-aws-cloudtrail-2026-11
+  - kaspersky-cyberstrikeai-schools-2026
+  - trendai-chinese-language-operators-used-cyberstrikeais-2026-10
 linked_actors: []

@@ -1,0 +1,36 @@
+id: ukraines-ssscip-russian-groups-use-ai-2025-10
+name: "Ukraine's SSSCIP: Russian groups use AI for phishing and some malware, incl. AI-built WRECKSTEEL stealer"
+date_reported: 2025-10-09
+researcher: unknown
+org: SSSCIP (State Service of Special Communications and Information Protection of Ukraine)
+sources:
+  - url: https://cip.gov.ua/ua/news/novi-kiberzagrozi-kogo-i-yak-atakuyut-vorozhi-ugrupovannya
+    publisher: SSSCIP (State Service of Special Communications and Information Protection of Ukraine)
+  - url: https://thehackernews.com/2025/10/from-phishing-to-malware-ai-becomes.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Ukraine's cyber agency reported Russian actors using AI to write phishing and that some malware samples, such as WRECKSTEEL, show clear signs of AI generation.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified generative AI tools
+other_tooling: []
+victims_and_sectors: Government; Defense; Critical infrastructure
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: UAC-0219 and other Russia-linked clusters (UAC-0218, UAC-0226, UAC-0227, APT28, Sandworm)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: UAC-0219 and other Russia-linked clusters (UAC-0218, UAC-0226, UAC-0227, APT28, Sandworm)
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

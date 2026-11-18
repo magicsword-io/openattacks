@@ -1,0 +1,35 @@
+id: fbi-nsa-cnmf-china-linked-qtfy-2026-08
+name: "FBI, NSA and CNMF: China-linked QTFY has spent two years integrating AI into its hacking processes"
+date_reported: 2026-08-26
+researcher: unknown
+org: FBI, NSA, Cyber National Mission Force
+sources:
+  - url: https://www.ic3.gov/CSA/2026/260826.pdf
+    publisher: FBI, NSA, Cyber National Mission Force
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A joint US advisory on China-linked QTFY notes the group has been heavily researching and integrating AI into its processes for two years.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified AI integrated into QTFY processes
+other_tooling: []
+victims_and_sectors: Defense; Critical infrastructure
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: QTFY
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Low. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+attribution:
+  actor_name: QTFY
+  country: China
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

@@ -1,0 +1,39 @@
+id: shai-hulud-self-replicating-npm-worm-2025-09
+name: Shai-Hulud self-replicating npm worm, downstream of s1ngularity, includes apparently AI-generated payload
+date_reported: 2025-09-16
+researcher: unknown
+org: Wiz
+sources:
+  - url: https://www.wiz.io/blog/shai-hulud-npm-supply-chain-attack
+    publisher: Wiz
+  - url: https://thehackernews.com/2025/09/40-npm-packages-compromised-in-supply.html
+  - url: https://socket.dev/blog/tinycolor-supply-chain-attack-affects-40-packages
+  - url: https://www.stepsecurity.io/blog/ctrl-tinycolor-and-40-npm-packages-compromised
+  - url: https://www.aikido.dev/blog/s1ngularity-nx-attackers-strike-again
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_credential_theft
+technique_summary: The first major self-propagating npm worm stole developer secrets at scale; Wiz judged one payload variant AI-generated and linked it to s1ngularity.
+initial_access: unknown
+ai_tooling_and_models:
+  - LLM-assisted payload authoring (per Wiz)
+  - npm ecosystem used by AI tooling
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (Shai-Hulud)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - ai-supply-chain
+  - malware-tooling-dev
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

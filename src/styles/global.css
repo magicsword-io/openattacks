@@ -47,6 +47,12 @@ body {
   font: 14px/1.7 var(--font);
   -webkit-font-smoothing: antialiased;
 }
+/* Keep every page aligned with the landing page's comfortable wide-screen framing. */
+@media (min-width: 1680px) {
+  body {
+    zoom: 1.25;
+  }
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -814,6 +820,66 @@ p {
 }
 :root[data-theme="light"] .role-badge {
   color: color-mix(in srgb, var(--role-color) 40%, var(--text));
+}
+.framework-badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: var(--accent-bg);
+  font: 11px/1.4 var(--mono);
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.framework-badge:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.framework-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  pointer-events: none;
+}
+.chart-framework {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding: 0 0 16px;
+}
+.framework-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.framework-legend svg {
+  flex-shrink: 0;
+  color: var(--text);
+}
+.chart-framework label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.timeline-entry h3 a {
+  color: inherit;
+}
+.timeline-entry h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 .table-date {
   color: var(--muted);
@@ -2403,6 +2469,12 @@ p {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.chart-inspector:empty {
+  display: none;
+}
+.chart-inspector:empty + a {
+  margin-left: auto;
+}
 .interactive-timeline .chart-bottom {
   font-size: 11px;
   min-height: 35px;
@@ -2770,7 +2842,7 @@ p {
   background: var(--panel);
 }
 .attack-flow-canvas {
-  height: 350px;
+  height: 440px;
   width: 100%;
   --xy-background-color: var(--panel);
   --xy-controls-button-background-color: var(--bg);
@@ -2780,12 +2852,12 @@ p {
   --xy-node-border-radius: 6px;
 }
 .attack-flow-canvas.has-branches {
-  height: 470px;
+  height: 590px;
 }
 .attack-flow-node {
   --step-color: var(--accent);
   width: 182px;
-  height: 220px;
+  height: 280px;
   text-align: center;
 }
 .attack-flow-node.kind-ai {
@@ -2820,7 +2892,7 @@ p {
   text-align: center;
 }
 .network-stage strong {
-  font: 600 12px/1.6 var(--font);
+  font: 600 15px/1.4 var(--font);
   letter-spacing: -0.015em;
   color: var(--text);
 }
@@ -2831,7 +2903,7 @@ p {
   overflow: hidden;
   margin-top: 8px;
   color: var(--muted);
-  font: 11px/1.65 var(--font);
+  font: 11px/1.55 var(--font);
 }
 .network-orb {
   position: relative;
@@ -3670,6 +3742,9 @@ p {
     justify-content: flex-end;
     font-size: 11px;
   }
+  .chart-inspector:empty + a {
+    margin-top: 0;
+  }
   .agent-access {
     padding: 23px 20px;
     margin-bottom: 35px;
@@ -3859,13 +3934,6 @@ p {
 .landing-focused .hero-actions {
   flex-wrap: wrap;
   gap: 16px;
-}
-.timeline-context {
-  font-size: 11px;
-  color: var(--muted);
-  margin: 14px 0 0;
-  max-width: 850px;
-  line-height: 1.8;
 }
 .environment-shortcuts {
   display: flex;
@@ -5066,15 +5134,6 @@ p {
 .stack-heading .eyebrow {
   font-size: 11px;
 }
-.stack-local-note {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-shrink: 0;
-  font-size: 11px;
-  color: var(--muted);
-  padding-bottom: 6px;
-}
 .stack-form {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -5456,9 +5515,6 @@ p {
   }
   .stack-heading p {
     font-size: 13px;
-  }
-  .stack-local-note {
-    margin-top: 14px;
   }
   .stack-form {
     padding: 20px 16px 0;
@@ -5845,7 +5901,7 @@ p {
   align-items: center;
   gap: 4px;
   color: var(--accent);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 5px;
   padding: 3px 6px;
   border: 1px solid var(--line);

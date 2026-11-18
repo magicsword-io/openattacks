@@ -1,0 +1,34 @@
+id: doj-nationwide-action-north-korean-it-2025-06
+name: DOJ nationwide action on North Korean IT workers, including theft of AI defense contractor ITAR data
+date_reported: 2025-06-30
+researcher: unknown
+org: US Department of Justice
+sources:
+  - url: https://www.justice.gov/opa/pr/justice-department-announces-coordinated-nationwide-actions-combat-north-korean-remote
+    publisher: US Department of Justice
+  - url: https://www.bleepingcomputer.com/news/security/us-disrupts-north-korean-it-worker-laptop-farm-scheme-in-16-states/
+  - url: https://techcrunch.com/2025/06/30/us-government-takes-down-major-north-korean-remote-it-workers-operation
+borderline: false
+ai_role: other
+technique_summary: DOJ searched 29 laptop farms in 16 states, charged facilitators and North Koreans, and disclosed workers accessed ITAR data at an AI-focused defense contractor.
+initial_access: unknown
+ai_tooling_and_models:
+  - California defense contractor developing AI-powered equipment and technologies
+other_tooling: []
+victims_and_sectors: Defense; Technology and AI companies; Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: North Korean IT workers; facilitators Zhenxing Wang and Kejia Wang; Kim Kwang Jin and others
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  actor_name: North Korean IT workers; facilitators Zhenxing Wang and Kejia Wang; Kim Kwang Jin and others
+  motivation: nation-state
+ai_involvement_confidence: confirmed

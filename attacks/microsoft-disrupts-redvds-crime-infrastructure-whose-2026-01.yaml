@@ -1,0 +1,34 @@
+id: microsoft-disrupts-redvds-crime-infrastructure-whose-2026-01
+name: Microsoft disrupts RedVDS crime infrastructure whose users drafted phishing lures with AI
+date_reported: 2026-01-14
+researcher: unknown
+org: Microsoft Threat Intelligence
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/01/14/inside-redvds-how-a-single-virtual-desktop-provider-fueled-worldwide-cybercriminal-operations/
+    publisher: Microsoft Threat Intelligence
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: other
+technique_summary: Microsoft's DCU and law enforcement disrupted a cheap RDP hosting service tied to about USD 40 million in US fraud losses, noting some customers used ChatGPT to polish phishing lures.
+initial_access: unknown
+ai_tooling_and_models:
+  - ChatGPT and other OpenAI tools, Copilot, Grammarly, QuillBot observed on criminal hosts
+other_tooling: []
+victims_and_sectors: Finance; Healthcare; Education; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Storm-2470 (RedVDS operator); users including Storm-0259, Storm-2227, Storm-1575, Storm-1747
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - fraud-it-worker-schemes
+category: adversary-use-of-ai
+attribution:
+  actor_name: Storm-2470 (RedVDS operator); users including Storm-0259, Storm-2227, Storm-1575, Storm-1747
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

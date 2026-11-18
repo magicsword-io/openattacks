@@ -1,0 +1,36 @@
+id: akirabot-used-openai-gpt-4o-mini-2025-04
+name: AkiraBot used OpenAI gpt-4o-mini to spam 80,000 sites with tailored messages and bypass CAPTCHAs
+date_reported: 2025-04-09
+researcher: unknown
+org: SentinelLABS (SentinelOne)
+sources:
+  - url: https://www.sentinelone.com/labs/akirabot-ai-powered-bot-bypasses-captchas-spams-websites-at-scale/
+    publisher: SentinelLABS (SentinelOne)
+  - url: https://thehackernews.com/2025/04/akirabot-targets-420000-sites-with.html
+  - url: https://siliconangle.com/2025/04/10/sentinellabs-exposes-akirabot-spam-tool-powered-openai-generated-messages/
+borderline: false
+ai_role: ai_credential_theft
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: A Python spam framework generated a unique LLM-written pitch for each target site, helping 80,000-plus submissions evade spam filters.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI API (gpt-4o-mini)
+other_tooling: []
+victims_and_sectors: Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: AkiraBot operators (Akira / ServiceWrap SEO services; earlier Shopbot)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  actor_name: AkiraBot operators (Akira / ServiceWrap SEO services; earlier Shopbot)
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

@@ -1,0 +1,36 @@
+id: openai-bans-russian-dark-clark-iranian-2026-10
+name: OpenAI bans Russian 'Dark Clark' and Iranian 'Bogus Bylines' false-front influence operations
+date_reported: 2026-10-08
+researcher: unknown
+org: OpenAI
+sources:
+  - url: https://openai.com/index/disrupting-ai-enabled-false-front-operations
+    publisher: OpenAI
+  - url: https://www.opb.org/article/2026/10/09/openai-bans-russian-iranian-accounts-over-influence-efforts/
+  - url: https://unite.ai/openai-bans-two-covert-influence-operations-using-false-fronts
+  - url: https://businesstoday.in/technology/news/story/openai-bans-russian-and-iranian-accounts-over-ai-powered-fake-news-campaigns-targeting-global-audiences-560608-2026-10-09
+borderline: false
+ai_role: other
+technique_summary: OpenAI disrupted a Russian operation running a fake Latin American think tank and an Iranian network of seven fake journalists, rating Dark Clark its first Category 5 influence operation.
+initial_access: unknown
+ai_tooling_and_models:
+  - OpenAI ChatGPT
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Dark Clark (Russia-origin); Bogus Bylines (Iran-origin, likely commercial for-hire)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: Dark Clark (Russia-origin); Bogus Bylines (Iran-origin, likely commercial for-hire)
+  motivation: nation-state
+ai_involvement_confidence: confirmed

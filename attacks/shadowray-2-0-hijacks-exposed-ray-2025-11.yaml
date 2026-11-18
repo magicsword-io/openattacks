@@ -1,0 +1,37 @@
+id: shadowray-2-0-hijacks-exposed-ray-2025-11
+name: ShadowRay 2.0 hijacks exposed Ray AI clusters into self-propagating botnet with AI-written payloads
+date_reported: 2025-11-18
+researcher: unknown
+org: Oligo Security
+sources:
+  - url: https://oligo.security/blog/shadowray-2-0-attackers-turn-ai-against-itself-in-global-campaign-that-hijacks-ai-into-self-propagating-botnet
+    publisher: Oligo Security
+  - url: https://www.theregister.com/2025/11/18/selfreplicating_botnet_ray_clusters/
+  - url: https://bleepingcomputer.com/news/security/new-shadowray-attacks-convert-ray-clusters-into-crypto-miners
+  - url: https://thehackernews.com/2025/11/shadowray-20-exploits-unpatched-ray.html
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: Attackers exploited the disputed Ray Jobs API flaw CVE-2023-48022 to take over exposed AI compute clusters for cryptomining, DDoS and propagation, using payloads Oligo assesses were LLM-generated.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anyscale Ray clusters (AI compute), GPUs, model and dataset stores
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: IronErn440
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - ai-infra-intrusion
+  - malware-tooling-dev
+category: adversary-use-of-ai
+attribution:
+  actor_name: IronErn440
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

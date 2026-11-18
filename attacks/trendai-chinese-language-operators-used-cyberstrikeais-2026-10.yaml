@@ -1,0 +1,62 @@
+id: trendai-chinese-language-operators-used-cyberstrikeais-2026-10
+name: "TrendAI: Chinese-language operators used CyberStrikeAI's 44 agents and LLM-built tooling against Japanese organizations"
+date_reported: 2026-10-23
+researcher: unknown
+org: TrendAI (Trend Micro)
+sources:
+  - url: https://www.trendaisecurity.com/en-us/resources-insights/deep-research/not-only-artex-the-different-levels-ai-is-used-in-attacks-targeting-japan
+    publisher: TrendAI (Trend Micro)
+  - url: https://thehackernews.com/2026/10/cyberstrikeai-uses-44-ai-agents-to.html
+  - url: https://cyberpress.org/ai-agents-target-japan/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: TrendAI details three Chinese-language campaigns against Japan using AI at different levels, from a 44-agent CyberStrikeAI pipeline to LLM-planned intrusions that also hunted AI inference services, and finds AI raised scale but not depth of compromise.
+initial_access: unknown
+ai_tooling_and_models:
+  - CyberStrikeAI (open-source agent pentest tool)
+  - unnamed LLMs
+  - AI workflow, LLM preprocessing and inference platforms in South Korea
+frameworks:
+  - cyberstrikeai
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors; Technology and AI companies
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed (three Simplified Chinese-language operators; not linked to each other)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+  - vuln-discovery-exploit
+  - malware-tooling-dev
+  - jailbreak-misuse
+  - phishing-social-eng
+  - ai-infra-intrusion
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed operators (three Simplified Chinese-language cases; not linked to each other)
+  country: Unknown
+  motivation: unknown
+  attributed_by: TrendAI (Trend Micro)
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Attacker-side consoles without a victim command line
+    format: guidance
+    notes: "security-detections-mcp searches for web shells and password spray returned host and identity rules. TrendAI reconstructed three infrastructures from files left on attacker servers and says that material cannot establish identities or, by itself, which attempts succeeded. Case A used CyberStrikeAI against legacy web admin interfaces; many targets were recorded as no session, no web shell, and no exfiltration. A webshell rule would not describe that evidence. Country is Unknown because Simplified Chinese is a working language, not an attributed country."
+timeline:
+  first_seen: "2026-01"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-10-23"
+      source: TrendAI (Trend Micro)
+      summary: "TrendAI's Japanese article, published in English on 27 October, describes three Simplified Chinese-language infrastructures targeting Japan. Case A, in October 2026, ran CyberStrikeAI with 44 agents. TrendAI does not link the three operators."
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged CyberStrikeAI and backfilled attribution, detections, and timeline from the cited TrendAI report."

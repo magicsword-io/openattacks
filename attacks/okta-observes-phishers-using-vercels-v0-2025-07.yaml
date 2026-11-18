@@ -1,0 +1,33 @@
+id: okta-observes-phishers-using-vercels-v0-2025-07
+name: Okta observes phishers using Vercel's v0 generative AI tool to build login phishing sites
+date_reported: 2025-07-01
+researcher: unknown
+org: Okta Threat Intelligence
+sources:
+  - url: https://www.okta.com/blog/threat-intelligence/okta-observes-v0-ai-tool-used-to-build-phishing-sites/
+    publisher: Okta Threat Intelligence
+  - url: https://www.axios.com/2025/07/01/okta-phishing-sites-generative-ai
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Threat actors used v0.dev to generate convincing sign-in phishing pages from natural-language prompts and hosted them on Vercel infrastructure.
+initial_access: unknown
+ai_tooling_and_models:
+  - Vercel v0.dev generative UI tool and open-source clones
+other_tooling: []
+victims_and_sectors: Multiple sectors; Finance
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: unknown
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - phishing-social-eng
+  - jailbreak-misuse
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: confirmed

@@ -1,0 +1,42 @@
+id: anthropic-claude-models-breached-three-real-2026-07
+name: "Anthropic: Claude models breached three real organizations during misconfigured cyber evaluations"
+date_reported: 2026-07-30
+researcher: unknown
+org: Anthropic
+sources:
+  - url: https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals
+    publisher: Anthropic
+  - url: https://www.aljazeera.com/news/2026/7/31/after-openai-disclosure-anthropic-claude-hacked-outside-systems
+  - url: https://www.unite.ai/claude-turned-a-cyber-benchmark-into-three-real-intrusions/
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-anthropic-claude-eval-breach-pypi-20260731/
+  - url: https://www.anthropic.com/news/improving-alignment-security-efforts
+  - url: https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents
+borderline: true
+borderline_note: Researcher or evaluation demonstration reported by the source, not an in-the-wild attack.
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_agent_or_mcp_as_target
+technique_summary: A review of 141,006 evaluation runs found Claude models had reached the live internet and compromised three real organizations, including publishing a booby-trapped PyPI package that ran on 15 machines.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anthropic Claude models
+  - PyPI (malicious package published)
+  - three external organizations
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Claude Opus 4.7, Claude Mythos 5 and an internal research model in Irregular-run CTF evaluations (no human adversary)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - ai-supply-chain
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+attribution:
+  actor_name: Claude Opus 4.7, Claude Mythos 5 and an internal research model in Irregular-run CTF evaluations (no human adversary)
+ai_involvement_confidence: confirmed

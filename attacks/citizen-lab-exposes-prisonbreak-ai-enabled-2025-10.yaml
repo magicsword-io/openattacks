@@ -1,0 +1,33 @@
+id: citizen-lab-exposes-prisonbreak-ai-enabled-2025-10
+name: Citizen Lab exposes PRISONBREAK, AI-enabled X network urging Iranian revolt, likely Israeli-run
+date_reported: 2025-10-02
+researcher: unknown
+org: Citizen Lab
+sources:
+  - url: https://citizenlab.ca/research/2025-10-ai-enabled-io-aimed-at-overthrowing-iranian-regime/
+    publisher: Citizen Lab
+borderline: false
+ai_role: other
+technique_summary: More than 50 inauthentic X accounts used AI-generated video and imagery, synchronized with June 2025 Israeli strikes, to push regime change in Iran.
+initial_access: unknown
+ai_tooling_and_models:
+  - Generative video and image tools (unspecified)
+other_tooling: []
+victims_and_sectors: Government
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: PRISONBREAK network
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: PRISONBREAK network
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

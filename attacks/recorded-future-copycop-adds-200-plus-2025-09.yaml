@@ -1,0 +1,36 @@
+id: recorded-future-copycop-adds-200-plus-2025-09
+name: "Recorded Future: CopyCop adds 200-plus sites run on GRU-funded, self-hosted uncensored Llama 3 models"
+date_reported: 2025-09-18
+researcher: unknown
+org: Recorded Future Insikt Group
+sources:
+  - url: https://www.recordedfuture.com/research/copycop-deepens-its-playbook-with-new-websites-and-targets
+    publisher: Recorded Future Insikt Group
+  - url: https://assets.recordedfuture.com/insikt-report-pdfs/2025/cta-ru-2025-0917.pdf
+  - url: https://themodelwire.com/article/researchers-expose-storm-1516-llm-propaganda-pipeline-through-prompt-archaeology-01M09BGP8AWK4YQK97GRJWSN39
+borderline: false
+ai_role: other
+technique_summary: CopyCop stood up at least 200 new fake news sites in 2025, over 300 in all, generating content with self-hosted uncensored Llama 3 models that the GRU reportedly helped fund.
+initial_access: unknown
+ai_tooling_and_models:
+  - Self-hosted uncensored Llama 3 derivatives (likely dolphin-2.9-llama3-8b or Llama-3-8B-Lexi-Uncensored) via Ollama and Open WebUI
+other_tooling: []
+victims_and_sectors: Government; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: CopyCop / Storm-1516 (John Mark Dougan; Center for Geopolitical Expertise; GRU)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - influence-ops
+  - deepfake-voice
+category: adversary-use-of-ai
+attribution:
+  actor_name: CopyCop / Storm-1516 (John Mark Dougan; Center for Geopolitical Expertise; GRU)
+  country: Russia
+  motivation: nation-state
+ai_involvement_confidence: confirmed

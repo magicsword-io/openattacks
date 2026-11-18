@@ -1,0 +1,37 @@
+id: mandiant-ai-risk-report-details-hijacked-2026-09
+name: Mandiant AI risk report details hijacked coding-assistant session that spread Shai-Hulud worm
+date_reported: 2026-09-16
+researcher: unknown
+org: Google Cloud / Mandiant
+sources:
+  - url: https://cloud.google.com/security/resources/ai-risk-and-resilience-2026
+    publisher: Google Cloud / Mandiant
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-shai-hulud-ai-coding-assistant-20260918-cs/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: Mandiant's special report gives incident-response case studies of attackers hijacking AI coding sessions, subverting assistant CLI hooks and fielding malware that uses embedded AI models to evade EDR.
+initial_access: unknown
+ai_tooling_and_models:
+  - Developer AI coding assistant sessions, internal AI repositories and assistant CLI hooks, embedded lightweight AI models in malware
+other_tooling: []
+victims_and_sectors: Technology and AI companies; Finance; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Unnamed; UNC6780 (TeamPCP) referenced
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: New TTP."
+tags:
+  - notion-import
+  - agentic-operations
+  - ai-supply-chain
+  - malware-tooling-dev
+  - prompt-injection
+  - api-key-account-abuse
+category: adversary-use-of-ai
+attribution:
+  motivation: cybercrime
+ai_involvement_confidence: vendor-asserted

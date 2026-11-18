@@ -2,7 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Catalog from "./Catalog.astro";
 import TimelineChart from "./TimelineChart.astro";
-import { getAttacks, href, reviewed, formatDate } from "../lib/catalog";
+import { getAttacks, href, formatDate } from "../lib/catalog";
+import { siteUpdated } from "../lib/site-updated";
 const { showTimeline = false } = Astro.props;
 const attacks = await getAttacks();
 ---
@@ -25,7 +26,7 @@ const attacks = await getAttacks();
           <span class="meta-separator" aria-hidden="true">
             ·
           </span>
-          Updated <time datetime={reviewed}>{formatDate(reviewed)}</time>
+          Updated <time datetime={siteUpdated}>{formatDate(siteUpdated)}</time>
         </span>
         <div class="catalog-intro-links">
           {showTimeline && (
@@ -42,11 +43,6 @@ const attacks = await getAttacks();
     {showTimeline && (
       <section class="home-timeline" aria-label="AI attacks over time">
         <TimelineChart attacks={attacks} />
-        <p class="timeline-context">
-          Each dot opens a sourced entry. Years reflect report dates and catalog
-          coverage, including research; they do not measure global attack
-          prevalence.
-        </p>
       </section>
     )}
     <Catalog attacks={attacks} />

@@ -1,0 +1,98 @@
+id: thisbash-claude-dispatch-rce-2026-11
+name: ThisBash - Claude Dispatch browser extension RCE (researcher disclosure)
+date_reported: 2026-11-06
+researcher: Gal Weizman
+org: Forever Security
+sources:
+  - url: https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+    title: "Forever Security: ThisBash - Claude Dispatch Browser Extension RCE"
+    publisher: Forever Security
+magicsword_coverage: []
+borderline: true
+borderline_note: "Researcher disclosure; no evidence of in-the-wild exploitation; Anthropic retiring Dispatch feature"
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "Browser extension on claude.ai pushes prompts to Claude Desktop via Dispatch, auto-clicks Allow; enables RCE reaching other machines on same account"
+technique_summary: "Forever Security researcher Gal Weizman disclosed ThisBash vulnerability allowing browser extension on claude.ai to push prompts to Claude Desktop via Dispatch API, auto-clicking Allow button to execute commands without user interaction. Proof-of-concept demonstrated npm install -g add-colors-to-bash execution (opened Calculator app). Attack can reach other machines logged into same Claude account. Anthropic announced Dispatch retirement. No evidence of in-the-wild exploitation; marked borderline as researcher disclosure only."
+initial_access: "Malicious browser extension on claude.ai domain"
+ai_tooling_and_models:
+  - Claude Desktop
+  - Claude Dispatch API
+other_tooling:
+  - Browser extension
+  - npm
+victims_and_sectors: "Claude Desktop users; theoretical risk only (no in-wild use)"
+regions:
+  - unknown
+attribution_or_cluster: "Researcher disclosure (Gal Weizman, Forever Security); no threat actor"
+scale_and_metrics: "PoC only; Anthropic retiring Dispatch; no in-wild exploitation documented"
+prevention_angle: "Anthropic retiring Dispatch feature; users should update Claude Desktop when patch available; review browser extensions on claude.ai; implement extension permission review"
+related_magicsword_projects: []
+source_notes: "Forever Security blog (Nov 6, 2026); researcher disclosure only; no threat actor or in-wild use; Anthropic announced Dispatch retirement"
+last_reviewed: 2026-11-10
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0051
+    rationale: "Browser extension could inject prompts to Claude Desktop via Dispatch"
+    source_urls:
+      - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+  - id: AML.T0053
+    rationale: "Auto-click Allow bypasses user consent for command execution"
+    source_urls:
+      - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+attack_flow:
+  nodes:
+    - id: install-extension
+      title: Malicious extension installed
+      description: "User installs malicious browser extension with claude.ai permissions"
+      kind: access
+      source_urls:
+        - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+    - id: push-prompt
+      title: Extension pushes prompt via Dispatch
+      description: "Extension uses Dispatch API to push command prompt to Claude Desktop"
+      kind: ai
+      source_urls:
+        - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+    - id: auto-allow
+      title: Auto-click Allow button
+      description: "Extension automatically clicks Allow to bypass user consent"
+      kind: execution
+      source_urls:
+        - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+    - id: execute-command
+      title: Execute arbitrary command
+      description: "Command executes on Claude Desktop (PoC: npm install -g add-colors-to-bash)"
+      kind: impact
+      source_urls:
+        - https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce/
+  edges:
+    - source: install-extension
+      target: push-prompt
+    - source: push-prompt
+      target: auto-allow
+    - source: auto-allow
+      target: execute-command
+category: attacks-on-ai
+attribution:
+  actor_name: "Researcher disclosure only"
+  country: Unknown
+  motivation: unknown
+  attributed_by: Forever Security
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Claude Dispatch security monitoring
+    format: guidance
+    notes: "Monitor browser extensions with claude.ai permissions; detect auto-clicking behaviors; log Dispatch API calls; update Claude Desktop when Dispatch retirement patch available; review extension permissions regularly"
+timeline:
+  first_seen: "2026-11-06"
+  last_updated: "2026-11-06"
+  updates:
+    - date: "2026-11-06"
+      source: Forever Security
+      summary: "Gal Weizman discloses ThisBash vulnerability; Anthropic announces Dispatch retirement; no in-wild exploitation"

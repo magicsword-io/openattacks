@@ -1,0 +1,47 @@
+id: anthropic-september-2026-report-seven-china-2026-09
+name: "Anthropic September 2026 report: seven China-based labs distilled Claude; Russian APT and crime ops disrupted"
+date_reported: 2026-09-10
+researcher: unknown
+org: Anthropic
+sources:
+  - url: https://www.anthropic.com/threat-intelligence-report-september-2026
+    publisher: Anthropic
+  - url: https://al-monitor.com/originals/2026/09/anthropic-disrupts-bioweapons-research-efforts-russian-hacking-chinese-claude
+  - url: https://thenextweb.com/news/anthropic-claude-misuse-threat-intelligence-report
+  - url: https://betterstack.com/community/guides/ai/anthropic-threat-report-2026/
+  - url: https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-weaponization-nation-state-crimeware-20/
+  - url: https://anthropic.com/news/2026-us-midterms
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: llm_generated_malware
+technique_summary: Anthropic's 154-page misuse report (Dec 2025 to Aug 2026) names seven China-based labs running industrial distillation of Claude and details agentic cyber operations by Russian state and criminal actors.
+initial_access: unknown
+ai_tooling_and_models:
+  - Anthropic Claude (Opus 4.6/4.7, Claude Code)
+  - Moonshot Kimi, Alibaba Qwen as distillation beneficiaries
+other_tooling: []
+victims_and_sectors: Government; Defense; Technology and AI companies; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: GTG-20006 (Midnight Blizzard-aligned); GTG-50014 (ShinyHunters-associated); GTG-10007; GTG-50020; Alibaba, Moonshot AI, DeepSeek, Xiaomi, Zhipu, SenseTime, MiniMax (distillation)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - model-theft-distillation
+  - agentic-operations
+  - malware-tooling-dev
+  - phishing-social-eng
+  - influence-ops
+  - fraud-it-worker-schemes
+  - api-key-account-abuse
+  - jailbreak-misuse
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+attribution:
+  actor_name: GTG-20006 (Midnight Blizzard-aligned); GTG-50014 (ShinyHunters-associated); GTG-10007; GTG-50020; Alibaba, Moonshot AI, DeepSeek, Xiaomi, Zhipu, SenseTime, MiniMax (distillation)
+  motivation: nation-state
+ai_involvement_confidence: confirmed

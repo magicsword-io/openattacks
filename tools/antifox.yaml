@@ -1,0 +1,16 @@
+id: antifox
+name: AntiFox
+type: agentic-offensive-framework
+github_url: https://github.com/AntiFox-AI/antifox
+project_url: null
+description: Chinese-language agentic pentest platform forked from ARTEX. It runs multi-agent workflows on TCP 8787 and requires an Anthropic or OpenAI key. Arctic Wolf Labs tied self-hosted consoles on Alibaba Cloud to IIS web-shell activity and AWS secret reads.
+sources:
+  - url: https://github.com/AntiFox-AI/antifox
+    title: AntiFox
+    publisher: AntiFox-AI
+  - url: https://github.com/rtkwlf/wolf-tools/blob/main/pack_alerts/202611-antifox-alibaba-hosted-platforms-facilitate-web-cloud-intrusions/README.md
+    title: "Arctic Wolf Labs pack alert: AntiFox on Alibaba Cloud"
+    publisher: Arctic Wolf Labs
+linked_attacks:
+  - arctic-wolf-antifox-iis-aws-2026-11
+linked_actors: []

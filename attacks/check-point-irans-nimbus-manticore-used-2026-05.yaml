@@ -1,0 +1,36 @@
+id: check-point-irans-nimbus-manticore-used-2026-05
+name: "Check Point: Iran's Nimbus Manticore used AI-assisted development for MiniFast backdoor during Iran war"
+date_reported: 2026-05-22
+researcher: unknown
+org: Check Point Research
+sources:
+  - url: https://research.checkpoint.com/2026/fast-and-furious-nimbus-manticore-operations-during-the-iranian-conflict/
+    publisher: Check Point Research
+  - url: https://www.securityweek.com/iranian-apt-targets-aviation-software-companies-with-updated-tools/
+borderline: false
+ai_role: llm_generated_malware
+ai_role_secondary: attacker_uses_ai_as_operator
+technique_summary: Check Point assesses an IRGC-linked group rapidly built new loaders and the MiniFast backdoor with AI-assisted coding during the 2026 Iran conflict.
+initial_access: unknown
+ai_tooling_and_models:
+  - Unspecified LLM-based coding tools
+other_tooling: []
+victims_and_sectors: Defense; Technology and AI companies; Critical infrastructure
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: Nimbus Manticore (UNC1549, Smoke Sandstorm, TA455, Bohrium)
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - malware-tooling-dev
+  - phishing-social-eng
+category: adversary-use-of-ai
+attribution:
+  actor_name: Nimbus Manticore (UNC1549, Smoke Sandstorm, TA455, Bohrium)
+  country: Iran
+  motivation: nation-state
+ai_involvement_confidence: vendor-asserted

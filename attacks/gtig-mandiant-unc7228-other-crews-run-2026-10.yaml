@@ -1,0 +1,76 @@
+id: gtig-mandiant-unc7228-other-crews-run-2026-10
+name: "GTIG/Mandiant: UNC7228 and other crews run ARTEX and PentAGI agent frameworks in live intrusions at machine speed"
+date_reported: 2026-10-30
+researcher: unknown
+org: Google Threat Intelligence Group / Mandiant
+sources:
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks
+    publisher: Google Threat Intelligence Group / Mandiant
+  - url: https://cellcog.ai/blog/workos-artex-breach/
+borderline: false
+ai_role: attacker_uses_ai_as_operator
+technique_summary: Google's incident responders have seen ARTEX and PentAGI agents run lateral movement, AD credential theft, webshell deployment and exfil prep on their own after operators hand them credentials, with access-to-deep-access times as short as 15 minutes.
+initial_access: unknown
+ai_tooling_and_models:
+  - ARTEX, PentAGI, Hexstrike, CAIRN agent frameworks
+  - unnamed frontier and open-weight LLM APIs, LLM mixers and local models
+frameworks:
+  - artex
+  - pentagi
+other_tooling: []
+victims_and_sectors: Government; Technology and AI companies; Critical infrastructure; Multiple sectors
+regions:
+  - unknown
+region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+attribution_or_cluster: UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters
+scale_and_metrics: unknown
+prevention_angle: unknown
+related_magicsword_projects: []
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+tags:
+  - notion-import
+  - agentic-operations
+  - recon-osint
+  - vuln-discovery-exploit
+category: adversary-use-of-ai
+attribution:
+  actor_name: UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters
+  country: China
+  motivation: nation-state
+  attributed_by: Google Threat Intelligence Group and Mandiant
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Kerberoasting Activity - Initial Query
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_kerberoasting_activity.yml
+    notes: "Matched Kerberoasting with security-detections-mcp. GTIG says ARTEX ran Kerberoasting scripts to harvest service tickets."
+  - name: First Time Seen Account Performing DCSync
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/credential_access_dcsync_newterm_subjectuser.toml
+    notes: "Matched DCSync with security-detections-mcp. GTIG says ARTEX followed Kerberoasting with DCSync scripts for the krbtgt key and domain-controller hashes."
+  - name: Potential Pass-the-Hash (PtH) Attempt
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/lateral_movement_alternate_creds_pth.toml
+    notes: "Matched Pass the Hash with security-detections-mcp. GTIG lists Pass-the-Hash among the lateral-movement scripts ARTEX attempted against domain controllers."
+  - name: Linux Webshell Indicators
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml
+    notes: "Matched webshell with security-detections-mcp. GTIG describes JSP webshells written through MySQL general_log on a Linux Weaver OA server."
+  - name: Connection to Commonly Abused Web Services
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/command_and_control_common_webservices.toml
+    notes: "Matched webhook.site with security-detections-mcp. GTIG says a Windows database server used curl to post command results to rotating webhook.site URLs."
+  - name: MySQL general_log poisoning and artex-probe filenames
+    format: guidance
+    notes: "security-detections-mcp searches for jsp and webshell returned Linux webshell and SAP NetWeaver rules. None encode SET GLOBAL general_log_file writes of JSP content, the cl1217.jsp-style names, or artex-probe filenames. Hunt those strings in web and database logs."
+timeline:
+  first_seen: "2026-08"
+  last_updated: "2026-11-15"
+  updates:
+    - date: "2026-10-30"
+      source: Google Threat Intelligence Group and Mandiant
+      summary: "GTIG and Mandiant report ARTEX, PentAGI, Hexstrike, and CAIRN in incident-response engagements since late August 2026. UNC7228 overlaps Microsoft's PRC-nexus Storm-0940; other crews are financially motivated or suspected PRC-nexus."
+    - date: "2026-11-15"
+      source: OpenAttacks
+      summary: "Tagged ARTEX and PentAGI and backfilled attribution confidence, detections, and timeline from the cited GTIG report."
