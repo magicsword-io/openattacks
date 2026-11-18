@@ -116,6 +116,13 @@ const chartHeight = baseline + 49;
               data-date={formatDate(entry.date_reported)}
               style={`--dot-delay:${i * 100 + j * 22}ms;--pulse-delay:${3 + ((j * 7 + i) % 17) / 3}s`}
             >
+              <rect
+                class="chart-hit"
+                x={center - 40 + (j % columns) * 20}
+                y={baseline - 21.5 - Math.floor(j / columns) * rowHeight}
+                width="20"
+                height={rowHeight}
+              />
               <g class="dot-arrival">
                 <circle
                   class="attack-dot"

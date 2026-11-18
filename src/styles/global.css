@@ -118,7 +118,7 @@ p {
   font-family: var(--mono);
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   font-weight: 400;
 }
@@ -175,7 +175,7 @@ p {
 }
 .byline {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   color: var(--muted);
   letter-spacing: 0;
@@ -254,7 +254,7 @@ p {
   align-items: center;
   color: var(--accent);
   margin-bottom: 23px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .hero-kicker:before {
   content: "";
@@ -339,7 +339,7 @@ p {
   color: var(--muted);
 }
 .chart-header .eyebrow {
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   display: flex;
   align-items: center;
@@ -354,7 +354,7 @@ p {
   box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .chart-period {
-  font-size: 8px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .dot-chart {
@@ -365,10 +365,10 @@ p {
   overflow: visible;
 }
 .chart-year {
-  font: 10px var(--mono);
+  font: 11px var(--mono);
 }
 .chart-count {
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   opacity: 0.75;
 }
 .attack-dot {
@@ -386,7 +386,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 8px;
+  font-size: 11px;
   color: var(--muted);
 }
 .chart-bottom > span,
@@ -430,7 +430,7 @@ p {
   letter-spacing: -0.05em;
 }
 .stat-label {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.8;
   color: var(--muted);
 }
@@ -458,7 +458,7 @@ p {
 }
 .section-title .eyebrow {
   color: var(--subtle);
-  font-size: 8px;
+  font-size: 11px;
 }
 .role-grid {
   display: grid;
@@ -499,7 +499,7 @@ p {
   color: var(--role-color);
 }
 .role-card-top span {
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   color: var(--muted);
 }
 .role-card-number {
@@ -510,7 +510,7 @@ p {
   letter-spacing: -0.04em;
 }
 .role-card-label {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--muted);
   line-height: 1.5;
 }
@@ -604,7 +604,7 @@ p {
   gap: 7px;
   align-items: center;
   color: var(--subtle);
-  font-size: 8px;
+  font-size: 11px;
   padding-bottom: 12px;
 }
 .update-label:before {
@@ -647,7 +647,7 @@ p {
   position: absolute;
   right: 12px;
   top: 12px;
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   border: 1px solid var(--line);
   border-radius: 3px;
   color: var(--subtle);
@@ -666,7 +666,7 @@ p {
   border: 1px solid var(--line);
   border-radius: 5px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   cursor: pointer;
 }
 .filter-select option {
@@ -677,7 +677,7 @@ p {
   padding-inline: 12px;
   font-weight: 400;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .more-filters[aria-expanded="true"] {
   color: var(--accent);
@@ -699,7 +699,7 @@ p {
   flex-direction: column;
   gap: 7px;
   min-width: 145px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
 }
 .advanced-filters .filter-select {
@@ -713,13 +713,13 @@ p {
   min-height: 35px;
   margin-bottom: 7px;
   color: var(--subtle);
-  font-size: 9px;
+  font-size: 11px;
 }
 .reset-filters {
   background: none;
   border: 0;
   color: var(--accent);
-  font-size: 10px;
+  font-size: 11px;
   padding: 3px;
 }
 .catalog-table {
@@ -730,7 +730,7 @@ p {
 }
 .catalog-table th {
   color: var(--subtle);
-  font: 8px var(--mono);
+  font: 11px var(--mono);
   font-weight: 400;
   letter-spacing: 0.075em;
   border-block: 1px solid var(--line);
@@ -757,7 +757,7 @@ p {
   border-bottom: 1px solid var(--line-soft);
   padding: 19px 12px;
   vertical-align: middle;
-  font-size: 10px;
+  font-size: 11px;
 }
 .catalog-table tr:hover td {
   background: var(--panel);
@@ -774,7 +774,7 @@ p {
   margin-bottom: 5px;
 }
 .incident-summary {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--subtle);
   margin: 0;
   overflow: hidden;
@@ -783,7 +783,7 @@ p {
   padding-right: 15px;
 }
 .incident-org {
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--muted);
   margin-top: 6px;
   display: flex;
@@ -791,7 +791,7 @@ p {
   gap: 7px;
 }
 .research-marker {
-  font-size: 7px;
+  font-size: 11px;
   color: var(--muted);
   border: 1px solid var(--line);
   border-radius: 3px;
@@ -806,7 +806,7 @@ p {
   color: var(--role-color);
   border: 1px solid color-mix(in srgb, var(--role-color) 18%, transparent);
   background: color-mix(in srgb, var(--role-color) 6%, transparent);
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
   padding: 5px 7px;
   border-radius: 4px;
@@ -817,7 +817,7 @@ p {
 }
 .table-date {
   color: var(--muted);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   white-space: nowrap;
 }
 .tool-chip {
@@ -825,7 +825,7 @@ p {
   border: 1px solid var(--line);
   background: var(--panel);
   border-radius: 3px;
-  font: 8px/1.7 var(--mono);
+  font: 11px/1.7 var(--mono);
   padding: 2px 6px;
   color: var(--muted);
   max-width: 100%;
@@ -838,7 +838,7 @@ p {
   display: flex;
   gap: 5px;
   align-items: center;
-  font-size: 8px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .confidence:before {
@@ -885,7 +885,7 @@ p {
   justify-content: space-between;
   align-items: center;
   padding-block: 20px;
-  font-size: 9px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .pagination-actions {
@@ -906,7 +906,7 @@ p {
   background: none;
   border: 1px solid transparent;
   border-radius: 4px;
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--muted);
 }
 .page-button.active {
@@ -919,11 +919,11 @@ p {
   color: var(--text);
 }
 .pagination .text-link {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text);
 }
 .catalog-note {
-  font-size: 9px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -957,7 +957,7 @@ p {
   letter-spacing: -0.025em;
 }
 .community-banner p {
-  font-size: 10px;
+  font-size: 11px;
   margin: 0;
 }
 .community-banner .button {
@@ -977,10 +977,10 @@ p {
   font-size: 14px;
 }
 .footer-top .byline {
-  font-size: 8px;
+  font-size: 11px;
 }
 .footer-top p {
-  font-size: 9px;
+  font-size: 11px;
   max-width: 250px;
   line-height: 1.8;
   margin: 0;
@@ -990,7 +990,7 @@ p {
   display: flex;
   gap: 26px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 11px;
 }
 .footer-links a {
   display: flex;
@@ -1001,7 +1001,7 @@ p {
   display: flex;
   justify-content: space-between;
   border-top: 1px solid var(--line-soft);
-  font-size: 8px;
+  font-size: 11px;
   color: var(--subtle);
   padding: 19px 0 25px;
 }
@@ -1033,7 +1033,7 @@ p {
 }
 .timeline-chart-large .chart-header .eyebrow,
 .timeline-chart-large .chart-period {
-  font-size: 10px;
+  font-size: 11px;
 }
 .timeline-legend {
   display: flex;
@@ -1046,7 +1046,7 @@ p {
   align-items: center;
   gap: 7px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .timeline-legend i {
   width: 6px;
@@ -1065,7 +1065,7 @@ p {
   font-size: 25px;
 }
 .timeline-year-count {
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--muted);
   display: block;
   margin-top: 8px;
@@ -1107,7 +1107,7 @@ p {
 }
 .timeline-entry p {
   font-size: 11px;
-  max-width: 780px;
+  max-width: 75ch;
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -1149,7 +1149,7 @@ p {
 }
 .region-row .mono {
   text-align: right;
-  font-size: 10px;
+  font-size: 11px;
 }
 .region-aside h2 {
   font-size: 18px;
@@ -1176,6 +1176,7 @@ p {
 }
 .prose p,
 .prose li {
+  max-width: 70ch;
   color: var(--muted);
 }
 .prose a {
@@ -1207,7 +1208,7 @@ p {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
   padding-top: 30px;
 }
@@ -1291,7 +1292,7 @@ p {
   margin: 0;
 }
 .entry-aside dt {
-  font: 8px var(--mono);
+  font: 11px var(--mono);
   color: var(--subtle);
   letter-spacing: 0.07em;
   margin-bottom: 7px;
@@ -1311,7 +1312,7 @@ p {
   width: 100%;
 }
 .entry-aside p {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.8;
   margin-top: 10px;
 }
@@ -1337,7 +1338,7 @@ p {
   gap: 7px;
 }
 .tag-list .tool-chip {
-  font-size: 10px;
+  font-size: 11px;
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -1373,7 +1374,7 @@ p {
 }
 .source-list li:before {
   content: "0" counter(source);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--subtle);
 }
 .source-list a {
@@ -1400,7 +1401,7 @@ p {
 }
 .related-grid .button {
   min-height: 34px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .not-found {
   text-align: center;
@@ -1447,7 +1448,7 @@ p {
     padding: 12px 9px;
   }
   .role-card-label {
-    font-size: 8px;
+    font-size: 11px;
   }
   .filters {
     flex-wrap: wrap;
@@ -1482,10 +1483,10 @@ p {
     grid-template-columns: minmax(0, 1fr) 260px;
   }
   .chart-header .eyebrow {
-    font-size: 7px;
+    font-size: 11px;
   }
   .chart-period {
-    font-size: 7px;
+    font-size: 11px;
   }
 }
 @media (max-width: 800px) {
@@ -1526,11 +1527,11 @@ p {
     gap: 14px;
   }
   .hero-actions .button {
-    font-size: 10px;
+    font-size: 11px;
     padding-inline: 13px;
   }
   .hero-actions .text-link {
-    font-size: 9px;
+    font-size: 11px;
   }
   .timeline-chart {
     padding: 15px;
@@ -1543,7 +1544,7 @@ p {
     display: none;
   }
   .chart-bottom {
-    font-size: 6px;
+    font-size: 11px;
   }
   .chart-bottom a svg {
     width: 11px;
@@ -1556,7 +1557,7 @@ p {
     font-size: 29px;
   }
   .stat-label {
-    font-size: 8px;
+    font-size: 11px;
   }
   .stat-symbol {
     display: none;
@@ -1573,7 +1574,7 @@ p {
     margin-bottom: 9px;
   }
   .role-card-label {
-    font-size: 9px;
+    font-size: 11px;
   }
   .role-card-number {
     font-size: 25px;
@@ -1598,7 +1599,7 @@ p {
     padding-inline: 8px;
   }
   .role-badge {
-    font-size: 7px;
+    font-size: 11px;
     padding-inline: 5px;
   }
   .role-badge svg {
@@ -1606,16 +1607,16 @@ p {
     height: 11px;
   }
   .incident-link {
-    font-size: 10px;
+    font-size: 11px;
   }
   .table-date {
-    font-size: 8px;
+    font-size: 11px;
   }
   .confidence {
-    font-size: 7px;
+    font-size: 11px;
   }
   .incident-org {
-    font-size: 7px;
+    font-size: 11px;
   }
   .community-banner {
     padding: 24px 20px;
@@ -1652,7 +1653,7 @@ p {
   }
   .catalog-note {
     align-items: flex-start;
-    font-size: 8px;
+    font-size: 11px;
   }
 }
 @media (max-width: 580px) {
@@ -1671,13 +1672,13 @@ p {
     width: 27px;
   }
   .byline {
-    font-size: 8px;
+    font-size: 11px;
   }
   .header-inner nav {
     gap: 14px;
   }
   .header-inner nav a {
-    font-size: 10px;
+    font-size: 11px;
   }
   .header-inner nav a:last-child {
     display: none;
@@ -1701,7 +1702,7 @@ p {
     padding-bottom: 30px;
   }
   .hero-kicker {
-    font-size: 8px;
+    font-size: 11px;
     margin-bottom: 18px;
   }
   .hero h1 {
@@ -1724,13 +1725,13 @@ p {
     padding: 18px;
   }
   .chart-header .eyebrow {
-    font-size: 7px;
+    font-size: 11px;
   }
   .chart-period {
     display: block;
   }
   .chart-bottom {
-    font-size: 7px;
+    font-size: 11px;
   }
   .overview-stats {
     grid-template-columns: repeat(2, 1fr);
@@ -1749,7 +1750,7 @@ p {
     font-size: 32px;
   }
   .stat-label {
-    font-size: 9px;
+    font-size: 11px;
   }
   .role-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1781,24 +1782,24 @@ p {
   .role-card-label {
     grid-column: 2;
     grid-row: 1;
-    font-size: 8px;
+    font-size: 11px;
   }
   .section-title h2 {
     font-size: 16px;
   }
   .section-title .eyebrow {
-    font-size: 6px;
+    font-size: 11px;
   }
   .catalog-heading h2 {
     font-size: 23px;
   }
   .catalog-heading p {
-    font-size: 10px;
+    font-size: 11px;
     max-width: 230px;
   }
   .catalog-heading .button {
     padding: 8px 10px;
-    font-size: 9px;
+    font-size: 11px;
   }
   .catalog-toolbar {
     margin-bottom: 16px;
@@ -1807,7 +1808,7 @@ p {
     gap: 22px;
   }
   .view-tabs a {
-    font-size: 10px;
+    font-size: 11px;
   }
   .update-label {
     display: none;
@@ -1823,11 +1824,11 @@ p {
     flex: 1;
     min-width: 0;
     max-width: none;
-    font-size: 9px;
+    font-size: 11px;
     padding-left: 10px;
   }
   .more-filters {
-    font-size: 9px;
+    font-size: 11px;
     padding: 8px 10px;
   }
   .advanced-filters {
@@ -1850,7 +1851,7 @@ p {
     width: 17%;
   }
   .catalog-table th {
-    font-size: 6px;
+    font-size: 11px;
     padding-block: 12px;
   }
   .catalog-table td {
@@ -1862,24 +1863,24 @@ p {
     padding-left: 8px;
   }
   .incident-link {
-    font-size: 10px;
+    font-size: 11px;
     margin-bottom: 6px;
   }
   .incident-summary {
-    font-size: 8px;
+    font-size: 11px;
     max-width: 100%;
     padding: 0;
   }
   .incident-org {
-    font-size: 6px;
+    font-size: 11px;
     gap: 4px;
     flex-wrap: wrap;
   }
   .research-marker {
-    font-size: 6px;
+    font-size: 11px;
   }
   .role-badge {
-    font-size: 6px;
+    font-size: 11px;
     padding: 4px;
     gap: 3px;
     white-space: normal;
@@ -1889,20 +1890,20 @@ p {
     height: 10px;
   }
   .table-date {
-    font-size: 7px;
+    font-size: 11px;
     white-space: normal;
     display: block;
     line-height: 1.7;
   }
   .results-meta {
-    font-size: 8px;
+    font-size: 11px;
   }
   .pagination {
     gap: 10px;
     flex-wrap: wrap;
   }
   .pagination .text-link {
-    font-size: 9px;
+    font-size: 11px;
   }
   .catalog-note {
     line-height: 1.9;
@@ -1924,7 +1925,7 @@ p {
     line-height: 1.5;
   }
   .community-banner p {
-    font-size: 9px;
+    font-size: 11px;
   }
   .community-banner .button {
     width: 100%;
@@ -1939,16 +1940,16 @@ p {
     gap: 18px;
   }
   .footer-top p {
-    font-size: 9px;
+    font-size: 11px;
     max-width: 185px;
   }
   .footer-links {
     gap: 23px;
-    font-size: 8px;
+    font-size: 11px;
   }
   .footer-bottom {
     gap: 18px;
-    font-size: 7px;
+    font-size: 11px;
     align-items: flex-start;
   }
   .footer-bottom > span:first-child {
@@ -1986,20 +1987,20 @@ p {
     font-size: 12px;
   }
   .timeline-entry p {
-    font-size: 10px;
+    font-size: 11px;
   }
   .timeline-legend {
     gap: 9px 14px;
   }
   .timeline-legend a {
-    font-size: 8px;
+    font-size: 11px;
   }
   .region-card {
     padding: 17px;
   }
   .region-row {
     grid-template-columns: 125px 1fr 20px;
-    font-size: 10px;
+    font-size: 11px;
     gap: 8px;
   }
   .prose {
@@ -2016,13 +2017,13 @@ p {
     gap: 10px;
   }
   .entry-heading-top .button {
-    font-size: 8px;
+    font-size: 11px;
     padding: 7px 9px;
     min-height: 32px;
   }
   .entry-meta {
     gap: 10px 18px;
-    font-size: 10px;
+    font-size: 11px;
   }
   .detail-content .technique {
     font-size: 13px;
@@ -2095,7 +2096,7 @@ p {
     margin-bottom: 7px;
   }
   .catalog-table .incident-summary {
-    font-size: 10px;
+    font-size: 11px;
     white-space: normal;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -2103,12 +2104,12 @@ p {
     line-height: 1.65;
   }
   .catalog-table .incident-org {
-    font-size: 8px;
+    font-size: 11px;
     line-height: 1.7;
     margin-top: 8px;
   }
   .catalog-table .role-badge {
-    font-size: 8px;
+    font-size: 11px;
     padding: 5px;
     line-height: 1.65;
     gap: 4px;
@@ -2118,14 +2119,14 @@ p {
     height: 11px;
   }
   .catalog-table .table-date {
-    font-size: 9px;
+    font-size: 11px;
     line-height: 1.7;
   }
   .catalog-table .research-marker {
-    font-size: 7px;
+    font-size: 11px;
   }
   .role-card-label {
-    font-size: 9px;
+    font-size: 11px;
   }
   .header-inner nav a {
     font-size: 11px;
@@ -2138,10 +2139,10 @@ p {
     font-size: 21px;
   }
   .catalog-note {
-    font-size: 9px;
+    font-size: 11px;
   }
   .footer-bottom {
-    font-size: 8px;
+    font-size: 11px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2207,7 +2208,7 @@ p {
   letter-spacing: 0.06em;
 }
 .catalog-wordmark .byline {
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0;
 }
 .site-footer .magicsword-logo img {
@@ -2252,14 +2253,22 @@ p {
   margin: 10px 0 12px;
 }
 .interactive-timeline .chart-header .eyebrow {
-  font-size: 9px;
+  font-size: 11px;
 }
 .interactive-timeline .chart-year {
-  font-size: 12px;
+  font-size: 16px;
 }
 .interactive-timeline .chart-count {
-  font-size: 12px;
+  font-size: 16px;
   opacity: 1;
+}
+/* SVG text scales with the chart; a phone renders the 800-unit chart at
+   ~350px, so the year labels need larger user units to stay readable. */
+@media (max-width: 580px) {
+  .interactive-timeline .chart-year,
+  .interactive-timeline .chart-count {
+    font-size: 28px;
+  }
 }
 .chart-header-actions {
   display: flex;
@@ -2275,7 +2284,7 @@ p {
   border: 1px solid var(--line);
   border-radius: 4px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 11px;
 }
 .chart-motion-toggle:hover {
   color: var(--text);
@@ -2283,6 +2292,10 @@ p {
 }
 .chart-entry {
   transition: opacity 0.22s;
+}
+/* Each dot's whole grid cell is clickable, so taps don't need to hit a 5px dot. */
+.chart-hit {
+  fill: transparent;
 }
 .chart-entry[data-muted="true"] {
   opacity: 0.12;
@@ -2391,11 +2404,11 @@ p {
   white-space: nowrap;
 }
 .interactive-timeline .chart-bottom {
-  font-size: 9px;
+  font-size: 11px;
   min-height: 35px;
 }
 .interactive-timeline .chart-period {
-  font-size: 9px;
+  font-size: 11px;
   display: inline;
 }
 .view-content > .interactive-timeline {
@@ -2440,7 +2453,7 @@ p {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 9px;
+  font-size: 11px;
   margin-bottom: 11px;
 }
 .agent-access h2 {
@@ -2479,7 +2492,7 @@ p {
   margin-bottom: 3px;
 }
 .agent-file span {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
 }
 .agent-file:hover {
@@ -2488,7 +2501,7 @@ p {
 .agent-file-links {
   display: flex;
   gap: 18px;
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 13px;
   color: var(--muted);
 }
@@ -2496,7 +2509,7 @@ p {
   background: none;
   border: 0;
   color: var(--accent);
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 11px;
   padding: 0;
 }
@@ -2524,7 +2537,7 @@ p {
 }
 .geography-stats span {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
 }
 .region-map-layout {
@@ -2542,7 +2555,7 @@ p {
   min-width: 0;
 }
 .region-map-card .chart-header .eyebrow {
-  font-size: 8px;
+  font-size: 11px;
 }
 .world-map {
   display: block;
@@ -2580,6 +2593,13 @@ p {
   stroke: transparent;
   stroke-width: 2;
 }
+/* On touch screens the map scales down, so widen the invisible hit circle
+   to about 24px on a phone. The location list remains the precise route. */
+@media (pointer: coarse) {
+  .map-marker .map-hit-area {
+    r: 36px;
+  }
+}
 .map-marker:hover .map-marker-halo,
 .map-marker:focus .map-marker-halo {
   opacity: 0.35;
@@ -2611,7 +2631,7 @@ p {
   border-top: 1px solid var(--line);
   padding: 16px 0;
   color: var(--muted);
-  font-size: 8px;
+  font-size: 11px;
 }
 .map-legend span {
   display: flex;
@@ -2634,14 +2654,14 @@ p {
   background: var(--line);
 }
 .map-inspector {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.8;
   color: var(--text);
   padding-top: 9px;
   min-height: 35px;
 }
 .map-credit {
-  font-size: 8px;
+  font-size: 11px;
   color: var(--subtle);
   margin: 7px 0 0;
 }
@@ -2656,7 +2676,7 @@ p {
   letter-spacing: -0.02em;
 }
 .location-index .eyebrow {
-  font-size: 7px;
+  font-size: 11px;
 }
 .location-row {
   display: flex;
@@ -2683,19 +2703,19 @@ p {
 .location-row small {
   display: block;
   color: var(--muted);
-  font-size: 8px;
+  font-size: 11px;
 }
 .location-row strong {
   font-size: 11px;
   font-weight: 400;
 }
 .location-row strong span {
-  font-size: 9px;
+  font-size: 11px;
   margin-left: 11px;
   color: var(--subtle);
 }
 .location-index > p {
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.9;
   margin: 20px 0 0;
 }
@@ -2714,7 +2734,7 @@ p {
   line-height: 1.95;
 }
 .geography-methodology .text-link {
-  font-size: 10px;
+  font-size: 11px;
 }
 .region-context-note {
   font-size: 11px !important;
@@ -2733,14 +2753,14 @@ p {
   gap: 20px;
 }
 .flow-section-heading .eyebrow {
-  font-size: 8px;
+  font-size: 11px;
 }
 .flow-section-heading h2 {
   font-size: 25px;
   margin: 8px 0 0;
 }
 .flow-section-heading .text-link {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
 }
 .flow-frame {
@@ -2782,7 +2802,7 @@ p {
 }
 .flow-node-kicker {
   display: block;
-  font: 8px var(--mono);
+  font: 11px var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2811,7 +2831,7 @@ p {
   overflow: hidden;
   margin-top: 8px;
   color: var(--muted);
-  font: 9px/1.65 var(--font);
+  font: 11px/1.65 var(--font);
 }
 .network-orb {
   position: relative;
@@ -2876,7 +2896,7 @@ p {
   border-radius: 50%;
   background: var(--panel);
   color: var(--text);
-  font: 8px var(--mono);
+  font: 11px var(--mono);
 }
 .network-control-link {
   pointer-events: auto;
@@ -2890,7 +2910,7 @@ p {
   background: color-mix(in srgb, var(--green) 5%, var(--panel));
   border-radius: 20px;
   color: var(--green);
-  font: 8px var(--mono);
+  font: 11px var(--mono);
 }
 .attack-flow-node .react-flow__handle {
   width: 5px;
@@ -2905,7 +2925,7 @@ p {
   gap: 14px;
   padding: 15px 20px 0;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .network-toolbar > span {
   display: flex;
@@ -2914,7 +2934,7 @@ p {
 }
 .network-toolbar .network-policy-key {
   color: var(--green);
-  font-size: 9px;
+  font-size: 11px;
 }
 .network-stage-picker {
   display: flex;
@@ -2932,10 +2952,10 @@ p {
   border-radius: 4px;
   color: var(--muted);
   background: transparent;
-  font-size: 10px;
+  font-size: 11px;
 }
 .network-stage-picker button > span:first-child {
-  font: 9px var(--mono);
+  font: 11px var(--mono);
 }
 .network-stage-picker button.is-active {
   background: var(--bg);
@@ -2979,14 +2999,14 @@ p {
   flex-wrap: wrap;
   gap: 7px;
   color: var(--muted);
-  font: 8px/1.7 var(--mono);
+  font: 11px/1.7 var(--mono);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 13px;
 }
 .stage-detail-number {
   color: var(--accent);
-  font-size: 10px;
+  font-size: 11px;
 }
 .stage-inspector h3 {
   font: 600 17px/1.55 var(--font);
@@ -3010,7 +3030,7 @@ p {
 }
 .stage-source-links a {
   color: var(--accent);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
 }
 .stage-editorial-note {
   padding-left: 11px;
@@ -3035,7 +3055,7 @@ p {
   margin-bottom: 10px;
 }
 .stage-control .stage-limit {
-  font-size: 10px;
+  font-size: 11px;
 }
 .stage-control-cta {
   display: inline-flex;
@@ -3056,7 +3076,7 @@ p {
   margin-top: 4px;
 }
 .stage-no-control p {
-  font-size: 10px;
+  font-size: 11px;
 }
 .stage-resource {
   display: flex;
@@ -3078,11 +3098,11 @@ p {
 }
 .stage-resource small {
   display: block;
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 2px;
 }
 .draft-badge {
-  font: 8px/1.4 var(--mono);
+  font: 11px/1.4 var(--mono);
   color: var(--accent);
   background: var(--accent-bg);
   padding: 3px 5px;
@@ -3095,10 +3115,10 @@ p {
 }
 .stage-telemetry > span {
   color: var(--text);
-  font-size: 10px;
+  font-size: 11px;
 }
 .stage-telemetry > p {
-  font-size: 10px;
+  font-size: 11px;
   margin: 4px 0 7px;
 }
 .stage-telemetry ul {
@@ -3114,7 +3134,7 @@ p {
   margin-bottom: 7px;
 }
 .stage-limit {
-  font-size: 10px !important;
+  font-size: 11px !important;
 }
 .stage-limit strong {
   color: var(--text);
@@ -3135,7 +3155,7 @@ p {
 .stage-query-details summary > span,
 .detection-query-details summary > span {
   display: block;
-  font-size: 9px;
+  font-size: 11px;
   color: var(--muted);
   margin: 4px 0 0 13px;
 }
@@ -3144,7 +3164,7 @@ p {
 }
 .query-scope {
   margin: 15px 0;
-  font-size: 10px !important;
+  font-size: 11px !important;
 }
 .query-formats {
   display: flex;
@@ -3158,7 +3178,7 @@ p {
   padding: 8px 13px;
   background: transparent;
   color: var(--muted);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
 }
 .query-formats button[aria-selected="true"] {
   color: var(--accent);
@@ -3171,7 +3191,7 @@ p {
   gap: 8px;
 }
 .flow-copy-wrap [role="status"] {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--muted);
 }
 .flow-small-button {
@@ -3183,7 +3203,7 @@ p {
   border: 1px solid var(--line);
   border-radius: 4px;
   color: var(--muted);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
 }
 .hunt-code,
 .detection-code {
@@ -3195,7 +3215,7 @@ p {
   padding: 13px;
   background: var(--panel);
   color: var(--text);
-  font: 9px/1.8 var(--mono);
+  font: 11px/1.8 var(--mono);
   tab-size: 2;
   margin: 10px 0 0;
 }
@@ -3224,7 +3244,7 @@ p {
   justify-content: space-between;
   gap: 12px;
   padding: 12px 18px;
-  font-size: 9px;
+  font-size: 11px;
   color: var(--muted);
 }
 .flow-evidence-label {
@@ -3251,7 +3271,7 @@ p {
 .flow-text summary {
   cursor: pointer;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .flow-text > p {
   font-size: 11px;
@@ -3280,7 +3300,7 @@ p {
   color: var(--muted);
 }
 .flow-text li a {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--accent);
 }
 .atlas-note {
@@ -3303,7 +3323,7 @@ p {
   gap: 12px;
 }
 .atlas-mapping > a > .mono {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--accent);
 }
 .atlas-mapping strong {
@@ -3338,7 +3358,7 @@ p {
     font-size: 12px;
   }
   .catalog-wordmark .byline {
-    font-size: 7px;
+    font-size: 11px;
   }
   .magicsword-logo img {
     width: 110px;
@@ -3407,13 +3427,13 @@ p {
     padding: 19px 20px 13px;
   }
   .interactive-timeline .chart-header .eyebrow {
-    font-size: 8px;
+    font-size: 11px;
   }
   .interactive-timeline .chart-period {
-    font-size: 8px;
+    font-size: 11px;
   }
   .interactive-timeline .chart-bottom {
-    font-size: 8px;
+    font-size: 11px;
   }
   .chart-inspector {
     max-width: 70%;
@@ -3427,10 +3447,10 @@ p {
   }
   .agent-file-links {
     gap: 12px;
-    font-size: 8px;
+    font-size: 11px;
   }
   .agent-file span {
-    font-size: 9px;
+    font-size: 11px;
   }
   .region-map-layout {
     grid-template-columns: 1fr;
@@ -3455,10 +3475,10 @@ p {
     font-size: 26px;
   }
   .geography-stats span {
-    font-size: 9px;
+    font-size: 11px;
   }
   .flow-caption {
-    font-size: 8px;
+    font-size: 11px;
     flex-wrap: wrap;
   }
   .atlas-mapping > a {
@@ -3480,13 +3500,13 @@ p {
     gap: 6px;
   }
   .network-toolbar .network-policy-key {
-    font-size: 8px;
+    font-size: 11px;
   }
   .network-stage-picker {
     padding: 0 12px 14px;
   }
   .network-stage-picker button {
-    font-size: 9px;
+    font-size: 11px;
   }
   .stage-inspector {
     grid-template-columns: minmax(0, 1fr);
@@ -3525,7 +3545,7 @@ p {
     font-size: 11px;
   }
   .hero-description .hero-actions .text-link {
-    font-size: 10px;
+    font-size: 11px;
   }
   .agent-access {
     grid-template-columns: 1fr;
@@ -3538,11 +3558,11 @@ p {
     max-width: none;
   }
   .agent-file-links {
-    font-size: 10px;
+    font-size: 11px;
     gap: 20px;
   }
   .interactive-timeline .chart-bottom > a {
-    font-size: 8px;
+    font-size: 11px;
   }
   .interactive-timeline .chart-period {
     display: none;
@@ -3554,10 +3574,10 @@ p {
     flex-wrap: nowrap;
   }
   .chart-motion-toggle {
-    font-size: 8px;
+    font-size: 11px;
   }
   .chart-inspector {
-    font-size: 8px;
+    font-size: 11px;
   }
   .header-inner {
     gap: 16px;
@@ -3570,7 +3590,7 @@ p {
     height: 36px;
   }
   .catalog-wordmark {
-    font-size: 10px;
+    font-size: 11px;
   }
   .brand-divider {
     height: 23px;
@@ -3591,7 +3611,7 @@ p {
     gap: 12px;
   }
   .header-inner nav a {
-    font-size: 10px;
+    font-size: 11px;
   }
   .header-wordmark {
     gap: 8px;
@@ -3601,7 +3621,7 @@ p {
     height: 34px;
   }
   .catalog-wordmark {
-    font-size: 9px;
+    font-size: 11px;
   }
   .header-inner .theme-toggle svg {
     width: 16px;
@@ -3621,7 +3641,7 @@ p {
     padding: 17px 14px 12px;
   }
   .interactive-timeline .chart-header .eyebrow {
-    font-size: 6px;
+    font-size: 11px;
     letter-spacing: 0.07em;
   }
   .interactive-timeline .dot-chart {
@@ -3640,7 +3660,7 @@ p {
   .chart-inspector {
     display: block;
     max-width: 100%;
-    font-size: 8px;
+    font-size: 11px;
     white-space: normal;
     line-height: 1.8;
     min-height: 28px;
@@ -3648,7 +3668,7 @@ p {
   .interactive-timeline .chart-bottom > a {
     margin-top: 7px;
     justify-content: flex-end;
-    font-size: 9px;
+    font-size: 11px;
   }
   .agent-access {
     padding: 23px 20px;
@@ -3667,14 +3687,14 @@ p {
     font-size: 13px;
   }
   .agent-file span {
-    font-size: 9px;
+    font-size: 11px;
   }
   .agent-file-links {
-    font-size: 9px;
+    font-size: 11px;
     gap: 16px;
   }
   .copy-context-button {
-    font-size: 10px;
+    font-size: 11px;
     margin-top: 15px;
   }
   .geography-stats {
@@ -3686,16 +3706,16 @@ p {
     padding-left: 0;
   }
   .geography-stats span {
-    font-size: 9px;
+    font-size: 11px;
   }
   .region-map-card {
     padding: 16px 13px 12px;
   }
   .region-map-card .chart-header .eyebrow {
-    font-size: 6px;
+    font-size: 11px;
   }
   .region-map-card .chart-period {
-    font-size: 7px;
+    font-size: 11px;
     display: inline;
   }
   .world-map {
@@ -3705,22 +3725,22 @@ p {
   .map-legend {
     justify-content: flex-start;
     gap: 9px 15px;
-    font-size: 7px;
+    font-size: 11px;
     line-height: 1.8;
   }
   .map-inspector {
-    font-size: 9px;
+    font-size: 11px;
     min-height: 45px;
   }
   .map-credit {
-    font-size: 7px;
+    font-size: 11px;
   }
   .location-index {
     padding: 20px 17px;
     gap: 0 15px;
   }
   .location-row {
-    font-size: 10px;
+    font-size: 11px;
   }
   .location-row strong span {
     margin-left: 6px;
@@ -3729,16 +3749,16 @@ p {
     padding-left: 16px;
   }
   .geography-methodology p {
-    font-size: 10px;
+    font-size: 11px;
   }
   .flow-section-heading h2 {
     font-size: 23px;
   }
   .flow-section-heading .eyebrow {
-    font-size: 7px;
+    font-size: 11px;
   }
   .flow-section-heading .text-link {
-    font-size: 9px;
+    font-size: 11px;
   }
   .flow-caption {
     padding: 11px 13px;
@@ -3746,7 +3766,7 @@ p {
     gap: 5px;
   }
   .flow-evidence-label {
-    font-size: 8px;
+    font-size: 11px;
   }
   .atlas-mapping {
     padding: 13px;
@@ -3755,10 +3775,10 @@ p {
     font-size: 11px;
   }
   .atlas-mapping > a > .mono {
-    font-size: 8px;
+    font-size: 11px;
   }
   .atlas-mapping p {
-    font-size: 10px !important;
+    font-size: 11px !important;
   }
   .footer-links {
     flex-wrap: wrap;
@@ -3826,7 +3846,7 @@ p {
 .landing-focused .hero-introduction .eyebrow {
   display: block;
   margin-bottom: 17px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .landing-focused .hero-introduction h1 {
   font-size: clamp(42px, 5vw, 68px);
@@ -3887,7 +3907,7 @@ p {
   margin: 8px 0 0;
 }
 .latest-entries .eyebrow {
-  font-size: 9px;
+  font-size: 11px;
 }
 .latest-entry-list {
   list-style: none;
@@ -3924,7 +3944,7 @@ p {
 }
 .latest-entry-link time {
   color: var(--muted);
-  font: 10px/1.8 var(--mono);
+  font: 11px/1.8 var(--mono);
   padding-top: 5px;
 }
 .latest-entry-meta {
@@ -3941,7 +3961,7 @@ p {
   background: var(--panel);
   padding: 3px 7px;
   border-radius: 4px;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.65;
   color: var(--muted);
   white-space: normal;
@@ -4037,7 +4057,7 @@ p {
   white-space: normal;
 }
 .incident-pattern {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .environment-label {
@@ -4061,7 +4081,7 @@ p {
   background: var(--panel);
   border-radius: 4px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   padding: 4px 8px;
 }
 .catalog-focused .results-meta {
@@ -4111,7 +4131,7 @@ p {
   margin-top: 21px;
 }
 .entry-qualification > strong {
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -4384,7 +4404,7 @@ p {
   flex-shrink: 0;
 }
 .entry-detections .draft-badge {
-  font-size: 10px;
+  font-size: 11px;
   white-space: nowrap;
 }
 .entry-detections .draft-badge.is-gap {
@@ -4534,6 +4554,8 @@ p {
   margin: 0;
 }
 .tool-project-link {
+  /* Inline padding grows the tap area without moving the text. */
+  padding-block: 4px;
   color: var(--accent);
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
@@ -4657,7 +4679,7 @@ p {
   border-bottom-color: var(--accent);
 }
 .inspector-tabs .draft-badge {
-  font-size: 8px;
+  font-size: 11px;
 }
 .stage-inspector-focused .inspector-body {
   max-width: 900px;
@@ -4768,7 +4790,7 @@ p {
 }
 .mobile-network-stage small {
   display: block;
-  font: 9px/1.8 var(--mono);
+  font: 11px/1.8 var(--mono);
   color: var(--muted);
 }
 .mobile-network-stage strong {
@@ -4799,7 +4821,7 @@ p {
   background: none;
   min-height: 32px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .attack-flow-canvas.mobile-flow-list {
   height: auto;
@@ -4858,7 +4880,7 @@ p {
     align-items: center;
   }
   .latest-entries .section-title .text-link {
-    font-size: 10px;
+    font-size: 11px;
   }
   .agent-access.agent-access-compact {
     grid-template-columns: 1fr;
@@ -5042,7 +5064,7 @@ p {
   margin: 0;
 }
 .stack-heading .eyebrow {
-  font-size: 9px;
+  font-size: 11px;
 }
 .stack-local-note {
   display: flex;
@@ -5239,7 +5261,7 @@ p {
 }
 .stack-results-heading .eyebrow {
   color: var(--muted);
-  font-size: 9px;
+  font-size: 11px;
 }
 .stack-results-heading h3 {
   font-size: 28px;
@@ -5295,11 +5317,11 @@ p {
 }
 .stack-result-meta > span:not(.evidence-badge) {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 .stack-result-meta time {
   color: var(--muted);
-  font: 9px/1.8 var(--mono);
+  font: 11px/1.8 var(--mono);
   margin-left: auto;
 }
 .stack-result-card p {
@@ -5393,7 +5415,7 @@ p {
   color: var(--accent);
 }
 .stack-coverage {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
   line-height: 1.9;
   margin-top: 22px;
@@ -5444,7 +5466,7 @@ p {
   .stack-form legend > span {
     display: block;
     margin-left: 0;
-    font-size: 10px;
+    font-size: 11px;
   }
   .stack-primary-tools {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5499,7 +5521,7 @@ p {
   }
 }
 .stack-result-card .stack-version-note {
-  font-size: 10px;
+  font-size: 11px;
   margin-top: -8px;
   margin-bottom: 14px;
 }
@@ -5512,7 +5534,7 @@ p {
 }
 .stack-inventory-actions small {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.7;
   max-width: 250px;
 }
@@ -5563,7 +5585,7 @@ p {
   align-items: center;
   gap: 6px;
   color: var(--accent);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   border: 1px solid var(--accent);
   border-radius: 4px;
   padding: 5px 8px;
@@ -5594,7 +5616,7 @@ p {
 }
 .simulation-preview-label {
   color: var(--subtle);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
 }
 .simulation-card {
   border: 1px solid var(--line);
@@ -5615,7 +5637,7 @@ p {
   gap: 14px;
   flex-wrap: wrap;
   color: var(--subtle);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
 }
 .simulation-tags > span:first-child {
   display: inline-flex;
@@ -5658,7 +5680,7 @@ p {
   align-items: center;
   gap: 5px;
   color: var(--accent);
-  font-size: 10px;
+  font-size: 11px;
 }
 .simulation-instructions {
   margin-top: 21px;
@@ -5726,7 +5748,7 @@ p {
   flex-wrap: wrap;
   padding: 9px 11px;
   border-bottom: 1px solid var(--line);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
   color: var(--subtle);
 }
 .simulation-copy-block button {
@@ -5735,7 +5757,7 @@ p {
   border: 0;
   padding: 2px;
   color: var(--accent);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   cursor: pointer;
 }
 .simulation-copy-block [role="status"] {
@@ -5760,7 +5782,7 @@ p {
 }
 .simulation-observations > .eyebrow {
   display: block;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   color: var(--subtle);
   margin-bottom: 24px;
@@ -5772,7 +5794,7 @@ p {
 }
 .simulation-observation-number {
   color: var(--accent);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   padding-top: 2px;
 }
 .simulation-observations h4 {
@@ -5789,7 +5811,7 @@ p {
   display: block;
   padding-top: 13px;
   border-top: 1px solid var(--line-soft);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .simulation-footer {
@@ -5808,7 +5830,7 @@ p {
   gap: 13px;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--subtle);
 }
 .simulation-footer a {
@@ -5823,7 +5845,7 @@ p {
   align-items: center;
   gap: 4px;
   color: var(--accent);
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 5px;
   padding: 3px 6px;
   border: 1px solid var(--line);
@@ -5835,7 +5857,7 @@ p {
   align-items: center;
   gap: 6px;
   color: var(--accent);
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   padding: 10px 6px;
 }
 .simulation-section a:focus-visible,
@@ -5874,7 +5896,7 @@ p {
     margin-left: 28px;
   }
   .simulation-copy-block pre {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 /* React Flow nodes are not selectable; explicitly admit this child link. */
@@ -5905,7 +5927,7 @@ p {
   gap: 7px;
   margin-bottom: 16px;
   color: var(--subtle);
-  font: 9px var(--mono);
+  font: 11px var(--mono);
 }
 .simulation-platforms span {
   border: 1px solid var(--line);
