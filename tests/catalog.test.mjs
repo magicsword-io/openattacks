@@ -208,6 +208,23 @@ test("robots.txt allows crawlers and the sitemap lists canonical pages", () => {
     robots,
     /^Sitemap: https:\/\/openattacks\.ai\/sitemap-index\.xml$/m,
   );
+  for (const url of [
+    "https://openattacks.ai/llms.txt",
+    "https://openattacks.ai/llms-full.txt",
+    "https://openattacks.ai/skills/openattacks/SKILL.md",
+  ]) {
+    assert.match(robots, new RegExp(`^# ${url.replaceAll(".", "\\.")}$`, "m"));
+  }
+  assert.equal(
+    readFileSync(
+      new URL("../dist/skills/openattacks/SKILL.md", import.meta.url),
+      "utf8",
+    ),
+    readFileSync(
+      new URL("../skills/openattacks/SKILL.md", import.meta.url),
+      "utf8",
+    ),
+  );
   const sitemap = readFileSync(
     new URL("../dist/sitemap-0.xml", import.meta.url),
     "utf8",

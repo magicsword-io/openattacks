@@ -1,6 +1,10 @@
 # OpenAttacks is a public catalog. Search engines and AI answer engines may crawl and cite it.
 # User-agent: * already allows every other crawler. The named agents are listed so the allow is explicit.
 # Disallow: /404 also covers /404/ and /404.html, the not-found page.
+# Comment lines are not crawler directives. Agent resources:
+# https://openattacks.ai/llms.txt
+# https://openattacks.ai/llms-full.txt
+# https://openattacks.ai/skills/openattacks/SKILL.md
 
 User-agent: *
 User-agent: GPTBot
