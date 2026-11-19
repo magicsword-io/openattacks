@@ -1210,6 +1210,33 @@
       "profile": "unassessed"
     }
   },
+  "microsoft-copilot-cli-device-code-phishing-2026-11": {
+    "step-1": {
+      "profile": "identity",
+      "note": "An attacker-controlled client requests a GitHub device code with the public Copilot CLI client ID. The victim-side signal is the later token, not the request by itself.",
+      "reviewed": "2026-11-19"
+    },
+    "step-2": {
+      "profile": "phishing",
+      "note": "The lure is an email or Microsoft Teams message with a real github.com verification link and an attacker-generated code. Defender XDR alerts cover the email and Teams variants. The lab was not observed in the wild.",
+      "reviewed": "2026-11-19"
+    },
+    "step-3": {
+      "profile": "agent-tools",
+      "note": "Remote control is off by default. When the user enabled it and policy allows it, the attacker can steer the session and have the agent run a command, still subject to local approvals and OS permissions.",
+      "reviewed": "2026-11-19"
+    },
+    "step-4": {
+      "profile": "agent-tools",
+      "note": "The lab wrote misleading Copilot Memory entries with /memory and read cloud-synced sessions. Disabling memory does not delete stored entries. This profile does not specifically match Copilot Memory writes.",
+      "reviewed": "2026-11-19"
+    },
+    "step-5": {
+      "profile": "identity",
+      "note": "The same approval can reach private repositories available to the account. The report describes access, not a new public artifact. Review and revoke unexpected GitHub OAuth authorizations.",
+      "reviewed": "2026-11-19"
+    }
+  },
   "morris-ii-ai-worm-poc-2024-03": {
     "step-1": {
       "profile": "agent-tools"

@@ -1,0 +1,108 @@
+id: microsoft-copilot-cli-device-code-phishing-2026-11
+name: "Microsoft: one phished GitHub device code lets an attacker steer a Copilot CLI session, poison its memory and read synced sessions"
+date_reported: 2026-11-17
+researcher: Uri Oren, Dor Edry
+org: Microsoft Security Research
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/11/17/the-risks-of-device-code-authentication-for-ai-coding-agents/
+    title: The risks of device code authentication for AI coding agents
+    publisher: Microsoft
+  - url: https://learn.microsoft.com/en-us/defender-xdr/security-for-ai/protect-ai-agents-from-trusted-identity-attacks
+    title: Protect AI agents from trusted-identity attacks (preview)
+    publisher: Microsoft Learn
+  - url: https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/steer-remotely
+    title: Steering a GitHub Copilot CLI session from another device
+    publisher: GitHub Docs
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: null
+technique_summary: "Microsoft Security Research (Uri Oren and Dor Edry, 17 November 2026) ran a controlled lab simulation in which a test account approved a GitHub OAuth device-code request started by an attacker-controlled client using the public GitHub Copilot CLI client ID. The verification page is the real github.com page, and the authorization shows the legitimate application name. The requested scopes were repo, read:user, read:org, gist and codespace, chosen by the client that starts the flow. With that one approval the researchers could (1) steer an active Copilot CLI session remotely when the user had enabled remote control and policy allowed it, and have the agent run a command on the test machine subject to its approval prompts and OS permissions, (2) add misleading entries to Copilot Memory with the /memory command so they could influence later interactions, (3) read Copilot CLI sessions synced to the cloud, including sessions from before the simulation, and (4) access private repositories available to the account. Microsoft states these are proof-of-concept outcomes of features working as designed and that it has not observed them in earlier device-code campaigns (Storm-2372, the 2026 AI-enabled campaign, EvilTokens) or in the wild. Remote control is off by default and is enabled with remoteSessions in ~/.copilot/settings.json; enterprises can set remoteControl.mode to disabled or requireSSO."
+initial_access: Device code phishing (email or Microsoft Teams lure carrying a GitHub verification link and an attacker-generated code)
+ai_tooling_and_models:
+  - GitHub Copilot CLI (target)
+  - Copilot Memory (target)
+other_tooling:
+  - GitHub OAuth device authorization flow
+  - Copilot CLI remote control / cloud session storage
+victims_and_sectors: Developers using GitHub Copilot CLI (lab simulation, no victims)
+regions:
+  - unknown
+region_notes: Lab research; no victim geography.
+attribution_or_cluster: Vulnerability and abuse research by Microsoft Security Research; not an attributed campaign
+scale_and_metrics: "Proof of concept only. Two Microsoft Defender XDR detections shipped: Suspected GitHub Copilot CLI device code phishing via email, and via Microsoft Teams. Defender can disrupt by suspending the affected GitHub Enterprise Managed User."
+prevention_angle: "Approve only device codes you started yourself. Set the GitHub Store local sessions in the Cloud policy and remoteControl.mode to the least permissive option (disabled or requireSSO). Review and revoke unexpected GitHub OAuth authorizations, limit repository roles, and review saved Copilot Memory entries during incident response, since disabling memory does not delete stored entries."
+related_magicsword_projects: []
+source_notes: null
+last_reviewed: 2026-11-19
+confidence: high
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Attacker starts a device-code sign-in
+      description: An attacker-controlled client requests a GitHub device code with the public Copilot CLI client ID and chooses the scopes.
+      kind: access
+      source_urls: &a1
+        - https://www.microsoft.com/en-us/security/blog/2026/11/17/the-risks-of-device-code-authentication-for-ai-coding-agents/
+    - id: step-2
+      title: Victim approves the code on github.com
+      description: A lure framed as an IT request or Copilot license check sends the code and the real verification link; the victim approves.
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: Attacker steers the running agent session
+      description: With remote control enabled, the attacker interacts with the active Copilot CLI session and has the agent run a command, subject to local approvals.
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: Memory poisoning and session read-back
+      description: The attacker writes misleading Copilot Memory entries with /memory and reads cloud-synced sessions.
+      kind: ai
+      source_urls: *a1
+    - id: step-5
+      title: Private repository access
+      description: The token reaches private repositories available to the account.
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-2
+      target: step-4
+    - source: step-2
+      target: step-5
+atlas_techniques:
+  - id: AML.T0052
+    rationale: An email or Microsoft Teams lure carries a GitHub verification link and an attacker-generated device code.
+    source_urls: *a1
+  - id: AML.T0053
+    rationale: With remote control enabled, the attacker steers the Copilot CLI session and has the agent run a command, subject to local approvals.
+    source_urls: *a1
+  - id: AML.T0080.000
+    rationale: The attacker adds misleading Copilot Memory entries with /memory so they can influence later interactions.
+    source_urls: *a1
+  - id: AML.T0085
+    rationale: The approved token can read Copilot CLI sessions synced to the cloud, including sessions from before the simulation.
+    source_urls: *a1
+category: attacks-on-ai
+attribution:
+  actor_name: Vulnerability research
+ai_involvement_confidence: confirmed
+detections:
+  - name: Suspected GitHub Copilot CLI device code phishing via email
+    format: guidance
+    notes: Microsoft Defender XDR alert correlating suspicious messages and clicks with GitHub OAuth token creation and regeneration (T1566.002, T1528).
+  - name: Suspected GitHub Copilot CLI device code phishing via Microsoft Teams
+    format: guidance
+    notes: Microsoft Defender XDR alert for the Teams-delivered variant; requires the GitHub Enterprise Cloud connector in Defender for Cloud Apps.
+timeline:
+  first_seen: "2026-11-17"
+  last_updated: "2026-11-17"
+  updates:
+    - date: "2026-11-17"
+      source: Microsoft Security Research
+      summary: Uri Oren and Dor Edry publish a controlled lab simulation. Microsoft states the outcomes were not observed in earlier device-code campaigns or in the wild, and that two Defender XDR detections shipped.
