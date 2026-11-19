@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-04",
+  "reviewed_on": "2026-11-19",
   "projects": [
     {
       "name": "Amass",
@@ -172,6 +172,16 @@
       "name": "Hugging Face",
       "url": "https://huggingface.co/",
       "aliases": ["Hugging Face", "Hugging Face API"]
+    },
+    {
+      "name": "Kimi K2",
+      "url": "https://github.com/MoonshotAI/Kimi-K2",
+      "aliases": ["Kimi K2"],
+      "source_urls": [
+        "https://github.com/MoonshotAI/Kimi-K2",
+        "https://blog.talosintelligence.com/appraisal-by-ai-model-driven-victim-prioritization-in-the-volta-infostealer/"
+      ],
+      "note": "Official model repository. The VOLTA sample calls moonshotai/kimi-k2 through OpenRouter."
     },
     {
       "name": "LinPEAS",
