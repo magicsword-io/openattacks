@@ -3723,7 +3723,6 @@
       "profile": "credentials"
     }
   },
-
   "eye-security-artex-gitops-2026-11": {
     "upload": {
       "profile": "linux-webshell"
@@ -3770,6 +3769,17 @@
     },
     "clickfix": {
       "profile": "mac-shell"
+    }
+  },
+  "sans-isc-litellm-mcp-rest-scans-2026-11": {
+    "badhost": {
+      "profile": "web"
+    },
+    "mcp-test": {
+      "profile": "agent-tools"
+    },
+    "exec": {
+      "profile": "unassessed"
     }
   },
   "barracuda-artex-cloud-key-intrusion-2026-11": {

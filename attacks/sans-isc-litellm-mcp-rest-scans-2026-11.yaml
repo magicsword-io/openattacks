@@ -1,0 +1,99 @@
+id: sans-isc-litellm-mcp-rest-scans-2026-11
+name: Scans exploit LiteLLM MCP test endpoint for unauthenticated command execution (CVE-2026-42271 + Starlette BadHost CVE-2026-48710)
+date_reported: 2026-11-16
+researcher: Johannes B. Ullrich (SANS Internet Storm Center); exploit chain validated by Horizon3.ai
+org: SANS Internet Storm Center
+sources:
+  - url: https://isc.sans.edu/diary/33522
+    title: "Scans for LiteLLM/Starlette (CVE-2026-42271, CVE-2026-48710)"
+    publisher: SANS Internet Storm Center
+  - url: https://horizon3.ai/attack-research/vulnerabilities/cve-2026-42271-chained-with-cve-2026-48710/
+    title: "CVE-2026-42271 Chained with CVE-2026-48710: LiteLLM Unauthenticated Remote Code Execution"
+    publisher: Horizon3.ai
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "Attackers abuse the LiteLLM AI gateway's MCP server test endpoint, which launches a caller-supplied stdio MCP server command on the proxy host"
+technique_summary: 'LiteLLM exposes POST /mcp-rest/test/connection and POST /mcp-rest/test/tools/list to test an MCP server before it is added to the gateway. Both accept a full server config, including a stdio command, arguments and environment, and LiteLLM spawns that command as a subprocess on the proxy host (CVE-2026-42271, LiteLLM 1.74.2 through 1.83.6). The endpoints require a proxy API key, but Horizon3.ai showed that CVE-2026-48710 ("BadHost"), where Starlette 1.0.0 and older use an unvalidated Host header to build the URL that access control checks, removes that requirement, giving unauthenticated command execution as the LiteLLM process. SANS ISC honeypots began receiving these requests the weekend of Nov 14-15, 2026, for example POST /mcp-rest/test/tools/list with Authorization: Bearer nothing and the body {"server": {"transport": "stdio", "command": "id", "args": [], "env": {}}}, with Host header values localhost], [localhost, 127.0.0.1] and litellm.proxy, which Ullrich reads as variations meant to slip past filters built around the public PoC. User-Agent Python/3.14 aiohttp/3.14.5. Exploitation of the chain had been reported since July 2026.'
+initial_access: "Unauthenticated HTTP request to an internet-facing LiteLLM proxy, using a malformed Host header to bypass the API key check"
+ai_tooling_and_models:
+  - "LiteLLM proxy / AI gateway (https://github.com/BerriAI/litellm), versions 1.74.2 through 1.83.6"
+other_tooling:
+  - "Starlette 1.0.0 and older (BadHost, CVE-2026-48710)"
+  - "aiohttp-based scanner (User-Agent Python/3.14 aiohttp/3.14.5)"
+victims_and_sectors: "Organizations running internet-facing LiteLLM proxies"
+regions:
+  - unknown
+attribution_or_cluster: "Unattributed scanning observed by SANS ISC honeypots"
+scale_and_metrics: "SANS ISC honeypots started seeing the requests the weekend of Nov 14-15, 2026. The diary does not publish a hit count. Horizon3.ai rates the chain CVSS 10.0 and lists LiteLLM 1.74.2 through 1.83.6, patched in 1.83.7, when Starlette is 1.0.0 or older."
+prevention_angle: "Upgrade LiteLLM to 1.83.7 or later and Starlette to 1.0.1 or later. Block /mcp-rest/test/ at the edge and allow only expected hostnames in the Host header. Do not expose the proxy to the internet. Rotate every provider key the proxy stored if it was reachable. Hunt for subprocesses spawned by the LiteLLM process."
+related_magicsword_projects: []
+source_notes: "Request, headers and timing are from the SANS ISC diary. Affected versions, endpoints and chain are from Horizon3.ai. No attacker IPs were published. This is a different LiteLLM incident from socket-litellm-supply-chain-2026-10."
+last_reviewed: 2026-11-16
+region_notes: "The honeypot diary does not name a target country. global is not a region value in the schema, so this entry uses unknown."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls:
+    - "/mcp-rest/test/tools/list"
+    - "/mcp-rest/test/connection"
+atlas_techniques:
+  - id: AML.T0049
+    rationale: "Exploit of a public-facing AI gateway endpoint with an authentication bypass"
+    source_urls:
+      - https://horizon3.ai/attack-research/vulnerabilities/cve-2026-42271-chained-with-cve-2026-48710/
+  - id: AML.T0050
+    rationale: "The stdio command in the MCP server config runs as a subprocess on the proxy host"
+    source_urls:
+      - https://isc.sans.edu/diary/33522
+  - id: AML.T0055
+    rationale: "The LiteLLM process holds model provider API keys and secrets"
+    source_urls:
+      - https://horizon3.ai/attack-research/vulnerabilities/cve-2026-42271-chained-with-cve-2026-48710/
+attack_flow:
+  nodes:
+    - id: badhost
+      title: Bypass the API key check
+      description: "A malformed Host header (localhost], [localhost, 127.0.0.1]) confuses Starlette's URL-based access control."
+      kind: access
+      source_urls:
+        - https://isc.sans.edu/diary/33522
+    - id: mcp-test
+      title: Submit a stdio MCP server config
+      description: "POST /mcp-rest/test/tools/list with transport stdio and an attacker-chosen command."
+      kind: ai
+      source_urls:
+        - https://isc.sans.edu/diary/33522
+    - id: exec
+      title: Command runs on the proxy host
+      description: "LiteLLM spawns the command as the proxy process, which can read stored provider keys."
+      kind: impact
+      source_urls:
+        - https://horizon3.ai/attack-research/vulnerabilities/cve-2026-42271-chained-with-cve-2026-48710/
+  edges:
+    - source: badhost
+      target: mcp-test
+    - source: mcp-test
+      target: exec
+category: attacks-on-ai
+attribution:
+  actor_name: "Unnamed"
+  country: Unknown
+  motivation: unknown
+  attributed_by: "SANS ISC (observation only)"
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: LiteLLM MCP test endpoint abuse
+    format: guidance
+    notes: "Alert on requests to /mcp-rest/test/ with Host headers containing [, ], /, ? or #, and on any child process of the LiteLLM proxy."
+timeline:
+  first_seen: "2026-11-14"
+  last_updated: "2026-11-16"
+  updates:
+    - date: "2026-11-16"
+      source: SANS ISC
+      summary: "Honeypots record scans against /mcp-rest/test/tools/list using Host header variations of the public BadHost PoC."
