@@ -69,9 +69,25 @@ test("index, bundles, and JSON cover every attack exactly once", () => {
   assert.equal(catalog.generated_at, generatedAt(seeds));
   assert.equal(Object.keys(catalog).join(","), "generated_at,count,attacks");
   assert.ok(!JSON.stringify(catalog).includes("typefully"));
+  assert.ok(guide.startsWith("# OpenAttacks\n\n> "));
   assert.ok(guide.includes(`${seeds.length} reported`));
   assert.ok(full.includes(`${seeds.length} entries`));
-  assert.ok(guide.includes("/api/catalog.json"));
+  assert.ok(guide.indexOf("## Catalog\n") < guide.indexOf("## Attacks\n"));
+  assert.ok(guide.includes("## Optional\n"));
+  for (const path of [
+    "/api/attacks.json",
+    "/patterns/",
+    "/actors/",
+    "/skills/openattacks/SKILL.md",
+    "/downloads/openattacks-skill.zip",
+    "/rss.xml",
+    "/sitemap-index.xml",
+    "/llms-full.txt",
+    "/api/catalog.json",
+  ]) {
+    assert.ok(guide.includes(path), path);
+  }
+  assert.ok(full.includes("/skills/openattacks/SKILL.md"));
   assert.ok(guide.includes("/api/relevance.json"));
   assert.ok(guide.includes("/data/attacks.json"));
 

@@ -39,6 +39,20 @@ const imageAlt =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Google Tag Manager -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+    </script>
+    <!-- End Google Tag Manager -->
     <meta name="theme-color" content="#08080a" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
@@ -60,11 +74,18 @@ const imageAlt =
     <meta name="twitter:image" content={imageURL} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="sitemap" href={href("sitemap-index.xml")} />
+    <link rel="describedby" href={href("llms.txt")} />
     <link
       rel="alternate"
       type="text/plain"
       title="LLM discovery guide"
       href={href("llms.txt")}
+    />
+    <link
+      rel="alternate"
+      type="text/markdown"
+      title="OpenAttacks agent skill"
+      href={href("skills/openattacks/SKILL.md")}
     />
     <link
       rel="alternate"
