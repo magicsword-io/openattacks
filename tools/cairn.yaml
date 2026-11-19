@@ -1,7 +1,7 @@
 id: cairn
 name: Cairn
 type: agentic-offensive-framework
-github_url: null
+github_url: https://github.com/oritera/Cairn
 project_url: null
 description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites.
 sources:
@@ -11,6 +11,7 @@ sources:
 linked_attacks:
   - cairn-norforge-2026-10
   - cert-in-crafty-falcon-bfsi-2026-11
+  - microsoft-agent-framework-pypi-pth-stealer-2026-11
   - unit42-cairn-cl-sta-1238-2026-11
 linked_actors:
   - norforge-aia0001

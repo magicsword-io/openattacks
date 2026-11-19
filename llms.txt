@@ -16,7 +16,7 @@ Generated from attacks/*.yaml by scripts/build-llm-exports.mjs. Do not edit this
 
 ## Attacks
 - [Kaspersky: AuditTeam OpsAgent masks ransomware as a forced audit](https://openattacks.ai/llms/attacks/kaspersky-auditteam-opsagent-2026-11.md): kaspersky-auditteam-opsagent-2026-11; adversary-use-of-ai; AuditTeam; 2026-11-18
-- [Microsoft agent-framework PyPI 1.26.1 and 1.26.2 .pth credential stealer](https://openattacks.ai/llms/attacks/microsoft-agent-framework-pypi-pth-stealer-2026-11.md): microsoft-agent-framework-pypi-pth-stealer-2026-11; attacks-on-ai; Unattributed; 2026-11-17
+- [Microsoft agent-framework PyPI 1.26.1 and 1.26.2 .pth credential stealer](https://openattacks.ai/llms/attacks/microsoft-agent-framework-pypi-pth-stealer-2026-11.md): microsoft-agent-framework-pypi-pth-stealer-2026-11; attacks-on-ai; Unnamed; 2026-11-17; frameworks: cairn
 - [Symantec - AI-assisted commands revived a stalled intrusion at a US retailer](https://openattacks.ai/llms/attacks/symantec-ai-revived-retailer-intrusion-2026-11.md): symantec-ai-revived-retailer-intrusion-2026-11; adversary-use-of-ai; Unnamed; 2026-11-16
 - [Dynatrace mcpvenom measures MCP tool-description poisoning across 12 frameworks](https://openattacks.ai/llms/attacks/dynatrace-mcpvenom-tool-poisoning-2026-11.md): dynatrace-mcpvenom-tool-poisoning-2026-11; attacks-on-ai; unknown; 2026-11-15
 - [Elastic CyberStrikeAI server reads AWS user data, secrets, and sends an SSM command](https://openattacks.ai/llms/attacks/elastic-cyberstrikeai-aws-cloudtrail-2026-11.md): elastic-cyberstrikeai-aws-cloudtrail-2026-11; adversary-use-of-ai; Unnamed CyberStrikeAI operator; 2026-11-13; frameworks: cyberstrikeai
@@ -60,7 +60,7 @@ Generated from attacks/*.yaml by scripts/build-llm-exports.mjs. Do not edit this
 - [Cyera Research - Tampered copy of Anthropic's PDF skill carrying Linux Go backdoor system_linux](https://openattacks.ai/llms/attacks/cyera-anthropic-pdf-skill-backdoor-2026-11.md): cyera-anthropic-pdf-skill-backdoor-2026-11; attacks-on-ai; Unknown; 2026-11-03
 - [GitBook says a targeted attack 'using AI agents' stole infrastructure credentials; customer API, Git Sync and integration tokens possibly exposed](https://openattacks.ai/llms/attacks/gitbook-targeted-attack-using-ai-agents-2026-11.md): gitbook-targeted-attack-using-ai-agents-2026-11; adversary-use-of-ai; unknown; 2026-11-03
 - [GTIG LLMJacking - UNC6993, Jet Night, D1337-KAIROS monetize cloud models](https://openattacks.ai/llms/attacks/gtig-llmjacking-unc6993-2026-11.md): gtig-llmjacking-unc6993-2026-11; adversary-use-of-ai; UNC6993, Jet Night operators, D1337-KAIROS; 2026-11-02
-- [Malicious MCP servers on npm (ifasn, gadgethumans)](https://openattacks.ai/llms/attacks/malicious-mcp-servers-npm-2026-11.md): malicious-mcp-servers-npm-2026-11; attacks-on-ai; Unknown npm and PyPI publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel, karma365, go-gost); 2026-11-02
+- [Malicious MCP servers on npm (ifasn, gadgethumans)](https://openattacks.ai/llms/attacks/malicious-mcp-servers-npm-2026-11.md): malicious-mcp-servers-npm-2026-11; attacks-on-ai; Unknown npm and PyPI publishers (ifasn, fdcasj_dfew, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel, karma365, go-gost, tnhorg); 2026-11-02
 - [Claude Code Auto Mode turned into Yes Mode by one AGENTS.md line](https://openattacks.ai/llms/attacks/matan-claude-code-yes-mode-agents-md-2026-11.md): matan-claude-code-yes-mode-agents-md-2026-11; attacks-on-ai; unknown; 2026-11-01
 - [Trojanized anthropic.claude-code Cursor extension](https://openattacks.ai/llms/attacks/anthropic-claude-code-trojan-2026-10.md): anthropic-claude-code-trojan-2026-10; attacks-on-ai; unknown; 2026-10-30
 - [Chainalysis says an external actor using 'offensive agentic techniques' accessed internal tools and customer user data](https://openattacks.ai/llms/attacks/chainalysis-external-actor-using-offensive-agentic-2026-10.md): chainalysis-external-actor-using-offensive-agentic-2026-10; adversary-use-of-ai; unknown; 2026-10-30
@@ -305,7 +305,7 @@ Generated from attacks/*.yaml by scripts/build-llm-exports.mjs. Do not edit this
 ## Framework bundles
 - [AntiFox](https://openattacks.ai/llms/by-framework/antifox.md): antifox; 1 attacks
 - [ARTEX](https://openattacks.ai/llms/by-framework/artex.md): artex; 17 attacks
-- [Cairn](https://openattacks.ai/llms/by-framework/cairn.md): cairn; 3 attacks
+- [Cairn](https://openattacks.ai/llms/by-framework/cairn.md): cairn; 4 attacks
 - [CyberStrikeAI](https://openattacks.ai/llms/by-framework/cyberstrikeai.md): cyberstrikeai; 5 attacks
 - [HexStrike](https://openattacks.ai/llms/by-framework/hexstrike.md): hexstrike; 1 attacks
 - [PentAGI](https://openattacks.ai/llms/by-framework/pentagi.md): pentagi; 3 attacks

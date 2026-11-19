@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-04",
+  "reviewed_on": "2026-11-19",
   "projects": [
     {
       "name": "Amass",
@@ -58,6 +58,16 @@
       "source_urls": [
         "https://github.com/oritera/Cairn",
         "https://norforge.com/blog/inside_cairn"
+      ]
+    },
+    {
+      "name": "Pi coding agent",
+      "url": "https://github.com/earendil-works/pi",
+      "aliases": ["Pi coding agent"],
+      "note": "Open-source coding-agent harness. Wiz read the operator config label pi_glm53 as this harness on a GLM-family model.",
+      "source_urls": [
+        "https://github.com/earendil-works/pi",
+        "https://www.wiz.io/blog/malicious-version-of-microsofts-agent-framework-published-to-pypi"
       ]
     },
     {
