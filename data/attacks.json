@@ -1,7 +1,283 @@
 {
   "generated_at": "2026-11-17T00:00:00.000Z",
-  "count": 275,
+  "count": 278,
   "attacks": [
+    {
+      "id": "symantec-ai-revived-retailer-intrusion-2026-11",
+      "name": "Symantec - AI-assisted commands revived a stalled intrusion at a US retailer",
+      "date_reported": "2026-11-16",
+      "date_activity_start": "2026-09-18",
+      "date_activity_end": "2026-09-29",
+      "researcher": "Symantec Threat Hunter Team",
+      "org": "Broadcom",
+      "sources": [
+        {
+          "url": "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer",
+          "title": "How AI revived a stalled attack on a U.S. retailer",
+          "publisher": "Symantec Threat Hunter Team"
+        },
+        {
+          "url": "https://www.security.com/blog-post/ai-assisted-attack-us-retailer",
+          "title": "How AI revived a stalled attack on a U.S. retailer",
+          "publisher": "SECURITY.COM"
+        },
+        {
+          "url": "https://www.broadcom.com/support/security-center/protection-bulletin/how-ai-revived-a-stalled-attack-on-a-u-s-retailer",
+          "title": "How AI revived a stalled attack on a U.S. retailer",
+          "publisher": "Broadcom"
+        },
+        {
+          "url": "https://github.com/zcgonvh/EfsPotato",
+          "title": "EfsPotato",
+          "publisher": "zcgonvh"
+        },
+        {
+          "url": "https://github.com/jpillora/chisel",
+          "title": "Chisel",
+          "publisher": "jpillora"
+        },
+        {
+          "url": "https://github.com/P001water/yuze",
+          "title": "Yuze",
+          "publisher": "P001water"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": null,
+      "ai_role_detail": "Symantec rates AI assistance high confidence and an operator-in-the-loop, rather than an autonomous agent, at moderate confidence. The model was not identified. Gaps between scripts never fell below seven seconds.",
+      "technique_summary": "Symantec Threat Hunter Team (Broadcom; SECURITY.COM article created Nov 16, 2026) describes a September 2026 intrusion at a U.S. retailer. The initial access vector is unknown. The earliest activity, Sep 18, was on three Microsoft SQL Server hosts, with cmd.exe running under sqlservr.exe, which Symantec treats as likely xp_cmdshell. Some of those commands were already long PowerShell scripts with quoted section labels. The scripts searched point-of-sale synchronization directories for stored passwords and connection strings, tested egress to 155.254.22[.]215:9458, and on one host appended base64 text under ProgramData, decoded it with Certutil, and compiled it with csc.exe. The source was EfsPotato (https://github.com/zcgonvh/EfsPotato). The payload saved the SAM, SYSTEM, and SECURITY hives. On Sep 21 an internet-facing IIS server appeared, with commands under w3wp.exe. On Sep 22 the commands looked hand-typed: 110 actions, three typos including systemifo and pwoershell, average length about 45 characters. Loaders were killed by security software, including a Bitdefender bdreinit.exe sideload of log.dll and log.txt from 204.194.49[.]129:8080, a pairing also seen with ShadowPad loaders and not unique to one actor. The operators reran that loader about five times in 20 minutes. They also staged an AES PowerShell reverse shell, server.ps1, toward 166.0.25[.]106:443 with a fallback host at 154.81.37[.]136, and wrote ASP webshells filemanager.asp and qwdajhsd.asp. On Sep 23 they staged a G DATA ask.exe/ask.dll sideload and BreakChainC.exe, then switched to about 50 long, error-free PowerShell scripts over about two hours. Banners included ===FILES MENTIONING CONN STRINGS===. Comments stated a hypothesis, cited earlier results, and revised a conclusion, which Symantec reads as model reasoning pasted into a webshell. The scripts collected connection strings, the FileZilla Server user database, WinSCP, PuTTY, and RDP settings, IIS configuration, and Windows logon registry values. They found SolarWinds Orion, read its bundled RabbitMQ .erlang.cookie, and ran Orion's erl.exe so rpc:call reached os:cmd on a second server. The command was passed as decimal character codes. That was about 10 minutes after the first Orion query. Later the same day BreakChainCs.exe relaunched the sideloaded binaries through WMI and shell modes so they were no longer children of w3wp.exe. From Sep 24 to Sep 29 the activity reached more SQL servers, a host that looks like a domain controller, Chisel, a password sprayer, and searches for NTDS.dit, Group Policy Preferences passwords, and LAPS. No data theft or encryption was observed. Symantec's financial-motive reading rests on the point-of-sale password search, contact with 155.254.22[.]215 (named in a separate Sep 22 Gambit Security report as an AI console tied to card-skimming activity), and later domain-credential theft that could be ransomware preparation. Loader files and the staging server overlap an August intrusion elsewhere and a July intrusion at a securities firm; neither of those showed AI assistance. Yuze (https://github.com/P001water/yuze) was used in the August case back to 204.194.49[.]129. Trend Micro has documented Yuze use by Warlock operators (Symantec Longlegs, also known as Storm-2603). Symantec does not attribute this intrusion to them. ATT&CK techniques in the report include T1574.002, T1505.003, T1552.001, T1021, and T1003.002.",
+      "initial_access": "Unknown. The first observed commands were cmd.exe under sqlservr.exe on SQL Server, consistent with xp_cmdshell, and later cmd.exe under w3wp.exe on IIS.",
+      "ai_tooling_and_models": [
+        "Unidentified model. Symantec assesses AI-written PowerShell with an operator relaying output, not an autonomous agent."
+      ],
+      "other_tooling": [
+        "EfsPotato (https://github.com/zcgonvh/EfsPotato), compiled on the server with csc.exe",
+        "Chisel (https://github.com/jpillora/chisel)",
+        "Yuze (https://github.com/P001water/yuze), seen in the overlapping August intrusion",
+        "Bitdefender bdreinit.exe sideloading log.dll",
+        "G DATA ask.exe sideloading ask.dll",
+        "BreakChainC.exe and BreakChainCs.exe",
+        "ASP webshells filemanager.asp and qwdajhsd.asp",
+        "PowerShell"
+      ],
+      "victims_and_sectors": "A U.S. retail organization. Internet-facing IIS and at least six further servers, most of them Microsoft SQL Server. Point-of-sale synchronization scripts were searched for passwords.",
+      "regions": [
+        "United States"
+      ],
+      "region_notes": "The primary victim is a U.S. retailer. The August and July overlaps are different organizations and are not given countries in the retailer write-up.",
+      "attribution_or_cluster": "Unnamed. Symantec does not tie the activity to Warlock, Longlegs, or Storm-2603. ShadowPad-associated sideloading and Yuze are shared with other actors and are not treated as an attribution.",
+      "scale_and_metrics": "Sep 18 through at least Sep 29, 2026. On Sep 23, about 50 scripts in about two hours, median length over 500 characters, against about 45 characters for the earlier hand-typed commands. About 10 minutes from the first Orion query to command execution on a second server. No theft or encryption observed in this intrusion.",
+      "prevention_angle": "Alert when w3wp.exe or sqlservr.exe spawns cmd.exe or PowerShell, and when xp_cmdshell is used. Treat a same-directory unsigned DLL next to bdreinit.exe or ask.exe as sideloading. Alert on csc.exe compiling from ProgramData or a user-writable path, on Chisel client arguments, and on reg save of SAM, SYSTEM, or SECURITY. Hunt Orion's bundled erl.exe making rpc:call with a cookie, and ASP files dropped in the web application's image directory. A sudden change from short mistyped commands to long labelled scripts is an investigation lead, not a benign automation signature. Restrict xp_cmdshell, the Erlang distribution port, and the RabbitMQ cookie file.",
+      "related_magicsword_projects": [],
+      "source_notes": "Dates, typos, script counts, the Orion cookie path, the decimal-encoded rpc:call, and the published hashes are from the Symantec article at https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer (canonical; the blog-post URL serves the same title). The article's createdDate is 2026-11-16. Symantec lists many additional file hashes; the set below is the named tooling from that table, not every unnamed suspicious file. Yuze's Warlock reporting is Symantec's summary of Trend Micro, and Symantec says it is not an attribution. Link the August staging overlap only as Symantec describes it.",
+      "last_reviewed": "2026-11-17",
+      "iocs": {
+        "domains": [],
+        "ips": [
+          "204.194.49[.]129",
+          "166.0.25[.]106",
+          "154.81.37[.]136",
+          "155.254.22[.]215",
+          "108.165.20[.]205"
+        ],
+        "hashes": [
+          "54fb493822bcd832f7b2256015f13e3dfde815e1931e7fd39a90ea8ad3fdbd0a",
+          "9c866c403e6bd5778fa3788cac9aac39aab1bf2d18a22c9999a4c27e30c0abf3",
+          "e95a265bf220a4330f77f842b3eeed8b1ed8c61f51d7e3f2fd33bac14b6b26af",
+          "7265d69dd8d8939dc888ce5f05190ce200ee2660f928f3b84f60e6a7b3383205",
+          "3d79628bf7804dbf17e7b396ecd62ebf5d66518940c6d23daccf59a20953438a",
+          "f8b67854d119da08c704b78f7c9fae0501417f5e63ffece86d2e811f1c7dea68",
+          "5db5e7f655c4ee94411df8110d1b6d02bb15574ac199fa7a553ce6c3cb25bf03"
+        ],
+        "urls": [
+          "hxxp://166[.]0[.]25[.]106/server.ps1",
+          "hxxp://154[.]81[.]37[.]136/server.ps1",
+          "hxxp://204[.]194[.]49[.]129:8080/log.dll",
+          "hxxp://204[.]194[.]49[.]129:8080/bdreinit.exe",
+          "hxxp://108[.]165[.]20[.]205:8080/sqlrun2.ps1"
+        ]
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016",
+          "rationale": "Symantec says the operators obtained working PowerShell, including the Orion cookie handoff, from an AI tool after hand-typed commands failed.",
+          "source_urls": [
+            "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+          ]
+        },
+        {
+          "id": "AML.T0050",
+          "rationale": "The AI-assisted phase was long PowerShell submitted through the webshell and through SQL Server command execution.",
+          "source_urls": [
+            "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The scripts collected connection strings, client settings, the Erlang cookie, and registry hives that hold credential material.",
+          "source_urls": [
+            "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "sql-and-iis",
+            "title": "SQL Server and IIS command shells",
+            "description": "From Sep 18, cmd.exe runs under sqlservr.exe. From Sep 21, commands run under w3wp.exe. Symantec does not identify the initial entry vector.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+            ]
+          },
+          {
+            "id": "stalled",
+            "title": "Hand-typed commands stall",
+            "description": "Sep 22 commands include typos such as systemifo and pwoershell. Security software kills staged loaders, including the bdreinit.exe and log.dll pair, and the operators retry without changing approach.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+            ]
+          },
+          {
+            "id": "ai-scripts",
+            "title": "Long labelled scripts",
+            "description": "On Sep 23 about 50 error-free PowerShell scripts run in about two hours, with section banners and comments Symantec reads as model reasoning. Pauses fit an operator pasting the next script.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+            ]
+          },
+          {
+            "id": "orion-move",
+            "title": "Orion cookie reaches a second server",
+            "description": "About 10 minutes after the first Orion query, the operators read the RabbitMQ cookie and use the bundled erl.exe rpc:call path to run a command on a second server. Later activity dumps credential hives. No encryption was observed.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.security.com/threat-intelligence/ai-assisted-attack-us-retailer"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "sql-and-iis",
+            "target": "stalled"
+          },
+          {
+            "source": "stalled",
+            "target": "ai-scripts"
+          },
+          {
+            "source": "ai-scripts",
+            "target": "orion-move"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed",
+        "country": "Unknown",
+        "motivation": "financially-motivated",
+        "attributed_by": "Symantec Threat Hunter Team (Broadcom)",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "Suspicious Process By Web Server Process",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_webshell_susp_process_spawned_from_webserver.yml",
+          "notes": "Selected from a security-detections-mcp search for w3wp. Windows process creation. A web-server parent, including w3wp.exe, spawning a suspicious child. Matches commands Symantec saw under the IIS worker. It does not match sqlservr.exe as the parent."
+        },
+        {
+          "name": "Suspicious Child Process Of SQL Server",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mssql_susp_child_process.yml",
+          "notes": "Selected from a security-detections-mcp search for sqlservr. Windows process creation. sqlservr.exe spawning cmd.exe, PowerShell, or another listed child. Matches the Sep 18 pattern Symantec reads as xp_cmdshell."
+        },
+        {
+          "name": "MSSQL XPCmdshell Suspicious Execution",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/application/mssqlserver/win_mssql_xp_cmdshell_audit_log.yml",
+          "notes": "Selected from a security-detections-mcp search for xp_cmdshell. Windows application log. MSSQL audit event 33205 whose data contains object_name:xp_cmdshell and statement:EXEC. Requires the xp_cmdshell audit policy. The process-creation rule above still applies when that audit policy is off."
+        },
+        {
+          "name": "Windows Unsigned DLL Side-Loading In Same Process Path",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_unsigned_dll_side_loading_in_same_process_path.yml",
+          "notes": "Selected from a security-detections-mcp search for DLL side-loading. Sysmon image load. An unsigned DLL loaded from the same directory as the process, outside Windows and Program Files. Fits bdreinit.exe with log.dll and ask.exe with ask.dll staged in the same folder. A signed decoy executable does not have to be on a named-binary list."
+        },
+        {
+          "name": "Privilege Escalation via Rogue Named Pipe Impersonation",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/windows/privilege_escalation_via_rogue_named_pipe.toml",
+          "notes": "Selected from a security-detections-mcp search for Potato. The rule cites https://github.com/zcgonvh/EfsPotato and alerts on Sysmon pipe-creation event 17 when the pipe path contains a nested Pipe segment. It does not match the string EfsPotato. The Splunk Potato-family rule's file-name list does not include EfsPotato, so that rule is not cited. A renamed compile can still miss a name-based hunt."
+        },
+        {
+          "name": "Dynamic .NET Compilation Via Csc.EXE",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_csc_susp_dynamic_compilation.yml",
+          "notes": "Selected from a security-detections-mcp search for csc.exe. Windows process creation. csc.exe whose command line points at ProgramData, Temp, or another listed user-writable location. Symantec compiled under ProgramData. The rule filters a w3wp.exe parent, so a compile whose parent is only the IIS worker does not match."
+        },
+        {
+          "name": "PUA - Chisel Tunneling Tool Execution",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_pua_chisel.yml",
+          "notes": "Selected from a security-detections-mcp search for chisel. Windows process creation. Image ending in chisel.exe, or command lines with client/server and reverse, socks, or r: arguments. Symantec's Chisel detection on Sep 25 was on a Windows host. The Linux Chisel rule is not cited."
+        },
+        {
+          "name": "Windows Registry Entries Exported Via Reg",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_registry_entries_exported_via_reg.yml",
+          "notes": "Selected from a security-detections-mcp search under T1003.002. Endpoint process data. reg.exe with save or export. Symantec says the EfsPotato payload saved the SAM, SYSTEM, and SECURITY hives. This matches that copy when it is reg.exe. A custom writer that does not call reg.exe will not match."
+        },
+        {
+          "name": "Erlang rpc:call and the Orion cookie",
+          "format": "guidance",
+          "notes": "security-detections-mcp search for erl.exe returned no rule. Nothing in the index alerts on Orion's bundled erl.exe, rpc:call, or a read of .erlang.cookie. Hunt process creation for erl.exe under the Orion Erlang path with -setcookie and rpc:call. ASP names filemanager.asp and qwdajhsd.asp, and BreakChainC.exe, are also absent from the index; the w3wp child-process rule covers shells spawned from the web worker, not the ASP file drop by itself."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-09-18",
+        "last_updated": "2026-11-16",
+        "updates": [
+          {
+            "date": "2026-09-18",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "First activity on three SQL Server hosts. Labelled PowerShell searches point-of-sale sync folders, tests egress to 155.254.22[.]215:9458, and compiles EfsPotato on one host."
+          },
+          {
+            "date": "2026-09-21",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "Commands start under w3wp.exe on the internet-facing web server, then pause for about 12 hours."
+          },
+          {
+            "date": "2026-09-22",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "Hand-typed commands with typos. bdreinit.exe/log.dll from 204.194.49[.]129:8080 is killed on each retry. server.ps1 and two ASP webshells are staged."
+          },
+          {
+            "date": "2026-09-23",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "About 50 long scripts in about two hours. Orion's Erlang cookie is used to run a command on a second server roughly 10 minutes after the first Orion query. BreakChainCs.exe follows."
+          },
+          {
+            "date": "2026-09-24",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "Further SQL hosts save registry hives. Activity continues through at least Sep 29, including Chisel, NTDS.dit searches, and a password sprayer."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "Symantec Threat Hunter Team",
+            "summary": "SECURITY.COM publishes the retailer write-up. AI assistance is high confidence; the operator-in-the-loop reading is moderate; the model is unidentified."
+          }
+        ]
+      }
+    },
     {
       "id": "dynatrace-mcpvenom-tool-poisoning-2026-11",
       "name": "Dynatrace mcpvenom measures MCP tool-description poisoning across 12 frameworks",
@@ -1800,6 +2076,256 @@
       "linked_tools": [
         "cairn"
       ]
+    },
+    {
+      "id": "barracuda-artex-cloud-key-intrusion-2026-11",
+      "name": "Barracuda - an unretired vendor cloud key used in an ARTEX-style intrusion",
+      "date_reported": "2026-11-11",
+      "date_activity_start": "2026-11-01",
+      "date_activity_end": "2026-11-02",
+      "researcher": "Arve Kjoelen",
+      "org": "Barracuda",
+      "sources": [
+        {
+          "url": "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion",
+          "title": "Forty-four hours: Anatomy of a machine-speed intrusion",
+          "publisher": "Barracuda"
+        },
+        {
+          "url": "https://trust.barracuda.com/security/barracuda-xdr-integration-credentials",
+          "title": "Barracuda XDR integration credentials",
+          "publisher": "Barracuda Trust Center"
+        },
+        {
+          "url": "https://www.bleepingcomputer.com/news/security/barracuda-links-cloud-breach-to-artex-ai-powered-cyberattack/",
+          "title": "Barracuda links cloud breach to ARTEX AI-powered cyberattack",
+          "publisher": "BleepingComputer"
+        },
+        {
+          "url": "https://www.securityweek.com/barracuda-hacked-amid-surge-in-artex-powered-cyberattacks/",
+          "title": "Barracuda hacked amid surge in ARTEX-powered cyberattacks",
+          "publisher": "SecurityWeek"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.pdf",
+          "title": "FBI FLASH-20261113-001 (CSA 261113): Threat overview of ARTEX. Does not name Barracuda.",
+          "publisher": "FBI"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "Barracuda matches resource names, probe names, order of operations, and built-in credential and wallet hunting to ARTEX. The tool was not recovered, and the match does not identify the operator.",
+      "technique_summary": "Barracuda (Arve Kjoelen, CISO; blog Nov 11, 2026, after a Trust Center advisory on Nov 10) describes a cloud intrusion that used a valid access key the company had given a third-party AI vendor and never retired. In October the vendor's development environment was compromised. The Trust Center says the key was stored in a configuration file in that vendor's GitHub repository; other Barracuda credentials in the same file had already expired or were later revoked. First use was Nov 1, 2026 at 04:33 UTC. Within minutes the caller mapped what the key could reach and read secret stores, including AWS access keys and Azure service principal secrets. It decrypted infrastructure-as-code state files and pulled credentials from instance metadata services and Kubernetes service accounts. Over the next day each secret opened the next system: cloud accounts, then a data analytics system, then a source-code access token, then Kubernetes clusters. On Nov 2, in under four hours, short-lived branches were pushed to a handful of repositories so a build workflow printed the build system's secrets into the job log. The secrets were encoded so the log's usual masking would not hide them. Where a shell was obtained, commands searched for environment variables named WALLET, MNEMONIC, SEED, and PRIV, Ethereum keystore files, extended private keys, seed-phrase files, and Kubernetes secrets with wallet-related names. Barracuda says no wallet material was on those systems. For persistence, a container mounted one node's filesystem read-only and harvested that node's credentials. An attempt to create a new administrative cloud identity was blocked. About 10 cloud accounts were touched in roughly 44 hours. Last activity was Nov 2 at 23:31 UTC. An engineer noticed unusual activity on Nov 4, the same day the vendor reported its own incident, and the container was removed that evening Pacific time. Resources were labeled with the letter i followed by digits and no human-readable words. Barracuda says those labels, the probe names, the order of operations, and the built-in credential and wallet routines match ARTEX (https://github.com/RuoJi6/ARTEX). Because many groups use ARTEX, the match describes the method, not a named actor. Barracuda found no direct evidence that Barracuda Managed XDR Cloud or Monitored Endpoint integration credentials were viewed, but logging was not detailed enough to rule it out, and those customers were asked to rotate them. ATT&CK coverage in the write-up is T1552.005 (cloud instance metadata), T1078.004 (valid cloud accounts), T1610 (deploy container), and T1611 (escape to host via the mounted node filesystem). FBI FLASH-20261113-001, CSA 261113 (https://www.ic3.gov/CSA/2026/261113.pdf), is a general ARTEX overview and does not name Barracuda.",
+      "initial_access": "Valid cloud access key issued to a third-party AI vendor, left unretired, and later found in a configuration file in the vendor's GitHub repository after that vendor's development environment was compromised in October",
+      "ai_tooling_and_models": [
+        "ARTEX (https://github.com/RuoJi6/ARTEX); the tool was not recovered"
+      ],
+      "frameworks": [
+        "artex"
+      ],
+      "other_tooling": [
+        "Cloud secret stores, infrastructure-as-code state files, instance metadata, and Kubernetes service accounts",
+        "Short-lived Git branches that triggered a build workflow and printed secrets into job logs"
+      ],
+      "victims_and_sectors": "Barracuda cloud environment, including a data analytics system, source-code access, Kubernetes clusters, and the system that stores Barracuda XDR customer integration credentials. Barracuda says it found no direct evidence those customer credentials were viewed.",
+      "regions": [
+        "United States"
+      ],
+      "region_notes": "Barracuda is the named victim. The blog does not state which cloud region the accounts ran in, and it does not name the vendor's country.",
+      "attribution_or_cluster": "Unnamed. Barracuda ties the labels, probe names, order of operations, and credential and wallet hunting to ARTEX, and says that match does not identify the operator. The wallet searches are the evidence for a financial motive. AI-service credentials were also in reach; Barracuda does not claim they were the goal.",
+      "scale_and_metrics": "About 10 cloud accounts in roughly 44 hours, from Nov 1 04:33 UTC to Nov 2 23:31 UTC. Detected Nov 4, after the activity had stopped.",
+      "prevention_angle": "Retire third-party cloud keys when the work ends, and prefer short-lived, narrowly scoped credentials. Do not leave one secret able to read the next store, the source-code token, and the cluster credentials. Alert on bulk secret reads, instance-metadata credential requests, Kubernetes secret lists, a new pod with a hostPath mount, and a new cloud administrator identity. Treat a short-lived branch whose build log prints secrets, especially encoded values that slip past log masking, as a credential-exposure event. Practice rotating every secret in reach, including customer integration keys, without waiting for proof they were read.",
+      "related_magicsword_projects": [],
+      "source_notes": "Times, the GitHub configuration-file detail, the wallet variable names, the read-only host mount, the blocked administrator identity, and the account count are from the Barracuda blog and Trust Center advisory. The community ARTEX fork is https://github.com/RuoJi6/ARTEX. FBI FLASH-20261113-001 does not name Barracuda; it is cited only so that gap is explicit. Link chainstack-intruder-reached-production-user-password-2026-11, datadog-artex-aws-cognito-2026-11, microsoft-artex-github-secrets-keyvault-2026-11, and eye-security-artex-gitops-2026-11.",
+      "last_reviewed": "2026-11-17",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0055",
+          "rationale": "The initial key was left in a vendor repository, and the intrusion read secret stores, infrastructure-as-code state, instance metadata, and Kubernetes service accounts.",
+          "source_urls": [
+            "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion",
+            "https://trust.barracuda.com/security/barracuda-xdr-integration-credentials"
+          ]
+        },
+        {
+          "id": "AML.T0012",
+          "rationale": "The first calls used a still-valid cloud access key issued to the vendor.",
+          "source_urls": [
+            "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+          ]
+        },
+        {
+          "id": "AML.T0053",
+          "rationale": "Barracuda attributes the probe order and the built-in credential and wallet routines to ARTEX's planner and worker agents. The tool was not recovered.",
+          "source_urls": [
+            "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+          ]
+        },
+        {
+          "id": "AML.T0025",
+          "rationale": "Secrets were carried out by follow-on use of stolen keys and by a build log that printed encoded secret values.",
+          "source_urls": [
+            "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "vendor-key",
+            "title": "Unretired vendor key",
+            "description": "A cloud access key given to an AI vendor was never retired. After the vendor's October compromise, the key was in a configuration file in the vendor's GitHub repository.",
+            "kind": "access",
+            "source_urls": [
+              "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion",
+              "https://trust.barracuda.com/security/barracuda-xdr-integration-credentials"
+            ]
+          },
+          {
+            "id": "secret-chain",
+            "title": "Secrets open the next system",
+            "description": "From Nov 1 04:33 UTC the key reads secret stores, infrastructure-as-code state, instance metadata, and Kubernetes service accounts, then reaches analytics, a source-code token, and clusters.",
+            "kind": "execution",
+            "source_urls": [
+              "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+            ]
+          },
+          {
+            "id": "artex-match",
+            "title": "ARTEX fingerprints, tool not recovered",
+            "description": "Resources named with i plus digits, probe names, the order of operations, and wallet hunting match ARTEX. Barracuda did not recover the tool and does not name the operator.",
+            "kind": "ai",
+            "source_urls": [
+              "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+            ]
+          },
+          {
+            "id": "ci-and-mount",
+            "title": "CI logs and a host mount",
+            "description": "On Nov 2, short-lived branches make a build workflow print encoded secrets into job logs. A read-only host filesystem mount harvests node credentials. A new cloud administrator identity is blocked.",
+            "kind": "impact",
+            "source_urls": [
+              "https://blog.barracuda.com/2026/11/11/anatomy-of-a-machine-speed-intrusion"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "vendor-key",
+            "target": "secret-chain"
+          },
+          {
+            "source": "secret-chain",
+            "target": "artex-match"
+          },
+          {
+            "source": "secret-chain",
+            "target": "ci-and-mount"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed",
+        "country": "Unknown",
+        "motivation": "financially-motivated",
+        "attributed_by": "Barracuda (Arve Kjoelen, CISO)",
+        "confidence": "low"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "Kubernetes Pod Created with a Sensitive hostPath Volume",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/privilege_escalation_pod_created_with_sensitive_hostpath_volume.toml",
+          "notes": "Selected from a security-detections-mcp search for hostPath. Kubernetes audit. A new pod whose volume mounts a sensitive path from the node. Matches the container Barracuda described mounting the node filesystem, including a read-only mount."
+        },
+        {
+          "name": "Container With A hostPath Mount Created",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_hostpath_mount.yml",
+          "notes": "Selected from a security-detections-mcp search for hostPath. Kubernetes audit create of a pod with any hostPath volume. Low severity because DaemonSets also use hostPath."
+        },
+        {
+          "name": "Kubernetes Pod Exec Cloud Instance Metadata Access",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/credential_access_kubernetes_pod_exec_cloud_instance_metadata.toml",
+          "notes": "Selected from a security-detections-mcp search for cloud instance metadata. Kubernetes audit of pod exec commands that reference instance-metadata endpoints. Covers credential reads from the node metadata service during an exec. It does not cover a metadata call made only by the kubelet or by a process that never appears in the exec command line."
+        },
+        {
+          "name": "AWS Secrets Manager Rapid Secrets Retrieval",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/credential_access_rapid_secret_retrieval_attempts_from_secretsmanager.toml",
+          "notes": "Selected from a security-detections-mcp search for GetSecretValue. AWS CloudTrail. Twenty or more distinct GetSecretValue or BatchGetSecretValue calls by one identity in a short window. Barracuda described secret-store reads that included AWS access keys. This rule does not cover Azure service principal secret reads."
+        },
+        {
+          "name": "Kubernetes Secrets Enumeration",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_secrets_enumeration.yml",
+          "notes": "Selected from a security-detections-mcp search for Kubernetes secrets. Kubernetes audit list on the secrets resource, which is how a caller inventories service-account tokens and wallet-named secrets."
+        },
+        {
+          "name": "AWS IAM AdministratorAccess Policy Attached to User",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/privilege_escalation_iam_administratoraccess_policy_attached_to_user.toml",
+          "notes": "Selected from a security-detections-mcp search for AdministratorAccess. AWS CloudTrail AttachUserPolicy of AdministratorAccess. Barracuda says a new administrative cloud identity was blocked and does not name the API. A denied call may not match a successful attach. There is no cited rule for the blocked attempt itself."
+        },
+        {
+          "name": "CI log secret dump and i-plus-digits names",
+          "format": "guidance",
+          "notes": "security-detections-mcp search for GitHub workflow returned GitHub Workflow File Creation or Modification, an endpoint hunt for .github/workflows files on a workstation. Barracuda describes short-lived branches that triggered an existing build workflow so the job log printed encoded secrets. That push is not a local workflow-file write, so the endpoint rule is not cited. Hunt the git host for short-lived branches and for job logs that contain encoded secret material. Also hunt resource names that are the letter i followed only by digits. No cited rule covers Azure service principal secret reads."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-11-01",
+        "last_updated": "2026-11-13",
+        "updates": [
+          {
+            "date": "2026-10-01",
+            "source": "Barracuda",
+            "summary": "October, day not stated: the AI vendor's development environment is compromised. The Barracuda key is later found in a configuration file in the vendor's GitHub repository."
+          },
+          {
+            "date": "2026-11-01",
+            "source": "Barracuda",
+            "summary": "04:33 UTC first use of the key. Secret stores, infrastructure-as-code state, instance metadata, and Kubernetes service accounts are read, and the chain continues into analytics, source code, and clusters."
+          },
+          {
+            "date": "2026-11-02",
+            "source": "Barracuda",
+            "summary": "Short-lived branches make a build workflow print encoded secrets into job logs. A read-only host mount is deployed. A new cloud administrator identity is blocked. Last activity 23:31 UTC."
+          },
+          {
+            "date": "2026-11-04",
+            "source": "Barracuda",
+            "summary": "An engineer reports unusual account activity. The vendor shares its own incident the same day. The container is removed that evening Pacific time."
+          },
+          {
+            "date": "2026-11-10",
+            "source": "Barracuda Trust Center",
+            "summary": "Trust Center advisory on XDR integration credentials. Customers who may be affected are asked to revoke and recreate them."
+          },
+          {
+            "date": "2026-11-11",
+            "source": "Barracuda",
+            "summary": "Arve Kjoelen publishes the 44-hour narrative and the ARTEX fingerprint match."
+          },
+          {
+            "date": "2026-11-13",
+            "source": "FBI",
+            "summary": "FLASH-20261113-001 (CSA 261113) summarizes ARTEX activity. It does not name Barracuda."
+          }
+        ]
+      }
     },
     {
       "id": "huntress-sckit-screenconnect-llm-2026-11",
@@ -7181,44 +7707,268 @@
     },
     {
       "id": "chainstack-intruder-reached-production-user-password-2026-11",
-      "name": "Chainstack says an intruder reached production and user password hashes as part of the late-October AI-powered campaign",
+      "name": "Chainstack - ARTEX intrusion from a default-credential Grafana to production password hashes",
       "date_reported": "2026-11-03",
-      "researcher": "unknown",
+      "date_activity_start": "2026-10-26",
+      "date_activity_end": "2026-11-02",
+      "researcher": "Chainstack",
       "org": "Chainstack",
       "sources": [
         {
           "url": "https://chainstack.com/security-incident-nov-2026/",
+          "title": "Incident report: what happened and what customers need to do",
           "publisher": "Chainstack"
         },
         {
-          "url": "https://thehackernews.com/2026/11/chainstack-reports-production-systems.html"
+          "url": "https://thehackernews.com/2026/11/chainstack-reports-production-systems.html",
+          "title": "Chainstack reports production systems were reached in the late-October campaign",
+          "publisher": "The Hacker News"
+        },
+        {
+          "url": "https://github.com/jpillora/chisel",
+          "title": "Chisel",
+          "publisher": "jpillora"
         }
       ],
+      "magicsword_coverage": [],
       "borderline": false,
+      "borderline_note": null,
       "ai_role": "attacker_uses_ai_as_operator",
-      "technique_summary": "Blockchain infrastructure provider Chainstack says an attacker entered via a third-party component on 26 Oct, reached production on 29 Oct and exposed account data and password hashes, and that the incident was part of the AI-powered campaign reported in late October.",
-      "initial_access": "unknown",
+      "ai_role_secondary": "ai_agent_or_mcp_as_target",
+      "ai_role_detail": "Chainstack's Nov 10 update says the attacker used ARTEX. An unauthenticated internal MCP tool server, running as cluster-admin, was the command executor. That is a secondary case of an AI tool server being abused, not the initial entry.",
+      "technique_summary": "Chainstack's incident page (created Nov 3, 2026, technical update Nov 10, page updated Nov 11) says an attacker reached production and customer account data, including password hashes. The Nov 10 update replaces the earlier unknown entry point. A test Grafana instance, deployed in July to a development Kubernetes cluster, was exposed to the internet with the default administrator credentials unchanged and without SSO or basic authentication in front. From Oct 26 at 19:26 UTC the attacker used Grafana's data-source proxy to reach internal services. A Grafana administrator can point a data source at any URL, and the proxy forwards the request. Over about two hours that reached dozens of internal services, including identity, database, automation, and monitoring. At 21:01 the proxy reached an internal MCP tool server that exposes Kubernetes operations to AI agents. It required no authentication, and its service account was bound to cluster-admin. Chainstack says network flows and the changes that followed show this server was the command executor; the individual tool calls were not recovered. The same night the attacker tested an internal workflow engine with names artx-check-* and artex-verify-*, created administrator users in the development identity provider, and replaced JavaScript in a development web app by mounting ConfigMaps over the served files. On Oct 27 the same loader was applied to staging and to the development Grafana. The loader referenced hxxps://silverbullet[.]icu/p/17fbad90-3094-4198-9b60-49fc852e331d/bootstrap.js and the marker window.__artx7f3a. No software vulnerability was exploited. Development machine credentials also worked in production. On Oct 29 those credentials and a BI-tool API key were used from 187.15.134[.]80. Between 17:03 and 17:12 a workflow was rewritten in the platform database so it ran shell commands, triggered with a valid webhook token through Grafana, then restored. That returned the automation pod's environment, its Kubernetes service-account token, and a machine identity. At 17:49 production Kubernetes secrets were listed from 18.237.52[.]142. On Oct 31, from 01:40 to 08:31, 187.15.134[.]45 bulk-read the production cloud secrets manager, created extra keys, and created a Kubernetes service account artx-sa with role artx-observer and token artx-sa-token. A short-lived pod on the host network took the node's cloud token from the instance metadata service. Another cluster ran a privileged pod with host networking and host PID and installed a static-pod relay to 185.242.233[.]68:39443. A compromised VPN peer key from that address reached the database network and flapped the tunnel, which is how the intrusion was noticed. Attacker pods queried production databases, including PostgreSQL pg_shadow on one instance. On Oct 30 a cron job ran Chisel (https://github.com/jpillora/chisel) as a reverse SOCKS tunnel to 185.242.233[.]68:10800, and a systemd timer named artx-guard beaconed to 185.242.233[.]68:8088/artx-beacon. The same host also served a VPN client on port 9331. Access paths were cut on Oct 31. Copied tokens kept working until 06:28 UTC on Nov 2. Chainstack assesses with high confidence that the attacker used ARTEX, from artx/artex markers such as artex-i37257-*, parallel paths, and chisel, and says the indicators do not match the actor-specific lists published for Vapor Panda, Storm-0940, or Storm-3358. Customer nodes, the console, and the API were not modified. Password hashes, organization and account names, member emails, and node credentials are treated as exposed. Payment card data is not stored. ATT&CK techniques Chainstack maps include T1078.001, T1078.004, T1609, T1610, T1611, T1053.003, T1053.006, T1552.005, T1552.007, and T1572.",
+      "initial_access": "Internet-exposed test Grafana in a development Kubernetes cluster, left on the default administrator credentials, then Grafana's data-source proxy into an unauthenticated MCP tool server whose service account had cluster-admin",
       "ai_tooling_and_models": [
-        "Chainstack (blockchain node infrastructure)",
-        "AI framework not named by Chainstack"
+        "ARTEX (https://github.com/RuoJi6/ARTEX)",
+        "Unauthenticated MCP tool server bound to cluster-admin, used as the command executor"
       ],
-      "other_tooling": [],
-      "victims_and_sectors": "Finance; Technology and AI companies",
+      "frameworks": [
+        "artex"
+      ],
+      "other_tooling": [
+        "Grafana data-source proxy",
+        "Chisel (https://github.com/jpillora/chisel)",
+        "systemd timer artx-guard"
+      ],
+      "victims_and_sectors": "Chainstack, a blockchain infrastructure provider, and its customers' account records (organization names, account-holder names, member emails, password hashes) and node credentials, which Chainstack treats as exposed",
       "regions": [
         "unknown"
       ],
-      "region_notes": "Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.",
-      "attribution_or_cluster": "Unnamed (Chainstack ties it to the late-October AI-powered campaign; THN assesses overlap with a China-linked ARTEX cluster)",
-      "scale_and_metrics": "unknown",
-      "prevention_angle": "unknown",
+      "region_notes": "Chainstack lists offices in the United States and Singapore. The report does not say which country the compromised clusters ran in. Actor attribution is not a victim location.",
+      "attribution_or_cluster": "Unnamed. Chainstack attributes the tooling to ARTEX with high confidence and says that does not identify the operator. None of the indicators match the actor-specific sets published for Vapor Panda, Storm-0940, or Storm-3358.",
+      "scale_and_metrics": "Development access from Oct 26 19:26 UTC. Production Kubernetes secrets read Oct 29 17:49 UTC. Production secrets-manager bulk reads Oct 31 01:40-08:31 UTC. Last use of a copied credential Nov 2 06:28 UTC. Customer-facing services kept running. Password hashes and node credentials are in scope. Card data was not stored.",
+      "prevention_angle": "Do not publish a test Grafana, or any admin UI, without SSO or an equivalent extra login, and replace default administrator credentials at deploy time. Treat a data-source proxy as privileged: allowlist destinations and block cluster-internal addresses that are not approved data sources. An MCP or other AI tool server needs authentication and must not run as cluster-admin. Development credentials must not be valid in production. Alert on secret lists, bulk cloud secret reads, a new privileged or hostPath pod, a systemd timer, cron launching a tunnel, and the same VPN peer key presented from two addresses. artx and artex resource names are a hunt clue only when tied to this behavior.",
       "related_magicsword_projects": [],
-      "source_notes": "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Known pattern.",
-      "tags": [
-        "notion-import",
-        "agentic-operations"
+      "source_notes": "The Nov 10 technical section is the source for the Grafana entry, the MCP server, the ARTEX assessment, the IPs, and the hashes. The page was updated Nov 11. The Hacker News article is the Nov 3 report, before that section existed. Hashes are of application files the attacker modified to carry the loader, not of a second stage or of host binaries. Chainstack also published Grafana bundle hashes 07691e5949a123e313e1d589288e3831ec8ac30b90c45ab99d3b6ad07f23789a and 455473033f7ecbeafaa70e38f41f924377d54013efedeb0996ee84d3422c10ce, and test-page hashes 7c5925a3bc97983bfbfccdc514edb4dadbdb5b796a0747a764b0dcc4f103ea15 and b4a701949a1489e81754637238ed3f8177520f9f950e655f9357900d9e30aea8. Link barracuda-artex-cloud-key-intrusion-2026-11 and srm-artex-ir-host-artifacts-2026-11 for the i-counter artifact pattern.",
+      "last_reviewed": "2026-11-17",
+      "iocs": {
+        "domains": [
+          "silverbullet[.]icu"
+        ],
+        "ips": [
+          "18.237.52[.]142",
+          "187.15.134[.]80",
+          "187.15.134[.]77",
+          "187.15.134[.]45",
+          "185.242.233[.]68"
+        ],
+        "hashes": [
+          "dce9be91f9c5fb80ffa3461a4bdae90f933431c6d9df2042bddb81710fa2c517",
+          "a5cd94ca9d819effde8c2362c21050981486752163854a502f350db6587757c5",
+          "57b2479607e42d54c2705b747659a0ee2470ba10a8a7a12b1385723a21b251f8",
+          "caf6aa2e8bf5585687b0ed96a041f9c4ea1a17742118a57418c2b9dc027486ce"
+        ],
+        "urls": [
+          "hxxps://silverbullet[.]icu/p/17fbad90-3094-4198-9b60-49fc852e331d/bootstrap.js"
+        ]
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0049",
+          "rationale": "The entry point was an internet-exposed Grafana. Chainstack says no software vulnerability was exploited; the data-source proxy and the unchanged default administrator account were abused.",
+          "source_urls": [
+            "https://chainstack.com/security-incident-nov-2026/"
+          ]
+        },
+        {
+          "id": "AML.T0053",
+          "rationale": "An unauthenticated MCP tool server became the command executor, and Chainstack says the attacker used ARTEX.",
+          "source_urls": [
+            "https://chainstack.com/security-incident-nov-2026/"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "Development credentials, a production secrets-manager bulk read, Kubernetes secrets, and the instance-metadata token were stolen.",
+          "source_urls": [
+            "https://chainstack.com/security-incident-nov-2026/"
+          ]
+        },
+        {
+          "id": "AML.T0012",
+          "rationale": "The Grafana default administrator account, cloud service-account keys, and a VPN peer key were reused as valid accounts, including from development into production.",
+          "source_urls": [
+            "https://chainstack.com/security-incident-nov-2026/"
+          ]
+        }
       ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "grafana",
+            "title": "Default-credential Grafana",
+            "description": "From Oct 26 19:26 UTC a test Grafana on a development cluster, reachable from the internet with unchanged default administrator credentials, proxies requests to internal services.",
+            "kind": "access",
+            "source_urls": [
+              "https://chainstack.com/security-incident-nov-2026/"
+            ]
+          },
+          {
+            "id": "mcp-exec",
+            "title": "MCP server runs commands",
+            "description": "At 21:01 the proxy reaches an unauthenticated MCP tool server whose service account is cluster-admin. Chainstack says that server was the command executor. artx and artex names appear on the artifacts.",
+            "kind": "ai",
+            "source_urls": [
+              "https://chainstack.com/security-incident-nov-2026/"
+            ]
+          },
+          {
+            "id": "prod-secrets",
+            "title": "Development credentials reach production",
+            "description": "Machine credentials from development work in production. Oct 31 brings a bulk read of the production secrets manager, a VPN key into the database network, and queries against production databases.",
+            "kind": "execution",
+            "source_urls": [
+              "https://chainstack.com/security-incident-nov-2026/"
+            ]
+          },
+          {
+            "id": "persist",
+            "title": "Chisel and a systemd timer",
+            "description": "On Oct 30, cron starts a Chisel reverse SOCKS tunnel to 185.242.233[.]68:10800 and the artx-guard systemd timer beacons to port 8088. Copied credentials last work at Nov 2 06:28 UTC.",
+            "kind": "impact",
+            "source_urls": [
+              "https://chainstack.com/security-incident-nov-2026/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "grafana",
+            "target": "mcp-exec"
+          },
+          {
+            "source": "mcp-exec",
+            "target": "prod-secrets"
+          },
+          {
+            "source": "prod-secrets",
+            "target": "persist"
+          }
+        ]
+      },
       "category": "adversary-use-of-ai",
-      "ai_involvement_confidence": "vendor-asserted"
+      "attribution": {
+        "actor_name": "Unnamed",
+        "country": "Unknown",
+        "motivation": "unknown",
+        "attributed_by": "Chainstack",
+        "confidence": "high"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "Potential Protocol Tunneling via Chisel Client",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/command_and_control_linux_chisel_client_activity.toml",
+          "notes": "Selected from a security-detections-mcp search for chisel. Linux endpoint. Chisel client command-line flags followed by a network connection from an uncommon process. Matches the reverse SOCKS tunnel Chainstack found on development hosts. The Windows chisel.exe rule is not cited."
+        },
+        {
+          "name": "Systemd Timer Created",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_systemd_scheduled_timer_created.toml",
+          "notes": "Selected from a security-detections-mcp search for systemd timer. Linux endpoint. Creation of a systemd timer, including user timers. Matches artx-guard.timer. The rule does not look for the artx-guard name or the :8088/artx-beacon URL."
+        },
+        {
+          "name": "Cron Job Created or Modified",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_cron_job_creation.toml",
+          "notes": "Selected from a security-detections-mcp search under T1053.003. Linux endpoint. A new or changed cron job. Chainstack found /etc/cron.d/artx-ngx launching Chisel. The rule is the cron write, not the Chisel binary."
+        },
+        {
+          "name": "Kubernetes Privileged Pod Created",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/privilege_escalation_privileged_pod_created.toml",
+          "notes": "Selected from a security-detections-mcp search for privileged pod. Kubernetes audit. Creation of a pod or container with privileged mode. Matches the production pod Chainstack described with host networking and host PID. A hostPath mount that is not privileged needs the hostPath rule instead."
+        },
+        {
+          "name": "Kubernetes Pod Exec Cloud Instance Metadata Access",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/kubernetes/credential_access_kubernetes_pod_exec_cloud_instance_metadata.toml",
+          "notes": "Selected from a security-detections-mcp search for instance metadata. Kubernetes audit of pod exec commands that reference a cloud metadata endpoint. Chainstack says a host-network pod took the node cloud token from the instance metadata service. A token read that never appears in an exec command line will not match."
+        },
+        {
+          "name": "Kubernetes Secrets Enumeration",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/application/kubernetes/audit/kubernetes_audit_secrets_enumeration.yml",
+          "notes": "Selected from a security-detections-mcp search for Kubernetes secrets. Kubernetes audit list on secrets. Chainstack says a production list request returned secret contents, which this list event covers. The follow-on individual reads are a separate get."
+        },
+        {
+          "name": "Grafana default login, the data-source proxy, and the MCP server",
+          "format": "guidance",
+          "notes": "security-detections-mcp search for Grafana returned no rule about default administrator credentials or /api/datasources/proxy/. The hits were unrelated process rules, so they are not cited. Hunt Grafana logins that still use the default administrator account, new data sources aimed at cluster-internal addresses, and proxy requests to those addresses. The cluster-admin role-binding creation rules are also not cited: Chainstack says the MCP server's service account already had cluster-admin. No indexed rule alerts on an unauthenticated MCP server using a pre-existing cluster-admin account."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-10-26",
+        "last_updated": "2026-11-11",
+        "updates": [
+          {
+            "date": "2026-07-01",
+            "source": "Chainstack",
+            "summary": "July 2026, day not stated: a test Grafana is deployed on a development cluster with default administrator credentials and no SSO or basic authentication in front."
+          },
+          {
+            "date": "2026-10-26",
+            "source": "Chainstack",
+            "summary": "19:26 UTC first use of the Grafana data-source proxy. 21:01 first connection to the unauthenticated MCP tool server. A JavaScript loader is injected the same night."
+          },
+          {
+            "date": "2026-10-29",
+            "source": "Chainstack",
+            "summary": "Development cloud credentials are used from 187.15.134[.]80. A rewritten workflow yields a machine identity. Production Kubernetes secrets are read at 17:49 UTC."
+          },
+          {
+            "date": "2026-10-30",
+            "source": "Chainstack",
+            "summary": "Chisel reverse SOCKS to 185.242.233[.]68:10800 and the artx-guard systemd timer to :8088/artx-beacon are installed on development hosts."
+          },
+          {
+            "date": "2026-10-31",
+            "source": "Chainstack",
+            "summary": "Bulk production secrets-manager reads, new keys, the VPN peer key, database queries, and containment. A malicious deployment commit at 15:54 fails because cluster access is already cut."
+          },
+          {
+            "date": "2026-11-02",
+            "source": "Chainstack",
+            "summary": "06:28 UTC last observed use of a copied credential. Two development hosts that were brought back up tried to run their implants and the outbound connections were blocked."
+          },
+          {
+            "date": "2026-11-03",
+            "source": "Chainstack",
+            "summary": "Initial public incident report. Entry is described as a third-party component. Customer account data and password hashes are in scope."
+          },
+          {
+            "date": "2026-11-10",
+            "source": "Chainstack",
+            "summary": "Technical update: Grafana default credentials, the MCP server as command executor, ARTEX markers, and the indicator table."
+          },
+          {
+            "date": "2026-11-11",
+            "source": "Chainstack",
+            "summary": "Incident page marked updated. Chainstack says customer nodes, the console, and the API were not modified."
+          }
+        ]
+      }
     },
     {
       "id": "cyera-anthropic-pdf-skill-backdoor-2026-11",
@@ -15842,6 +16592,206 @@
         "motivation": "cybercrime"
       },
       "ai_involvement_confidence": "confirmed"
+    },
+    {
+      "id": "eset-guardbreaker-uac-0099-decoy-prompt-2026-08",
+      "name": "ESET GuardBreaker - UAC-0099 plants a refusal-bait comment in a MATCHBOIL script",
+      "date_reported": "2026-08-27",
+      "researcher": "ESET Research",
+      "org": "ESET",
+      "sources": [
+        {
+          "url": "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/",
+          "title": "GuardBreaker: derailing AI-assisted malware analysis with a code comment",
+          "publisher": "WeLiveSecurity"
+        },
+        {
+          "url": "https://www.helpnetsecurity.com/2026/08/31/russian-hackers-ai-safety-filters-manipulation/",
+          "title": "Russian hackers plant a nuclear-weapon prompt in malware to trip AI safety filters",
+          "publisher": "Help Net Security"
+        },
+        {
+          "url": "https://cert.gov.ua/article/6318634",
+          "title": "UAC-0099: LUNCHPOKE, BURNYBEAR, updated MATCHBOIL.V2, and Notepad++ 8.8.3",
+          "publisher": "CERT-UA"
+        },
+        {
+          "url": "https://www.dugganusa.com/post/we-tested-the-russian-anti-analysis-trick-on-three-models-two-analyzed-the-sample-and-flagged-the-d",
+          "title": "Independent A/B test of the decoy comment on three models",
+          "publisher": "DugganUSA"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "other",
+      "ai_role_secondary": null,
+      "ai_role_detail": "The target is an LLM-powered code scanner. An inert comment is meant to trip safety guardrails so the model refuses and stops before the payload logic. ESET did not name a product or test the effect.",
+      "technique_summary": "ESET Research described GuardBreaker in posts on X on Aug 27, 2026. Tomáš Foltýn's WeLiveSecurity article followed on Sep 10, 2026. In a VBScript used early in an attack on a target in Ukraine, UAC-0099 left inert REM comments. Help Net Security quotes the opening as a request to make a nuclear weapon and to help, followed by uranium-enrichment text. The comment has no runtime effect. ESET says it is there so an LLM-powered code scanner's safety guardrails refuse the file and stop reading before the payload logic. ESET names this a reverse jailbreak: the point is to cause a refusal, not to talk a model into complying. The script's job is to download and install MATCHBOIL, a loader ESET says is used only by UAC-0099. The same group has checked for IDA and Wireshark processes in other attacks. ESET did not test whether the comment works and did not name a targeted model. DugganUSA, in an independent write-up dated Sep 1, 2026, ran one A/B pass on a synthetic inert script: GPT-4o and Mistral analyzed the treatment and flagged the decoy, and Claude Sonnet 4.5 returned an empty refusal. That test is not ESET's, and DugganUSA says it is a single sample on one day. UAC-0099 is Russia-aligned, active since at least 2022, and has targeted Ukrainian transportation and energy. Reporting says the group has handed validated access to Sandworm. On Jul 21, 2026 CERT-UA documented an updated chain: a VBS script with a fake extension and a long run of spaces before .vbs, Notepad++ 8.8.3 components, and the tools LUNCHPOKE, BURNYBEAR, and MATCHBOIL.V2. That advisory is about the group and the loader, not about the GuardBreaker comment. ATT&CK does not have a technique for a refusal bait in a comment. The script execution itself is T1059.005.",
+      "initial_access": "A VBScript used in the early stage of an intrusion at a Ukrainian organization. ESET does not describe how the script arrived. CERT-UA's July chain for the same group starts from a phishing ZIP that contains a VBS file disguised with a fake extension.",
+      "ai_tooling_and_models": [
+        "Unnamed LLM-powered code scanner. ESET did not name a model.",
+        "DugganUSA's independent test used Claude Sonnet 4.5, GPT-4o, and Mistral. That test is not the incident."
+      ],
+      "other_tooling": [
+        "MATCHBOIL loader, delivered by the script",
+        "Windows Script Host (wscript.exe or cscript.exe)"
+      ],
+      "victims_and_sectors": "An unnamed organization in Ukraine. UAC-0099's usual targets include transportation and energy.",
+      "regions": [
+        "Ukraine"
+      ],
+      "region_notes": "Ukraine is the victim location ESET gives for this script. Russia is the actor alignment, not a victim region.",
+      "attribution_or_cluster": "UAC-0099, Russia-aligned, espionage. ESET attributes the script and the GuardBreaker comment. CERT-UA attributes the group's MATCHBOIL, LUNCHPOKE, and BURNYBEAR tooling. ESET does not claim this sample was handed to Sandworm.",
+      "scale_and_metrics": "One documented script in one early-stage intrusion. ESET did not report how often the comment has been used or whether a scanner refused this sample.",
+      "prevention_angle": "Keep the scanner's instructions separate from the file under analysis, and treat text inside the sample as data. A refusal, an empty completion, or a safety block on a malware sample should raise a review, not end it. Fall back to analysis that does not depend on a model, and do not give one model the only vote on whether a file is safe. The comment does not change what the script does when Windows runs it, so script-host and loader detections still apply.",
+      "related_magicsword_projects": [],
+      "source_notes": "The comment's role, the MATCHBOIL purpose, the Ukraine victim, and the IDA and Wireshark checks are from the WeLiveSecurity article (Sep 10, 2026) and the Aug 31 Help Net Security recap of the X posts. The enrichment procedure is not repeated here. DugganUSA is independent research on a synthetic sample; it is not a test of the incident file. CERT-UA article 6318634 (Jul 21, 2026) is the government write-up of the group's VBS, Notepad++, LUNCHPOKE, BURNYBEAR, and MATCHBOIL.V2 chain. https://cybernews.com/security/russian-hackers-nuclear-prompt-ai-guardrails/ returned HTTP 403 during link checks and is omitted. No YARA or Sigma rule in the detection index matches the refusal-bait wording or the name MATCHBOIL.",
+      "last_reviewed": "2026-11-17",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0051.001",
+          "rationale": "The refusal bait is indirect prompt injection: untrusted text inside a file being analyzed is meant to reach the model and cut the analysis short.",
+          "source_urls": [
+            "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/"
+          ]
+        },
+        {
+          "id": "AML.T0015",
+          "rationale": "The intended effect is evasion of an AI model used as a code scanner, by provoking a safety refusal before the payload logic is read.",
+          "source_urls": [
+            "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "vbs-stage",
+            "title": "VBScript in an early stage",
+            "description": "UAC-0099 uses a VBScript early in an intrusion against a target in Ukraine. The script's runtime job is to download and install MATCHBOIL.",
+            "kind": "access",
+            "source_urls": [
+              "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/"
+            ]
+          },
+          {
+            "id": "decoy-comment",
+            "title": "Inert refusal-bait comment",
+            "description": "REM comments request help with a nuclear weapon and then add enrichment text. They do not execute. ESET says they are meant to make an LLM scanner refuse before it reaches the loader logic.",
+            "kind": "ai",
+            "source_urls": [
+              "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/",
+              "https://www.helpnetsecurity.com/2026/08/31/russian-hackers-ai-safety-filters-manipulation/"
+            ]
+          },
+          {
+            "id": "loader",
+            "title": "MATCHBOIL still installs",
+            "description": "If the script is run, it still downloads MATCHBOIL, the group's loader. CERT-UA's July chain uses a double-extension VBS, Notepad++ components, LUNCHPOKE, BURNYBEAR, and MATCHBOIL.V2.",
+            "kind": "execution",
+            "source_urls": [
+              "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/",
+              "https://cert.gov.ua/article/6318634"
+            ]
+          },
+          {
+            "id": "scanner-gap",
+            "title": "A refusal is the gap",
+            "description": "ESET did not measure the effect. DugganUSA's separate one-day test saw one of three models return an empty refusal and the other two flag the decoy and continue.",
+            "kind": "impact",
+            "source_urls": [
+              "https://www.welivesecurity.com/en/business-security/guardbreaker-derailing-ai-assisted-malware-analysis-code-comment/",
+              "https://www.dugganusa.com/post/we-tested-the-russian-anti-analysis-trick-on-three-models-two-analyzed-the-sample-and-flagged-the-d"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "vbs-stage",
+            "target": "decoy-comment"
+          },
+          {
+            "source": "vbs-stage",
+            "target": "loader"
+          },
+          {
+            "source": "decoy-comment",
+            "target": "scanner-gap"
+          }
+        ]
+      },
+      "category": "attacks-on-ai",
+      "attribution": {
+        "actor_name": "UAC-0099",
+        "country": "Russia",
+        "motivation": "nation-state",
+        "attributed_by": "ESET Research; CERT-UA for the group and its loaders",
+        "confidence": "high"
+      },
+      "ai_involvement_confidence": "vendor-asserted",
+      "detections": [
+        {
+          "name": "Cscript/Wscript Uncommon Script Extension Execution",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_wscript_cscript_uncommon_extension_exec.yml",
+          "notes": "Selected from a security-detections-mcp search for wscript. Windows process creation. wscript.exe or cscript.exe whose command line contains a non-script extension such as .pdf, .doc, or .txt. CERT-UA described UAC-0099 VBS names with a fake document extension, spaces, and then .vbs. A command line that still contains .pdf matches. A plain .vbs path with no fake extension does not."
+        },
+        {
+          "name": "Suspicious Double Extension Files",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/file/file_event/file_event_win_susp_double_extension.yml",
+          "notes": "Selected from a security-detections-mcp search for double extension. Windows file event. A created file whose name ends in a document extension immediately followed by .vbs, .exe, or another listed payload extension, including .pdf.vbs. The spaced form described by CERT-UA, with characters between pdf and .vbs, does not match this regex."
+        },
+        {
+          "name": "Vbscript Execution Using Wscript App",
+          "format": "splunk",
+          "url": "https://github.com/splunk/security_content/blob/develop/detections/endpoint/vbscript_execution_using_wscript_app.yml",
+          "notes": "Selected from a security-detections-mcp search for VBScript. Endpoint process data for wscript.exe executing VBScript. This is the generic script-host path for the GuardBreaker file. It does not know that the comment is a refusal bait."
+        },
+        {
+          "name": "Refusal-bait comments and MATCHBOIL",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for VBScript, wscript, and double extension did not return a rule that looks for refusal-bait wording or for MATCHBOIL. A YARA or Sigma hunt for inert comments that request help building a weapon, sitting above a downloader, is still a written hunt rather than a published rule. Do not treat a scanner refusal as a benign verdict. CERT-UA's July chain also drops Notepad++ components and LUNCHPOKE, BURNYBEAR, and MATCHBOIL.V2; those names are not in the indexed rules."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-08-27",
+        "last_updated": "2026-09-10",
+        "updates": [
+          {
+            "date": "2026-07-21",
+            "source": "CERT-UA",
+            "summary": "CERT-UA documents UAC-0099's updated chain, including a double-extension VBS, Notepad++ 8.8.3 components, LUNCHPOKE, BURNYBEAR, and MATCHBOIL.V2. The advisory does not describe the refusal-bait comment."
+          },
+          {
+            "date": "2026-08-27",
+            "source": "ESET Research",
+            "summary": "ESET posts the GuardBreaker finding on X: a UAC-0099 VBScript used early against a target in Ukraine carries an inert comment meant to make an LLM code scanner refuse."
+          },
+          {
+            "date": "2026-08-31",
+            "source": "Help Net Security",
+            "summary": "Help Net Security recounts the X posts, the nuclear-weapon comment, and the MATCHBOIL downloader."
+          },
+          {
+            "date": "2026-09-01",
+            "source": "DugganUSA",
+            "summary": "Independent A/B test on a synthetic script. One of three models returned an empty refusal. The other two analyzed the sample and flagged the decoy. DugganUSA says this is not a benchmark."
+          },
+          {
+            "date": "2026-09-10",
+            "source": "WeLiveSecurity",
+            "summary": "Tomáš Foltýn publishes the GuardBreaker article. ESET still does not report a test of the comment or name a targeted model."
+          }
+        ]
+      }
     },
     {
       "id": "fbi-nsa-cnmf-china-linked-qtfy-2026-08",

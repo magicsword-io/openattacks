@@ -13,6 +13,7 @@ Read the index first. Then fetch only the entries the question needs. Do not loa
 
 Published site:
 
+- This file: `https://openattacks.ai/skills/openattacks/SKILL.md`
 - Index: `https://openattacks.ai/llms.txt`
 - One attack: `https://openattacks.ai/llms/attacks/<id>.md`
 - One category: `https://openattacks.ai/llms/by-category/<category>.md`
