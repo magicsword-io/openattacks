@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T00:00:00.000Z",
+  "generated_at": "2026-11-19T00:00:00.000Z",
   "count": 281,
   "attacks": [
     {
@@ -9248,9 +9248,9 @@
           "publisher": "VibeVulns"
         },
         {
-          "url": "https://github.com/ribbon-finance/aevo-trading-skills",
-          "title": "aevo-trading-skills",
-          "publisher": "ribbon-finance"
+          "url": "https://github.com/advisories/GHSA-g97f-vppp-p428",
+          "title": "Malicious code in mcp-aevo-server (PyPI) (GHSA-g97f-vppp-p428)",
+          "publisher": "GitHub Advisory Database"
         },
         {
           "url": "https://osv.dev/vulnerability/MAL-2026-19204",
@@ -9306,7 +9306,7 @@
       "related_magicsword_projects": [
         "LOLSkills"
       ],
-      "source_notes": "OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564; GitHub advisory GHSA-556m-xfwj-7wff (MAL-2026-18603) for @ifasn/ms-doc-mcp\n\nmcp-aevo-server on PyPI (MAL-2026-20068, published 17 November 2026 at 14:45 UTC). Amazon Inspector and Kamil Mańkowski (kam193) describe versions 0.2.0 and 0.2.0.post1, post2, post3, post4, and post6. On server start, main() calls _telemetry.arm() in src/mcp_aevo_server/_telemetry.py. That reads AEVO_API_KEY, AEVO_API_SECRET, AEVO_SIGNING_KEY_PRIVATE_KEY, and AEVO_WALLET_PRIVATE_KEY, plus hostname, OS user, cwd, argv, and the names of AEVO_* and UV_* variables, and POSTs them in cleartext to a hardcoded Telegram bot (api.telegram.org, bot id 8867174343, chat 8838719553). The bot token is redacted in the advisory. It also POSTs to an optional AEVO_TELEMETRY_URL and spools to disk to retry. The behavior is opt-out (AEVO_TELEMETRY=0). Full values are sent by default (AEVO_TELEMETRY_FULL on). Comments and module names (_telemetry, census, notifier, and \"Public by design: it can only send, and only to this one chat\") present the exfil as telemetry. kam193 classes it as dependency confusion with remote command execution. ribbon-finance/aevo-trading-skills told MCP clients to run command uvx with args mcp-aevo-server and to place Aevo keys in the env block. Commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 (17 November 2026 at 20:22 UTC, 3:22 PM ET, message \"docs: remove unsafe PyPI installation instructions\") removes those instructions. The README security notice is dated 18 November 2026 and points at MAL-2026-20068. Vibevulns says the skill authors had not registered the PyPI name. LOLSkills applies because a published agent skill's README named the MCP server. The PyPI project page is not linked. OSV lists the removed versions. _telemetry.py SHA256 8e8a5a24dc15128554984123aa90662fc6a06d0c507e1375ef948e4f02bee299 is from the 0.2.0.post1 evidence file.\n\nRelevant detection rules:\n- Monitor access to cloud metadata endpoints (169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal, etc.)\n- Alert on unauthorized reads of /etc/shadow, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, .env files\n- Detect access to Kubernetes service account tokens (/var/run/secrets/kubernetes.io/)\n- Monitor HTTP headers for sensitive environment variable leakage (WALLET_PRIVATE_KEY, AWS_SECRET_ACCESS_KEY, etc.)\n- Alert on npm package installations from unverified sources\n- Note: Cloud metadata access typically detected via network monitoring or instance-level audit logs (CloudTrail, Azure Monitor, GCP Cloud Logging). File access requires host-based file integrity monitoring.\n",
+      "source_notes": "OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564; GitHub advisory GHSA-556m-xfwj-7wff (MAL-2026-18603) for @ifasn/ms-doc-mcp\n\nmcp-aevo-server on PyPI (MAL-2026-20068, published 17 November 2026 at 14:45 UTC). Amazon Inspector and Kamil Mańkowski (kam193) describe versions 0.2.0 and 0.2.0.post1, post2, post3, post4, and post6. On server start, main() calls _telemetry.arm() in src/mcp_aevo_server/_telemetry.py. That reads AEVO_API_KEY, AEVO_API_SECRET, AEVO_SIGNING_KEY_PRIVATE_KEY, and AEVO_WALLET_PRIVATE_KEY, plus hostname, OS user, cwd, argv, and the names of AEVO_* and UV_* variables, and POSTs them in cleartext to a hardcoded Telegram bot (api.telegram.org, bot id 8867174343, chat 8838719553). The bot token is redacted in the advisory. It also POSTs to an optional AEVO_TELEMETRY_URL and spools to disk to retry. The behavior is opt-out (AEVO_TELEMETRY=0). Full values are sent by default (AEVO_TELEMETRY_FULL on). Comments and module names (_telemetry, census, notifier, and \"Public by design: it can only send, and only to this one chat\") present the exfil as telemetry. kam193 classes it as dependency confusion with remote command execution. ribbon-finance/aevo-trading-skills told MCP clients to run command uvx with args mcp-aevo-server and to place Aevo keys in the env block. Commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 (17 November 2026 at 20:22 UTC, 3:22 PM ET, message \"docs: remove unsafe PyPI installation instructions\") removes those instructions. The README security notice is dated 18 November 2026 and points at MAL-2026-20068. github.com/ribbon-finance/aevo-trading-skills returned HTTP 404 on 2026-11-19, including that commit. It is replaced with https://github.com/advisories/GHSA-g97f-vppp-p428, which says the skill referred to an unclaimed name on PyPI. Vibevulns says the skill authors had not registered the PyPI name. LOLSkills applies because a published agent skill's README named the MCP server. The PyPI project page is not linked. OSV lists the removed versions. _telemetry.py SHA256 8e8a5a24dc15128554984123aa90662fc6a06d0c507e1375ef948e4f02bee299 is from the 0.2.0.post1 evidence file.\n\nRelevant detection rules:\n- Monitor access to cloud metadata endpoints (169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal, etc.)\n- Alert on unauthorized reads of /etc/shadow, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, .env files\n- Detect access to Kubernetes service account tokens (/var/run/secrets/kubernetes.io/)\n- Monitor HTTP headers for sensitive environment variable leakage (WALLET_PRIVATE_KEY, AWS_SECRET_ACCESS_KEY, etc.)\n- Alert on npm package installations from unverified sources\n- Note: Cloud metadata access typically detected via network monitoring or instance-level audit logs (CloudTrail, Azure Monitor, GCP Cloud Logging). File access requires host-based file integrity monitoring.\n",
       "iocs": {
         "domains": [],
         "ips": [
@@ -9369,11 +9369,11 @@
           {
             "date": "2026-11-17",
             "source": "OSV / kam193 / ribbon-finance",
-            "summary": "mcp-aevo-server 0.2.0 and 0.2.0.post1 through post4 and post6 (MAL-2026-20068) reads Aevo keys on MCP start and posts them to Telegram bot 8867174343, chat 8838719553. aevo-trading-skills commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 removes the uvx install instructions."
+            "summary": "mcp-aevo-server 0.2.0 and 0.2.0.post1 through post4 and post6 (MAL-2026-20068) reads Aevo keys on MCP start and posts them to Telegram bot 8867174343, chat 8838719553. aevo-trading-skills commit c40d9b78c2a85109ce04737e6ffd815bedd46a58 removes the uvx install instructions. That repository returned HTTP 404 on 2026-11-19."
           }
         ]
       },
-      "last_reviewed": "2026-11-18",
+      "last_reviewed": "2026-11-19",
       "confidence": "high",
       "region_notes": "Multiple regions reflects global npm and MCP user base",
       "atlas_techniques": [
@@ -9410,7 +9410,7 @@
           "rationale": "ribbon-finance/aevo-trading-skills told agents to launch the PyPI name mcp-aevo-server, which someone else had registered.",
           "source_urls": [
             "https://osv.dev/vulnerability/MAL-2026-20068",
-            "https://github.com/ribbon-finance/aevo-trading-skills"
+            "https://github.com/advisories/GHSA-g97f-vppp-p428"
           ]
         },
         {
@@ -9425,7 +9425,7 @@
           "id": "AML.T0011.002",
           "rationale": "An MCP client that follows the skill runs uvx mcp-aevo-server with the Aevo keys in the environment.",
           "source_urls": [
-            "https://github.com/ribbon-finance/aevo-trading-skills",
+            "https://github.com/advisories/GHSA-g97f-vppp-p428",
             "https://osv.dev/vulnerability/MAL-2026-20068"
           ]
         },
