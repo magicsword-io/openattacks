@@ -8,14 +8,22 @@ test("regions page links to the pew pew map", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Pew pew." })).toBeVisible();
 });
 
+test("site footer links to the pew pew map", async ({ page }) => {
+  await page.goto("/about/");
+  await page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "Pew Pew Map", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/pewpew\/$/);
+});
+
 test("homepage easter egg links to the map and 'pew' opens it", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "pew pew" })).toHaveAttribute(
-    "href",
-    "/pewpew/",
-  );
+  await expect(
+    page.getByRole("link", { name: "pew pew", exact: true }),
+  ).toHaveAttribute("href", "/pewpew/");
   // Typing in search must not trigger it.
   await page.getByRole("searchbox").fill("pew");
   await expect(page).toHaveURL(/\?q=pew$/);
