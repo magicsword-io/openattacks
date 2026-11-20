@@ -11,7 +11,7 @@ import {
   freshnessErrors,
   generatedAt,
   monthKey,
-  readCommitted,
+  readOutputs,
 } from "../scripts/build-llm-exports.mjs";
 
 const files = readdirSync(new URL("../attacks/", import.meta.url)).filter((name) =>
@@ -55,8 +55,8 @@ test("staleness check accepts the generator output and rejects drift", () => {
   );
 });
 
-test("committed LLM exports match the generator", () => {
-  assert.deepEqual(freshnessErrors(outputs, readCommitted()), []);
+test("local LLM exports match the generator after the site build", () => {
+  assert.deepEqual(freshnessErrors(outputs, readOutputs()), []);
 });
 
 test("index, bundles, and JSON cover every attack exactly once", () => {
@@ -154,7 +154,7 @@ test("export schema accepts the generated catalog", () => {
   assert.equal(schema.properties.attacks.items.properties.typefully, undefined);
 });
 
-test("the site build serves the committed export bytes", () => {
+test("the site build serves the generated export bytes", () => {
   const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
   for (const path of [
     "llms.txt",
