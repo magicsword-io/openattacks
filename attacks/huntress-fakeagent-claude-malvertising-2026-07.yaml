@@ -1,0 +1,159 @@
+id: huntress-fakeagent-claude-malvertising-2026-07
+name: FakeAgent Claude Desktop malvertising
+date_reported: 2026-07-22
+date_activity_start: 2026-07-21
+date_activity_end: 2026-07-22
+researcher: Michael Tigges
+org: Huntress
+sources:
+  - url: https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+    title: "FakeAgent: Claude Desktop malvertising ends in a .NET RAT"
+    publisher: Huntress
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: "A Bing ad and a public Claude Artifact impersonate Claude Desktop. Claude was not compromised. The payload is a conventional Windows RAT, so this is not credential theft aimed at an AI account and not an attacker using a model."
+technique_summary: "Huntress (Michael Tigges, 22 July 2026) calls this campaign FakeAgent. Bing ads for a Claude Desktop download pointed at a public Claude Artifact, claude.ai/public/artifacts/ca456f1f-44c0-42af-b329-4f1c7534a877, which had about 7,100 views and the platform disclaimer that the content is user-generated and unverified. Anthropic had removed the artifact by the time the post was published. The artifact redirected to claude.ai.download-app.us and then downloading-api.it.com/html/claude/win, which served a fake ClaudeDesktop.exe. download-app.us was registered on 9 May 2026. ClaudeDesktop.exe is a signed JetBrains jcef_helper.exe, the same file Huntress also saw copied as DockerDesktop.exe for a scheduled task. It sideloads a VMProtect-packed libcef.dll. That DLL reads an Ethereum contract, downloads cache.dat, and the task keeps a copy under the EdgeUpdate install directory. A second stage, sslconf.exe, is a signed IBM SPSS binary that sideloads tempdir.dll. That DLL checks the GPU vendor and VRAM, skips QEMU and VMware, and decrypts appcfg.dat with a DirectX shader used as an AES-256-CTR routine. The embedded payload is SectopRAT, an HVNC .NET RAT. Its C2 address is stored on a BNB Smart Chain contract. Huntress observed the campaign against 29 organizations on 21 and 22 July 2026. The live C2 in the post is 2.24.131.246, with backup domain 5ca8758c-02d0-4a72-89c8-d468b66dda41.com."
+initial_access: "Bing ads for a Claude Desktop download, leading to a public Claude Artifact and then a fake Windows installer."
+ai_tooling_and_models:
+  - "Claude Desktop, impersonated by the ad, the public artifact, and the fake installer"
+  - "Public Claude Artifact used as the redirect page"
+other_tooling:
+  - "SectopRAT (.NET HVNC) with its C2 address stored on a BNB Smart Chain contract"
+  - "Signed JetBrains jcef_helper.exe sideloading libcef.dll"
+  - "Signed IBM SPSS sslconf.exe sideloading tempdir.dll"
+  - "Scheduled task that runs the DockerDesktop.exe copy"
+  - "GPU vendor and VRAM checks before the shader decrypts the payload"
+victims_and_sectors: "29 organizations. Huntress does not name them or their sectors."
+regions:
+  - unknown
+region_notes: "Huntress does not name a victim country. The registrant's location is not a victim region and is not recorded here."
+attribution_or_cluster: "Unnamed. Huntress ties the download domain to one registrant who also held earlier domains, including one Microsoft seized, and an April 2026 fake Docker Desktop that used the same sideload. No person or group is named."
+scale_and_metrics: "29 organizations, 21-22 July 2026. The artifact had about 7,100 views before Anthropic removed it."
+prevention_angle: "Download Claude Desktop from Anthropic. Treat a search ad and a public artifact as unverified. Alert when a signed JetBrains or IBM binary loads an unsigned DLL from the same directory, and when a new scheduled task runs DockerDesktop.exe from an EdgeUpdate path."
+related_magicsword_projects: []
+source_notes: "Classified as adversary use of AI with the lure role, the same treatment as the Adception fake Claude installer and the ANY.RUN fake AI-tool installers. The AI product is the bait. Anthropic's platform hosted a user-generated artifact, and Huntress does not describe a compromise of Claude or of Anthropic. SectopRAT steals broadly. That is not recorded as a second role of AI-credential theft. Huntress used Claude Opus 4.8 while recovering a one-byte mistake in the shader key. That is the analyst's method, not the attacker's, and it is not an indicator. Benign signed hosts, which should not be blocked on the hash alone, are ClaudeDesktop.exe and DockerDesktop.exe SHA256 f8acb8f5cf88b77a4c27d7fd6856aa299bb178e85f9963c2fbd447d818da3ed0 (JetBrains jcef_helper.exe) and SSLConf.exe SHA256 fd826215add30c1319eefa291b6eaf8ddfa7720cfe816c49aef6fe8a88de7939 (IBM SPSS). Huntress quotes the second persistence path as %APPDATA%\\Roaming\\Microsoft\\EdgeUpdate\\Install\\sslconf.exe. The libcef.dll contract is 0xc1907d7be91f95903ad66d775c397302e7dd9228 and the SectopRAT contract is 0xe012d0f34cde9b870e9d9ed566ea5f8fd9b92228. polse.us is an earlier domain Huntress links to the same registrant. Microsoft seized it in Operation Endgame as StealC hosting. It is not a host of the July installer. An April 2026 Docker Hub fake Docker Desktop used the same libcef.dll sideload. The registrant email is omitted."
+last_reviewed: 2026-11-19
+iocs:
+  domains:
+    - download-app[.]us
+    - downloading-api.it[.]com
+    - 5ca8758c-02d0-4a72-89c8-d468b66dda41[.]com
+    - polse[.]us
+  ips:
+    - 2.24.131.246
+    - 107.189.24.67
+    - 104.194.133.210
+    - 107.189.26.86
+    - 107.189.21.86
+    - 45.59.124.17
+    - 45.59.125.228
+    - 45.59.122.82
+    - 107.189.17.143
+    - 45.59.122.134
+    - 45.59.122.235
+    - 107.189.22.118
+    - 107.189.20.32
+    - 107.189.20.95
+    - 107.189.24.255
+    - 45.59.117.145
+    - 45.59.114.190
+    - 45.59.123.122
+    - 45.59.117.67
+    - 195.110.58.222
+    - 191.101.80.211
+  hashes:
+    - 26bae4d7012bf59847ab4036a065419c3d4ca47e020479f55b3b2c6d0d21394a
+    - 1cd58cfba596da296ab1878d74023e00c399345a1b6c2a0e5446c53563f4e3bb
+    - 1fe3646d27d286db8123297e06ae7badf3e26f352a04f91b6d82c28869a91664
+  urls:
+    - hxxps://claude[.]ai/public/artifacts/ca456f1f-44c0-42af-b329-4f1c7534a877
+    - hxxps://claude.ai.download-app[.]us
+    - hxxps://downloading-api[.]it[.]com/html/claude/win
+attack_flow:
+  nodes:
+    - id: ad
+      title: Bing ad opens an artifact
+      description: "An ad for a Claude Desktop download sends the visitor to a public Claude Artifact. The page is user-generated. Anthropic later removed it."
+      kind: access
+      source_urls:
+        - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+    - id: redirect
+      title: Artifact redirects to the installer
+      description: "The artifact sends the browser to claude.ai.download-app.us and then to downloading-api.it.com, which serves the fake ClaudeDesktop.exe."
+      kind: ai
+      source_urls:
+        - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+    - id: sideload
+      title: Signed host loads libcef.dll
+      description: "The signed JetBrains binary sideloads a VMProtect libcef.dll. A scheduled task keeps a DockerDesktop.exe copy, and a signed IBM binary later sideloads tempdir.dll."
+      kind: execution
+      source_urls:
+        - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+    - id: rat
+      title: SectopRAT reads its C2 from chain
+      description: "tempdir.dll decrypts appcfg.dat after a GPU check. The embedded SectopRAT reads its live C2, 2.24.131.246, from a BNB Smart Chain contract."
+      kind: impact
+      source_urls:
+        - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+  edges:
+    - source: ad
+      target: redirect
+    - source: redirect
+      target: sideload
+    - source: sideload
+      target: rat
+atlas_techniques:
+  - id: AML.T0073
+    rationale: "The ad, the public artifact, and the installer impersonate Claude Desktop."
+    source_urls:
+      - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+  - id: AML.T0052
+    rationale: "Search ads deliver the fake installer. The lure is the AI product name, and the payload is not an email."
+    source_urls:
+      - https://www.huntress.com/blog/fakeagent-claude-desktop-malvertising-ends-in-dotnet-rat
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed
+  country: Unknown
+  motivation: cybercrime
+  attributed_by: Huntress (Michael Tigges)
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Windows Unsigned DLL Side-Loading In Same Process Path
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_unsigned_dll_side_loading_in_same_process_path.yml
+    notes: "Selected from a security-detections-mcp search for unsigned DLL side-loading. Sysmon Event 7 where an unsigned DLL loads from the same directory as the process, outside Windows and Program Files. That matches libcef.dll beside the signed JetBrains host and tempdir.dll beside the signed IBM host. A valid signature on the DLL would not match."
+  - name: Scheduled Task Creation Via Schtasks.EXE
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_schtasks_creation.yml
+    notes: 'Selected from a security-detections-mcp search for schtasks creation. Matches schtasks.exe with " /create " in the command line, excluding a system user. Huntress does not publish the command line. A task created through the Task Scheduler API would not match.'
+  - name: Local Scheduled Task Creation
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_local_scheduled_task_creation.toml
+    notes: "Selected from a security-detections-mcp search for scheduled task creation. Requires an untrusted process or a listed script host, then schtasks.exe /create with a scheduling flag, within one minute, and not at SYSTEM integrity. The same command-line limit applies. Huntress did not show schtasks.exe."
+  - name: Sideload path and task location gaps
+    format: guidance
+    notes: "Sigma Abusable DLL Potential Sideloading From Suspicious Location does list libcef.dll, but only under Perflogs, Users\\Public, Temporary Internet Files, Windows\\Temp, Favorites, Contacts, and Pictures. It does not cover a Downloads or AppData copy, so it is not cited. Sigma Scheduled Task Executed From A Suspicious Location matches Temp, Desktop, Downloads, and Public, not AppData\\Roaming\\Microsoft\\EdgeUpdate. No Elastic image-load rule in the index covers a generic unsigned DLL beside a signed host."
+timeline:
+  first_seen: "2026-07-21"
+  last_updated: "2026-07-22"
+  updates:
+    - date: "2025-05-30"
+      source: Huntress
+      summary: "Earliest C2 address Huntress reads from the operator's chain history, 107.189.24.67. This is earlier operator history, not the start of the July Claude campaign."
+    - date: "2026-05-09"
+      source: Huntress
+      summary: "download-app.us is registered. The post does not publish the registrant contact."
+    - date: "2026-06-12"
+      source: Huntress
+      summary: "The chain record Huntress calls current points at 2.24.131.246."
+    - date: "2026-07-21"
+      source: Huntress
+      summary: "FakeAgent activity against organizations begins. Bing ads lead to the public Claude Artifact and the fake ClaudeDesktop.exe."
+    - date: "2026-07-22"
+      source: Huntress
+      summary: "Huntress publishes the campaign. 29 organizations were hit across 21 and 22 July. Anthropic had removed the artifact. The backup domain is 5ca8758c-02d0-4a72-89c8-d468b66dda41.com."

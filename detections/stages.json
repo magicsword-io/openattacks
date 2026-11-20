@@ -3897,5 +3897,49 @@
       "note": "DugganUSA's one-day test is independent of ESET and used a synthetic script. One refusal is not a measurement of this incident file.",
       "reviewed": "2026-11-17"
     }
+  },
+  "huntress-fakeagent-claude-malvertising-2026-07": {
+    "ad": {
+      "profile": "phishing",
+      "note": "The ad and the public artifact are the lure. A visit to claude.ai is not itself the signal.",
+      "reviewed": "2026-11-19"
+    },
+    "redirect": {
+      "profile": "phishing",
+      "note": "The artifact redirect is user-generated content. Pair it with the download host.",
+      "reviewed": "2026-11-19"
+    },
+    "sideload": {
+      "profile": "windows-dll-sideload",
+      "note": "Unsigned libcef.dll and tempdir.dll load beside signed hosts. The signed host hashes are benign.",
+      "reviewed": "2026-11-19"
+    },
+    "rat": {
+      "profile": "payload",
+      "note": "SectopRAT's C2 address is on a chain contract. The live address in the report is 2.24.131.246.",
+      "reviewed": "2026-11-19"
+    }
+  },
+  "talos-volta-autodoxer-2026-10": {
+    "steal": {
+      "profile": "windows-credential-dump",
+      "note": "Browser, mail, and wallet collection plus a headless Chrome launch. The sample then deletes itself.",
+      "reviewed": "2026-11-19"
+    },
+    "bundle": {
+      "profile": "credentials",
+      "note": "Stolen sessions enrich the bundle. The lookup sites are third-party services.",
+      "reviewed": "2026-11-19"
+    },
+    "rank": {
+      "profile": "model-network",
+      "note": "A non-browser process posts the bundle to the public OpenRouter API and falls through three models.",
+      "reviewed": "2026-11-19"
+    },
+    "deliver": {
+      "profile": "exfil",
+      "note": "The appraisal is written to local reports and zips. Talos names Telegram as the customer channel and no operator server.",
+      "reviewed": "2026-11-19"
+    }
   }
 }
