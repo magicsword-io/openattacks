@@ -106,7 +106,7 @@ Scan public repositories for accidentally committed Azure credentials; implement
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous agent framework (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous agent framework (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - LLM-driven Azure API enumeration with adaptive retry
 - Langflow (https://github.com/langflow-ai/langflow) - targeted for credential theft via CVE-2025-3248
 

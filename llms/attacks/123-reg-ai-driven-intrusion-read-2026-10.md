@@ -43,7 +43,7 @@ No timeline is recorded.
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) (claimed) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) (claimed) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - copies of Anthropic open-source skills and other AI exploitation frameworks found on attacker infrastructure
 
 ### Other tooling

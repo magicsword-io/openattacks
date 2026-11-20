@@ -31,6 +31,8 @@ OpenAttacks is a community-maintained [MagicSword](https://magicsword.io/) proje
 - **Use the data elsewhere.** The catalog ships as JSON, CSV, Markdown, RSS, and an installable agent skill.
 - **Run bounded exercises.** Selected entries include synthetic, inert labs for observing a behavior without reproducing a live attack.
 
+`/pewpew/`, linked from the bottom of `/regions/` and from a quiet "pew pew" link in the homepage timeline footer (typing `pew` on the homepage outside a text field also opens it), is a deliberately tongue-in-cheek "threat map". It groups entries by every country they reference. `src/lib/country-refs.mjs` derives the references at build time and labels each one by role: `origin` comes from `attribution.country`, `target` comes from a named country in `regions`, and `mentioned` means the country name appears somewhere in the entry text (case-sensitive, with aliases such as DPRK and U.S. normalized, and ambiguous names such as Georgia and Jordan ignored). Solid red arcs connect an origin to a target from the same entry. Dashed cyan arcs connect other countries the same entry references and make no claim. A mentioned country is never a victim location or an attribution. Animation starts paused under `prefers-reduced-motion`.
+
 ## From report to action
 
 An entry preserves the original source and separates reported facts from catalog-authored interpretation. The flow makes the sequence explorable while keeping qualifications, branches, loops, and unknowns visible.

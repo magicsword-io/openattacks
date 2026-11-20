@@ -95,7 +95,7 @@ Alert when w3wp.exe writes .aspx files or spawns cmd.exe, powershell.exe, whoami
 
 ## Tools
 ### AI tooling and models
-- AntiFox (https://github.com/AntiFox-AI/antifox), forked from [ARTEX](https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
+- AntiFox (https://github.com/AntiFox-AI/antifox), forked from [ARTEX](https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - Anthropic or OpenAI API key required for the agent loop
 
 ### Other tooling

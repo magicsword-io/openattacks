@@ -3,11 +3,14 @@ name: Cairn
 type: agentic-offensive-framework
 github_url: https://github.com/oritera/Cairn
 project_url: null
-description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites.
+description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation.
 sources:
   - url: https://norforge.com/blog/inside_cairn
     title: Inside Cairn
     publisher: NorForge
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/
+    title: "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold"
+    publisher: Google Threat Intelligence Group
 linked_attacks:
   - cairn-norforge-2026-10
   - cert-in-crafty-falcon-bfsi-2026-11
