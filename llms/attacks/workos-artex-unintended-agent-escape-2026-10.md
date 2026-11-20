@@ -82,7 +82,7 @@ Implement robust AI agent sandboxing with egress controls; rotate and secure dev
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent framework — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent framework — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - Agent benchmark evaluation environment (failed containment)
 
 ### Other tooling

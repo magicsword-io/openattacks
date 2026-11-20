@@ -100,7 +100,7 @@ Secure .env files and cloud configurations; never expose API keys in GitHub repo
 - Hermes Agent (github.com/NousResearch/hermes-agent)
 - OpenClaw agent
 - grok-4.6 model (AI_radar monitoring)
-- PentAGI (github.com/vxcontrol/pentagi)
+- [PentAGI](https://github.com/vxcontrol/pentagi) (github.com/vxcontrol/pentagi)
 - aipocket (github.com/leepsmarts/aipocket)
 
 ### Other tooling

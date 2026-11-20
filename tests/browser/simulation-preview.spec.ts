@@ -80,7 +80,7 @@ for (const width of [1440, 390])
         );
         const result = await new AxeBuilder({ page })
           .include("#simulation")
-          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
           .analyze();
         expect(result.violations).toEqual([]);
       }

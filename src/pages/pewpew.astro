@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ViewTabs from "../components/ViewTabs.astro";
+import PewPewMap from "../components/PewPewMap.astro";
+import { getAttacks, href } from "../lib/catalog";
+const attacks = await getAttacks();
+---
+
+<Layout
+  title="Pew Pew Map — OpenAttacks"
+  description="A deliberately silly attack map that groups OpenAttacks entries by the countries they reference. The lasers are decorative; the list is sourced."
+  active="catalog"
+>
+  <div class="container">
+    <header class="page-heading">
+      <span class="eyebrow">THREAT INTELLIGENCE™ · VIBES EDITION</span>
+      <h1>Pew pew.</h1>
+      <p>
+        Every security vendor has a map with lasers, so here's ours. Most of
+        the lasers mean nothing. The list below the map groups entries by every
+        country they reference and says how: an attributed origin, a reported
+        target, or a country the entry just mentions. Hit <em>Full screen</em>{" "}
+        for the operations-center wall, or open{" "}
+        <a class="text-link" href={href("pewpew/?wall")}>/pewpew/?wall</a>{" "}
+        on a kiosk display.
+      </p>
+    </header>
+    <ViewTabs active="regions" />
+    <PewPewMap attacks={attacks} />
+    <aside class="geography-methodology">
+      <h2>Please do not put this in a board deck.</h2>
+      <p>
+        Red arcs connect an attribution country to a reported target country in
+        the same entry. Dashed cyan arcs connect other countries the same entry
+        references, such as honeypot source IPs, hosting locations, or a label
+        the entry's region notes explain was removed. They carry no claim. A
+        "mentioned" country is never a victim location or an attribution.
+      </p>
+      <a class="text-link accent" href={href("regions/")}>
+        See the evidence-only geography map
+      </a>
+    </aside>
+  </div>
+</Layout>

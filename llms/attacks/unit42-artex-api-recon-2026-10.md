@@ -86,7 +86,7 @@ Authenticate all API endpoints including development; remove source maps from pr
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) planner agent — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) planner agent — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - Autonomous API reconnaissance
 
 ### Other tooling

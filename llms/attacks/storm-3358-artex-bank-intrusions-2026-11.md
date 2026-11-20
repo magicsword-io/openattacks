@@ -92,16 +92,18 @@ Implement file upload restrictions and validation; patch SSRF vulnerabilities; m
 - [Suspicious C2 Activities](https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml) (sigma) — Detects curl/wget downloading payloads and C2 command execution patterns
 - ARTEX console fingerprinting (guidance) — Monitor for ARTEX control panel fingerprints: console title starting with ARTEX, Next.js framework signature, port 8787; scan for open directories exposing attack kit configurations; block known ARTEX IPs (91.92.240.238, 85.11.168.45, 31.77.229.35, 178.16.54.129); detect autonomous scanning patterns
 - Password spraying and brute force (guidance) — Block known C2 IPs: WISP RAT 199.19.95.66-68, AdaptixC2 85.11.167.52; detect anomalous brute-force and password-spraying patterns; monitor lateral movement indicators
+- FBI FLASH hunt for WISP, vshell, AdaptixC2, and BLOODALCHEMY (guidance) — security-detections-mcp search for BLOODALCHEMY returned no Sigma, Splunk, or Elastic rule. FLASH-20261113-001 tells recipients to hunt web shells, BLOODALCHEMY components, and the RATs WISP, vshell, and AdaptixC2. Microsoft had already tied WISP, vshell, and AdaptixC2 to this campaign. The FLASH does not say BLOODALCHEMY was observed on these intrusions. Citing Microsoft, the FLASH lists 199.19.95.66-68, 91.92.240.238, 85.11.168.45, 178.16.54.129, 31.77.229.35, and 85.11.167.52 as active as of 6 November 2026.
 
 ## Timeline
 - First seen: 2026-10-01
-- Last updated: 2026-11-06
+- Last updated: 2026-11-16
 - 2026-10-01 (Microsoft Threat Intelligence): Storm-3358 ARTEX campaign against Southeast Asian financial institutions begins; autonomous agents exploit file upload and SSRF vulnerabilities
 - 2026-11-06 (Microsoft Threat Intelligence): Microsoft reports Storm-3358 ARTEX abuse expanding; Censys publishes fingerprinting methodology for exposed ARTEX control panels
+- 2026-11-16 (FBI): FLASH-20261113-001, citing Microsoft, lists the campaign's WISP nodes, ARTEX servers, and 85.11.167.52 as active as of 6 November 2026, and tells defenders to hunt WISP, vshell, AdaptixC2, and BLOODALCHEMY. BLOODALCHEMY is an ARTEX-wide hunt artifact in the FLASH, not a Microsoft-confirmed payload on these banks.
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 - [DeepSeek](https://github.com/deepseek-ai) and other LLM backends
 
 ### Other tooling
@@ -116,8 +118,10 @@ Implement file upload restrictions and validation; patch SSRF vulnerabilities; m
 - [ARTEX](https://openattacks.ai/tools/artex/) (`artex`)
 
 ## Source notes
-Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post
+Microsoft Threat Intelligence blog (Nov 6, 2026) primary source; Censys Agentic Asbestos analysis (Silas Cutler) provides ARTEX fingerprinting methodology; all IOCs verified from sources; note IP discrepancy between main text (178.16.54.129) and hunting query (178.15.54.129) in Microsoft post. FBI FLASH-20261113-001, citing that Microsoft post, lists WISP C2 199.19.95.66-68, ARTEX servers 91.92.240.238, 85.11.168.45, 178.16.54.129, and 31.77.229.35, and C2 85.11.167.52 as active as of 6 November 2026. The FLASH table does not include 178.15.54.129. The same published addresses appear in the FLASH CSV. The FLASH asks defenders to hunt web shells, BLOODALCHEMY components, and the open-source RATs WISP, vshell, and AdaptixC2. It describes BLOODALCHEMY as ARTEX-related C2 in the general TTP section. It does not say Microsoft found BLOODALCHEMY on these bank intrusions. A security-detections-mcp search for BLOODALCHEMY returned no Sigma, Splunk, or Elastic rule.
 
 ## Sources
 - [Microsoft Threat Intelligence: ARTEX Abuse Expands as Cybercriminals Target Financial Sector](https://www.microsoft.com/en-us/security/blog/2026/11/06/artex-abuse-expands-as-cybercriminals-target-financial-sector/) — Microsoft
 - [Censys: ARTEX - Agentic Asbestos](https://censys.com/blog/artex-agentic-asbestos/) — Censys
+- [FLASH-20261113-001: Threat Overview of ARTEX Autonomous Penetration Testing Framework](https://www.ic3.gov/CSA/2026/261113.pdf) — FBI
+- [FLASH-20261113-001 indicators](https://www.ic3.gov/CSA/2026/261113.csv) — FBI

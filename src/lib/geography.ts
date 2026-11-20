@@ -42,6 +42,8 @@ export const regionMetadata: Record<
     kind: "country",
   },
   "Hong Kong": { coordinates: [114.17, 22.3], kind: "country" },
+  // Too small for the 110m atlas; placed by hand like Hong Kong.
+  Singapore: { coordinates: [103.82, 1.35], kind: "country" },
   Europe: { coordinates: [20, 53], kind: "region" },
   Africa: { coordinates: [20, 4], kind: "region" },
   Asia: { coordinates: [85, 40], kind: "region" },
