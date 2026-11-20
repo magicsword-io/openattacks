@@ -103,8 +103,8 @@ Monitor for agentic AI framework execution patterns (ARTEX, PentAGI, Cairn, Cybe
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
-- PentAGI (https://github.com/vxcontrol/pentagi)
+- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
+- [PentAGI](https://github.com/vxcontrol/pentagi) (https://github.com/vxcontrol/pentagi)
 - CyberStrikeAI (https://github.com/Ed1s0nZ/CyberStrikeAI, https://github.com/aipentest/cyberstrikeai)
 - [Cairn](https://github.com/oritera/Cairn) (AI web exploitation harness)
 - On-the-fly AI script generation

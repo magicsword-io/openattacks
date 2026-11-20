@@ -1385,8 +1385,8 @@ Verify Docker image integrity via official repository sources and signed images;
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (clean source at https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable.
-- Backdoored [ARTEX](https://github.com/RuoJi6/ARTEX) [Docker](https://github.com/moby/moby) image (tomicdd/artex, congdonglinux/artex - now removed from [Docker](https://github.com/moby/moby) Hub) — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) autonomous offensive agent (clean source at https://github.com/RuoJi6/ARTEX) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
+- Backdoored [ARTEX](https://github.com/RuoJi6/ARTEX) [Docker](https://github.com/moby/moby) image (tomicdd/artex, congdonglinux/artex - now removed from [Docker](https://github.com/moby/moby) Hub) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 
 ### Other tooling
 - [Docker](https://github.com/moby/moby) / [Docker](https://github.com/moby/moby) Compose
@@ -1503,7 +1503,7 @@ Secure .env files and cloud configurations; never expose API keys in GitHub repo
 - Hermes Agent (github.com/NousResearch/hermes-agent)
 - OpenClaw agent
 - grok-4.6 model (AI_radar monitoring)
-- PentAGI (github.com/vxcontrol/pentagi)
+- [PentAGI](https://github.com/vxcontrol/pentagi) (github.com/vxcontrol/pentagi)
 - aipocket (github.com/leepsmarts/aipocket)
 
 ### Other tooling

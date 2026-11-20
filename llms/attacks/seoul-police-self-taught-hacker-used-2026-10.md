@@ -51,7 +51,7 @@ unknown
 ## Tools
 ### AI tooling and models
 - Unnamed AI coding agent
-- autonomous AI pentest system ([ARTEX](https://github.com/RuoJi6/ARTEX) AI per BleepingComputer/Yonhap) — Community-maintained fork; the original repository is unavailable.
+- autonomous AI pentest system ([ARTEX](https://github.com/RuoJi6/ARTEX) AI per BleepingComputer/Yonhap) — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 
 ### Other tooling
 - unknown

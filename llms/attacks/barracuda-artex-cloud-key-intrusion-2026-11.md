@@ -96,7 +96,7 @@ Retire third-party cloud keys when the work ends, and prefer short-lived, narrow
 
 ## Tools
 ### AI tooling and models
-- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX); the tool was not recovered — Community-maintained fork; the original repository is unavailable.
+- [ARTEX](https://github.com/RuoJi6/ARTEX) (https://github.com/RuoJi6/ARTEX); the tool was not recovered — Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.
 
 ### Other tooling
 - Cloud secret stores, infrastructure-as-code state files, instance metadata, and Kubernetes service accounts

@@ -7,6 +7,9 @@ sources:
   - url: https://cloud.google.com/blog/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks
     publisher: Google Threat Intelligence Group / Mandiant
   - url: https://cellcog.ai/blog/workos-artex-breach/
+  - url: https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/
+    title: "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold"
+    publisher: Google Threat Intelligence Group
 borderline: false
 ai_role: attacker_uses_ai_as_operator
 technique_summary: Google's incident responders have seen ARTEX and PentAGI agents run lateral movement, AD credential theft, webshell deployment and exfil prep on their own after operators hand them credentials, with access-to-deep-access times as short as 15 minutes.
@@ -21,12 +24,12 @@ other_tooling: []
 victims_and_sectors: Government; Technology and AI companies; Critical infrastructure; Multiple sectors
 regions:
   - unknown
-region_notes: Target geography was not captured by the Notion feed. Actor attribution is not used as a victim location.
+region_notes: "The 30 October 2026 report did not name countries for UNC7228 or the other crews. The 16 November 2026 tracker says the customized PentAGI platform scanned organizations in Asia. Asia is that activity, not a victim-country list for every crew in this entry. Actor nexus is not a victim region."
 attribution_or_cluster: UNC7228 (GTIG; overlaps Microsoft's Storm-0940); other unnamed financially motivated and suspected PRC-nexus clusters
 scale_and_metrics: unknown
 prevention_angle: unknown
 related_magicsword_projects: []
-source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution."
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: High. Feed novelty: Evolution. The 16 November 2026 GTIG tracker says that from late August to early October 2026 a threat actor used a customized attack orchestration platform built on the open-source version of PentAGI for systematic reconnaissance and vulnerability scanning against organizations in Asia. The public project page checked for that name is https://github.com/vxcontrol/pentagi, which returned HTTP 200 on 16 November 2026. GTIG did not publish a repository URL. frameworks already includes pentagi. Cairn is not added here: the same tracker describes a separate Cairn intrusion, including a US aerospace target, which is noted on unit42-cairn-cl-sta-1238-2026-11 rather than attributed to UNC7228."
 tags:
   - notion-import
   - agentic-operations
@@ -66,7 +69,7 @@ detections:
     notes: "security-detections-mcp searches for jsp and webshell returned Linux webshell and SAP NetWeaver rules. None encode SET GLOBAL general_log_file writes of JSP content, the cl1217.jsp-style names, or artex-probe filenames. Hunt those strings in web and database logs."
 timeline:
   first_seen: "2026-08"
-  last_updated: "2026-11-15"
+  last_updated: "2026-11-16"
   updates:
     - date: "2026-10-30"
       source: Google Threat Intelligence Group and Mandiant
@@ -74,3 +77,7 @@ timeline:
     - date: "2026-11-15"
       source: OpenAttacks
       summary: "Tagged ARTEX and PentAGI and backfilled attribution confidence, detections, and timeline from the cited GTIG report."
+    - date: "2026-11-16"
+      source: Google Threat Intelligence Group
+      summary: "GTIG says a customized platform built on open-source PentAGI was used from late August to early October 2026 for reconnaissance and vulnerability scanning against organizations in Asia. frameworks stays artex and pentagi."
+last_reviewed: "2026-11-16"
