@@ -298,19 +298,27 @@ test("dot timeline supports highlighting, pausing and reduced motion", async ({
 });
 
 test("map markers lead to normalized region filters", async ({ page }) => {
+  const hongKong = attacks.filter((attack) =>
+    attack.regions.includes("Hong Kong"),
+  );
+  const label = `${hongKong.length} ${hongKong.length === 1 ? "entry" : "entries"}`;
   await page.goto("/regions/");
   await expect(page.locator(".world-map")).toBeVisible();
   await page
-    .getByRole("link", { name: "Hong Kong, 1 entry. Filter catalog." })
+    .getByRole("link", { name: `Hong Kong, ${label}. Filter catalog.` })
     .click();
   await expect(
     page.getByRole("combobox", { name: "Filter by region", exact: true }),
   ).toHaveValue("Hong Kong");
-  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(1);
-  await expect(page.locator("[data-attack-row]:visible")).toHaveAttribute(
-    "data-id",
-    "arup-deepfake-video-fraud-2024-01",
+  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
+    hongKong.length,
   );
+  const ids = await page
+    .locator("[data-attack-row]:visible")
+    .evaluateAll((rows) =>
+      rows.map((row) => row.getAttribute("data-id")).sort(),
+    );
+  expect(ids).toEqual(hongKong.map((attack) => attack.id).sort());
 });
 
 test("entry flows render with sources and controls; removed sections stay absent", async ({
