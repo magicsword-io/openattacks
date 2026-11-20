@@ -256,7 +256,18 @@ const chartHeight = baseline + 49;
   )}
   <div class="chart-bottom">
     <span class="chart-inspector" data-chart-inspector></span>
-    <a href={href("timeline/")}>Explore timeline</a>
+    <span class="chart-bottom-links">
+      {!large && (
+        <a
+          class="pew-egg"
+          href={href("pewpew/")}
+          title="Prefer lasers to nuance? (Or type “pew” anywhere.)"
+        >
+          pew pew
+        </a>
+      )}
+      <a href={href("timeline/")}>Explore timeline</a>
+    </span>
   </div>
   <span class="sr-only" data-chart-status aria-live="polite"></span>
 </div>
