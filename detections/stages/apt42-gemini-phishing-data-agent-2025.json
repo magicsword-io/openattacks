@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "provider",
+    "note": "Research and translated lure requests are provider-side evidence, not a victim-side AI detector.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "phishing",
+    "note": "The data-processing agent's deployment is unconfirmed; the hunt concerns delivery of phishing messages only."
+  },
+  "step-4": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  }
+}

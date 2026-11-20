@@ -1,0 +1,14 @@
+{
+  "contractor-creds": {
+    "profile": "credentials"
+  },
+  "llm-scripts": {
+    "profile": "windows-shell"
+  },
+  "adcs": {
+    "profile": "windows-credential-dump"
+  },
+  "encrypt": {
+    "profile": "impact"
+  }
+}

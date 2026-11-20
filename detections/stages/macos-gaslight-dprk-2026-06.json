@@ -1,0 +1,14 @@
+{
+  "spearphishing": {
+    "profile": "unassessed"
+  },
+  "execute-backdoor": {
+    "profile": "unassessed"
+  },
+  "evade-analysis": {
+    "profile": "unassessed"
+  },
+  "exfiltration": {
+    "profile": "unassessed"
+  }
+}

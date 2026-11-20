@@ -1,0 +1,14 @@
+{
+  "webshell": {
+    "profile": "windows-shell"
+  },
+  "webconfig": {
+    "profile": "credentials"
+  },
+  "aws-enum": {
+    "profile": "cloud"
+  },
+  "secret": {
+    "profile": "cloud"
+  }
+}

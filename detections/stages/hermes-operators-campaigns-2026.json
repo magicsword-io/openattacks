@@ -1,0 +1,14 @@
+{
+  "initial-access": {
+    "profile": "unassessed"
+  },
+  "deploy-hermes": {
+    "profile": "unassessed"
+  },
+  "autonomous-ops": {
+    "profile": "unassessed"
+  },
+  "exfiltration": {
+    "profile": "unassessed"
+  }
+}

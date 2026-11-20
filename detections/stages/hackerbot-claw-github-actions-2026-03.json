@@ -1,0 +1,17 @@
+{
+  "scan": {
+    "profile": "unobserved",
+    "note": "Public-repository scanning is attacker-side activity and has no organization-local query unless platform telemetry is available."
+  },
+  "exploit": {
+    "profile": "package",
+    "note": "Review workflow changes and runs involving untrusted pull-request input; a submitted pull request is not proof of execution.",
+    "reviewed": "2026-11-06"
+  },
+  "harvest": {
+    "profile": "credentials"
+  },
+  "pivot": {
+    "profile": "repository"
+  }
+}

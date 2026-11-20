@@ -1,0 +1,14 @@
+{
+  "probe": {
+    "profile": "agent-tools"
+  },
+  "shell": {
+    "profile": "linux-fileless-execution"
+  },
+  "keys": {
+    "profile": "linux-ssh-persistence"
+  },
+  "hide": {
+    "profile": "unassessed"
+  }
+}

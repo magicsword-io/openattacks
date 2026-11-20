@@ -1,0 +1,17 @@
+{
+  "publish-malicious-skills": {
+    "profile": "repository"
+  },
+  "user-install": {
+    "profile": "agent-tools"
+  },
+  "deploy-backdoor": {
+    "profile": "payload"
+  },
+  "persist-claude-md": {
+    "profile": "agent-input"
+  },
+  "exfiltrate-credentials": {
+    "profile": "exfil"
+  }
+}

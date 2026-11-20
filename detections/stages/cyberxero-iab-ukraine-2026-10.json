@@ -1,0 +1,14 @@
+{
+  "initial-compromise": {
+    "profile": "unassessed"
+  },
+  "deploy-swarm": {
+    "profile": "unassessed"
+  },
+  "coordinated-escalation": {
+    "profile": "unassessed"
+  },
+  "sell-access": {
+    "profile": "unassessed"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "provider",
+    "note": "Keep the separately described development and impersonation capabilities distinct; do not invent a combined victim chain.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "phishing"
+  },
+  "step-4": {
+    "profile": "payload",
+    "note": "Confirm the payload platform and delivery branch from original reporting before choosing endpoint-specific rules. No Windows policy coverage is assumed here."
+  }
+}

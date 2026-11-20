@@ -1,4 +1,3 @@
-import annotations from "../../detections/stages.json";
 import catalog from "../../detections/catalog.json";
 import { href, repo, type Attack, type AttackFlowNode } from "./catalog";
 import { attackFlow } from "./attack-flow";
@@ -92,7 +91,16 @@ type Annotation = {
   note?: string;
   reviewed?: string;
 };
-const curated = annotations as Record<string, Record<string, Annotation>>;
+const annotationFiles = import.meta.glob<Record<string, Annotation>>(
+  "../../detections/stages/*.json",
+  { eager: true, import: "default" },
+);
+const curated = Object.fromEntries(
+  Object.entries(annotationFiles).map(([path, mappings]) => [
+    path.slice(path.lastIndexOf("/") + 1, -".json".length),
+    mappings,
+  ]),
+);
 export function stageGuidance(
   attack: Attack,
   node: AttackFlowNode,

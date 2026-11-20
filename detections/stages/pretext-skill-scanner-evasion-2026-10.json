@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "skill-review",
+    "resource": "LOLSkills"
+  },
+  "step-2": {
+    "profile": "skill-review"
+  },
+  "step-3": {
+    "profile": "skill-review"
+  },
+  "step-4": {
+    "profile": "skill-review",
+    "note": "Compare scanner results and independent review on the evaluated bundles; measured evasion is not a runtime compromise alert.",
+    "reviewed": "2026-11-04"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "create-fakes": {
+    "profile": "social"
+  },
+  "agent-recommends": {
+    "profile": "agent-input",
+    "note": "Review recommendation provenance and the subsequent action. A repository appearing in search results is not compromise.",
+    "reviewed": "2026-11-06"
+  },
+  "user-installs": {
+    "profile": "package-install-execution"
+  },
+  "compromise": {
+    "profile": "credentials"
+  }
+}

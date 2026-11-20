@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "provider"
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "provider",
+    "note": "Campaign preparation across models requires provider/operator records; victim process events do not attribute AI assistance.",
+    "reviewed": "2026-11-04"
+  },
+  "step-4": {
+    "profile": "provider"
+  }
+}

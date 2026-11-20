@@ -1,0 +1,14 @@
+{
+  "step-1": {
+    "profile": "package"
+  },
+  "step-2": {
+    "profile": "credentials"
+  },
+  "step-3": {
+    "profile": "agent-tools"
+  },
+  "step-4": {
+    "profile": "repository"
+  }
+}

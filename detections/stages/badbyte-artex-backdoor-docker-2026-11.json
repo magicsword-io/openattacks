@@ -1,0 +1,20 @@
+{
+  "close-source": {
+    "profile": "unassessed"
+  },
+  "push-backdoor": {
+    "profile": "unassessed"
+  },
+  "swap-compose": {
+    "profile": "unassessed"
+  },
+  "operator-pull": {
+    "profile": "unassessed"
+  },
+  "backdoor-access": {
+    "profile": "unassessed"
+  },
+  "credential-theft": {
+    "profile": "unassessed"
+  }
+}

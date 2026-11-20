@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "extension"
+  },
+  "step-2": {
+    "profile": "extension"
+  },
+  "step-3": {
+    "profile": "credentials",
+    "note": "Collect extension/application access evidence for conversations and URLs; generic file-write telemetry does not demonstrate these reads.",
+    "reviewed": "2026-11-04"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

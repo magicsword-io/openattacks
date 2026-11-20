@@ -25,7 +25,7 @@ Published site:
 
 `https://openattacks.ai/llms-full.txt` is the entire catalog in one file. It is larger than most chat context windows. Do not fetch it unless the user explicitly asks for the complete file.
 
-A git checkout of the catalog uses the same relative paths: `llms.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, and `llms/by-framework/<id>.md`. The structured export in the repo is `data/attacks.json` (the same records as `api/attacks.json` on the site). If those generated files are not in the checkout, fetch the site URLs above. Do not invent entries to fill a missing file.
+In a git checkout, `npm run llm:build` generates exports at the same relative paths: `llms.txt`, `llms/attacks/<id>.md`, `llms/by-category/<category>.md`, `llms/by-month/<YYYY-MM>.md`, and `llms/by-framework/<id>.md`. The local structured export is `data/attacks.json` (the same records as `api/attacks.json` on the site). If those generated files are not in the checkout, fetch the site URLs above. Do not invent entries to fill a missing file.
 
 Category ids are `adversary-use-of-ai` and `attacks-on-ai`. Month files use the report month, `YYYY-MM`.
 

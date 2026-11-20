@@ -1,0 +1,14 @@
+{
+  "distribute-skills": {
+    "profile": "unassessed"
+  },
+  "user-installs": {
+    "profile": "unassessed"
+  },
+  "execute-payload": {
+    "profile": "unassessed"
+  },
+  "exfiltrate-persist": {
+    "profile": "unassessed"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "step-1": {
+    "profile": "web"
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "exfil"
+  },
+  "step-4": {
+    "profile": "phishing",
+    "note": "Investigate extortion communications alongside the preceding data-access evidence; message polish does not prove AI involvement."
+  }
+}

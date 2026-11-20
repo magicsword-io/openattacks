@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "phishing"
+  },
+  "step-2": {
+    "profile": "phishing",
+    "note": "Correlate the advertising pretext with extension or installer provenance rather than matching AI branding alone.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "extension",
+    "note": "Treat the extension and standalone installer as separate branches; extension allowlisting is a browser control."
+  },
+  "step-4": {
+    "profile": "credentials"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "step-1": {
+    "profile": "windows-install",
+    "control": "unapproved-code",
+    "scope": "A managed Windows device with a policy denying the implant before it starts."
+  },
+  "step-2": {
+    "profile": "provider",
+    "note": "Operator goals and system prompts require access to the operator or provider trace; downstream host activity is separate evidence.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "agent-tools",
+    "resource": "LOLSkills"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

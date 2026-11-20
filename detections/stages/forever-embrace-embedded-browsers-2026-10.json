@@ -1,0 +1,14 @@
+{
+  "open": {
+    "profile": "web"
+  },
+  "bend": {
+    "profile": "agent-input"
+  },
+  "act": {
+    "profile": "unassessed"
+  },
+  "status": {
+    "profile": "unassessed"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "ad": {
+    "profile": "phishing",
+    "note": "The ad and the public artifact are the lure. A visit to claude.ai is not itself the signal.",
+    "reviewed": "2026-11-19"
+  },
+  "redirect": {
+    "profile": "phishing",
+    "note": "The artifact redirect is user-generated content. Pair it with the download host.",
+    "reviewed": "2026-11-19"
+  },
+  "sideload": {
+    "profile": "windows-dll-sideload",
+    "note": "Unsigned libcef.dll and tempdir.dll load beside signed hosts. The signed host hashes are benign.",
+    "reviewed": "2026-11-19"
+  },
+  "rat": {
+    "profile": "payload",
+    "note": "SectopRAT's C2 address is on a chain contract. The live address in the report is 2.24.131.246.",
+    "reviewed": "2026-11-19"
+  }
+}
