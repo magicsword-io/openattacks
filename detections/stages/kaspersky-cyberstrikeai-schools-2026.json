@@ -1,0 +1,21 @@
+{
+  "initial-access": {
+    "profile": "unobserved",
+    "note": "The source states that SQL Server was compromised but does not establish the access procedure."
+  },
+  "implant": {
+    "profile": "windows-install"
+  },
+  "llm-decision": {
+    "profile": "unobserved",
+    "note": "The LLM decision occurs on attacker-controlled C2 infrastructure and is not independently observable in victim logs."
+  },
+  "privilege-escalation": {
+    "profile": "windows-credential-dump",
+    "note": "This query covers the reported comsvcs.dll LSASS dump. The scheduled task and certutil branches require their own correlation.",
+    "reviewed": "2026-11-06"
+  },
+  "domain-admin": {
+    "profile": "windows-dcsync"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "phishing"
+  },
+  "step-2": {
+    "profile": "phishing",
+    "note": "Use delivery provenance and the subsequent pasted command; Claude branding alone is not a detection signal.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "mac-shell"
+  },
+  "step-4": {
+    "profile": "mac-shell"
+  }
+}

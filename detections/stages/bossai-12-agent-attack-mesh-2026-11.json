@@ -1,0 +1,17 @@
+{
+  "mesh-deploy": {
+    "profile": "unassessed"
+  },
+  "recon": {
+    "profile": "unassessed"
+  },
+  "vuln-scan": {
+    "profile": "unassessed"
+  },
+  "exploit": {
+    "profile": "unassessed"
+  },
+  "exfiltrate": {
+    "profile": "unassessed"
+  }
+}

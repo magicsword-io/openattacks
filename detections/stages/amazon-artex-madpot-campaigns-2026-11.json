@@ -1,0 +1,21 @@
+{
+  "instruct": {
+    "profile": "unassessed",
+    "note": "Standing instructions were recovered from agent requests to MadPot, not from a victim host."
+  },
+  "gateways": {
+    "profile": "web",
+    "note": "The records describe hunting exposed AI gateways. Amazon did not verify each outcome."
+  },
+  "keys": {
+    "profile": "credentials"
+  },
+  "kyc": {
+    "profile": "unassessed",
+    "note": "Deepfake liveness attempts were described in agent memory. No host query for a rejected vendor verdict was mapped."
+  },
+  "rejected": {
+    "profile": "unobserved",
+    "note": "Amazon says every recorded liveness verdict rejected the deepfake. That rejection is not a local execution event."
+  }
+}

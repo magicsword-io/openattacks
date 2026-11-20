@@ -1,0 +1,14 @@
+{
+  "step-1": {
+    "profile": "package"
+  },
+  "step-2": {
+    "profile": "mcp-config"
+  },
+  "step-3": {
+    "profile": "credentials"
+  },
+  "step-4": {
+    "profile": "persistence"
+  }
+}

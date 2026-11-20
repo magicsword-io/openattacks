@@ -1,0 +1,14 @@
+{
+  "farm-accounts": {
+    "profile": "identity"
+  },
+  "search-env": {
+    "profile": "credentials"
+  },
+  "validate": {
+    "profile": "credentials"
+  },
+  "panel": {
+    "profile": "agent-tools"
+  }
+}

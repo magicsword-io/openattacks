@@ -14,11 +14,12 @@ import {
   buildCatalog,
   formats,
   generate,
+  readStageMappings,
 } from "../scripts/build-detections.mjs";
 
 const root = new URL("../", import.meta.url);
 const read = (file) => readFileSync(new URL(file, root), "utf8");
-const annotations = JSON.parse(read("detections/stages.json"));
+const annotations = readStageMappings();
 const compiled = JSON.parse(read("detections/catalog.json"));
 const packs = JSON.parse(read("dist/api/defenses.json")).entries;
 
@@ -113,20 +114,24 @@ function scratch(run) {
 
 test("validation rejects missing phases, stale references and unknown profiles", () =>
   scratch((base) => {
-    const file = join(base, "detections/stages.json");
-    const stages = JSON.parse(readFileSync(file, "utf8"));
-    const id = Object.keys(stages)[0];
-    const node = Object.keys(stages[id])[0];
-    const saved = stages[id][node];
-    delete stages[id][node];
+    const directory = join(base, "detections", "stages");
+    const id = Object.keys(annotations)[0];
+    const file = join(directory, `${id}.json`);
+    const original = readFileSync(file, "utf8");
+    rmSync(file);
+    assert.throws(() => buildCatalog(base), /add stage mappings/);
+
+    const stages = JSON.parse(original);
+    const node = Object.keys(stages)[0];
+    delete stages[node];
     writeFileSync(file, JSON.stringify(stages));
     assert.throws(() => buildCatalog(base), /missing or stale stage/);
-    stages[id][node] = { ...saved, profile: "invented-profile" };
+    stages[node] = { profile: "invented-profile" };
     writeFileSync(file, JSON.stringify(stages));
     assert.throws(() => buildCatalog(base), /unknown detection profile/);
-    stages[id][node] = saved;
-    stages["invented-attack"] = {};
-    writeFileSync(file, JSON.stringify(stages));
+    writeFileSync(file, original);
+
+    writeFileSync(join(directory, "invented-attack.json"), "{}");
     assert.throws(() => buildCatalog(base), /Stale detection attack/);
   }));
 

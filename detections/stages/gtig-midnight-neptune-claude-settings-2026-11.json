@@ -1,0 +1,20 @@
+{
+  "recruit": {
+    "profile": "phishing"
+  },
+  "clickfix": {
+    "profile": "phishing",
+    "note": "GTIG named ClickFix diagnostic scripts and did not publish the command or the operating system."
+  },
+  "settings": {
+    "profile": "mcp-config",
+    "note": "The reported file is .claude/settings.json in an internal repository."
+  },
+  "somber": {
+    "profile": "agent-tools"
+  },
+  "pats": {
+    "profile": "credentials",
+    "note": "GitHub personal access tokens named after Microsoft Copilot. The creation event is the observable, not the display name by itself."
+  }
+}

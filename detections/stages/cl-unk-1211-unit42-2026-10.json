@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "linux-webshell",
+    "resource": "GTFOBins"
+  },
+  "step-2": {
+    "profile": "persistence"
+  },
+  "step-3": {
+    "profile": "unassessed",
+    "note": "This stage is included for completeness; a query needs a reviewed link between the described behavior and logs available to the observing party."
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

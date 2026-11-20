@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "analysis-review",
+    "resource": "LOLDrivers",
+    "note": "The separate MANTLEMAZE driver and ROZESHELL compiler behaviors are not edges in this analysis-evasion flow; do not infer a BYOVD chain from this node."
+  },
+  "step-2": {
+    "profile": "analysis-review"
+  },
+  "step-3": {
+    "profile": "analysis-review"
+  },
+  "step-4": {
+    "profile": "analysis-review",
+    "note": "Evaluate disagreements against independently labeled samples and benign controls; results apply to the tested models and conditions.",
+    "reviewed": "2026-11-04"
+  }
+}

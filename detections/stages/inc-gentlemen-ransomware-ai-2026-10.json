@@ -1,0 +1,14 @@
+{
+  "initial-access": {
+    "profile": "unassessed"
+  },
+  "deploy-agent": {
+    "profile": "unassessed"
+  },
+  "recon-lateral": {
+    "profile": "unassessed"
+  },
+  "exfil-ransomware": {
+    "profile": "unassessed"
+  }
+}

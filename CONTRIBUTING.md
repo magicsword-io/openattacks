@@ -165,6 +165,6 @@ Building the index clones the upstream rule repositories and needs network acces
 
 ## Stage detections
 
-Add an explicit mapping for every phase in `detections/stages.json`, including attacks without simulations. Select a reviewed profile from `detections/definitions/`, explain its fit in a stage note when needed, or use `unassessed` / `unobserved` to record a gap. Fallback diagrams use `entry`, `activity` and `ai` IDs. Do not infer victim-side detection of attacker-side prompts, unknown delivery or unconfirmed deployments.
+Add an explicit mapping for every phase in `detections/stages/<attack-id>.json`, including attacks without simulations. Select a reviewed profile from `detections/*.yaml`, explain its fit in a stage note when needed, or use `unassessed` / `unobserved` to record a gap. Fallback diagrams use `entry`, `activity` and `ai` IDs. Do not infer victim-side detection of attacker-side prompts, unknown delivery or unconfirmed deployments.
 
 Profiles hold canonical Sigma / KQL / SPL text, required telemetry, field mapping, research terms and limits. They are catalog-authored drafts; upstream rules need distinct provenance and license attribution. Keep custom-schema event names explicit and retain existing Sigma IDs when editing a shared profile. Run `npm run detections:build` after changing a definition, followed by the normal validation, build and test checks. See [the detection guide](detections/README.md).

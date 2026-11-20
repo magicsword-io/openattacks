@@ -1,0 +1,14 @@
+{
+  "blank-key": {
+    "profile": "identity"
+  },
+  "install": {
+    "profile": "windows-install"
+  },
+  "relaytrap": {
+    "profile": "windows-shell"
+  },
+  "spread": {
+    "profile": "unobserved"
+  }
+}

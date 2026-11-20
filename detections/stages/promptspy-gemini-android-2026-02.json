@@ -1,0 +1,14 @@
+{
+  "install": {
+    "profile": "unassessed"
+  },
+  "initial-collection": {
+    "profile": "unassessed"
+  },
+  "gemini-decision": {
+    "profile": "unassessed"
+  },
+  "adaptive-targeting": {
+    "profile": "unassessed"
+  }
+}

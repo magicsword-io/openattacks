@@ -1,0 +1,17 @@
+{
+  "ai-monitoring": {
+    "profile": "unassessed"
+  },
+  "recon": {
+    "profile": "unassessed"
+  },
+  "harvest": {
+    "profile": "unassessed"
+  },
+  "validate": {
+    "profile": "unassessed"
+  },
+  "monetize": {
+    "profile": "unassessed"
+  }
+}

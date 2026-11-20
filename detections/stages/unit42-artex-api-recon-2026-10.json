@@ -1,0 +1,17 @@
+{
+  "recon": {
+    "profile": "unassessed"
+  },
+  "exploit-attempts": {
+    "profile": "unassessed"
+  },
+  "registration": {
+    "profile": "unassessed"
+  },
+  "data-access": {
+    "profile": "unassessed"
+  },
+  "data-write": {
+    "profile": "unassessed"
+  }
+}

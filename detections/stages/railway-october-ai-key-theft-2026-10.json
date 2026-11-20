@@ -1,0 +1,17 @@
+{
+  "signup": {
+    "profile": "identity"
+  },
+  "build-escape": {
+    "profile": "unassessed"
+  },
+  "oidc": {
+    "profile": "cloud"
+  },
+  "decrypt": {
+    "profile": "credentials"
+  },
+  "resale": {
+    "profile": "exfil"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  },
+  "step-2": {
+    "profile": "agent-tools",
+    "resource": "LOLSkills"
+  },
+  "step-3": {
+    "profile": "agent-tools"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

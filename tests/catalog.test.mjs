@@ -5,6 +5,7 @@ import { parse } from "yaml";
 import { entryErrors, frameworkLinkErrors } from "../src/lib/schema.mjs";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { readStageMappings } from "../scripts/build-detections.mjs";
 
 const files = readdirSync(new URL("../attacks/", import.meta.url)).filter(
   (name) => name.endsWith(".yaml"),
@@ -370,12 +371,7 @@ test("geography excludes actor and infrastructure labels; ATLAS mappings use off
 });
 
 test("stage defense annotations resolve to real attacks and nodes; exports preserve evidence and scope", () => {
-  const annotations = JSON.parse(
-    readFileSync(
-      new URL("../detections/stages.json", import.meta.url),
-      "utf8",
-    ),
-  );
+  const annotations = readStageMappings();
   const packs = JSON.parse(
     readFileSync(new URL("../dist/api/defenses.json", import.meta.url), "utf8"),
   );
