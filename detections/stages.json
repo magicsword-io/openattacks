@@ -3941,5 +3941,64 @@
       "note": "The appraisal is written to local reports and zips. Talos names Telegram as the customer channel and no operator server.",
       "reviewed": "2026-11-19"
     }
+  },
+  "amazon-cairn-monai-label-zero-day-universities-2026-11": {
+    "exposed": {
+      "profile": "web",
+      "note": "The exposed Cairn panel is an unauthenticated web service. Amazon does not name a host rule for the panel.",
+      "reviewed": "2026-11-21"
+    },
+    "agents": {
+      "profile": "agent-input",
+      "note": "Operator prompts and AI output were on the attacker panel. That is not victim-side telemetry.",
+      "reviewed": "2026-11-21"
+    },
+    "failed": {
+      "profile": "credentials",
+      "note": "The Redis operation and the GPU-server password spray failed. The credential profile is the password spray, not a Redis rule.",
+      "reviewed": "2026-11-21"
+    },
+    "traversal": {
+      "profile": "web",
+      "note": "MONAI Label upload path traversal is application HTTP. The generic web profile does not name those routes.",
+      "reviewed": "2026-11-21"
+    },
+    "shell": {
+      "profile": "python-startup-persistence",
+      "note": "The root shell started from a write to sitecustomize.py and a later Python process. Amazon does not name the operating system.",
+      "reviewed": "2026-11-21"
+    },
+    "second": {
+      "profile": "unassessed",
+      "note": "Amazon infers the operator already had a tunnel into a second university. The proxy itself was not recovered.",
+      "reviewed": "2026-11-21"
+    }
+  },
+  "symantec-witchetty-african-stock-exchange-ai-toolkit-2026-11": {
+    "server": {
+      "profile": "windows-shell",
+      "note": "Commands ran under the IIS worker. The 2026 entry vector is unknown.",
+      "reviewed": "2026-11-21"
+    },
+    "implants": {
+      "profile": "windows-dll-sideload",
+      "note": "Witchetty implants include the Avast wsc_proxy hijack and the McAfee mfeann.exe pair. The profile is a DLL-load hunt, not a hash match.",
+      "reviewed": "2026-11-21"
+    },
+    "modules": {
+      "profile": "windows-shell",
+      "note": "Forty-one PowerShell modules under the existing webshell. The shared scaffold is script content, not a process name.",
+      "reviewed": "2026-11-21"
+    },
+    "hunt": {
+      "profile": "credentials",
+      "note": "The modules searched for passwords, keys, and tokens and tested them against exchange APIs. A successful login was not observed.",
+      "reviewed": "2026-11-21"
+    },
+    "exfil": {
+      "profile": "exfil",
+      "note": "Output left as DNS lookups to an oast.pro token. The collector was not visible, and Symantec did not see data theft.",
+      "reviewed": "2026-11-21"
+    }
   }
 }
