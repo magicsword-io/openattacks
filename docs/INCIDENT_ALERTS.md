@@ -23,7 +23,7 @@ Vercel invokes `/api/incident-alert-digest` at 14:00 UTC using the schedule in `
 ## Dry run and activate
 
 1. Run the mocked suite with `node --test tests/incident-alerts.test.mjs`. To include the SQL integration test, run the same command with `ALERTS_TEST_DATABASE_URL` set to a disposable local Postgres connection. It creates and drops its own test schema. Both use mock email data. Build the site and run `npx playwright test tests/browser/incident-alerts.spec.ts` to verify the signup UI.
-2. Deploy `main` to Production in `baseline` mode. In **Schedules → Cron Jobs**, check that `/api/incident-alert-digest` appears once. A preview request to the function or signup API should return 503. An unauthenticated request to the active production cron should return 401. [Vercel cron setup and logs](https://vercel.com/docs/schedules/cron-jobs/manage-cron-jobs)
+2. Deploy `main` to Production in `baseline` mode. In **Schedules → Cron Jobs**, check that `/api/incident-alert-digest` appears once. Sign into the preview if Deployment Protection is enabled, then check that `/alerts/` shows signup as unavailable and both alert functions return 503. An unauthenticated request to the active production cron should return 401. [Vercel cron setup and logs](https://vercel.com/docs/schedules/cron-jobs/manage-cron-jobs)
 3. From a trusted shell with `CRON_SECRET` already set, make an authenticated dry run. This returns aggregate counts and leaves storage and mail untouched.
 
    ```sh
@@ -41,4 +41,4 @@ Check aggregate job responses in Vercel's runtime logs and inspect provider even
 
 Each invocation has a bounded send window. Monitor `pending` counts as the list grows, and manually drain large queues with the same authenticated endpoint. Check the applicable [Resend quotas](https://resend.com/docs/api-reference/rate-limit) and [Vercel limits](https://vercel.com/docs/schedules/cron-jobs/usage-and-pricing) before a larger rollout.
 
-To pause, set `INCIDENT_ALERTS_MODE=paused` and redeploy with the database connected. Keep the database private and restrict access to email addresses and unsubscribe tokens. Application logs and job responses contain status and counts. Expired unconfirmed addresses are pruned during scheduled runs. Keep the catalog IDs and delivery records when rotating provider credentials or redeploying so previously sent alerts remain deduplicated.
+To pause, set `INCIDENT_ALERTS_MODE=paused` and redeploy with the database connected. Restrict access to the database, provider records, and request URLs containing verification or unsubscribe tokens. Application logs and job responses contain status and counts. Expired unconfirmed addresses are pruned during scheduled runs. Keep the catalog IDs and delivery records when rotating provider credentials or redeploying so previously sent alerts remain deduplicated.
