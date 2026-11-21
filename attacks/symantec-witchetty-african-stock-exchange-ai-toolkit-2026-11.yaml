@@ -1,0 +1,168 @@
+id: symantec-witchetty-african-stock-exchange-ai-toolkit-2026-11
+name: Symantec - Likely AI-written PowerShell toolkit hunts credentials at an African stock exchange (Witchetty implants on the same server)
+date_reported: "2026-11-19"
+date_activity_start: "2026-04"
+date_activity_end: null
+researcher: Thibaut Passilly, Brigid O Gorman
+org: Broadcom
+sources:
+  - url: https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+    title: Major African Stock Exchange Targeted in AI-Assisted Attack
+    publisher: Symantec Threat Hunter Team
+  - url: https://www.security.com/blog-post/african-stock-exchange-ai-assisted-attack
+    title: Major African Stock Exchange Targeted in AI-Assisted Attack
+    publisher: SECURITY.COM
+  - url: https://gbhackers.com/african-stock-exchange-credential-theft/
+    title: African stock exchange credential theft
+    publisher: GBHackers
+  - url: https://cybersecuritynews.com/ai-assisted-powershell/
+    title: Hackers Use AI-Assisted PowerShell Toolkit With 41 Modules to Target African Stock Exchange
+    publisher: Cyber Security News
+  - url: https://www.welivesecurity.com/2022/04/27/lookback-ta410-umbrella-cyberespionage-ttps-activity/
+    title: A lookback under the TA410 umbrella, Its cyberespionage TTPs and activity
+    publisher: ESET
+  - url: https://hijacklibs.net/entries/3rd_party/avast/wsc.html
+    title: Avast wsc.dll
+    publisher: HijackLibs
+  - url: https://hijacklibs.net/entries/3rd_party/mcafee/lockdown.html
+    title: McAfee LockDown.dll
+    publisher: HijackLibs
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: llm_generated_malware
+ai_role_secondary: null
+ai_role_detail: "Symantec says the 41 modules were AI-written or AI-assisted and does not identify a model. No single authorship signal is conclusive. The modules were launched under an existing webshell. Symantec does not describe an AI agent choosing the intrusion steps, so this entry does not add attacker_uses_ai_as_operator."
+technique_summary: "Thibaut Passilly and Brigid O Gorman (Symantec Threat Hunter Team, Broadcom; SECURITY.COM, created 19 November 2026) describe a likely AI-written or AI-assisted PowerShell toolkit on a stock exchange in an unnamed African country. Forty-one modules ran under a webshell in the IIS worker process for 3 minutes 12 seconds on 20 September 2026, from 08:44 to 08:47 UTC, a new module every few seconds. Host and process modules (spid1, proc2, proc3, smbctx1, smbsc1) enumerated the machine, user, drives, SMB connections, and process trees via WMI. awslocal1 hunted AWS CLI config, environment variables, and Docker, Kubernetes, Terraform, Jenkins, and GitLab processes. iis1, iisa1, and iisp2 profiled IIS through the WebAdministration module. Secret scraping (cfg1, sites1, xpjs1, dep1, sysm1, sysh1, sysv2, gpp1, awsa1) searched web roots, C:\\Deployer, and SYSVOL for web.config, .xml, .json, and .env files, Group Policy cpassword values, AWS keys, and database connection strings. rdsnet1 opened TCP 5432 to an AWS RDS PostgreSQL instance. scq1 queried Microsoft SQL Server with integrated authentication. SharePoint and TFS modules (spf1, spl1, spd1, spd2, sps1, tfs1, tfs2) searched sites for the keywords aws, credential, and password and queried TFS project APIs. API modules (api1, api2, map1, dbg1, adm1, admt1, adm2, keys1, key4, xtok1, cscs1, ipo1) probed internal debug endpoints, attempted an admin login with hardcoded credentials to obtain JWTs, and queried profile and banking data. cas1 and wmi1 queried the SCCM AdminService and WMI class SMS_R_System for LastLogonUserName. Harvested x-api-key values and a bearer token were cycled against the exchange investment API and a securities depository gateway. Those requests connected by IP, set the Host header manually, disabled certificate validation, and sent a blank key as a control. cscs1 and ipo1 queried capital-markets endpoints, including one specific investor number that Symantec does not publish. Authorship signals, which Symantec says are not conclusive one by one, are an identical opening line setting ErrorActionPreference to SilentlyContinue, the same outer try/catch, the same hex encoding, the empty-output sentinel 454d505459 (the hex of EMPTY), a DNS exfiltration loop copied into all 41 modules, generic variable names, one module with a unique progress variable, and one deliberate invalid-credential test. Each module split hex output into 50-character chunks and resolved them with [Net.Dns]::GetHostAddresses as a name under the token danoam334iqjo0ap2scg6ofosjxfgqhsa.oast.pro. Symantec calls oast.pro a public out-of-band testing service. The collector was not visible. Symantec does not say whether any credential or key worked. Six persistence implants on the server are attributed to Witchetty (LookingFrog) with high confidence. ESET's April 2022 TA410 profile names LookingFrog as one of three TA410 sub-groups and does not use the name Witchetty. Symantec says one implant was first seen in 2020, that the implants were present on this server in April 2026, and that Symantec's September 2022 reporting had already described Witchetty hitting this same exchange with ProxyShell and ProxyLogon webshells. The toolkit itself is not attributed. Symantec leaves open Witchetty with new tooling, a second operator using the access, or an unrelated actor. No privilege escalation or data theft was seen. The earliest malicious activity Symantec dates on the server is April 2026, and Symantec says the attackers may have been present longer."
+initial_access: "Unknown for the 2026 activity. The 41 modules ran under a webshell in the IIS worker process, which Symantec says suggests a vulnerability may have been exploited. Symantec does not name that vulnerability. The 2022 Witchetty access to this exchange used ProxyShell and ProxyLogon. This report does not say those bugs were used again in 2026."
+ai_tooling_and_models:
+  - "Unidentified model. Symantec assesses the 41 PowerShell modules as AI-written or AI-assisted."
+other_tooling:
+  - "PowerShell under an IIS webshell"
+  - "Witchetty persistence implants on the same server, not attributed to the toolkit: Avast wsc_proxy hijack, ShellcodeLoader, svchost XOR loader for WindowsUpdate.xml, VSPerfCmd loader, Nim DLL impersonating VSPMsg.dll, mfeann.exe, setting.dat XOR loaders, Cobalt Strike beacons, Mimikatz"
+victims_and_sectors: "One stock exchange in an unnamed African country. The toolkit ran on an IIS server and queried the exchange investment API, a securities depository gateway, SharePoint, TFS, SCCM, Microsoft SQL Server, and an AWS RDS PostgreSQL endpoint. Symantec does not name the exchange."
+regions:
+  - Africa
+region_notes: "Symantec says the victim is a stock exchange in an African country and does not name the country. China, in the Witchetty attribution, is not a victim region. The 2022 activity against two Middle East governments is a different incident and is not given countries in this write-up."
+attribution_or_cluster: "Toolkit unattributed. Six persistence implants on the same server are Witchetty (LookingFrog, a TA410 sub-group in ESET's 2022 profile) with high confidence from Symantec. Symantec does not attribute the PowerShell toolkit to Witchetty."
+scale_and_metrics: "41 modules in 3 minutes 12 seconds on 20 September 2026, 08:44-08:47 UTC. Earliest malicious activity Symantec dates on the server is April 2026. Six persistence implants, one first seen in 2020. No privilege escalation or data theft observed. Whether any tested credential or key worked is unknown."
+prevention_angle: "Alert when the IIS worker spawns PowerShell. Hunt DNS queries for oast.pro and for the published token. Hunt PowerShell that calls [Net.Dns]::GetHostAddresses in a loop, and searches of SYSVOL or web roots for cpassword, web.config, and cloud keys, from the IIS worker. The published file hashes are for the Witchetty implants and related files, not for the 41 modules, which Symantec does not hash. HijackLibs documents the Avast wsc.dll / wsc_proxy.exe pair and the McAfee LockDown.dll / mfeann.exe pair. A Witchetty implant on the host does not by itself identify the author of the PowerShell modules."
+related_magicsword_projects:
+  - HijackLibs
+source_notes: "Module names, the 20 September 2026 window, authorship signals, the oast.pro token, the Witchetty split, and the file hashes are from the Symantec article at https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack. The page's created timestamp is 19 November 2026 11:00 UTC. The blog-post URL serves the same article. Authors are printed as Thibaut Passilly and Brigid O Gorman. Symantec calls oast.pro a public out-of-band testing service and does not name ProjectDiscovery or interactsh in the article text reviewed here. The Sigma DNS rule cited below lists .oast.pro among ProjectDiscovery interactsh domains. ESET's 2022 post names LookingFrog as a TA410 sub-group and does not use the name Witchetty. HijackLibs lists Avast wsc.dll loaded by wsc_proxy.exe and McAfee LockDown.dll loaded by mfeann.exe. No HijackLibs page for VSPerfCmd.exe or VSPMsg.dll was found, and a guessed path for that pair returned HTTP 404, so that pair is not linked. PowerShell is not a LOLBAS entry. The hash list below is the named artifacts from Symantec's table that this entry describes, not every hash on the page. Hashes marked not available for analysis, and unnamed similar svchost loaders, are omitted. The domain is defanged. No victim IP addresses were published."
+last_reviewed: "2026-11-21"
+confidence: medium
+iocs:
+  domains:
+    - danoam334iqjo0ap2scg6ofosjxfgqhsa[.]oast[.]pro
+  ips: []
+  hashes:
+    - 982750f4f9edd2ef51b9972a1018a8777bd9d65e0d2e43977a522bdc73ddef5f
+    - 1363534d205ad60f6700d81f2af2c0ce6d959b73fd405adbb598072395bd26e5
+    - 5a2f093f7ae25c5e381647549496acf375e18dd95263b921518e340ee78e5377
+    - 2e223e3c6dc7a130f0281a6c608cd58c153ec026c020c8a661b60a1e285140bf
+    - af3737ba032b8c5d3403064899ab6cc48610a397d9f67b626f99b2f0f5082202
+    - 1c1704d789332c4d6ce57139d27194ac64c27bfbb1368f1006ffc3c96f3bcb80
+    - 002ce0d28ec990aadbbc89df457189de37d8adaadc9c084b78eb7be9a9820c81
+    - 0f2c40d31887418de304ca182afb4f4fecfe95937068f11fc798778c2ca95e3f
+    - 85e75e78a545d2fe11ac19385cc8c0789e1056a2cd4edfec32a6a6b113001e5a
+    - 6b3061d6e042744bb484b725031e7916b31ad224318a8c0441b9ead14ab853d5
+    - 9b4dadaa55479727f7c0034ff9c07165597b9a9a9376b6e564634eeaf1c6b876
+    - d732660db5af253aacbc580d6114d59d233c48b3a5ead6dcfcb55246252abed2
+    - 8129e103509f00f40a6a2740b76bc3f9449ac09cd9222ba289e52e86f31f616e
+    - 3ca9d65046420592e726776bb26b08719721d108f6947fd22af1d5e7cac33edc
+    - 30dc80cb4c791d80eb21597232fb2f5a4111bf3dfad32c736b789d77127310ef
+    - 152c125eacdacc69406b120afd95994eef0f7a0cd638c2d8723e64f79344a336
+    - 8940de2ada979ad2c53ece0b5cb84100c4df0a024b4b363e96cb6a67469e30d5
+  urls: []
+atlas_techniques:
+  - id: AML.T0102
+    rationale: "Symantec assesses the 41 PowerShell modules as AI-written or AI-assisted commands, with a shared scaffold copied into every module."
+    source_urls:
+      - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+  - id: AML.T0017
+    rationale: "The toolkit is purpose-built offensive tooling. Symantec's evidence for development is the uniform module scaffold and the unidentified model, not a recovered training pipeline."
+    source_urls:
+      - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+  - id: AML.T0050
+    rationale: "All 41 modules were PowerShell, started under the IIS worker through a webshell."
+    source_urls:
+      - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+attack_flow:
+  nodes:
+    - id: server
+      title: IIS server, access vector unknown
+      description: "The modules ran under a webshell in the IIS worker. Symantec dates the earliest malicious activity on the server to April 2026 and does not name the 2026 entry vector."
+      kind: access
+      source_urls:
+        - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+    - id: implants
+      title: Witchetty implants on the server
+      description: "Six persistence implants on the server are attributed to Witchetty with high confidence. One was first seen in 2020. Symantec does not attribute the PowerShell toolkit to that group."
+      kind: execution
+      source_urls:
+        - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+    - id: modules
+      title: 41 PowerShell modules
+      description: "On 20 September 2026, 08:44-08:47 UTC, 41 modules ran in 3 minutes 12 seconds. Symantec reads the shared scaffold as AI-written or AI-assisted and does not identify the model."
+      kind: ai
+      source_urls:
+        - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+    - id: hunt
+      title: Credential and API tests
+      description: "Modules searched web roots, C:\\Deployer, and SYSVOL, queried cloud, database, SharePoint, TFS, and SCCM surfaces, and tested keys against the investment API and a securities depository gateway."
+      kind: execution
+      source_urls:
+        - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+    - id: exfil
+      title: DNS output to oast.pro
+      description: "Hex output left as DNS lookups under one oast.pro token. Symantec did not see the collector, privilege escalation, or data theft, and does not know whether any key worked."
+      kind: impact
+      source_urls:
+        - https://www.security.com/threat-intelligence/african-stock-exchange-ai-assisted-attack
+  edges:
+    - source: server
+      target: implants
+    - source: server
+      target: modules
+    - source: modules
+      target: hunt
+    - source: hunt
+      target: exfil
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unnamed toolkit. Witchetty implants are separate."
+  country: Unknown
+  motivation: unknown
+  attributed_by: Symantec Threat Hunter Team (Broadcom)
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Suspicious Process By Web Server Process
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_webshell_susp_process_spawned_from_webserver.yml
+    notes: "Windows process creation. A web-server parent, including w3wp.exe, spawning PowerShell or another listed child. Matches the 41 modules running under the IIS worker. It does not identify the module contents or the AI-authorship scaffold."
+  - name: DNS Query to External Service Interaction Domains
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/network/dns/net_dns_external_service_interaction_domains.yml
+    notes: "DNS queries whose name ends in a listed out-of-band domain, including .oast.pro, which the rule labels as ProjectDiscovery interactsh. Symantec's modules resolved names under danoam334iqjo0ap2scg6ofosjxfgqhsa.oast.pro. The rule needs DNS query logs. It does not require the PowerShell [Net.Dns]::GetHostAddresses call, and a lookup that never reaches a resolver will not match."
+  - name: Findstr GPP Passwords
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_findstr_gpp_passwords.yml
+    notes: "Windows process creation for find.exe or findstr.exe with cpassword, \\sysvol\\, and .xml on the command line. Symantec's gpp1 module searched SYSVOL for cpassword, but it was PowerShell, not findstr.exe. A PowerShell-only search does not match this rule. No reviewed rule names the 50-character [Net.Dns]::GetHostAddresses loop."
+timeline:
+  first_seen: "2026-04"
+  last_updated: "2026-11-21"
+  updates:
+    - date: "2020"
+      source: Symantec Threat Hunter Team
+      summary: "Symantec says one Witchetty implant later found on this server was first seen in 2020. The report does not say that sighting was on this exchange."
+    - date: "2026-04"
+      source: Symantec Threat Hunter Team
+      summary: "Earliest malicious activity Symantec dates on the server. Six Witchetty persistence implants were present. The attackers may have been present longer."
+    - date: "2026-09-20"
+      source: Symantec Threat Hunter Team
+      summary: "41 PowerShell modules run under the IIS webshell from 08:44 to 08:47 UTC and send hex output to an oast.pro token. No privilege escalation or data theft is observed."
+    - date: "2026-11-19"
+      source: Symantec Threat Hunter Team
+      summary: "SECURITY.COM publishes the write-up. AI authorship is a combined assessment, the model is unidentified, and the toolkit is not attributed to Witchetty."
