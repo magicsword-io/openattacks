@@ -166,6 +166,8 @@ Preparation does not start a model or agent. Follow each lab's isolation and evi
 
 Vercel builds the Astro site from `main` and publishes `dist/`. Pull requests receive preview deployments; validation or stale generated exports stop publishing. Canonical URLs default to `https://openattacks.ai`, while `SITE_URL` and `BASE_PATH` support alternate deployments.
 
+The optional daily incident digest uses Vercel Cron, Postgres, and Resend. See the [incident alert setup and rollout guide](docs/INCIDENT_ALERTS.md).
+
 See [CI and merge checks](docs/CI.md) for required checks and merge-queue behavior.
 
 ## License

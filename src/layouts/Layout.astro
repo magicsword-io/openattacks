@@ -9,6 +9,7 @@ import { href, repo, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
 import { preventionURL } from "../lib/site-links";
 import { magicswordURL } from "../lib/magicsword-links.mjs";
+import { incidentAlertSignupAvailable } from "../lib/incident-alert-signup";
 interface Props {
   title?: string;
   description?: string;
@@ -17,6 +18,7 @@ interface Props {
   // Omit it to show when the site was last updated.
   lastReviewed?: string | null;
   canonicalPath?: string;
+  analytics?: boolean;
 }
 const {
   title = "OpenAttacks — The open catalog of AI attacks",
@@ -24,6 +26,7 @@ const {
   active = "catalog",
   lastReviewed,
   canonicalPath = Astro.url.pathname,
+  analytics = true,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
@@ -39,20 +42,22 @@ const imageAlt =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Google Tag Manager -->
-    <script
-      is:inline
-      async
-      src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
-    ></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-    </script>
-    <!-- End Google Tag Manager -->
+    {analytics && (
+      <>
+        <script
+          is:inline
+          async
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
+        ></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+        </script>
+      </>
+    )}
     <meta name="theme-color" content="#08080a" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
@@ -212,6 +217,9 @@ const imageAlt =
           <a href={href("use/")}>Use with an LLM</a>
           <a href={href("api/attacks.json")}>JSON API</a>
           <a href={href("rss.xml")}>RSS</a>
+          {incidentAlertSignupAvailable && (
+            <a href={href("alerts/")}>Get incident alerts</a>
+          )}
           <a href={href("pewpew/")}>Pew Pew Map</a>
         </div>
       </div>

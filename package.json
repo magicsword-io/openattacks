@@ -40,6 +40,7 @@
     "ajv-formats": "^3.0.1",
     "astro": "^7.4.1",
     "d3-geo": "^3.1.1",
+    "postgres": "^4.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "topojson-client": "^3.1.0",

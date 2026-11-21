@@ -4,6 +4,7 @@ import Catalog from "./Catalog.astro";
 import TimelineChart from "./TimelineChart.astro";
 import { getAttacks, href, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
+import { incidentAlertSignupAvailable } from "../lib/incident-alert-signup";
 const { showTimeline = false } = Astro.props;
 const attacks = await getAttacks();
 ---
@@ -37,6 +38,11 @@ const attacks = await getAttacks();
           <a class="text-link" href={href("stack/")}>
             Find attacks relevant to my stack
           </a>
+          {incidentAlertSignupAvailable && (
+            <a class="text-link" href={href("alerts/")}>
+              Get incident alerts
+            </a>
+          )}
         </div>
       </div>
     </header>
