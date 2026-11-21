@@ -164,9 +164,9 @@ Preparation does not start a model or agent. Follow each lab's isolation and evi
 
 ## Deployment
 
-Vercel builds the Astro site from `main` and publishes `dist/`. Pull requests receive preview deployments; validation or stale generated exports stop publishing. Canonical URLs default to `https://openattacks.ai`, while `SITE_URL` and `BASE_PATH` support alternate deployments.
+Vercel builds the Astro site from `main` and publishes the Astro adapter output, which includes the suggestion intake endpoint. Pull requests receive preview deployments. Validation or stale generated exports stop publishing. Canonical URLs default to `https://openattacks.ai`, while `SITE_URL` and `BASE_PATH` support alternate deployments.
 
-See [CI and merge checks](docs/CI.md) for required checks and merge-queue behavior.
+See [suggestion intake settings](docs/SUGGESTIONS.md) to enable public GitHub issue creation and [CI and merge checks](docs/CI.md) for the merge requirements.
 
 ## License
 

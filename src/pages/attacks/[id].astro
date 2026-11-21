@@ -547,9 +547,7 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             Edit on GitHub
           </a>
           <a
-            href={`${repo}/issues/new?template=correction.yml&title=${encodeURIComponent(`Correction: ${attack.name}`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={href(`suggest/?type=correction&incident=${encodeURIComponent(attack.id)}`)}
           >
             Suggest a correction
           </a>

@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { repo } from "../lib/catalog";
+import { href } from "../lib/catalog";
 ---
 
 <aside class="community-banner">
@@ -11,12 +11,7 @@ import { repo } from "../lib/catalog";
     <h3>Good intelligence gets better together.</h3>
     <p>Found an attack we’re missing? Help the community connect the dots.</p>
   </div>
-  <a
-    class="button"
-    href={`${repo}/issues/new?template=submit-attack.yml`}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
+  <a class="button" href={href("suggest/")}>
     Submit an attack
   </a>
 </aside>

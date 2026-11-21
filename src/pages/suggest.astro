@@ -1,0 +1,336 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getAttacks, href, repo } from "../lib/catalog";
+import {
+  descriptionLimit,
+  sourceLimit,
+  suggestionTypes,
+} from "../lib/suggestions";
+
+const incidents = (await getAttacks()).sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
+const issues = `${repo}/issues`;
+---
+
+<Layout
+  title="Suggest an update — OpenAttacks"
+  description="Share an incident lead, catalog suggestion, or correction with OpenAttacks."
+>
+  <div class="container">
+    <article class="suggestion-page">
+      <header>
+        <h1>Suggest an update</h1>
+        <p class="intro">
+          Share a new incident lead, suggest a catalog improvement, or correct
+          an existing entry.
+        </p>
+      </header>
+
+      <form
+        id="suggestion-form"
+        method="post"
+        action={href("suggest/intake.json")}
+        data-issues={issues}
+      >
+        <p id="public-guidance" class="public-guidance">
+          Submissions from this form become public GitHub issues. Include only
+          information you can share publicly. Leave out personal details, email
+          addresses, credentials, and private incident information.
+        </p>
+        <fieldset disabled aria-describedby="public-guidance">
+          <legend class="visually-hidden">Public submission details</legend>
+          <div class="suggestion-field">
+            <label for="submission-type">Submission type</label>
+            <select name="type" id="submission-type" required>
+              {Object.entries(suggestionTypes).map(([value, label]) => (
+                <option value={value}>{label}</option>
+              ))}
+            </select>
+          </div>
+          <div class="suggestion-field">
+            <label for="related-incident">
+              Related incident <span>(optional)</span>
+            </label>
+            <select name="relatedIncident" id="related-incident">
+              <option value="">No related incident</option>
+              {incidents.map(({ id, name }) => (
+                <option value={id}>{name}</option>
+              ))}
+            </select>
+          </div>
+          <div class="suggestion-field">
+            <label for="submission-description">
+              Description <span>(required)</span>
+            </label>
+            <p id="description-help">
+              Tell us what happened or what should change. Use public evidence
+              where possible.
+            </p>
+            <textarea
+              name="description"
+              id="submission-description"
+              rows="6"
+              maxlength={descriptionLimit}
+              aria-describedby="description-help"
+              required
+            ></textarea>
+          </div>
+          <div class="suggestion-field">
+            <label for="submission-source">
+              Public source URL <span>(optional)</span>
+            </label>
+            <input
+              name="source"
+              id="submission-source"
+              type="url"
+              maxlength={sourceLimit}
+              placeholder="https://"
+            />
+          </div>
+          <div hidden>
+            <label for="submission-website">Leave this field blank</label>
+            <input
+              name="website"
+              id="submission-website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+          <label class="consent">
+            <input type="checkbox" name="consent" required />
+            <span>
+              I agree to publish this submission as a public GitHub issue.
+            </span>
+          </label>
+          <button class="button button-primary" type="submit">
+            Post public issue
+          </button>
+        </fieldset>
+        <p id="suggestion-feedback" role="status" tabindex="-1"></p>
+        <a id="suggestion-issue" class="text-link" hidden>
+          View public issue
+        </a>
+        <noscript>
+          <p>
+            Use the GitHub links below to contribute with JavaScript disabled.
+          </p>
+        </noscript>
+      </form>
+
+      <section class="suggestion-alternatives" aria-labelledby="github-options">
+        <h2 id="github-options">Contribute on GitHub</h2>
+        <ul>
+          <li>
+            <a href={`${issues}/new?template=submit-attack.yml`}>
+              Submit an incident on GitHub
+            </a>
+          </li>
+          <li>
+            <a href={`${issues}/new?template=correction.yml`}>
+              Suggest a correction on GitHub
+            </a>
+          </li>
+          <li>
+            <a href={issues}>Browse public issues</a>
+          </li>
+        </ul>
+        <p>
+          For a vulnerability in OpenAttacks, use
+          <a href={`${repo}/security/advisories/new`}>
+            private vulnerability reporting on GitHub
+          </a>
+          .
+        </p>
+      </section>
+    </article>
+  </div>
+</Layout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#suggestion-form")!;
+  const fields = form.querySelector("fieldset")!;
+  const type = form.querySelector<HTMLSelectElement>("#submission-type")!;
+  const incident = form.querySelector<HTMLSelectElement>("#related-incident")!;
+  const feedback = form.querySelector<HTMLParagraphElement>(
+    "#suggestion-feedback",
+  )!;
+  const issueLink = form.querySelector<HTMLAnchorElement>("#suggestion-issue")!;
+  const unavailable =
+    "Website submissions are unavailable. You can use the GitHub issue templates below.";
+  const unconfirmed =
+    "We couldn’t confirm your submission. Check recent issues below before posting again.";
+
+  const params = new URLSearchParams(window.location.search);
+  const initialType = params.get("type");
+  const initialIncident = params.get("incident");
+  if ([...type.options].some(({ value }) => value === initialType))
+    type.value = initialType!;
+  if ([...incident.options].some(({ value }) => value === initialIncident))
+    incident.value = initialIncident!;
+  const initialSelection = { type: type.value, incident: incident.value };
+
+  async function availability() {
+    feedback.textContent = "Checking submission availability…";
+    try {
+      const result = await fetch(form.action, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (result.ok && (await result.json()).enabled === true) {
+        fields.disabled = false;
+        feedback.textContent = "";
+        return;
+      }
+    } catch {
+      // Static deployments and unavailable functions both offer the GitHub fallback.
+    }
+    feedback.textContent = unavailable;
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (fields.disabled) return;
+    const data = new FormData(form);
+    fields.disabled = true;
+    issueLink.hidden = true;
+    feedback.textContent = "Posting public issue…";
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...Object.fromEntries(data),
+          consent: data.get("consent") === "on",
+        }),
+        signal: AbortSignal.timeout(20000),
+      });
+      if (response.status === 404 || response.status === 405) {
+        feedback.textContent = unavailable;
+        return;
+      }
+      const { result, message, issue } = await response.json();
+      feedback.textContent =
+        typeof message === "string" ? message : unconfirmed;
+      if (response.ok && (result === "posted" || result === "duplicate")) {
+        if (Number.isSafeInteger(issue) && issue > 0) {
+          issueLink.href = `${form.dataset.issues}/${issue}`;
+          issueLink.hidden = false;
+        }
+        form.reset();
+        type.value = initialSelection.type;
+        incident.value = initialSelection.incident;
+      }
+    } catch {
+      feedback.textContent = unconfirmed;
+    } finally {
+      fields.disabled = false;
+      feedback.focus();
+    }
+  });
+  void availability();
+</script>
+
+<style>
+  .suggestion-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) 0;
+  }
+  header h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.05;
+  }
+  .intro {
+    color: var(--muted);
+    font-size: 1.125rem;
+    margin: 0 0 1.75rem;
+  }
+  form {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+  .public-guidance {
+    background: var(--accent-bg);
+    border-inline-start: 3px solid var(--accent);
+    margin: 0 0 1.25rem;
+    padding: 0.75rem 1rem;
+  }
+  fieldset {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .suggestion-field {
+    display: grid;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+  .suggestion-field label {
+    font-weight: 650;
+  }
+  .suggestion-field label span,
+  .suggestion-field p {
+    color: var(--muted);
+    font-weight: 400;
+    margin: 0;
+  }
+  .suggestion-field :is(select, input, textarea) {
+    min-width: 0;
+    width: 100%;
+    min-height: 2.75rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--subtle);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+  }
+  .consent {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0.25rem 0 1rem;
+    cursor: pointer;
+  }
+  .consent input {
+    margin: 0;
+    accent-color: var(--accent);
+  }
+  textarea:focus-visible,
+  #suggestion-feedback:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  #suggestion-feedback {
+    margin: 1rem 0 0;
+    font-weight: 600;
+  }
+  #suggestion-feedback:empty {
+    margin: 0;
+  }
+  .suggestion-alternatives {
+    margin-top: 1.75rem;
+  }
+  .suggestion-alternatives h2 {
+    font-size: 1.25rem;
+  }
+  .suggestion-alternatives ul {
+    padding-inline-start: 1.25rem;
+  }
+  .suggestion-alternatives a,
+  #suggestion-issue {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>
