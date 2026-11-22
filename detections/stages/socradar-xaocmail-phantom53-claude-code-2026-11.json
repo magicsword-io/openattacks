@@ -1,0 +1,17 @@
+{
+  "phish": {
+    "profile": "phishing"
+  },
+  "clickfix": {
+    "profile": "windows-shell"
+  },
+  "beacon": {
+    "profile": "persistence"
+  },
+  "claude": {
+    "profile": "agent-tools"
+  },
+  "havoc": {
+    "profile": "credentials"
+  }
+}

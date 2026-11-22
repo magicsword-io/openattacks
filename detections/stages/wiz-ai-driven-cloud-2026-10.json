@@ -1,0 +1,14 @@
+{
+  "step-1": {
+    "profile": "web"
+  },
+  "step-2": {
+    "profile": "cloud"
+  },
+  "step-3": {
+    "profile": "cloud"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

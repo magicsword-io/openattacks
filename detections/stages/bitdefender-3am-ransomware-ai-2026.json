@@ -1,0 +1,20 @@
+{
+  "initial-access": {
+    "profile": "unobserved",
+    "note": "The source does not disclose the initial-access procedure, so no runtime query is displayed for this stage."
+  },
+  "ai-commands": {
+    "profile": "windows-shell",
+    "note": "Apply the process hunt to the generated Windows commands and their parent process; syntax errors alone are not malicious.",
+    "reviewed": "2026-11-06"
+  },
+  "iteration": {
+    "profile": "windows-shell"
+  },
+  "persistence": {
+    "profile": "persistence"
+  },
+  "ransomware": {
+    "profile": "impact"
+  }
+}

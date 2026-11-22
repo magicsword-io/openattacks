@@ -1,0 +1,20 @@
+{
+  "upload": {
+    "profile": "package",
+    "note": "PyPI releases 1.26.1 and 1.26.2. Pinning and lockfile review are the control. The publish itself is off-host.",
+    "reviewed": "2026-11-18"
+  },
+  "pth-hook": {
+    "profile": "python-startup-persistence",
+    "note": "Linux file creation of a .pth under site-packages. The Elastic rule is Linux-only. Windows and macOS interpreters are a gap.",
+    "reviewed": "2026-11-18"
+  },
+  "collect": {
+    "profile": "credentials",
+    "note": "Environment secrets, credential files, and cloud identity token requests, including OpenAI, Hugging Face, and Foundry names."
+  },
+  "webhook": {
+    "profile": "exfil",
+    "note": "Single HTTPS POST to webhook.site. The free-tier host is shared with legitimate debugging."
+  }
+}

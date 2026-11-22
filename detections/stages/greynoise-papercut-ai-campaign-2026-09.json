@@ -1,0 +1,14 @@
+{
+  "scan-exploit": {
+    "profile": "unassessed"
+  },
+  "deploy-agent": {
+    "profile": "unassessed"
+  },
+  "autonomous-post-exploit": {
+    "profile": "unassessed"
+  },
+  "ransomware-sales": {
+    "profile": "unassessed"
+  }
+}

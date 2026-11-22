@@ -1,0 +1,23 @@
+{
+  "create-tampered-skill": {
+    "profile": "skill-review"
+  },
+  "truncate-skill-md": {
+    "profile": "skill-review"
+  },
+  "obfuscate-backdoor": {
+    "profile": "skill-review"
+  },
+  "distribute-skill": {
+    "profile": "unobserved",
+    "note": "The distribution channel is unknown, so no delivery-specific query is displayed."
+  },
+  "developer-install": {
+    "profile": "skill-review"
+  },
+  "backdoor-execution": {
+    "profile": "payload",
+    "note": "Apply this to system_linux execution and its connection to the reported endpoint; the IP alone is not a durable behavioral rule.",
+    "reviewed": "2026-11-06"
+  }
+}

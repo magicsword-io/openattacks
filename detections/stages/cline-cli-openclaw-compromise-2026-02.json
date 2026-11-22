@@ -1,0 +1,14 @@
+{
+  "compromise-package": {
+    "profile": "package"
+  },
+  "install-skill": {
+    "profile": "package-install-execution"
+  },
+  "harvest-on-startup": {
+    "profile": "credentials"
+  },
+  "exfiltrate": {
+    "profile": "exfil"
+  }
+}

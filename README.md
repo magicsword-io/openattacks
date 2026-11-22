@@ -123,7 +123,7 @@ Per-entry JSON and Markdown are available at `/api/attacks/<id>.json`, `/api/att
 Run the checks relevant to your change before opening a pull request:
 
 ```sh
-npm run validate          # schema, detections, simulations, and generated exports
+npm run validate          # schema, detections, and simulations
 npm run test:validation   # record and source-link validation tests
 npm run check             # Astro and TypeScript diagnostics
 npm run build             # production build

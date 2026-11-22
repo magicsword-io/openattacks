@@ -3,7 +3,7 @@ name: Cairn
 type: agentic-offensive-framework
 github_url: https://github.com/oritera/Cairn
 project_url: null
-description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation.
+description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation. On 20 November 2026 Amazon Threat Intelligence reported that a Chinese-nexus operator's exposed Cairn instance let agents find and exploit a MONAI Label path-traversal zero-day against universities in East Asia.
 sources:
   - url: https://norforge.com/blog/inside_cairn
     title: Inside Cairn
@@ -11,7 +11,11 @@ sources:
   - url: https://cloud.google.com/blog/topics/threat-intelligence/agentic-threat-activity-crosses-a-significant-threshold/
     title: "GTIG AI Threat Tracker: Agentic Threat Activity Crosses a Significant Threshold"
     publisher: Google Threat Intelligence Group
+  - url: https://aws.amazon.com/blogs/security/chinese-nexus-actors-cairn-ai-agents-found-a-zero-day-on-their-own/
+    title: Chinese-nexus actor's Cairn AI agents found a zero-day on their own
+    publisher: Amazon
 linked_attacks:
+  - amazon-cairn-monai-label-zero-day-universities-2026-11
   - cairn-norforge-2026-10
   - cert-in-crafty-falcon-bfsi-2026-11
   - microsoft-agent-framework-pypi-pth-stealer-2026-11

@@ -1,0 +1,14 @@
+{
+  "auth": {
+    "profile": "unassessed"
+  },
+  "inject-command": {
+    "profile": "unassessed"
+  },
+  "trigger": {
+    "profile": "unassessed"
+  },
+  "rce": {
+    "profile": "unassessed"
+  }
+}

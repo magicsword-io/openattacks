@@ -1,0 +1,20 @@
+{
+  "supply-chain": {
+    "profile": "repository"
+  },
+  "distribution": {
+    "profile": "package"
+  },
+  "installation": {
+    "profile": "python-startup-persistence"
+  },
+  "collection": {
+    "profile": "credentials"
+  },
+  "exfiltration": {
+    "profile": "exfil"
+  },
+  "persistence": {
+    "profile": "python-startup-persistence"
+  }
+}

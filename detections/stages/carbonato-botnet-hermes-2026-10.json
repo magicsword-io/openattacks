@@ -1,0 +1,18 @@
+{
+  "scan-docker": {
+    "profile": "web",
+    "note": "Use internet-facing Docker/API request logs for the scan, then require daemon or host activity before treating it as exploitation.",
+    "reviewed": "2026-11-06"
+  },
+  "deploy-container": {
+    "profile": "privileged-container"
+  },
+  "hermes-hunt": {
+    "profile": "credentials"
+  },
+  "exfiltrate-mine": {
+    "profile": "exfil",
+    "note": "This hunt covers the reported credential transfer. Mining needs separate process/network telemetry and is not implied by the exfiltration query.",
+    "reviewed": "2026-11-06"
+  }
+}

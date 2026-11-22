@@ -1,0 +1,11 @@
+{
+  "helper": {
+    "profile": "skill-review"
+  },
+  "preload": {
+    "profile": "linux-fileless-execution"
+  },
+  "plant": {
+    "profile": "linux-fileless-execution"
+  }
+}

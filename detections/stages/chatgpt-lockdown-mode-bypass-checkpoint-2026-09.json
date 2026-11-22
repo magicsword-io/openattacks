@@ -1,0 +1,14 @@
+{
+  "craft-exploit": {
+    "profile": "phishing"
+  },
+  "deliver-link": {
+    "profile": "phishing"
+  },
+  "escape-sandbox": {
+    "profile": "web"
+  },
+  "exfil-or-phish": {
+    "profile": "exfil"
+  }
+}

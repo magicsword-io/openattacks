@@ -20,7 +20,7 @@ import { entryErrors } from "../src/lib/schema.mjs";
 import { sourceUrlError } from "../src/lib/source-urls.mjs";
 
 const attacksDir = new URL("../attacks/", import.meta.url);
-const stagesFile = new URL("../detections/stages.json", import.meta.url);
+const stagesDir = new URL("../detections/stages/", import.meta.url);
 // Node IDs of the summary flow src/lib/attack-flow.ts generates for an entry
 // without a curated attack_flow.
 const GENERATED_STAGES = ["entry", "activity", "ai"];
@@ -316,23 +316,26 @@ function main() {
         continue;
       }
       cited.add(normalizeUrl(row.URL));
-      if (!values["dry-run"])
-        writeFileSync(target, stringify(entry, { lineWidth: 0 }));
+      if (!values["dry-run"]) {
+        // Imported entries get the summary flow. Keep any reviewed mappings
+        // already in place for the ID.
+        const stageFile = new URL(`${entry.id}.json`, stagesDir);
+        const stages = Object.fromEntries(
+          GENERATED_STAGES.map((stage) => [stage, { profile: "unassessed" }]),
+        );
+        try {
+          writeFileSync(stageFile, JSON.stringify(stages, null, 2) + "\n", {
+            flag: "wx",
+          });
+        } catch (error) {
+          if (error.code !== "EEXIST") throw error;
+        }
+        writeFileSync(target, stringify(entry, { lineWidth: 0 }), {
+          flag: "wx",
+        });
+      }
       written.push(`attacks/${entry.id}.yaml`);
     }
-
-  // Every attack stage needs a detection mapping. Imported entries have no
-  // curated flow, so their generated stages get the explicit "unassessed" gap.
-  if (!values["dry-run"] && written.length) {
-    const stages = JSON.parse(readFileSync(stagesFile, "utf8"));
-    for (const path of written) {
-      const id = path.slice("attacks/".length, -".yaml".length);
-      stages[id] ??= Object.fromEntries(
-        GENERATED_STAGES.map((stage) => [stage, { profile: "unassessed" }]),
-      );
-    }
-    writeFileSync(stagesFile, JSON.stringify(stages, null, 2) + "\n");
-  }
 
   const verb = values["dry-run"] ? "Would write" : "Wrote";
   console.log(`${verb} ${written.length} entries.`);

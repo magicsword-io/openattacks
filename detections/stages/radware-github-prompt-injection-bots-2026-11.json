@@ -1,0 +1,17 @@
+{
+  "study-bots": {
+    "profile": "unassessed"
+  },
+  "craft-injection": {
+    "profile": "agent-input"
+  },
+  "submit-issue-pr": {
+    "profile": "repository"
+  },
+  "bot-processes": {
+    "profile": "agent-tools"
+  },
+  "execute-injection": {
+    "profile": "unassessed"
+  }
+}

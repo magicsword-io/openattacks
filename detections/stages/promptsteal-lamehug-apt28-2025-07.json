@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "phishing"
+  },
+  "step-2": {
+    "profile": "model-network"
+  },
+  "step-3": {
+    "profile": "windows-shell",
+    "control": "unapproved-code",
+    "scope": "The Windows Python / PyInstaller payload if an enforced policy denies that payload. Permitted interpreters can still execute generated commands."
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

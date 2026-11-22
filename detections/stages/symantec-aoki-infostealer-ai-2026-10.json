@@ -1,0 +1,17 @@
+{
+  "deploy": {
+    "profile": "unassessed"
+  },
+  "ai-theft": {
+    "profile": "unassessed"
+  },
+  "traditional": {
+    "profile": "unassessed"
+  },
+  "exfil": {
+    "profile": "unassessed"
+  },
+  "abuse": {
+    "profile": "unassessed"
+  }
+}

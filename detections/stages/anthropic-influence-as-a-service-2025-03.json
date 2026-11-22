@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "provider",
+    "note": "Persona preparation is visible in provider/operator records, rather than victim endpoint logs.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "social"
+  },
+  "step-4": {
+    "profile": "social",
+    "note": "Review linked posting and engagement on the platform; coordinated activity does not establish state affiliation.",
+    "reviewed": "2026-11-04"
+  }
+}

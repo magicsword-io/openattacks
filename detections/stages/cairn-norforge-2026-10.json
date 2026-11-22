@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "unassessed",
+    "note": "This stage is included for completeness; a query needs a reviewed link between the described behavior and logs available to the observing party."
+  },
+  "step-2": {
+    "profile": "provider",
+    "resource": "LOLSkills"
+  },
+  "step-3": {
+    "profile": "web",
+    "resource": "GTFOBins"
+  },
+  "step-4": {
+    "profile": "web",
+    "note": "Success is reported in aggregate. Confirm a host-side effect for an individual task before treating a probe as successful access."
+  }
+}
