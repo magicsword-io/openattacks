@@ -1,0 +1,17 @@
+{
+  "deployment": {
+    "profile": "unassessed"
+  },
+  "system-enum": {
+    "profile": "unassessed"
+  },
+  "llm-vote": {
+    "profile": "unassessed"
+  },
+  "discord-log": {
+    "profile": "unassessed"
+  },
+  "execute": {
+    "profile": "unassessed"
+  }
+}

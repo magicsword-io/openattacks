@@ -1,0 +1,20 @@
+{
+  "step-1": {
+    "profile": "windows-install",
+    "control": "unapproved-code",
+    "scope": "Windows payloads when the policy denies their signer or hash. A valid signature alone does not establish that an app is approved."
+  },
+  "step-2": {
+    "profile": "phishing",
+    "note": "Review the delivery chain and program provenance. Code style or apparent AI functionality does not establish maliciousness or AI authorship.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "credentials"
+  },
+  "step-4": {
+    "profile": "credentials",
+    "note": "Investigate browser-store reads, token use and egress; investigate security-tool changes separately with product-specific logs.",
+    "reviewed": "2026-11-04"
+  }
+}

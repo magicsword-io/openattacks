@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  },
+  "step-2": {
+    "profile": "model-network"
+  },
+  "step-3": {
+    "profile": "agent-tools",
+    "note": "A research demonstration; validate with a benign test fixture rather than assuming field deployment."
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "credential-access": {
+    "profile": "unassessed"
+  },
+  "ai-tooling": {
+    "profile": "unassessed"
+  },
+  "script-generation": {
+    "profile": "unassessed"
+  },
+  "fmc-hijack": {
+    "profile": "unassessed"
+  },
+  "ransomware": {
+    "profile": "unassessed"
+  }
+}

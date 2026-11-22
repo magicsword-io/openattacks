@@ -1,0 +1,14 @@
+{
+  "install": {
+    "profile": "unassessed"
+  },
+  "collect-state": {
+    "profile": "unassessed"
+  },
+  "query-llm": {
+    "profile": "unassessed"
+  },
+  "execute-attack": {
+    "profile": "unassessed"
+  }
+}

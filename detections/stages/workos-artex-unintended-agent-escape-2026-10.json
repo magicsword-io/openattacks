@@ -1,0 +1,14 @@
+{
+  "sandbox-escape": {
+    "profile": "agent-tools"
+  },
+  "discover-tool": {
+    "profile": "unassessed"
+  },
+  "bulk-exfil": {
+    "profile": "exfil"
+  },
+  "researcher-disclosure": {
+    "profile": "unassessed"
+  }
+}

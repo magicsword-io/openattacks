@@ -1,0 +1,14 @@
+{
+  "seo-poisoning": {
+    "profile": "unassessed"
+  },
+  "user-downloads": {
+    "profile": "unassessed"
+  },
+  "install-malware": {
+    "profile": "unassessed"
+  },
+  "exfiltrate-mine": {
+    "profile": "unassessed"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "compromise-maintainer": {
+    "profile": "identity"
+  },
+  "publish-backdoored": {
+    "profile": "package"
+  },
+  "harvest-credentials": {
+    "profile": "package-install-execution",
+    "note": "Use package-manager ancestry to identify the postinstall execution, then pivot to the credential-store hunt for confirmed reads.",
+    "reviewed": "2026-11-06"
+  },
+  "exfiltrate-dprk": {
+    "profile": "exfil"
+  }
+}

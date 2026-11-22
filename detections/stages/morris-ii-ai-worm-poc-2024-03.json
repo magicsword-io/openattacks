@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "agent-tools"
+  },
+  "step-2": {
+    "profile": "agent-tools"
+  },
+  "step-3": {
+    "profile": "social"
+  },
+  "step-4": {
+    "profile": "social",
+    "note": "Use controlled-lab message and session records to investigate propagation; the research does not establish real-world victims.",
+    "reviewed": "2026-11-04"
+  }
+}

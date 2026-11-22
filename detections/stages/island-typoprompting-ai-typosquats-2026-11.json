@@ -1,0 +1,14 @@
+{
+  "typo": {
+    "profile": "web"
+  },
+  "clickfix": {
+    "profile": "windows-shell"
+  },
+  "netguard": {
+    "profile": "windows-install"
+  },
+  "extension": {
+    "profile": "extension"
+  }
+}

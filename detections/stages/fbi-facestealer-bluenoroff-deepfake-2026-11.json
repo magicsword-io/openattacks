@@ -1,0 +1,14 @@
+{
+  "account": {
+    "profile": "phishing"
+  },
+  "meeting": {
+    "profile": "phishing"
+  },
+  "deepfake": {
+    "profile": "agent-input"
+  },
+  "clickfix": {
+    "profile": "mac-shell"
+  }
+}

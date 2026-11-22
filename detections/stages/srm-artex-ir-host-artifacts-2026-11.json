@@ -1,0 +1,20 @@
+{
+  "initial-compromise": {
+    "profile": "web"
+  },
+  "credential-harvest": {
+    "profile": "credentials"
+  },
+  "rapid-pivot": {
+    "profile": "cloud"
+  },
+  "msp-pivot": {
+    "profile": "unassessed"
+  },
+  "card-skimmer": {
+    "profile": "payment"
+  },
+  "persistent-reentry": {
+    "profile": "persistence"
+  }
+}

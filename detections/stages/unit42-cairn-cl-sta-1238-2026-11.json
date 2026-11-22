@@ -1,0 +1,14 @@
+{
+  "task": {
+    "profile": "agent-tools"
+  },
+  "models": {
+    "profile": "agent-input"
+  },
+  "loop": {
+    "profile": "web"
+  },
+  "access": {
+    "profile": "credentials"
+  }
+}

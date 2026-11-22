@@ -623,7 +623,7 @@ export function freshnessErrors(expected, actual) {
   return errors;
 }
 
-export function readCommitted(base = root) {
+export function readOutputs(base = root) {
   const actual = new Map();
   for (const rel of [
     "llms.txt",
@@ -703,15 +703,15 @@ function rank(path) {
 
 function main() {
   const args = process.argv.slice(2);
-  if (args.some((arg) => arg !== "--check")) {
-    console.error("Usage: node scripts/build-llm-exports.mjs [--check]");
+  if (args.some((arg) => !["--check", "--quiet"].includes(arg))) {
+    console.error("Usage: node scripts/build-llm-exports.mjs [--check] [--quiet]");
     process.exitCode = 1;
     return;
   }
   const outputs = buildOutputs();
-  reportTokens(outputs);
+  if (!args.includes("--quiet")) reportTokens(outputs);
   if (args.includes("--check")) {
-    const errors = freshnessErrors(outputs, readCommitted());
+    const errors = freshnessErrors(outputs, readOutputs());
     if (errors.length) {
       console.error(
         `LLM exports are stale:\n${errors.map((error) => `  • ${error}`).join("\n")}\n\nRun: npm run llm:build`,

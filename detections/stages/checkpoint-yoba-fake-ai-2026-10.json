@@ -1,0 +1,22 @@
+{
+  "seo-poison": {
+    "profile": "phishing"
+  },
+  "lure": {
+    "profile": "phishing"
+  },
+  "sideload": {
+    "profile": "windows-dll-sideload"
+  },
+  "dropper": {
+    "profile": "windows-install"
+  },
+  "c2": {
+    "profile": "payload",
+    "note": "Correlate the loader process with Telegram, Tor, Catbox, or DoH activity; those services are not malicious by themselves.",
+    "reviewed": "2026-11-06"
+  },
+  "payload": {
+    "profile": "payload"
+  }
+}

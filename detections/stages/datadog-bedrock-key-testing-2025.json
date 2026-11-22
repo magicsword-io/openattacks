@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "unassessed",
+    "note": "This stage is included for completeness; a query needs a reviewed link between the described behavior and logs available to the observing party."
+  },
+  "step-2": {
+    "profile": "bedrock"
+  },
+  "step-3": {
+    "profile": "bedrock"
+  },
+  "step-4": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  }
+}

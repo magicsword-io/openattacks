@@ -1,0 +1,22 @@
+{
+  "sql-and-iis": {
+    "profile": "windows-shell",
+    "note": "cmd.exe under sqlservr.exe and commands under w3wp.exe. The initial entry vector is unknown.",
+    "reviewed": "2026-11-17"
+  },
+  "stalled": {
+    "profile": "windows-dll-sideload",
+    "note": "bdreinit.exe with log.dll and ask.exe with ask.dll loaded from the same directory. Hand-typed typos are not a detection.",
+    "reviewed": "2026-11-17"
+  },
+  "ai-scripts": {
+    "profile": "windows-shell",
+    "note": "Long PowerShell submitted through the existing shell. Section banners are content, not a process-name signal.",
+    "reviewed": "2026-11-17"
+  },
+  "orion-move": {
+    "profile": "payload",
+    "note": "The second-server command used Orion's bundled erl.exe. Later hive saves came from an EfsPotato payload. The generic payload query does not name either.",
+    "reviewed": "2026-11-17"
+  }
+}

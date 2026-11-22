@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "phishing"
+  },
+  "step-2": {
+    "profile": "phishing",
+    "note": "Correlate the branded lure with its download destination and subsequent activity; product names alone are not indicators.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "windows-shell",
+    "control": "script-hosts",
+    "scope": "Windows mshta / wscript branches only; other reported delivery paths require separate controls."
+  },
+  "step-4": {
+    "profile": "credentials"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "drop": {
+    "profile": "agent-input"
+  },
+  "launch": {
+    "profile": "unobserved",
+    "note": "Launching an agent in Downloads is common and is not independently a detection signal."
+  },
+  "read": {
+    "profile": "agent-input"
+  },
+  "execute": {
+    "profile": "agent-tools"
+  },
+  "impact": {
+    "profile": "credentials"
+  }
+}

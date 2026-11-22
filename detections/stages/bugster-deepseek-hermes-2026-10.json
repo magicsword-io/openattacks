@@ -1,0 +1,14 @@
+{
+  "phishing": {
+    "profile": "unassessed"
+  },
+  "deploy-tools": {
+    "profile": "unassessed"
+  },
+  "autonomous-exploitation": {
+    "profile": "unassessed"
+  },
+  "data-theft-ransom": {
+    "profile": "unassessed"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "skill-review",
+    "resource": "LOLSkills"
+  },
+  "step-2": {
+    "profile": "skill-review",
+    "resource": "LOLSkills"
+  },
+  "step-3": {
+    "profile": "skill-review"
+  },
+  "step-4": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  }
+}
