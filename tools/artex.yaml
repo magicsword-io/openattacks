@@ -3,7 +3,7 @@ name: ARTEX
 type: agentic-offensive-framework
 github_url: null
 project_url: null
-description: Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation. FBI FLASH-20261113-001 (13 November 2026) is a government summary of ARTEX use since at least August 2026. Amazon Threat Intelligence (13 November 2026) captured ARTEX agent campaign memory on MadPot sensors that posed as LLM chat-completion APIs.
+description: "Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation. FBI FLASH-20261113-001 (13 November 2026) is a government summary of ARTEX use since at least August 2026. Amazon Threat Intelligence (13 November 2026) captured ARTEX agent campaign memory on MadPot sensors that posed as LLM chat-completion APIs. On 19 November 2026 the European Commission confirmed an AI-generated cyber campaign first detected on 22 October. Spokesperson Thomas Regnier did not name the tool. The ARTEX name for that incident comes only from CERT-EU via an anonymous official quoted by POLITICO. Sysper, MyPMO, and translation services were disrupted. There was no reported staff-wide breach and no ransom."
 sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
     title: Unknown Threat Actor Uses ARTEX to Target South Korean Finance
@@ -20,6 +20,12 @@ sources:
   - url: https://chainstack.com/security-incident-nov-2026/
     title: "Incident report: what happened and what customers need to do"
     publisher: Chainstack
+  - url: https://therecord.media/european-commission-confirms-cyberattack-using-ai
+    title: European Commission confirms cyberattack using AI
+    publisher: The Record
+  - url: https://www.politico.eu/newsletter/brussels-playbook/cyberattack-hits-the-commission/
+    title: "Brussels Playbook: Cyberattack hits the Commission"
+    publisher: POLITICO
 linked_attacks:
   - amazon-artex-madpot-campaigns-2026-11
   - barracuda-artex-cloud-key-intrusion-2026-11

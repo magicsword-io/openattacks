@@ -16,18 +16,33 @@ sources:
   - url: https://www.notion.com/security/advisories/security-incident-involving-a-third-party-ai-vendor
     title: "Security incident involving a third-party AI vendor"
     publisher: Notion
+  - url: https://github.com/BerriAI/litellm/security/advisories/GHSA-wxxx-gvqv-xp7p
+    title: "GHSA-wxxx-gvqv-xp7p: LiteLLM /guardrails/test_custom_code sandbox escape"
+    publisher: LiteLLM
+  - url: https://nvd.nist.gov/vuln/detail/cve-2026-40217
+    title: CVE-2026-40217
+    publisher: NVD
+  - url: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+    title: Known Exploited Vulnerabilities Catalog
+    publisher: CISA
+  - url: https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+    title: Known Exploited Vulnerabilities catalog JSON
+    publisher: CISA
+  - url: https://github.com/BerriAI/litellm/pull/27793
+    title: "fix: prevent user_id rebinding on /key/regenerate"
+    publisher: LiteLLM
 borderline: false
 borderline_note: null
 ai_role: ai_infra_as_c2
 ai_role_secondary: ai_credential_theft
 ai_role_detail: "Threat actors hijack enterprise LLM access, generate $100K-$1M USD fraudulent charges, monetize via LLM Mixers (illicit routing gateways), deploy agentic workloads with Manus framework"
-technique_summary: "Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, LiteLLM CVE-2026-40217 (/key/regenerate endpoint rebind). UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization. Fireworks AI (Nov 9, 2026) reports Oct 23 third-party cloud provider hosting Fireworks R&D breached; Oct 24 attacker entered via provider, ran unauthorized workload; reached account/billing data and, for some customers, secrets, datasets, partly trained model weights. Fireworks attributes to financially motivated LLMjacking group selling access to illicit routing gateways; GTIG/Mandiant report referenced; Unit 42 forensics. Notion, a Fireworks customer, published a downstream notice: Fireworks told Notion on Nov 2 that a small dataset of Notion AI synthetic test data was accessed; Notion disconnected and deleted Fireworks data by the morning of Nov 3; on Nov 6 Fireworks said customer data may have been accessed; on Nov 8 Fireworks confirmed the final dataset; on Nov 9 Notion contacted affected customers. The exposed data is Notion AI Insights chat transcripts for under 1 percent of workspaces, mostly unattributable (no user or workspace labels, and no tool-call results). No other Notion features were affected. Notion told affected customers to treat the transcripts as exposed and to rotate secrets pasted into Notion AI. On Nov 11 Notion revoked exposed Notion API keys found in affected user messages."
-initial_access: "Misconfigured Service Account keys; session hijacking page masquerading as LLM portal; stolen GitHub PATs + web app vulnerability exploitation; compromised IAM credentials with cloud federation tokens; harvested exposed LLM API keys from public GitHub; LiteLLM CVE-2026-40217 (user ID rebind vulnerability in /key/regenerate endpoint)"
+technique_summary: "Multiple threat clusters (UNC6993, Jet Night operators, D1337-KAIROS) hijack enterprise access to LLMs across AWS Bedrock, Azure, GCP. Initial access via exposed cloud identity tokens (IAM, Service Account keys, GitHub PATs, session tokens), stolen LLM API keys from public GitHub, exploited web app vulnerabilities, and a LiteLLM bug GTIG describes as a user ID rebind on /key/regenerate, which GTIG labels CVE-2026-40217. CISA, NVD, and LiteLLM advisory GHSA-wxxx-gvqv-xp7p identify CVE-2026-40217 as a different bug: arbitrary code through bytecode rewriting at /guardrails/test_custom_code. The advisory says affected versions are at least 1.81.8 and below 1.83.10, that the default Docker image runs the proxy process as root, and that default configs require a proxy-admin credential. It also says the fix is RestrictedPython in 1.83.11 and lists patched release v1.83.10-stable. The /key/regenerate rebind is closed in LiteLLM pull request 27793, which does not use this CVE id. CISA added CVE-2026-40217 to the Known Exploited Vulnerabilities catalog on 18 November 2026, due 2 December 2026, as an unprotected alternate channel. UNC6993 used session hijacking page masquerading as app portal to steal JSON payloads with active access tokens. Threat actors enable LLM services, create API keys, provision GPUs, subscribe Pay-As-You-Go, deploy LiteLLM/new-api/gcli2api gateways, host Manus agent framework with SearXNG metasearch. Monetize via LLM Mixers (Jet Night at jet-night.com $60/month unlimited, ai-relay on lookalike domains, newapi.pro). Stealthy credential validation sweeps with max_tokens=1. Fraudulent charges $100K in single day, cumulative $1M per org. Division of labor between initial access and downstream monetization. Fireworks AI (Nov 9, 2026) reports Oct 23 third-party cloud provider hosting Fireworks R&D breached; Oct 24 attacker entered via provider, ran unauthorized workload; reached account/billing data and, for some customers, secrets, datasets, partly trained model weights. Fireworks attributes to financially motivated LLMjacking group selling access to illicit routing gateways; GTIG/Mandiant report referenced; Unit 42 forensics. Notion, a Fireworks customer, published a downstream notice: Fireworks told Notion on Nov 2 that a small dataset of Notion AI synthetic test data was accessed; Notion disconnected and deleted Fireworks data by the morning of Nov 3; on Nov 6 Fireworks said customer data may have been accessed; on Nov 8 Fireworks confirmed the final dataset; on Nov 9 Notion contacted affected customers. The exposed data is Notion AI Insights chat transcripts for under 1 percent of workspaces, mostly unattributable (no user or workspace labels, and no tool-call results). No other Notion features were affected. Notion told affected customers to treat the transcripts as exposed and to rotate secrets pasted into Notion AI. On Nov 11 Notion revoked exposed Notion API keys found in affected user messages."
+initial_access: "Misconfigured Service Account keys; session hijacking page masquerading as LLM portal; stolen GitHub PATs + web app vulnerability exploitation; compromised IAM credentials with cloud federation tokens; harvested exposed LLM API keys from public GitHub. GTIG reports a LiteLLM /key/regenerate user-id rebind and labels it CVE-2026-40217. CISA, NVD, and GHSA-wxxx-gvqv-xp7p identify that CVE as the /guardrails/test_custom_code sandbox escape. The rebind fix is pull request 27793."
 ai_tooling_and_models:
   - AWS Bedrock
   - Azure Cognitive Services
   - GCP Gemini Enterprise Agent Platform
-  - LiteLLM gateway
+  - "LiteLLM gateway (https://github.com/BerriAI/litellm)"
   - new-api (centralized model hub and gateway)
   - gcli2api (API proxy tool)
   - Manus agent framework
@@ -47,10 +62,10 @@ regions:
   - Asia
 attribution_or_cluster: "UNC6993 (Mandiant); Jet Night operators; D1337-KAIROS persona; multiple financially motivated threat clusters operating globally; division of labor between initial access operators and LLM Mixer monetization operators"
 scale_and_metrics: "Multiple incidents in 2026; fraudulent charges exceeding $100K USD in single day; cumulative charges at some orgs reaching $1M USD; Jet Night passed nearly $1M in token costs to victim org; one actor made ~800K Bedrock calls over 30 hours (90% success), another 1.7M calls over 13 hours (1M+ success); 500K+ LLM API calls in <8 hours; Jet Night offers unlimited tokens $60/month (typical market $100-$250/month)"
-prevention_angle: "IAM least privilege; centralized secrets management; code monitoring for API keys; routine config audits; rate limiting via Cloud Armor; network allow listing; budget alerts and API quotas; phishing-resistant MFA; shadow LLM discovery; granular API key scopes; validation sweep monitoring (max_tokens=1); vulnerability/ML supply chain patching; gateway patch management (LiteLLM CVE-2026-40217); sandboxed execution; vetted model repositories; graph-based exposure modeling"
+prevention_angle: "IAM least privilege; centralized secrets management; code monitoring for API keys; routine config audits; rate limiting via Cloud Armor; network allow listing; budget alerts and API quotas; phishing-resistant MFA; shadow LLM discovery; granular API key scopes; validation sweep monitoring (max_tokens=1); vulnerability/ML supply chain patching; gateway patch management for LiteLLM CVE-2026-40217, which is the /guardrails/test_custom_code sandbox escape added to CISA KEV on 18 November 2026, and for the separate /key/regenerate rebind fixed in pull request 27793; sandboxed execution; vetted model repositories; graph-based exposure modeling"
 related_magicsword_projects: []
-source_notes: "GTIG (Google Threat Intelligence Group) responded to multiple 2026 incidents; building on previous underground LLM credential market reporting; observed division of labor between access and monetization; LLM Mixers as illicit routing gateways; 'burn and rotate' service account strategy; Jet Night advertised outages on Telegram likely due to revoked stolen keys"
-last_reviewed: 2026-11-04
+source_notes: "GTIG (Google Threat Intelligence Group) responded to multiple 2026 incidents; building on previous underground LLM credential market reporting; observed division of labor between access and monetization; LLM Mixers as illicit routing gateways; 'burn and rotate' service account strategy; Jet Night advertised outages on Telegram likely due to revoked stolen keys. GTIG's 2 November post calls the /key/regenerate user-id rebind CVE-2026-40217. The LiteLLM advisory, NVD, and the CISA KEV JSON feed describe that CVE as bytecode rewriting at /guardrails/test_custom_code. The rebind is pull request 27793, merged 13 May 2026, and that pull request does not assign this CVE. The CISA HTML catalog returns 403 to the source-link checker. The JSON feed returns 200 and contains the 18 November 2026 record. The advisory's fixed-version lines, 1.83.11 and v1.83.10-stable, are both quoted and not reconciled here."
+last_reviewed: 2026-11-23
 iocs:
   domains:
     - jet-night.com
@@ -72,7 +87,7 @@ attack_flow:
         - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
     - id: lateral-persistence
       title: Privilege escalation and persistence
-      description: "Enumerated cloud services/repos/data stores; cloned codebases for secrets; queried data warehouse metadata; exploited LiteLLM CVE-2026-40217 (/key/regenerate rebind) to elevate Virtual Keys to PROXY_ADMIN; created unauthorized IAM/service accounts; injected SSH keys; attached admin policies; created backdoor accounts disguised as billing utilities"
+      description: "Enumerated cloud services/repos/data stores; cloned codebases for secrets; queried data warehouse metadata; GTIG says they exploited a LiteLLM /key/regenerate user-id rebind, which that report labels CVE-2026-40217, to elevate Virtual Keys to PROXY_ADMIN. CISA, NVD, and GHSA-wxxx-gvqv-xp7p identify CVE-2026-40217 as the /guardrails/test_custom_code sandbox escape. The rebind is pull request 27793; created unauthorized IAM/service accounts; injected SSH keys; attached admin policies; created backdoor accounts disguised as billing utilities"
       kind: execution
       source_urls:
         - https://cloud.google.com/blog/topics/threat-intelligence/llmjacking-monetizing-compromised-cloud-models
@@ -116,7 +131,7 @@ ai_involvement_confidence: confirmed
 detections:
   - name: Cloud LLM resource abuse monitoring
     format: guidance
-    notes: "Implement budget alerts and API quotas; monitor for validation sweeps (max_tokens=1); detect rapid GPU provisioning; alert on Pay-As-You-Go subscriptions from service accounts; monitor LiteLLM/new-api/gcli2api gateway deployments; detect Manus agent framework and SearXNG installations; flag burn-and-rotate service account patterns; monitor Jet Night, ai-relay, newapi.pro resale infrastructure connections"
+    notes: "security-detections-mcp searches for litellm, /guardrails/test_custom_code, and webshell python execution returned no Sigma, Splunk, or Elastic rule that names LiteLLM or POST /guardrails/test_custom_code. That is why this entry stays on written guidance. Hunt that POST from a proxy-admin session, block it at the reverse proxy until the gateway is patched, and separately review /key/regenerate privilege changes. Also implement budget alerts and API quotas; monitor for validation sweeps (max_tokens=1); detect rapid GPU provisioning; alert on Pay-As-You-Go subscriptions from service accounts; monitor LiteLLM, new-api, and gcli2api gateway deployments; flag burn-and-rotate service account patterns; monitor jet-night.com, ai-relay, and newapi.pro."
   - name: Third-party cloud provider security
     format: guidance
     notes: "For Fireworks AI incident: audit third-party cloud provider access; implement least-privilege for R&D environments; monitor unauthorized workload execution; detect account/billing data access anomalies; alert on secrets, datasets, model weight access; implement cloud provider security controls. Notion downstream notice has no endpoint or CloudTrail pattern: the exposed objects are Notion AI Insights chat transcripts held by the vendor. Affected customers should treat those transcripts as exposed and rotate secrets pasted into Notion AI."
@@ -133,8 +148,14 @@ atlas_techniques:
     rationale: "Attackers exfiltrated account/billing data, secrets, datasets, and partly trained model weights from Fireworks AI"
     source_urls:
       - https://fireworks.ai/security/bulletins/october-2026-security-incident
+  - id: AML.T0049
+    rationale: "CVE-2026-40217 is remote code execution in the LiteLLM proxy at /guardrails/test_custom_code. The advisory says default configs require a proxy-admin credential, so this is not an unauthenticated internet exploit on a stock install."
+    source_urls:
+      - https://github.com/BerriAI/litellm/security/advisories/GHSA-wxxx-gvqv-xp7p
+      - https://nvd.nist.gov/vuln/detail/cve-2026-40217
+      - https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
 timeline:
-  last_updated: "2026-11-11"
+  last_updated: "2026-11-18"
   updates:
     - date: "2026-11-02"
       source: Google Threat Intelligence Group
@@ -163,3 +184,6 @@ timeline:
     - date: "2026-11-11"
       source: Notion
       summary: "Notion revoked exposed Notion API keys found in affected user messages during the investigation."
+    - date: "2026-11-18"
+      source: CISA
+      summary: "CISA adds CVE-2026-40217 to the KEV catalog. The catalog, NVD, and GHSA-wxxx-gvqv-xp7p describe the /guardrails/test_custom_code sandbox escape. GTIG's 2 November post had labeled the /key/regenerate rebind with this CVE. That rebind is pull request 27793."

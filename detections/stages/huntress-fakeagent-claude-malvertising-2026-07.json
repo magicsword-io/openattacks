@@ -16,7 +16,12 @@
   },
   "rat": {
     "profile": "payload",
-    "note": "SectopRAT's C2 address is on a chain contract. The live address in the report is 2.24.131.246.",
-    "reviewed": "2026-11-19"
+    "note": "SectopRAT's C2 address is on a chain contract. Huntress's live address is 2.24.131.246. ExaTrack records 2.24.128.29 on 25 July.",
+    "reviewed": "2026-11-23"
+  },
+  "fakeguard": {
+    "profile": "payload",
+    "note": "Optional banking proxy. ExaTrack's model-generated assessment is vendor-asserted and is not a detection.",
+    "reviewed": "2026-11-23"
   }
 }

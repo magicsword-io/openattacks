@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-19",
+  "reviewed_on": "2026-11-23",
   "projects": [
     {
       "name": "Amass",
@@ -336,6 +336,39 @@
       "name": "Visual Studio Code",
       "url": "https://github.com/microsoft/vscode",
       "aliases": ["VS Code"]
+    },
+    {
+      "name": "Codex",
+      "url": "https://github.com/openai/codex",
+      "aliases": ["Codex", "OpenAI Codex"],
+      "source_urls": ["https://github.com/openai/codex"]
+    },
+    {
+      "name": "Hermes Agent",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "aliases": ["Hermes Agent"],
+      "source_urls": ["https://github.com/NousResearch/hermes-agent"]
+    },
+    {
+      "name": "Homebrew",
+      "url": "https://github.com/Homebrew/brew",
+      "aliases": ["Homebrew"],
+      "source_urls": ["https://github.com/Homebrew/brew"]
+    },
+    {
+      "name": "LiteLLM",
+      "url": "https://github.com/BerriAI/litellm",
+      "aliases": ["LiteLLM"],
+      "source_urls": [
+        "https://github.com/BerriAI/litellm",
+        "https://github.com/BerriAI/litellm/security/advisories/GHSA-wxxx-gvqv-xp7p"
+      ]
+    },
+    {
+      "name": "Metabase",
+      "url": "https://github.com/metabase/metabase",
+      "aliases": ["Metabase"],
+      "source_urls": ["https://github.com/metabase/metabase"]
     },
     {
       "name": "webhook.site",

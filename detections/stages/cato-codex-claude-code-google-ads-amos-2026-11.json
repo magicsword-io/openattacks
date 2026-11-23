@@ -1,0 +1,22 @@
+{
+  "ads": {
+    "profile": "phishing",
+    "note": "The delivery is a sponsored search result and a cloaked landing page, not an email. The query is a hunt for the ad and redirect, not proof of the paste."
+  },
+  "paste": {
+    "profile": "mac-shell",
+    "note": "The visitor pastes one line that pipes a downloaded script into zsh. Correlate the Terminal process with vine-96[.]com."
+  },
+  "loader": {
+    "profile": "mac-shell",
+    "note": "The eval'd stage writes /tmp/helper and clears xattrs. The grove-satin POST is loader telemetry."
+  },
+  "amos": {
+    "profile": "credentials",
+    "note": "Cato assesses AMOS delivery from the loader shape. The final payload family is not confirmed by a unique operator ID."
+  },
+  "other": {
+    "profile": "unassessed",
+    "note": "Cato does not link the JXA Finder.app chain or the DayNote disk image to the Claude and Codex cluster."
+  }
+}
