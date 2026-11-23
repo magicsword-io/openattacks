@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-19",
+  "reviewed_on": "2026-11-23",
   "projects": [
     {
       "name": "Amass",
@@ -30,9 +30,10 @@
       "name": "ARTEX",
       "url": "https://github.com/RuoJi6/ARTEX",
       "aliases": ["ARTEX"],
-      "note": "Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404.",
+      "note": "Community-maintained fork; the original repository is unavailable. MoLeft/ARTEX also returned HTTP 200 on 2026-11-16. The original Autumn-27/ARTEX repository returned HTTP 404. Hinln/ARTEX also returned HTTP 200 on 2026-11-23 and is a source backup of Autumn-27 v0.3.15.",
       "source_urls": [
         "https://github.com/RuoJi6/ARTEX",
+        "https://github.com/Hinln/ARTEX",
         "https://github.com/MoLeft/ARTEX",
         "https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/",
         "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-observes-threat-actors-running-cybercrime-campaigns-with-artex-ai-agents/"
@@ -92,6 +93,17 @@
       "name": "Cursor",
       "url": "https://cursor.com/",
       "aliases": ["Cursor", "Cursor IDE"]
+    },
+    {
+      "name": "CyberStrikeAI",
+      "url": "https://github.com/AIPentest/CyberStrikeAI",
+      "aliases": ["CyberStrikeAI"],
+      "note": "Ed1s0nZ/CyberStrikeAI redirects here. CyberStrikeAI/CyberStrikeAI returned HTTP 404 on 2026-11-23. aipentest/cyberstrikeai is the same repository.",
+      "source_urls": [
+        "https://github.com/AIPentest/CyberStrikeAI",
+        "https://github.com/Ed1s0nZ/CyberStrikeAI",
+        "https://github.com/aipentest/cyberstrikeai"
+      ]
     },
     {
       "name": "DeepSeek projects",
@@ -169,6 +181,13 @@
       "name": "GSocket",
       "url": "https://github.com/hackerschoice/gsocket",
       "aliases": ["GSocket/gs-netcat", "GSocket", "gs-netcat"]
+    },
+    {
+      "name": "Hermes Agent",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "aliases": ["Hermes Agent"],
+      "note": "Bare Hermes is not an alias. Older entries use that word for a different product.",
+      "source_urls": ["https://github.com/NousResearch/hermes-agent"]
     },
     {
       "name": "Hugging Face",
@@ -276,6 +295,16 @@
       "aliases": ["PHP"]
     },
     {
+      "name": "PHP2Shell",
+      "url": "https://github.com/3em0/php2shell",
+      "aliases": ["PHP2Shell"],
+      "note": "Public proof of concept. 9bie/php2shell-bypass-aslr-exp is a separate exploit repository cited with it.",
+      "source_urls": [
+        "https://github.com/3em0/php2shell",
+        "https://github.com/9bie/php2shell-bypass-aslr-exp"
+      ]
+    },
+    {
       "name": "PHPGGC",
       "url": "https://github.com/ambionics/phpggc",
       "aliases": ["PHPGGC"]
@@ -336,6 +365,13 @@
       "name": "Visual Studio Code",
       "url": "https://github.com/microsoft/vscode",
       "aliases": ["VS Code"]
+    },
+    {
+      "name": "VulnHunter",
+      "url": "https://github.com/Clouditera/VulnHunter",
+      "aliases": ["VulnHunter"],
+      "note": "Profero reports a panel titled Ultra - VulnHunter and has not confirmed this build.",
+      "source_urls": ["https://github.com/Clouditera/VulnHunter"]
     },
     {
       "name": "webhook.site",
