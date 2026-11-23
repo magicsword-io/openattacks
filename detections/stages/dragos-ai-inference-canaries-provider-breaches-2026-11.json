@@ -1,0 +1,32 @@
+{
+  "seed": {
+    "profile": "provider",
+    "note": "This stage is Dragos sending canary prompts. Provider request logs are where a copied prompt would show up. The AWS key use is the later cloud stage.",
+    "reviewed": "2026-11-23"
+  },
+  "breaches": {
+    "profile": "provider",
+    "note": "Dragos does not name the three hosting providers. A provider-side investigation is the record of requests copied before a model ran, including rejected and zero-data-retention requests.",
+    "reviewed": "2026-11-23"
+  },
+  "aws-use": {
+    "profile": "cloud",
+    "note": "Stolen long-term keys listing S3 and searching Secrets Manager, Parameter Store, and Bedrock. CloudTrail on the key owner is the record. Empty bait accounts had nothing to read.",
+    "reviewed": "2026-11-23"
+  },
+  "artex": {
+    "profile": "agent-tools",
+    "note": "ARTEX made a handful of live-key checks. The CloudTrail user agents artex-agent and artex-judge-r121 are the indicator. Dragos did not recover a console.",
+    "reviewed": "2026-11-23"
+  },
+  "resellers": {
+    "profile": "provider",
+    "note": "Marketplace seller request logs, not an exploit. Home-broadband use of the canary URLs and the manual SSH attempts are outside the provider audit.",
+    "reviewed": "2026-11-23"
+  },
+  "privacy": {
+    "profile": "provider",
+    "note": "URL fetches and a later Feishu post show retained prompts, including zero-data-retention requests. Dragos does not name the lab. The OpenRouter email in the Ars update is a separate notice.",
+    "reviewed": "2026-11-23"
+  }
+}

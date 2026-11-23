@@ -1,0 +1,176 @@
+id: dragos-ai-inference-canaries-provider-breaches-2026-11
+name: Dragos - canary prompts show three AI hosting providers were breached and privacy flags were ignored
+date_reported: "2026-11-19"
+date_activity_start: "2026-07"
+date_activity_end: "2026-11-19"
+researcher: HD Moore
+org: Dragos
+sources:
+  - url: https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    title: "Three breaches, endless leaks: Your AI supply chain needs canaries"
+    publisher: Dragos
+  - url: https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/
+    title: Researcher plants 2m canaries into the AI supply chain. A privacy disaster surfaced.
+    publisher: Ars Technica
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: other
+ai_role_secondary: attacker_uses_ai_as_operator
+ai_role_detail: "The measured event is theft of AI inference prompts, including requests copied at a hosting provider before a model ran. Dragos also recorded ARTEX user agents artex-agent and artex-judge-r121 making a handful of live-key checks on Nov 1, 2026."
+technique_summary: "HD Moore (Dragos, Nov 19, 2026) describes about two million prompts sent from July through November 2026 to widely used AI services and routers. Each prompt carried a unique canary URL, a DNS name, and a real AWS key tied to an empty, fully logged account. Dragos reports three findings and does not name the breached providers. First, attackers stole data from at least three AI hosting providers. The earliest incident was mid-July 2026, and none of the three knew until Dragos told them. The largest breach was a couple hundred AWS keys, each sent once to one provider in a few windows in late October. Every request in those windows was stolen, including requests the provider rejected before a model ran, which Dragos reads as a copy at the provider's front door. In the other two breaches, some stolen requests were marked zero data retention. After theft, keys were tested for validity, sometimes within hours, then used to list S3 buckets and search Secrets Manager and Parameter Store, and then to try to enable Bedrock hosted models, create Bedrock API keys, and add IAM users. The bait keys drew tens of thousands of AWS API calls. One key seeded on Oct 21 was first used the next day and was still in use three weeks later. Dragos says one adversary compromised two of the providers at the same time, because secrets from both were used together, almost immediately, from one rented server. Over those three weeks the tooling changed from a script posing as Chrome on Windows, to Boto3 inside OrbStack, to the AWS CLI on Kali Linux. On Nov 1 the same attacker added ARTEX (https://github.com/RuoJi6/ARTEX), which made only a handful of calls to confirm keys were still live. CloudTrail recorded user agents artex-agent and artex-judge-r121, which Dragos says were not in any public indicator list it could find. Kali also appeared in the user agent, and only in a small fraction of the traffic. Second, marketplace resellers listed a model at the lowest price, turned on request logging, and read customer prompts. Individuals on home broadband opened the secret URLs and tried logins. One person in France, on a Mac, typed prompt passwords as root over SSH by hand and later tested several AWS keys in one session. One of those keys had gone to a different router that was quietly forwarding some traffic to the marketplace. Third, a Chinese AI lab fetched secret URLs from more than half of the prompts sent to its models from July through October, including about two-thirds of the requests marked no data collection or zero data retention. The scraper usually appeared two or three days later. U.S. resellers of that lab's models triggered the same scraper. A git client on another cloud tried to clone private repositories named in prompts, and only for that lab's models. Twenty-four days after a zero-data-retention prompt to one U.S. provider, the secret link was posted in a Feishu chat (Lark outside China) and opened within two minutes from three desktops and three phones in Beijing and Shanghai. Dragos says its notice to that provider contained only the first eight characters of the link. Dragos has notified providers, one of the late-October providers has published a preliminary notice, and Dragos says it is working with about a dozen providers. Seeding started with Thinkst Canarytokens. The AWS keys are real keys on empty accounts. Ars Technica (Dan Goodin, Nov 20, 2026, updated Nov 21) reports an OpenRouter customer email saying some prompts may have been read, that the planted URLs were accessed for prompts sent to MiniMax directly or through AtlasCloud, Novita, and StreamLake, and that OpenRouter removed a zero data retention label from MiniMax-model endpoints. That email is not Dragos naming the three hosting-provider breaches."
+initial_access: "Theft of inference requests from at least three unnamed AI hosting providers, including requests rejected before a model ran. Separate paths were marketplace sellers who logged prompts, and a Chinese AI lab that fetched URLs from prompts, including zero-data-retention requests."
+ai_tooling_and_models:
+  - "ARTEX (https://github.com/RuoJi6/ARTEX), user agents artex-agent and artex-judge-r121"
+  - "Thinkst Canarytokens, then a Dragos seeding service that derived a URL, a DNS name, and an AWS key per prompt"
+  - "Widely used AI inference services, routers, and marketplace resellers. Dragos does not name the three breached hosting providers."
+frameworks:
+  - artex
+other_tooling:
+  - "A script posing as Chrome on Windows, then Boto3 inside OrbStack, then the AWS CLI on Kali Linux"
+  - "AWS APIs used on the bait keys included key validation, S3 bucket listing, Secrets Manager and Parameter Store searches, Bedrock hosted-model enablement, Bedrock API key creation, and IAM user creation"
+victims_and_sectors: "Customers of unnamed AI hosting providers and of inference routers and marketplace sellers, plus the providers themselves. Dragos says real customer requests were processed alongside the bait and were almost certainly copied in the provider breaches. No provider or customer is named by Dragos."
+regions:
+  - unknown
+region_notes: "Dragos does not name the countries of the three breached providers or of affected customers. France is where one person tried the stolen SSH passwords and AWS keys. Beijing and Shanghai are where a Feishu link was opened. Those are places the stolen material was used, not victim countries. The Ars Technica update names MiniMax and the resellers AtlasCloud, Novita, and StreamLake only as the OpenRouter email described them."
+attribution_or_cluster: "Unknown actors. Dragos attributes the provider theft, the later AWS use, and the Nov 1 ARTEX user agents to activity it observed on its own canaries. One adversary appears to have compromised two providers, because secrets from both were used together from one rented server. Dragos does not name that adversary."
+scale_and_metrics: "About two million prompts from July through November 2026. At least three hosting providers breached, the earliest in mid-July, none aware until notified. Largest breach a couple hundred AWS keys in a few late-October windows, every request in those windows stolen. Tens of thousands of AWS API calls on the bait keys. One Oct 21 key still in use three weeks later. ARTEX made a handful of live-key checks on Nov 1. A Chinese lab fetched URLs from more than half of prompts to its models, including about two-thirds of zero-data-retention requests. About a dozen providers in the follow-up. Dragos does not give a customer count."
+prevention_angle: "Self-host sensitive inference when nobody else should read the prompts. Otherwise go directly to a first-tier provider, one company and one privacy policy. On a router, pick the upstream providers yourself and check that privacy settings change where the request goes. Avoid reseller marketplaces. Seed canaries, such as a Thinkst Canarytoken, in context that agents and pipelines already send, and treat any use as an incident. Turn on provider secret filtering. Do not put live credentials in prompts. A privacy flag only binds the first hop, and it does not help if the provider is already compromised."
+related_magicsword_projects: []
+source_notes: "Prompt counts, the three unnamed provider breaches, the late-October key windows, the AWS follow-on, the Chrome, OrbStack, and Kali Linux tooling, the Nov 1 ARTEX user agents artex-agent and artex-judge-r121, the marketplace and France SSH cases, the Chinese lab scraper, the Feishu chat, and the prevention steps are from the Dragos post. Dragos does not name the three breached providers, and this entry does not assign those breaches to any company. The Nov 21 OpenRouter email, MiniMax, AtlasCloud, Novita, and StreamLake are only what Ars Technica reports OpenRouter told customers. That notice is not a name for the three breaches. Link together-ai-coding-agent-hf-credential-prompt-leak-2026-11, where Together AI says five tested credentials were canaries from this experiment. The ARTEX user agents also sit next to datadog-artex-aws-cognito-2026-11, barracuda-artex-cloud-key-intrusion-2026-11, microsoft-artex-github-secrets-keyvault-2026-11, unit42-artex-api-recon-2026-10, checkpoint-artex-operator-consoles-2026-11, srm-artex-ir-host-artifacts-2026-11, and storm-3358-artex-bank-intrusions-2026-11. Figure addresses in the Dragos post are partly masked and are not copied here."
+last_reviewed: "2026-11-23"
+confidence: high
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "The canaries were sent to inference APIs and routers, and Dragos found requests copied at hosting providers, including some rejected before a model ran."
+    source_urls:
+      - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+  - id: AML.T0057
+    rationale: "Prompts marked zero data retention or no data collection were still scraped, retained, and in one case posted to a Feishu chat 24 days later."
+    source_urls:
+      - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+  - id: AML.T0055
+    rationale: "Real AWS keys placed only in those prompts were stolen and then used, including keys from requests a provider had rejected."
+    source_urls:
+      - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+  - id: AML.T0012
+    rationale: "Stolen keys were tested, then used for S3, Secrets Manager, Parameter Store, Bedrock, and IAM calls on the bait accounts."
+    source_urls:
+      - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+  - id: AML.T0053
+    rationale: "On Nov 1 the same attacker ran ARTEX. Dragos saw only a handful of calls, with user agents artex-agent and artex-judge-r121, confirming keys were still live."
+    source_urls:
+      - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+attack_flow:
+  nodes:
+    - id: seed
+      title: Two million canary prompts
+      description: "From July through November 2026 Dragos sent about two million prompts, each with a unique URL, DNS name, and a real AWS key on an empty logged account, to widely used AI services and routers."
+      kind: access
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    - id: breaches
+      title: Three providers, unnamed
+      description: "Attackers stole data from at least three hosting providers. The earliest case was mid-July. The largest was a couple hundred keys in late October, including requests rejected before a model ran. Some stolen requests in the other two breaches were marked zero data retention. None of the three knew until Dragos told them. Dragos does not name them."
+      kind: impact
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    - id: aws-use
+      title: Keys tested, then AWS discovery
+      description: "Stolen keys were checked, sometimes within hours, then used to list S3 buckets, search Secrets Manager and Parameter Store, try to enable Bedrock models, create Bedrock API keys, and add IAM users. Tens of thousands of AWS API calls. One Oct 21 key was still in use three weeks later. Secrets from two providers were used together from one rented server."
+      kind: execution
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    - id: artex
+      title: ARTEX checks that keys are live
+      description: "Tooling moved from a script posing as Chrome on Windows, to Boto3 in OrbStack, to the AWS CLI on Kali Linux. On Nov 1 ARTEX made a handful of calls. User agents artex-agent and artex-judge-r121 were not on public indicator lists Dragos checked."
+      kind: ai
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    - id: resellers
+      title: Marketplace sellers log prompts
+      description: "Sellers listed a model at the lowest price and turned on request logging. People on home broadband opened the URLs and tried logins. In France, prompt passwords were typed as root over SSH, and AWS keys were tested from the same Mac. One router was quietly forwarding traffic to the marketplace."
+      kind: execution
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+    - id: privacy
+      title: Privacy flags did not hold
+      description: "A Chinese AI lab fetched secret URLs from more than half of prompts to its models, including about two-thirds of zero-data-retention requests. U.S. resellers of those models hit the same scraper. A git client tried to clone named private repos. A Feishu chat received one link 24 days after a zero-data-retention request. Ars Technica reports a separate OpenRouter email about MiniMax, AtlasCloud, Novita, and StreamLake. That email does not name the three breaches."
+      kind: impact
+      source_urls:
+        - https://www.dragos.com/blog/ai-supply-chain-security-canary-tokens
+        - https://arstechnica.com/security/2026/11/a-leaky-ai-supply-chain-is-exposing-secret-user-data-at-an-alarming-rate/
+  edges:
+    - source: seed
+      target: breaches
+    - source: breaches
+      target: aws-use
+    - source: aws-use
+      target: artex
+    - source: seed
+      target: resellers
+    - source: seed
+      target: privacy
+category: attacks-on-ai
+attribution:
+  actor_name: "Unknown actors"
+  country: Unknown
+  motivation: unknown
+  attributed_by: Dragos
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Potential Bucket Enumeration on AWS
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/aws/cloudtrail/aws_enum_buckets.yml
+    notes: "AWS CloudTrail. ListBuckets, excluding AssumedRole. Matches the S3 bucket listing Dragos saw on the stolen IAM user keys. It does not cover Secrets Manager, Parameter Store, or Bedrock."
+  - name: AWS STS GetCallerIdentity API Called for the First Time
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_new_terms_sts_getcalleridentity.toml
+    notes: "AWS CloudTrail. First GetCallerIdentity for an IAM user or account identity. Fits a bait key that had never been used. AssumedRole callers are excluded by the rule."
+  - name: AWS IAM Long-Term Access Key First Seen from Source IP
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/credential_access_iam_long_term_access_key_first_seen_from_source_ip.toml
+    notes: "AWS CloudTrail. First successful use of an AKIA key from a source IP in the rule history window. Matches Dragos's description of a new source using a key that had been sent once in a prompt. It does not require GetCallerIdentity."
+  - name: AWS Bedrock Foundation Model Access Enabled or Entitlement Granted
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/persistence_bedrock_foundation_model_access_enabled_or_entitlement_granted.toml
+    notes: "AWS CloudTrail. Successful PutFoundationModelEntitlement, PutUseCaseForModelAccess, or CreateFoundationModelAgreement. Dragos says the callers tried to enable Bedrock hosted models and does not say the calls succeeded. A denied call does not match this rule."
+  - name: AWS Bedrock Unauthorized Foundation Model Access Attempt
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/persistence_bedrock_foundation_model_access_denied_attempt.toml
+    notes: "AWS CloudTrail. The same three model-access actions when the outcome is failure with AccessDenied. Pairs with the success rule because Dragos describes an attempt, not a completed enablement. Empty bait accounts would often be denied."
+  - name: AWS Discovery API Calls via CLI from a Single Resource
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_multiple_discovery_api_calls_via_cli.toml
+    notes: "AWS CloudTrail. More than five distinct List, Get, or Describe calls in ten seconds from user_agent.name aws-cli, including S3 and STS. Matches only the later AWS CLI phase. It does not match artex-agent, artex-judge-r121, Boto3, or the Chrome script, and its provider list does not include Secrets Manager, Systems Manager, or Bedrock."
+  - name: ARTEX and Kali user agents, CreateUser, ListSecrets, DescribeParameters
+    format: guidance
+    notes: "No cited Sigma, Splunk, or Elastic rule names artex-agent or artex-judge-r121. Hunt CloudTrail user_agent.original for those two strings and for Kali. Dragos says both ARTEX and Kali appeared in the user agent, and only in a small fraction of traffic. The public CreateUser rule AWS IAM Create User via Assumed Role on EC2 Instance requires an AssumedRole on an EC2 instance (user.id *:i-*). Dragos describes IAM users added with the stolen long-term keys, so that rule is not cited. No cited rule is limited to secretsmanager:ListSecrets or ssm:DescribeParameters. Hunt those two actions after GetCallerIdentity from a new source, then Bedrock model-access calls and iam:CreateUser. The rapid GetSecretValue rule is not cited. Dragos describes searches of Secrets Manager on empty accounts, not retrieval of twenty secret values."
+timeline:
+  first_seen: "2026-07"
+  last_updated: "2026-11-21"
+  updates:
+    - date: "2026-07"
+      source: Dragos
+      summary: "Seeding starts. The earliest provider incident is mid-July. Dragos says tokens from July were still firing when the post was published. The day in July is not stated."
+    - date: "2026-10-21"
+      source: Dragos
+      summary: "One bait key is seeded. It is first used the next day and is still in use three weeks later. The largest thefts fall in a few late-October windows."
+    - date: "2026-11-01"
+      source: Dragos
+      summary: "The same attacker adds ARTEX. User agents artex-agent and artex-judge-r121 make a handful of calls to confirm keys are live."
+    - date: "2026-11-19"
+      source: Dragos
+      summary: "HD Moore publishes the canary findings. Dragos does not name the three hosting providers. One late-October provider has a preliminary notice. Follow-up is underway with about a dozen providers."
+    - date: "2026-11-20"
+      source: Ars Technica
+      summary: "Dan Goodin covers the Dragos experiment."
+    - date: "2026-11-21"
+      source: Ars Technica
+      summary: "Ars adds that OpenRouter emailed customers about prompts sent to MiniMax and through AtlasCloud, Novita, and StreamLake, and removed a zero data retention label from MiniMax-model endpoints. This update does not name the three breaches."
