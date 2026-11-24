@@ -11,8 +11,8 @@ test("incident alerts are discoverable and have a keyboard-accessible email form
   const page = await context.newPage();
   await page.goto("/");
   await page
-    .getByRole("main")
-    .getByRole("link", { name: "Get incident alerts" })
+    .getByRole("banner")
+    .getByRole("link", { name: "Get alerts" })
     .click();
   await expect(
     page.getByRole("heading", { name: "Get incident alerts" }),
@@ -45,4 +45,25 @@ test("incident alert form meets automated accessibility checks", async ({
   await page.goto("/alerts/");
   const result = await new AxeBuilder({ page }).include("main").analyze();
   expect(result.violations).toEqual([]);
+});
+
+test("get alerts opens an accessible signup dialog and restores focus", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const trigger = page
+    .getByRole("banner")
+    .getByRole("link", { name: "Get alerts" });
+  await trigger.click();
+  const dialog = page.getByRole("dialog", { name: "Get incident alerts" });
+  await expect(
+    dialog.getByRole("textbox", { name: "Email address" }),
+  ).toBeVisible();
+  const result = await new AxeBuilder({ page })
+    .include("#incident-alert-dialog")
+    .analyze();
+  expect(result.violations).toEqual([]);
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
 });

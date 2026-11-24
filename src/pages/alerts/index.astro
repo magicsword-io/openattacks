@@ -1,6 +1,6 @@
 ---
+import IncidentAlertForm from "../../components/IncidentAlertForm.astro";
 import Layout from "../../layouts/Layout.astro";
-import { href } from "../../lib/catalog";
 import { incidentAlertSignupAvailable } from "../../lib/incident-alert-signup";
 ---
 
@@ -12,29 +12,8 @@ import { incidentAlertSignupAvailable } from "../../lib/incident-alert-signup";
 >
   <section class="container alerts">
     <h1>Get incident alerts</h1>
-    <p id="alerts-description">
-      Get a daily email digest when new incidents are published in the
-      OpenAttacks catalog. Confirm your email to subscribe. You can unsubscribe
-      from any digest.
-    </p>
     {incidentAlertSignupAvailable ? (
-      <form method="post" action={href("api/incident-alerts")}>
-        <input type="hidden" name="action" value="subscribe" />
-        <label for="incident-alert-email">Email address</label>
-        <div class="alerts-fields">
-          <input
-            type="email"
-            id="incident-alert-email"
-            name="email"
-            autocomplete="email"
-            inputmode="email"
-            maxlength="254"
-            aria-describedby="alerts-description"
-            required
-          />
-          <button type="submit">Send confirmation email</button>
-        </div>
-      </form>
+      <IncidentAlertForm id="incident-alert-email" />
     ) : (
       <p>Incident alert signup is currently unavailable.</p>
     )}
@@ -47,58 +26,9 @@ import { incidentAlertSignupAvailable } from "../../lib/incident-alert-signup";
     padding-block: clamp(3rem, 8vw, 7rem);
   }
   h1 {
-    margin: 0;
+    margin: 0 0 0.85rem;
     font-size: clamp(2.25rem, 6vw, 4rem);
     letter-spacing: -0.045em;
     line-height: 1.05;
-  }
-  p {
-    color: var(--muted);
-    font-size: 1.125rem;
-    max-width: 50ch;
-  }
-  form {
-    margin-top: 2rem;
-    padding: clamp(1rem, 4vw, 1.5rem);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--panel);
-  }
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 650;
-  }
-  .alerts-fields {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  input[type="email"],
-  button {
-    min-height: 44px;
-    padding: 0.55rem 0.85rem;
-    border: 1px solid var(--muted);
-    border-radius: 6px;
-  }
-  input[type="email"] {
-    flex: 1 1 12rem;
-    min-width: 0;
-    background: var(--bg);
-    color: var(--text);
-  }
-  button {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--on-accent);
-    font-weight: 650;
-  }
-  button:hover {
-    border-color: var(--accent-hover);
-    background: var(--accent-hover);
-  }
-  :is(input, button):focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
   }
 </style>

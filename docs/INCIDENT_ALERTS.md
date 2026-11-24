@@ -33,7 +33,7 @@ Vercel invokes `/api/incident-alert-digest` at 14:00 UTC using the schedule in `
    ```
 
 4. To record the initial baseline, call the same endpoint without `?dry-run=1` while in `baseline` mode, or await the first scheduled run. Check for `status: "baseline"` and `baselined: true`. Repeat the dry run to confirm `initialized: true`. The baseline records the catalog served at that moment.
-5. Set `INCIDENT_ALERTS_MODE=live` and redeploy when the sender, database, and baseline are ready. Verify that the homepage links to the signup form. An initial delivery check, if authorized, can use an owner-controlled inbox. Continue to use mocked recipients for repeated testing, including unsubscribe, retries, and duplicate jobs.
+5. Set `INCIDENT_ALERTS_MODE=live` and redeploy when the sender, database, and baseline are ready. Verify that **Get alerts** in the site header opens the signup form. An initial delivery check, if authorized, can use an owner-controlled inbox. Continue to use mocked recipients for repeated testing, including unsubscribe, retries, and duplicate jobs.
 
 ## Monitor and pause
 

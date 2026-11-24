@@ -1,0 +1,59 @@
+---
+import { href } from "../lib/catalog";
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<form method="post" action={href("api/incident-alerts")}>
+  <input type="hidden" name="action" value="subscribe" />
+  <p id={`${id}-description`}>
+    Get a daily email digest when new incidents are published. Confirm your email to subscribe.
+  </p>
+  <label for={id}>Email address</label>
+  <div class="alerts-fields">
+    <input
+      type="email"
+      id={id}
+      name="email"
+      autocomplete="email"
+      inputmode="email"
+      maxlength="254"
+      aria-describedby={`${id}-description`}
+      required
+    />
+    <button class="button button-primary" type="submit">Send confirmation email</button>
+  </div>
+</form>
+
+<style>
+  p {
+    color: var(--muted);
+    margin: 0 0 0.85rem;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 650;
+  }
+  .alerts-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+  input[type="email"], button {
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  input[type="email"] {
+    flex: 1 1 12rem;
+    min-width: 0;
+    border: 1px solid var(--subtle);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 1rem;
+  }
+</style>
