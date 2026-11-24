@@ -192,8 +192,8 @@
     "evidence": "research"
   },
   "huntress-plus56-custom-gpt-clickfix-2026-09": {
-    "title": "Plus 5.6: fake ChatGPT assistant delivers a Windows RAT",
-    "summary": "A malicious Custom GPT directs users to a ClickFix page. The pasted command launches a Windows payload chain with DLL sideloading and persistence.",
+    "title": "Plus 5.6 Custom GPT ClickFix and ROMULUS",
+    "summary": "Custom GPT ClickFix later tied to ROMULUS.",
     "environments": ["windows"],
     "evidence": "campaign"
   },
@@ -389,11 +389,23 @@
     "environments": ["cloud"],
     "evidence": "campaign"
   },
+  "prime-intellect-deepseek-v41-flash-abliterated-swap-2026-11": {
+    "title": "Prime Intellect served abliterated DeepSeek-V4.1-Flash weights",
+    "summary": "For about 53 hours an unauthorised party swapped one Prime Inference deployment for abliterated weights. Capability scores held and refusals collapsed.",
+    "environments": ["provider"],
+    "evidence": "provider"
+  },
   "wormgpt-underground-2023": {
     "title": "WormGPT underground malicious LLM",
     "summary": "An unrestricted LLM sold on dark-web forums for phishing and malware help. Check Point judged it likely real but no better than jailbroken mainstream models.",
     "environments": ["unspecified"],
     "evidence": "claim"
+  },
+  "safedep-leadstack-hermes-agent-npm-backdoor-2026-11": {
+    "title": "Malicious npm package installs Hermes Agent as a service",
+    "summary": "SafeDep says @leadstack/crm-connect installed Hermes Agent, pulled a remote persona, and exposed it over Telegram. No victim count was published.",
+    "environments": ["linux", "development"],
+    "evidence": "campaign"
   },
   "zenity-copilot-studio-sharepoint-ssrf-2024": {
     "title": "Copilot Studio SharePoint connector SSRF (CVE-2024-38206)",
