@@ -13,5 +13,9 @@
   },
   "havoc": {
     "profile": "credentials"
+  },
+  "grab": {
+    "profile": "credentials",
+    "note": "The four PowerShell scripts read Claude, Codex, and Gemini credential and session files. No indexed rule names those paths."
   }
 }

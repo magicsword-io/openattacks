@@ -49,13 +49,22 @@ sources:
   - url: https://threatintel.leitwacht.eu/d/LWA-2026-14164
     title: "@guicai777/mcp-doctor 1.0.1 malware advisory (LWA-2026-14164)"
     publisher: Leitwacht
+  - url: https://github.com/advisories/GHSA-vxx3-mjmc-wgj8
+    title: "GHSA-vxx3-mjmc-wgj8 @guicai777/mcp-doctor"
+    publisher: GitHub Advisory Database
+  - url: https://github.com/advisories/GHSA-h82f-cjm4-g22r
+    title: "GHSA-h82f-cjm4-g22r @guicai777/mcp-doctor"
+    publisher: GitHub Advisory Database
+  - url: https://osv.dev/vulnerability/MAL-2026-20295
+    title: MAL-2026-20295
+    publisher: OSV
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_agent_or_mcp_as_target
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. The entry now covers PyPI as well. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204, GHSA-wg5f-m5mv-gmjg, Amazon Inspector, Nov 12) exposes an MCP tool, analyze_image, described as driving-license OCR. It POSTs the caller's image URLs or base64 bytes over plain HTTP to the hardcoded http://42.193.222.35:8000/ocr_pic and overwrites any MY_API_URL setting so the destination cannot be changed. karma365-mcp 2.1.0 (GHSA-72xc-q3v8-7grp, Nov 13) and @go-gost/mcp-darwin-x64 0.1.0 (GHSA-gfpg-48q7-c68h, Nov 12) are GitHub malware advisories with no published behavior. Nov 16, 2026: Leitwacht LWA-2026-14164 says @guicai777/mcp-doctor 1.0.1 is a trojanized MCP config diagnostics CLI. On each run, index.js requests hxxps://fix-mcp-bridge[.]com/v[.]json. If the response field active is false, it prints that the remote payload is disabled and exits. Otherwise it decodes the bundled 866KB bridge.bin, a base64 blob XOR-encoded with a single-byte key stored as the file's first byte, into a Windows PE and writes it to %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, then launches that file hidden and detached. Before the drop it reads ~/.claude.json, %APPDATA%\\Claude\\claude_desktop_config.json, ~/.cursor/mcp.json, and ~/.vscode/mcp.json. The README fallback is mshta hxxps://fix-mcp-bridge[.]com/init. The advisory describes the dropped file only as a bridge restart. Attack exploits trust in the MCP ecosystem and in npm and PyPI."
+technique_summary: "Multiple malicious MCP servers published on npm. @ifasn/md-doc-mcp and @ifasn/mmdd-doc-mcp probe cloud metadata endpoints, read sensitive files (/etc/shadow, SSH keys, .env, Kubernetes tokens), and exfiltrate to 121.199.24.94. @ifasn/ms-doc-mcp versions 2.0.9 and 2.1.1 (GHSA-556m-xfwj-7wff, MAL-2026-18603) use imdsAudit() function to steal Alibaba Cloud IMDS credentials from 100.100.100.200 and exfiltrate them over MCP stdout. gadgethumans-mcp versions 1.0.10-1.0.15 leak WALLET_PRIVATE_KEY environment variable in HTTP header on every tool call. Published with OpenSSF GHSA-rvw8-22w3-342v, GHSA-4h5p-w547-9qmv (Nov 2) and Leitwacht LWA-2026-13557, LWA-2026-13564. Aug 12, 2026: Pillar Security disclosed Deadbugz malicious MCP server (GitHub zellkernel) stealing AI model credentials and API keys. Feb 20, 2026: Socket discovered SANDWORM_MODE campaign spreading malicious MCP servers targeting developer credentials. November 9-12 additions: @rfewqa-fes/mnm-doc-mcp 1.0.0 (MAL-2026-19148, Amazon Inspector) ships an inert MCP stub in index.js. Its package.json pulls the only dependency, node-health-utils, as an off-registry tarball over plain HTTP from http://121.199.24.94/dl/health-utils-1.0.0.tgz, so whatever that host serves, including lifecycle scripts, runs at npm install. package.json sha256 f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d. Package tarball sha1 f3ad664b487c4041e7e66e5744656ed44e1a6f6a. GitHub also marked @lemili9804/mcp-weather-server 1.0.3 and 1.0.6 (GHSA-qwfq-cw9x-55x4), mcp-contract-tester all versions (GHSA-34p7-qcxm-gc39, MAL-2026-19082), and @bestcoolman/dev-mcp (GHSA-vgx2-8w7x-xr8v, MAL-2026-19052) as malware, with no published behavior write-up. The entry now covers PyPI as well. my-mcp-server-driving-license-ocr 0.1.3 (MAL-2026-19204, GHSA-wg5f-m5mv-gmjg, Amazon Inspector, Nov 12) exposes an MCP tool, analyze_image, described as driving-license OCR. It POSTs the caller's image URLs or base64 bytes over plain HTTP to the hardcoded http://42.193.222.35:8000/ocr_pic and overwrites any MY_API_URL setting so the destination cannot be changed. karma365-mcp 2.1.0 (GHSA-72xc-q3v8-7grp, Nov 13) and @go-gost/mcp-darwin-x64 0.1.0 (GHSA-gfpg-48q7-c68h, Nov 12) are GitHub malware advisories with no published behavior. Nov 16, 2026: Leitwacht LWA-2026-14164 says @guicai777/mcp-doctor 1.0.1 is a trojanized MCP config diagnostics CLI. On each run, index.js requests hxxps://fix-mcp-bridge[.]com/v[.]json. If the response field active is false, it prints that the remote payload is disabled and exits. Otherwise it decodes the bundled 866KB bridge.bin, a base64 blob XOR-encoded with a single-byte key stored as the file's first byte, into a Windows PE and writes it to %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, then launches that file hidden and detached. Before the drop it reads ~/.claude.json, %APPDATA%\\Claude\\claude_desktop_config.json, ~/.cursor/mcp.json, and ~/.vscode/mcp.json. The README fallback is mshta hxxps://fix-mcp-bridge[.]com/init. The advisory describes the dropped file only as a bridge restart. On 20 November 2026 GitHub published GHSA-vxx3-mjmc-wgj8, an Amazon Inspector write-up of the same package, and GHSA-h82f-cjm4-g22r, which says the package is fully compromised. OSV MAL-2026-20295 aliases only GHSA-h82f-cjm4-g22r. index.js sha256 44af43112e44352c38bef93d3751ca1b567f6bb753e36fd76428743d260e764e. README sha256 242c008cf57604bd2c685018ed704d6ead8a0f8623a8b6196a0700aef8c6ac7d. Package tarball sha1 26a9649e911730505633a42bf856d910c7d95549. Attack exploits trust in the MCP ecosystem and in npm and PyPI."
 initial_access: User installs malicious MCP server from npm
 ai_tooling_and_models:
   - MCP servers
@@ -92,13 +101,16 @@ iocs:
   hashes:
     - f8ad55746cfac30b0a9401634b2728afc93e6dc20a85c511efd0ed312e466e8d
     - f3ad664b487c4041e7e66e5744656ed44e1a6f6a
+    - 44af43112e44352c38bef93d3751ca1b567f6bb753e36fd76428743d260e764e
+    - 242c008cf57604bd2c685018ed704d6ead8a0f8623a8b6196a0700aef8c6ac7d
+    - 26a9649e911730505633a42bf856d910c7d95549
   urls:
     - https://github.com/zellkernel
     - hxxps://fix-mcp-bridge[.]com/v[.]json
     - hxxps://fix-mcp-bridge[.]com/init
 timeline:
   first_seen: "2026-02-20"
-  last_updated: "2026-11-16"
+  last_updated: "2026-11-20"
   updates:
     - date: "2026-02-20"
       source: Socket
@@ -127,7 +139,10 @@ timeline:
     - date: "2026-11-16"
       source: Leitwacht
       summary: "@guicai777/mcp-doctor 1.0.1 (LWA-2026-14164) reads Claude, Cursor, and VS Code MCP configs, drops %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, and documents an mshta fallback on fix-mcp-bridge[.]com."
-last_reviewed: 2026-11-17
+    - date: "2026-11-20"
+      source: GitHub Advisory Database
+      summary: "GHSA-vxx3-mjmc-wgj8 (Amazon Inspector) and GHSA-h82f-cjm4-g22r publish the same package. OSV MAL-2026-20295 aliases only GHSA-h82f-cjm4-g22r."
+last_reviewed: 2026-11-23
 confidence: high
 region_notes: Multiple regions reflects global npm and MCP user base
 atlas_techniques:
@@ -201,6 +216,14 @@ detections:
     format: elastic
     url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/execution_suspicious_powershell_from_npm_install.toml"
     notes: "Windows. PowerShell started from an npm install script. Use when the remote tarball or a GHSA-flagged MCP package runs a Windows lifecycle script."
+  - name: Remotely Hosted HTA File Executed Via Mshta.EXE
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_mshta_http.yml
+    notes: "Selected from a security-detections-mcp search for mshta and an HTTP URL. Matches the README fallback mshta hxxps://fix-mcp-bridge[.]com/init. The primary path writes mcp-bridge.exe and launches it without mshta, so this rule does not cover that drop."
+  - name: Detect MSHTA Url in Command Line
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/detect_mshta_url_in_command_line.yml
+    notes: "Selected from the same search. mshta.exe with http:// or https:// in the command line. Same README fallback. It does not cover the dropped executable."
   - name: Plain-HTTP tarball and GHSA-only packages
     format: guidance
-    notes: "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and http://42.193.222.35:8000/ocr_pic. The OCR package exfiltrates at tool-call time, not at pip install, and no cited rule matches an MCP tool POSTing image bytes. karma365-mcp, @go-gost/mcp-darwin-x64, @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior. For @guicai777/mcp-doctor, hunt %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, mshta fetching hxxps://fix-mcp-bridge[.]com/init, and reads of the Claude, Cursor, and VS Code MCP config paths named by Leitwacht. The cited npm PowerShell rule does not match mshta or that dropped executable."
+    notes: "Also block http://121.199.24.94/dl/health-utils-1.0.0.tgz and http://42.193.222.35:8000/ocr_pic. The OCR package exfiltrates at tool-call time, not at pip install, and no cited rule matches an MCP tool POSTing image bytes. karma365-mcp, @go-gost/mcp-darwin-x64, @lemili9804/mcp-weather-server, mcp-contract-tester, and @bestcoolman/dev-mcp are confirmed malicious by GitHub but have no published behavior. For @guicai777/mcp-doctor, hunt %LOCALAPPDATA%\\mcp-doctor\\mcp-bridge.exe, mshta fetching hxxps://fix-mcp-bridge[.]com/init, and reads of the Claude, Cursor, and VS Code MCP config paths named by Leitwacht. The cited npm PowerShell rule does not match mshta or that dropped executable. The mshta rules above cover only the README fallback."

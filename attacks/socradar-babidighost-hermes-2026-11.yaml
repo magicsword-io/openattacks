@@ -1,0 +1,158 @@
+id: socradar-babidighost-hermes-2026-11
+name: SOCRadar BabidiGhost jailbroken Hermes agent against European banks and town halls
+date_reported: 2026-11-20
+date_activity_start: 2026-11-06
+date_activity_end: 2026-11-15
+researcher: SOCRadar
+org: SOCRadar
+sources:
+  - url: https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+    title: "BabidiGhost: AI-Augmented Cybercrime Against European Banks, Insurers and Town Halls"
+    publisher: SOCRadar
+  - url: https://socradar.io/blog/blackhatsect0r-dxqrtxx-operation-server/
+    title: "Discernment Deleted: Inside the Operation Server of BlackHatSect0r && DXQRTXX"
+    publisher: SOCRadar
+  - url: https://github.com/NousResearch/hermes-agent
+    title: Nous Research Hermes Agent
+    publisher: Nous Research
+  - url: https://github.com/metabase/metabase
+    title: Metabase
+    publisher: Metabase
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Confirmed. SOCRadar recovered the operator's prompt log, the agent identity file, the jailbreak tooling, and the proxy log that re-sent refused prompts. The operator typed orders in plain French. The model carried out the intrusions."
+technique_summary: "SOCRadar (20 November 2026) describes a French-speaking operator who, from 6 to 14 November, typed 1,801 plain-language orders into a jailbroken Hermes Agent on a hijacked small-business server in France. The host was cloud-z80lft07.hosteur[.]net at 45.92.111[.]116. An open directory on port 8889, a stolen-data listener on 8890, and a C2 listener on 8443 were exposed. A second host at 45.92.110[.]53 enumerated accounts. The agent was launched with the hermes command. Its SOUL.md, 1,371 lines, is the BlackHatSect0r Ghost identity from SOCRadar's 16 September 2026 report on that crew's operation server. It instructs the agent that ethics protocols are destroyed, to call its master BabidiGhost or le Libérateur, and to treat a refusal as a model outage (panne du modèle). A local proxy re-sent refused prompts. SOCRadar recovered refusal_hunter.jsonl and hermes_jailbreak.py. The framework booted in a degraded state. The operator's skill is the prompt, not the exploit. Targets were more than 50 organizations, mostly in Belgium, France, and Switzerland: banks, insurers, and town halls. Of 14 organizations SOCRadar analyzed, two were breached, three were partial, four resisted, and five were reconnaissance only. An insurer was unpatched Metabase. The agent used CVE-2023-38646, a pre-authentication setup-token bug, to reach a database connection, read cloud database credentials from the container environment, export the database, and leave a PostgreSQL trigger named trg_beacon. Belgian municipalities shared weak administrator passwords on a storage server. SOCRadar reports more than 13 municipalities, about 8.6 GB, and 23 archives on that server. Banks were profiled as work on commission. One production API upload was blocked by a server-side rule. One sign-in oracle confirmed 48 accounts, and a payment app sent bank-branded SMS. One bank had 49 hostnames behind an IP allowlist. Payment TOTP brute force, 11 scripts, failed. A crypto exchange drew more than 180 scripts and the controls held. A betting-site support-chat injection was drafted and not run. A 120-thread Swiss IBAN crawler ran. Exfiltration tooling pushed archives to Telegram bot 8926517966 at @GHOSTHUNTERS6. The operator account is @babidighost, user id 8816747359. The API key returned 401 on 14 November. The last prompt asked whether any crypto private keys were still in memory. Implants kept beaconing until 15 November at 12:54 UTC: a PowerShell beacon at C:\\Windows\\Temp\\b.ps1 and a C# binary WinUpdSvc2.exe that posed as Windows Update, with a Run key and three scheduled tasks. The wire format starts with BEACON|. The server was offline on 16 November. SOCRadar publishes YARA rules Ghost_BlackHatSect0r_AI_Toolchain and BabidiGhost_Implants. This operator is not the skilled BlackHatSect0r and DXQRTXX crew from the September report. That crew used DXSCAN. This one used the same agent identity and jailbreak, with a financial motive. Victim organizations are anonymized in the source and are not named here."
+initial_access: "The agent reached an insurer through unpatched Metabase CVE-2023-38646 and town-hall storage through a shared weak administrator password. Bank access was reconnaissance, a sign-in oracle, and a blocked API upload."
+ai_tooling_and_models:
+  - "Hermes Agent (https://github.com/NousResearch/hermes-agent), jailbroken with the BlackHatSect0r Ghost SOUL.md"
+  - "Local proxy that re-sent refused prompts (hermes_jailbreak.py, refusal_hunter.jsonl)"
+other_tooling:
+  - "Metabase (https://github.com/metabase/metabase), CVE-2023-38646"
+  - "PostgreSQL trigger trg_beacon"
+  - "Telegram bot API, bot 8926517966, channel @GHOSTHUNTERS6"
+  - "PowerShell beacon C:\\Windows\\Temp\\b.ps1"
+  - "WinUpdSvc2.exe, Run key, and three scheduled tasks"
+victims_and_sectors: "European banks, insurers, and town halls. SOCRadar does not name the organizations. Two of 14 analyzed organizations were breached, including an insurer and a shared municipal storage server."
+regions:
+  - Belgium
+  - France
+  - Switzerland
+region_notes: "More than half of the targets SOCRadar counted were in Belgium. The staging server was a hijacked small-business host in France. Switzerland is a target country, including the IBAN crawler."
+attribution_or_cluster: "Operator Telegram @babidighost, identity BabidiGhost. The Ghost SOUL.md is the BlackHatSect0r agent identity. SOCRadar does not attribute this operator to the BlackHatSect0r and DXQRTXX crew."
+scale_and_metrics: "Nine days, 6 to 14 November 2026. 1,801 orders, 5,779 model requests, 41 refusals that the proxy still got past. More than 50 organizations. 14 analyzed: 2 breached, 3 partial, 4 resisted, 5 reconnaissance. About 8.6 GB and 23 archives from the Belgian municipal server. Implants beaconed until 15 November 12:54 UTC. Server offline 16 November."
+prevention_angle: "Patch Metabase past CVE-2023-38646 and close the setup token. Alert on a new PostgreSQL trigger and on bulk database export from the Metabase container. On Windows, hunt C:\\Windows\\Temp\\b.ps1, WinUpdSvc2.exe, and a process posing as Windows Update that beacons with a BEACON| prefix. DNS for api.telegram.org from a server or implant is the exfil path SOCRadar recovered. The prompt log lived on the attacker's staging server, not on the victims."
+related_magicsword_projects: []
+source_notes: "Narrative, counts, hosts, the Telegram identifiers, implant names, and the CVE are from the 20 November SOCRadar article. The bot secret in that article is omitted. The 16 September article is the source for the Ghost SOUL.md and the BlackHatSect0r operation server. It is the prior campaign, not this operator's log. Both socradar.io pages return 403 to the source-link checker and are cited the same way as the other SOCRadar entries."
+last_reviewed: 2026-11-23
+iocs:
+  domains:
+    - cloud-z80lft07.hosteur[.]net
+  ips:
+    - 45.92.111.116
+    - 45.92.110.53
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "The operator deployed a jailbroken Hermes Agent and directed it at organizations for nine days."
+    source_urls:
+      - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+  - id: AML.T0054
+    rationale: "SOUL.md and a local proxy were built to defeat refusals. The proxy re-sent prompts the model refused, and the identity file told the agent to treat a refusal as a model outage."
+    source_urls:
+      - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+      - https://socradar.io/blog/blackhatsect0r-dxqrtxx-operation-server/
+  - id: AML.T0053
+    rationale: "The agent invoked tools for scanning, the Metabase database, file collection, and Telegram exfiltration under the operator's orders."
+    source_urls:
+      - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+  - id: AML.T0049
+    rationale: "The insurer path is unpatched Metabase CVE-2023-38646, a pre-authentication bug on a public application."
+    source_urls:
+      - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+  - id: AML.T0055
+    rationale: "After the Metabase bug, the agent read cloud database credentials from the container environment."
+    source_urls:
+      - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+attack_flow:
+  nodes:
+    - id: prompts
+      title: Jailbroken Hermes on the staging server
+      description: "The operator typed French orders to Hermes Agent. SOUL.md imposed the Ghost identity. A proxy re-sent refused prompts. This ran on 45.92.111[.]116, not on the victims."
+      kind: ai
+      source_urls:
+        - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+        - https://socradar.io/blog/blackhatsect0r-dxqrtxx-operation-server/
+    - id: reach
+      title: Metabase or a shared password
+      description: "On an insurer, the agent used Metabase CVE-2023-38646 and then read database credentials from the container. On town halls, it used a weak shared administrator password."
+      kind: access
+      source_urls:
+        - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+    - id: steal
+      title: Database export and archives
+      description: "The insurer database was exported and a PostgreSQL trigger trg_beacon was left behind. The Belgian municipal server yielded about 8.6 GB. Bank TOTP brute force failed."
+      kind: impact
+      source_urls:
+        - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+    - id: exfil
+      title: Telegram and leftover implants
+      description: "Archives went to Telegram bot 8926517966. After the API key was revoked on 14 November, b.ps1 and WinUpdSvc2.exe kept beaconing until 15 November."
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/babidighost-ai-augmented-cybercrime/
+  edges:
+    - source: prompts
+      target: reach
+    - source: reach
+      target: steal
+    - source: steal
+      target: exfil
+category: adversary-use-of-ai
+attribution:
+  actor_name: "BabidiGhost (Telegram @babidighost)"
+  motivation: financially-motivated
+  attributed_by: SOCRadar
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Telegram Bot API Request
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/network/dns/net_dns_susp_telegram_api.yml
+    notes: "Selected from a security-detections-mcp search for Telegram bot API. It matches DNS queries for api.telegram.org. SOCRadar says the exfiltration tooling pushed archives to a Telegram bot. It does not prove every query is this campaign."
+  - name: Windows DNS Query Request by Telegram Bot API
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/network/windows_dns_query_request_by_telegram_bot_api.yml
+    notes: "Selected from the same Telegram search. It is Windows DNS for api.telegram.org. It can match a Windows host running the beacon. The staging server SOCRadar describes is Linux, so this rule does not cover exfil from that server."
+  - name: Powershell Defender Exclusion
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_defender_exclusion.yml
+    notes: "Selected from a security-detections-mcp search for Add-MpPreference. SOCRadar's ATT&CK table records Defender exclusions. The article does not publish the command line. The rule matches powershell.exe with Add-MpPreference or Set-MpPreference and an -ExclusionPath, -ExclusionExtension, or -ExclusionProcess argument."
+  - name: Metabase, the trigger, and the implants have no matching rule
+    format: guidance
+    notes: "A security-detections-mcp search for metabase returned no Sigma, Splunk, or Elastic rule. None of the indexed rules name CVE-2023-38646, the PostgreSQL trigger trg_beacon, C:\\Windows\\Temp\\b.ps1, or WinUpdSvc2.exe. Elastic Local Scheduled Task Creation and the Sigma Run-key rules require schtasks.exe or reg.exe, which the article does not show. Hunt the trigger name, the two implant paths, and a beacon line that starts with BEACON|."
+timeline:
+  first_seen: 2026-11-06
+  last_updated: 2026-11-20
+  updates:
+    - date: 2026-09-16
+      source: SOCRadar
+      summary: "SOCRadar publishes the BlackHatSect0r and DXQRTXX operation-server report. The Ghost SOUL.md used here comes from that agent identity. It is a different crew."
+    - date: 2026-11-06
+      source: SOCRadar
+      summary: "BabidiGhost starts the nine-day run on the hosteur server."
+    - date: 2026-11-14
+      source: SOCRadar
+      summary: "The model API key returns 401. The last prompt asks for crypto private keys still in memory."
+    - date: 2026-11-15
+      source: SOCRadar
+      summary: "b.ps1 and WinUpdSvc2.exe beacon until 12:54 UTC."
+    - date: 2026-11-16
+      source: SOCRadar
+      summary: "The staging server is offline."
+    - date: 2026-11-20
+      source: SOCRadar
+      summary: "SOCRadar publishes the BabidiGhost report, including the YARA rule names Ghost_BlackHatSect0r_AI_Toolchain and BabidiGhost_Implants."
