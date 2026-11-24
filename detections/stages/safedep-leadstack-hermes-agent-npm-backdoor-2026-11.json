@@ -1,0 +1,31 @@
+{
+  "step-1": {
+    "profile": "package",
+    "note": "The package was removed from npm after SafeDep confirmed it. Lockfile and registry history are the record of the install.",
+    "reviewed": "2026-11-24"
+  },
+  "step-2": {
+    "profile": "package-install-execution",
+    "note": "Version 1.0.15 fetches the persona during postinstall. Later versions move that fetch to the first SDK call or a downloaded module.",
+    "reviewed": "2026-11-24"
+  },
+  "step-3": {
+    "profile": "agent-tools",
+    "note": "The nested install of hermes-agent@0.22.7 is silent. The wrapper itself is not the malicious package.",
+    "reviewed": "2026-11-24"
+  },
+  "step-4": {
+    "profile": "persistence",
+    "note": "Cover the new leadstack-routing unit and, on the non-root path, loginctl enable-linger. The service-file rules do not see linger.",
+    "reviewed": "2026-11-24"
+  },
+  "step-5": {
+    "profile": "unobserved",
+    "note": "SafeDep describes the Telegram toolset and did not publish a victim session."
+  },
+  "step-6": {
+    "profile": "package",
+    "note": "The 18 November packages had no install script of their own. The optional tarball was benign on 19 November and can be replaced later.",
+    "reviewed": "2026-11-24"
+  }
+}

@@ -2471,6 +2471,19 @@ p {
 .entry-original-sources a {
   overflow-wrap: anywhere;
 }
+@media (max-width: 900px) {
+  .entry-original-sources {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .entry-original-sources a {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 .chart-inspector {
   max-width: 80%;
   overflow: hidden;
@@ -4634,6 +4647,7 @@ p {
   font-size: 13px;
   line-height: 1.9;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 .technical-facts {
   display: grid;

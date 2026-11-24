@@ -2,18 +2,24 @@
   "step-1": {
     "profile": "phishing",
     "note": "Correlate ads and the custom GPT referral with the reported external delivery workflow; ordinary ChatGPT use is not a signal.",
-    "reviewed": "2026-11-04"
+    "reviewed": "2026-11-24"
   },
   "step-2": {
-    "profile": "phishing"
+    "profile": "phishing",
+    "note": "Forescout later names the delivery server a ROMULUS panel. The ClickFix page itself is still a user-driven paste.",
+    "reviewed": "2026-11-24"
   },
   "step-3": {
     "profile": "windows-shell",
     "control": "script-hosts",
     "scope": "The Windows script and installer execution boundary. Separate allow rules for required software can leave parts of this chain reachable.",
-    "resource": "HijackLibs"
+    "resource": "HijackLibs",
+    "note": "Route A runs msiexec against a local %TEMP% MSI after PowerShell downloads it, then sideloads I++u.dll. A separate ROMULUS route fetches LegionLoader.",
+    "reviewed": "2026-11-24"
   },
   "step-4": {
-    "profile": "persistence"
+    "profile": "persistence",
+    "note": "Blackpoint identifies the payload as CNCMachineRMS and the persistence as a Run key plus a scheduled task named Stardock DeElevation Tool.",
+    "reviewed": "2026-11-24"
   }
 }

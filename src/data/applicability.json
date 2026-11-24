@@ -521,19 +521,20 @@
     "reviewed": "2026-10-23",
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
     "stage_id": "step-3",
-    "action": "Review Custom GPT links and pasted commands; investigate unusual script and installer process chains.",
+    "action": "Review Custom GPT links and pasted commands; investigate PowerShell that starts msiexec and DLL loads from the Stardock DeElevation directory.",
     "rules": [
       {
         "tools": ["chatgpt"],
         "systems": ["windows"],
         "mcp": false,
         "relationship": "lure",
-        "reason": "A malicious Custom GPT directs the user to a ClickFix page and a Windows payload chain.",
+        "reason": "A malicious Custom GPT directs the user to a ClickFix page. Forescout ties that delivery to the ROMULUS panel and a Windows MSI sideload chain.",
         "conditions": [
-          "The user must encounter the malicious Custom GPT / page and execute the pasted command."
+          "The user must encounter the malicious Custom GPT or ClickFix page and execute the pasted command."
         ],
         "source_urls": [
-          "https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat"
+          "https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat",
+          "https://www.forescout.com/blog/romulus-analysis-of-a-new-multi-payload-clickfix-delivery-platform/"
         ]
       }
     ]
@@ -1179,6 +1180,50 @@
         "source_urls": [
           "https://labs.zenity.io/post/the-power-of-one-ssrf-vulnerability-a-multi-platform-threat",
           "https://nvd.nist.gov/vuln/detail/cve-2024-38206"
+        ]
+      }
+    ]
+  },
+  "prime-intellect-deepseek-v41-flash-abliterated-swap-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-24",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "If traffic used Prime Intellect's deepseek/deepseek-v4.1-flash endpoint from 8 to 10 November 2026 and depended on refusals, review those outputs.",
+    "rules": [
+      {
+        "tools": ["deepseek"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "Prime Intellect says one deployment of deepseek/deepseek-v4.1-flash served abliterated weights for that window.",
+        "conditions": [
+          "The request was served by Prime Inference's deepseek/deepseek-v4.1-flash endpoint between 8 November 2026 01:24 UTC and 10 November 2026 06:35 UTC."
+        ],
+        "source_urls": [
+          "https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution"
+        ]
+      }
+    ]
+  },
+  "safedep-leadstack-hermes-agent-npm-backdoor-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-24",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Do not run npm install as root. Search lockfiles for @leadstack/crm-connect and review new systemd units.",
+    "rules": [
+      {
+        "tools": ["npm-pypi"],
+        "systems": ["linux"],
+        "mcp": false,
+        "relationship": "environment",
+        "reason": "SafeDep says installing @leadstack/crm-connect on Linux runs a postinstall script that installs Hermes Agent and a systemd service.",
+        "conditions": [
+          "A Linux host must run npm install for one of the listed @leadstack/crm-connect versions, or load a later version's downloaded module."
+        ],
+        "source_urls": [
+          "https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor"
         ]
       }
     ]

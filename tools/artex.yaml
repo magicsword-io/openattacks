@@ -3,7 +3,7 @@ name: ARTEX
 type: agentic-offensive-framework
 github_url: null
 project_url: null
-description: "Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation. FBI FLASH-20261113-001 (13 November 2026) is a government summary of ARTEX use since at least August 2026. Amazon Threat Intelligence (13 November 2026) captured ARTEX agent campaign memory on MadPot sensors that posed as LLM chat-completion APIs. On 19 November 2026 the European Commission confirmed an AI-generated cyber campaign first detected on 22 October. Spokesperson Thomas Regnier did not name the tool. The ARTEX name for that incident comes only from CERT-EU via an anonymous official quoted by POLITICO. Sysper, MyPMO, and translation services were disrupted. There was no reported staff-wide breach and no ransom."
+description: "Open-source Chinese agentic penetration testing suite that automates offensive security operations. Originally open-source, later went closed-source. Used with models like DeepSeek v4.1-flash, GLM-5.3, and Grok 4.6 for automated reconnaissance and exploitation. FBI FLASH-20261113-001 (13 November 2026) is a government summary of ARTEX use since at least August 2026. Amazon Threat Intelligence (13 November 2026) captured ARTEX agent campaign memory on MadPot sensors that posed as LLM chat-completion APIs. On 19 November 2026 the European Commission confirmed an AI-generated cyber campaign first detected on 22 October. Spokesperson Thomas Regnier did not name the tool. The ARTEX name for that incident comes only from CERT-EU via an anonymous official quoted by POLITICO. Sysper, MyPMO, and translation services were disrupted. There was no reported staff-wide breach and no ransom. On 24 November 2026 the UK NCSC (Kris B, Ellen T, and David Chismon) said it has seen a marked rise in AI-assisted attacks across sectors since September 2026. Actors used agentic offensive frameworks to identify and exploit internet-facing services in quick succession, causing downtime or a foothold. NCSC says this activity has become synonymous with ARTEX, and that other tools come and go, naming Cairn, PentAGI, RedAmon, Xalgorix, and Darkmoon. It says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs."
 sources:
   - url: https://www.crowdstrike.com/en-us/blog/unknown-threat-actor-uses-artex-to-target-south-korean-finance/
     title: Unknown Threat Actor Uses ARTEX to Target South Korean Finance
@@ -26,6 +26,9 @@ sources:
   - url: https://www.politico.eu/newsletter/brussels-playbook/cyberattack-hits-the-commission/
     title: "Brussels Playbook: Cyberattack hits the Commission"
     publisher: POLITICO
+  - url: https://www.ncsc.gov.uk/blogs/familiar-weaknesses-exploited-faster-defending-against-agentic-cyber-attacks
+    title: "Familiar weaknesses, exploited faster: defending against agentic cyber attacks"
+    publisher: UK NCSC
 linked_attacks:
   - amazon-artex-madpot-campaigns-2026-11
   - barracuda-artex-cloud-key-intrusion-2026-11
