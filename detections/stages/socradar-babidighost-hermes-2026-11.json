@@ -1,0 +1,18 @@
+{
+  "prompts": {
+    "profile": "unassessed",
+    "note": "The prompt log, SOUL.md, and jailbreak proxy were recovered from the attacker's staging server. They are not a victim-side signal."
+  },
+  "reach": {
+    "profile": "web",
+    "note": "The insurer path is Metabase CVE-2023-38646 followed by a database connection. The town-hall path is a weak shared password, which this web profile does not cover."
+  },
+  "steal": {
+    "profile": "credentials",
+    "note": "Database credentials were read from the Metabase container environment, then the database was exported."
+  },
+  "exfil": {
+    "profile": "exfil",
+    "note": "Archives went to a Telegram bot. Leftover Windows implants kept beaconing after the model key was revoked."
+  }
+}
