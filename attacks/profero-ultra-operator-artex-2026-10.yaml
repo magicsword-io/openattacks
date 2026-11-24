@@ -1,0 +1,221 @@
+id: profero-ultra-operator-artex-2026-10
+name: "Profero Ultra operator: ARTEX, Hermes Agent, and VulnHunter, plus text aimed at AI triage"
+date_reported: 2026-10-31
+date_activity_start: 2026-08-03
+date_activity_end: 2026-11-19
+researcher: Guy Barnhart-Magen, Profero IRT
+org: Profero
+sources:
+  - url: https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+    title: "One Operator, Several AI Attack Agents: The Ultra Suite and ARTEX"
+    publisher: Profero
+  - url: https://profero.io/blog/ai-attack-cluster-tells/
+    title: "Polite, methodical, machine-driven: reading an AI attack cluster in your logs"
+    publisher: Profero
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_agent_or_mcp_as_target
+ai_role_detail: "The operator ran ARTEX and a private Ultra console that wrapped VulnHunter and Hermes Agent, with CyberStrikeAI on the same host earlier. Profero assesses that user-agent claims of authorized research and pentest-canary files were written so a defender's AI triage would class the activity as an authorized test. That intent is Profero's assessment. The tooling on the hosts is evidenced directly."
+technique_summary: "Profero IRT (31 October 2026) and Guy Barnhart-Magen (19 November 2026) describe one unnamed operator using several AI attack agents against internet-facing web applications, APIs, and mobile applications. Profero says the targeting looked opportunistic and does not name a sector or a victim country. Three hosts in Hong Kong network AS399077 share an Ultra brand on the same Ubuntu 22.04, nginx, and OpenSSH 8.9p1 build. 156.240.236[.]28 requested ARTEX probe paths and served an ARTEX-style console on port 8787. 156.240.236[.]27 is the origin for gladdaily[.]vip, with www and wiki names, which moved behind Cloudflare on 21 September 2026. That host served a panel titled Ultra - VulnHunter and a Hermes Agent dashboard. In August and September 2026 it ran CyberStrikeAI on port 8080. 156.240.236[.]14 runs Ultra Reverse, an LLM-driven static reverse-engineering console. Attack traffic left through Thordata residential proxies. Profero counted about 273,000 hosts with the provider's proxy header and 31 exits in one session. Profero saw exploitation against customers. The other agent components were observed on the operator's hosts. Payloads did not match a known tool signature. Profero assesses an agent improvising with a generic HTTP client. Default ARTEX user agents were not seen. The 19 November post blends several incidents, says the figures are approximate, and says customer identifiers are scrambled. The operator sent user agents claiming authorized security research and planted files whose content was pentest canary followed by harmless, remove on sight, on a host and in writable S3 buckets. A customer's AI-written incident report classified the host as an authorized penetration test. Profero says the labeled user agents were common on blocked requests and rare on successful ones, and that extraction used unlabeled curl and Go HTTP clients. Profero assesses the labels were written for a model that triages logs. That is prompt injection through attacker-controlled log fields and files. Profero cannot prove the labels caused the delay. Nobody escalated for about 26 hours, by which time about 3 GB had left from about 90 tables over about 9 million requests. Profero found no link to actors named in other public ARTEX reporting. Console language is the basis for a Chinese-speaking assessment. That is not a country attribution."
+initial_access: "Exploitation of internet-facing web applications after reconnaissance. Profero describes SQL injection and ARTEX probe paths. The vulnerable products are not named."
+ai_tooling_and_models:
+  - "ARTEX (https://github.com/Hinln/ARTEX)"
+  - "Hermes Agent (https://github.com/NousResearch/hermes-agent)"
+  - "VulnHunter (https://github.com/Clouditera/VulnHunter)"
+  - "CyberStrikeAI (https://github.com/AIPentest/CyberStrikeAI), on the domain host in August and September 2026"
+  - Ultra Reverse, an operator console with no public project identified
+frameworks:
+  - artex
+  - cyberstrikeai
+other_tooling:
+  - Thordata residential proxies
+  - nginx HTTP basic authentication realm Ultra
+victims_and_sectors: "Multiple customers with internet-facing web applications, APIs, and mobile applications. Profero does not name a sector or the customer organizations."
+regions:
+  - unknown
+region_notes: "Hong Kong and AS399077 are the operator's hosting network, not a reported victim location. Profero does not name victim countries. Thordata exit countries are proxy infrastructure, not targets."
+attribution_or_cluster: "Unnamed. Profero IRT and Guy Barnhart-Magen. No link shown to actors named in other public ARTEX reporting. A Chinese-speaking assessment is from console language and is not a country attribution."
+scale_and_metrics: "About 3 GB from about 90 tables over about 9 million requests, with no escalation for about 26 hours. Profero says these figures are approximate and blended across incidents, not one customer's timeline. One session used 31 proxy exits. The proxy pool Profero measured is about 273,000 hosts."
+prevention_angle: "Block the three high-confidence hosts and the three gladdaily names. Do not block the whole 156.240.236.0/24, and do not block shared Thordata exits. Lock the origin to the edge provider. Run generic SQL injection rules. Authorize tests out of band against a record with a source address and a time window. Treat user-agent text, canary files, and incident-report wording as untrusted data if an AI reads logs or writes the report. A self-declared researcher string is a claim."
+related_magicsword_projects: []
+source_notes: "Agent tooling is confirmed by the consoles, the ARTEX probe paths, and the panel titles on the three hosts. The intent to fool AI triage is Profero's assessment of the label placement. The canary file and the customer's AI report are observed. Profero says it cannot prove the labels caused the 26-hour delay. block-ips.csv in the 31 October post has 63 addresses. This entry lists them. Only 156.240.236[.]28, 156.240.236[.]27, and 156.240.236[.]14 are the high-confidence operator consoles. The other addresses are medium-confidence hosts in the same /24 that Profero did not tie to use against the targets. proxy-exit-ips.csv lists 31 shared Thordata exits Profero says not to block. They are not copied here. watch-ips.csv lists 3 further AS399077 hosts marked watch-only. They are not copied here. Certificate values in hashes are TLS fingerprints for the three consoles, not malware file hashes. VulnHunter is the panel title. Profero has not confirmed the build."
+last_reviewed: 2026-11-23
+confidence: high
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed
+  motivation: unknown
+  attributed_by: Profero IRT (Guy Barnhart-Magen)
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: SQL Injection Strings In URI
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/web/webserver_generic/web_sql_injection_in_access_logs.yml
+    notes: "security-detections-mcp search for SQL injection returned this web-log rule. Profero says the exploitation used SQL injection that did not match a known tool signature, so a generic URI rule is the fit. It will not match an improvised payload outside its keyword list."
+  - name: Web Server Potential SQL Injection Request
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/persistence_web_server_potential_sql_injection.toml
+    notes: "security-detections-mcp search for SQL injection returned this web-server rule. Same limit as the Sigma rule: generic SQL patterns, not the Ultra probe paths."
+  - name: SQL Injection with Long URLs
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/web/sql_injection_with_long_urls.yml
+    notes: "security-detections-mcp search for SQL injection returned this web rule. Profero also describes base64 chunks of about 1,800 bytes. This rule does not look for that length."
+  - name: Authorized-research labels, canary files, and ARTEX probe paths
+    format: guidance
+    notes: "security-detections-mcp searches for canary, S3 bucket, and authorized-research wording did not return a rule for pentest canary, harmless, remove on sight, the authorized security research user agents, the ARTEX probe path fragment artex-, or gladdaily[.]vip. The canary hits were OpenCanary honeypot login events. The S3 hits were CloudTrail versioning, logging, and replication changes, not a canary object written into a bucket. Hunt those strings in web logs, file-integrity logs, and object-storage logs, and do not let the text lower severity."
+timeline:
+  first_seen: 2026-08-03
+  last_updated: 2026-11-19
+  updates:
+    - date: 2026-08-03
+      source: Profero
+      summary: "Profero first sees 156.240.236[.]27. CyberStrikeAI runs on that host during August and September."
+    - date: 2026-10-31
+      source: Profero
+      summary: "Profero publishes the Ultra hosts, ARTEX probes, VulnHunter and Hermes Agent panels, and the block list."
+    - date: 2026-11-19
+      source: Profero
+      summary: "Guy Barnhart-Magen publishes the authorized-research user agents, the pentest canary files, the AI incident report, and the approximate 26-hour delay and 3 GB transfer."
+iocs:
+  domains:
+    - gladdaily[.]vip
+    - www.gladdaily[.]vip
+    - wiki.gladdaily[.]vip
+  ips:
+    - 156.240.236[.]28
+    - 156.240.236[.]27
+    - 156.240.236[.]14
+    - 156.240.236[.]6
+    - 156.240.236[.]180
+    - 156.240.236[.]22
+    - 156.240.236[.]31
+    - 156.240.236[.]32
+    - 156.240.236[.]33
+    - 156.240.236[.]34
+    - 156.240.236[.]42
+    - 156.240.236[.]49
+    - 156.240.236[.]50
+    - 156.240.236[.]58
+    - 156.240.236[.]61
+    - 156.240.236[.]77
+    - 156.240.236[.]84
+    - 156.240.236[.]85
+    - 156.240.236[.]86
+    - 156.240.236[.]87
+    - 156.240.236[.]88
+    - 156.240.236[.]89
+    - 156.240.236[.]90
+    - 156.240.236[.]91
+    - 156.240.236[.]92
+    - 156.240.236[.]93
+    - 156.240.236[.]95
+    - 156.240.236[.]97
+    - 156.240.236[.]99
+    - 156.240.236[.]100
+    - 156.240.236[.]101
+    - 156.240.236[.]107
+    - 156.240.236[.]111
+    - 156.240.236[.]120
+    - 156.240.236[.]123
+    - 156.240.236[.]126
+    - 156.240.236[.]128
+    - 156.240.236[.]129
+    - 156.240.236[.]135
+    - 156.240.236[.]145
+    - 156.240.236[.]156
+    - 156.240.236[.]157
+    - 156.240.236[.]162
+    - 156.240.236[.]165
+    - 156.240.236[.]167
+    - 156.240.236[.]169
+    - 156.240.236[.]170
+    - 156.240.236[.]195
+    - 156.240.236[.]198
+    - 156.240.236[.]199
+    - 156.240.236[.]202
+    - 156.240.236[.]203
+    - 156.240.236[.]211
+    - 156.240.236[.]216
+    - 156.240.236[.]217
+    - 156.240.236[.]222
+    - 156.240.236[.]226
+    - 156.240.236[.]230
+    - 156.240.236[.]231
+    - 156.240.236[.]232
+    - 156.240.236[.]234
+    - 156.240.236[.]243
+    - 156.240.236[.]250
+  hashes:
+    - e553d0e46e759f9e094e462130beae409cdbae834036f99f9c9e9a076fe3d7d9
+    - 0b2ee72473130c1412b0e9cf78fd1e6a66e8a335094d5ccd6a5fbd3efb5900d1
+    - 638ba19790e381d77c300a2efb1ee41a33d8ec6c64ca2af890b566fd9009153e
+  urls: []
+atlas_techniques:
+  - id: AML.T0016
+    rationale: "The operator obtained ARTEX, VulnHunter, Hermes Agent, and, earlier, CyberStrikeAI, and exposed them from the Ultra hosts."
+    source_urls:
+      - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+  - id: AML.T0103
+    rationale: "Profero observed ARTEX probe traffic from the attacking host and agent consoles for VulnHunter, Hermes Agent, and Ultra Reverse on the operator's hosts."
+    source_urls:
+      - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+  - id: AML.T0049
+    rationale: "The activity Profero saw against customers was exploitation of public-facing web applications, including SQL injection that did not match a known tool."
+    source_urls:
+      - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+  - id: AML.T0051.001
+    rationale: "Canary files and authorized-research user agents were planted where a defender's log review and incident report would read them. Profero assesses this as indirect prompt injection aimed at AI triage. The customer's AI-written report then classed the host as an authorized test."
+    source_urls:
+      - https://profero.io/blog/ai-attack-cluster-tells/
+  - id: AML.T0067
+    rationale: "The customer's AI-written incident report repeated the canary's claim and classified the host as an authorized penetration test, which is manipulation of trusted model output used in the response."
+    source_urls:
+      - https://profero.io/blog/ai-attack-cluster-tells/
+  - id: AML.T0025
+    rationale: "About 3 GB left from application data over ordinary web responses. Profero says the extraction clients were unlabeled curl and Go HTTP clients."
+    source_urls:
+      - https://profero.io/blog/ai-attack-cluster-tells/
+attack_flow:
+  nodes:
+    - id: agents
+      title: Run the Ultra agent consoles
+      description: "156.240.236[.]28 served an ARTEX-style console and sent ARTEX probes. 156.240.236[.]27 served Ultra - VulnHunter and a Hermes Agent dashboard, and earlier ran CyberStrikeAI. 156.240.236[.]14 served Ultra Reverse."
+      kind: ai
+      source_urls:
+        - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+    - id: proxy
+      title: Send traffic through Thordata
+      description: "Exploitation traffic left through Thordata residential proxies. One session used 31 exits. The measured pool is about 273,000 hosts."
+      kind: access
+      source_urls:
+        - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+    - id: exploit
+      title: Exploit web applications
+      description: "Profero saw SQL injection and ARTEX probe paths against customer web applications. The payloads did not match a known tool signature."
+      kind: execution
+      source_urls:
+        - https://profero.io/blog/ultra-suite-artex-ai-attack-agents/
+    - id: canary
+      title: Plant text for AI triage
+      description: "User agents claimed authorized security research. Files reading pentest canary and harmless, remove on sight were written on a host and in writable S3 buckets. A customer's AI-written report classed the host as an authorized test."
+      kind: ai
+      source_urls:
+        - https://profero.io/blog/ai-attack-cluster-tells/
+    - id: exfil
+      title: Data left before escalation
+      description: "Profero says nobody escalated for about 26 hours. About 3 GB left from about 90 tables. Profero cannot prove the labels caused the delay, and the figures are approximate."
+      kind: impact
+      source_urls:
+        - https://profero.io/blog/ai-attack-cluster-tells/
+  edges:
+    - source: agents
+      target: proxy
+    - source: proxy
+      target: exploit
+    - source: exploit
+      target: canary
+    - source: canary
+      target: exfil

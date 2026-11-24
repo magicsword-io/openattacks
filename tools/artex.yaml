@@ -39,13 +39,16 @@ linked_attacks:
   - crowdstrike-china-nexus-vapor-panda-ran-2026-10
   - datadog-artex-aws-cognito-2026-11
   - gtig-mandiant-unc7228-other-crews-run-2026-10
+  - kimjen-krrk-artex-korean-universities-2026-11
   - microsoft-artex-github-secrets-keyvault-2026-11
   - microsoft-rates-eight-north-korean-actors-2026-10
+  - profero-ultra-operator-artex-2026-10
   - seoul-police-self-taught-hacker-used-2026-10
   - srm-artex-ir-host-artifacts-2026-11
   - storm-0940-used-artex-agentic-ai-2026-10
   - storm-3358-artex-bank-intrusions-2026-11
   - unit42-artex-api-recon-2026-10
+  - wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11
   - wiz-storm-0940-overlapping-operator-runs-2026-10
   - workos-artex-unintended-agent-escape-2026-10
 linked_actors: []

@@ -1130,6 +1130,29 @@
     "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
     "rules": []
   },
+  "wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-24",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "open-dir",
+    "action": "Keep AI provider keys and coding-assistant session histories where a stolen workload or CI credential cannot read them, and rotate any key a harvested host could reach.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "Wiz says this case harvested Anthropic API keys from 50 hosts and mined coding-assistant session histories for production SSO credentials, and that these attacks prioritize AI provider and cloud keys.",
+        "conditions": [
+          "The reported condition is keys or session histories stored where a stolen workload, CI, or node credential can read them.",
+          "Wiz does not name the coding-assistant product. Owning a particular assistant is not the reported condition."
+        ],
+        "source_urls": [
+          "https://www.wiz.io/blog/agentic-attacks-artex-offensive-ai-frameworks"
+        ]
+      }
+    ]
+  },
   "wormgpt-underground-2023": {
     "status": "attacker_tool_only",
     "reviewed": "2026-10-23",

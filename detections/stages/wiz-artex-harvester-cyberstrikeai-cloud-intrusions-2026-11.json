@@ -1,0 +1,47 @@
+{
+  "probes": {
+    "profile": "identity",
+    "note": "Stolen credentials, public sign-up and password-reset flows, and identity-provider probing. Each request often used a different residential or ISP proxy exit.",
+    "reviewed": "2026-11-24"
+  },
+  "ci-trust": {
+    "profile": "credentials",
+    "note": "Attacker-created branches abused CI workload identity trust. Harvest workflows dumped CI-accessible secrets and Terraform state.",
+    "reviewed": "2026-11-24"
+  },
+  "node-collector": {
+    "profile": "privileged-container",
+    "note": "Privileged pods mounted the node root filesystem. The collector pod harvested kubelet PKI and projected service-account tokens. Wiz Sensor also saw nsenter and IMDS kube-env queries.",
+    "reviewed": "2026-11-24"
+  },
+  "argo-admin": {
+    "profile": "credentials",
+    "note": "A cert-manager token could read ArgoCD secrets, and that read led to cluster-admin. This is the secret read, not proof a new binding was created.",
+    "reviewed": "2026-11-24"
+  },
+  "csai": {
+    "profile": "agent-tools",
+    "note": "CyberStrikeAI ran this case. csai- names, an ARTEX checkout, and an auto-generated report are operator artifacts, not a victim tool-call audit.",
+    "reviewed": "2026-11-24"
+  },
+  "tf-binding": {
+    "profile": "privileged-container",
+    "note": "A stolen Terraform-runner session read the kubelet kubeconfig and created a privileged pod and a cluster-admin binding.",
+    "reviewed": "2026-11-24"
+  },
+  "jenkins-rootkit": {
+    "profile": "persistence",
+    "note": "Jenkins remote code execution opened a reverse shell. A pod escape placed an ld.so.preload rootkit disguised as a fontconfig service. The profile covers the persistence write, not the DNS-tunnel protocol.",
+    "reviewed": "2026-11-24"
+  },
+  "offbox": {
+    "profile": "cloud",
+    "note": "Node, IRSA, and Terraform-runner credentials were used from the attacker server for Terraform state, Secrets Manager, and SSM sessions.",
+    "reviewed": "2026-11-24"
+  },
+  "open-dir": {
+    "profile": "credentials",
+    "note": "The open directory showed forged identity-provider tokens, SSH private keys, GitHub Actions secrets, Anthropic API keys, and coding-assistant session histories.",
+    "reviewed": "2026-11-24"
+  }
+}

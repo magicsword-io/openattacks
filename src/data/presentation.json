@@ -79,7 +79,7 @@
   },
   "cert-in-crafty-falcon-bfsi-2026-11": {
     "title": "CRAFTY FALCON campaign against Indian finance",
-    "summary": "CERT-In advisory CIAD-2026-0058 describes CRAFTY FALCON chaining ARTEX, PentAGI, Cairn, and CyberStrikeAI against Indian NBFCs, fintechs, payment firms, and crypto exchanges.",
+    "summary": "CERT-In CIAD-2026-0058 and CIAD-2026-0062 describe CRAFTY FALCON and later unauthorized payments against Indian finance, government-linked payment providers, and payout platforms.",
     "environments": ["cloud", "web"],
     "evidence": "campaign"
   },
@@ -215,6 +215,12 @@
     "environments": ["agents"],
     "evidence": "research"
   },
+  "kimjen-krrk-artex-korean-universities-2026-11": {
+    "title": "KimJEN used ARTEX against Korean universities",
+    "summary": "S2W says KimJEN (krrk) used ARTEX against shared Webcash rERP at Korean universities, then pulled UNIVais logins and bank details and defaced subdomains as Hacked by KRRK.",
+    "environments": ["web", "linux", "windows"],
+    "evidence": "campaign"
+  },
   "llmjacking-deepseek-sysdig-2025-02": {
     "title": "LLMjacking expands to DeepSeek",
     "summary": "Within days of DeepSeek going viral, LLMjacking proxies running on stolen credentials added DeepSeek alongside OpenAI, AWS and Azure access.",
@@ -287,6 +293,12 @@
     "environments": ["agents"],
     "evidence": "research"
   },
+  "profero-ultra-operator-artex-2026-10": {
+    "title": "Profero Ultra operator and AI-triage canaries",
+    "summary": "Profero describes an unnamed operator running ARTEX, VulnHunter, Hermes Agent, and earlier CyberStrikeAI, and canary text that a victim AI report treated as an authorized test.",
+    "environments": ["web", "cloud"],
+    "evidence": "campaign"
+  },
   "promptflux-gtig-2025-06": {
     "title": "PROMPTFLUX Gemini-powered self-modifying VBScript dropper",
     "summary": "An experimental VBScript dropper queries Gemini for antivirus-evasion rewrites. The analyzed self-update function was commented out, so active self-rewriting is not established.",
@@ -328,6 +340,12 @@
     "summary": "Researchers registered huggingface-cli, a PyPI name LLMs often hallucinate, and saw tens of thousands of downloads. This shows how attackers could exploit AI-suggested fake packages.",
     "environments": ["development"],
     "evidence": "research"
+  },
+  "socradar-oh-my-pi-php2shell-2026-11": {
+    "title": "Oh My Pi workers exploited PHP2Shell",
+    "summary": "SOCRadar found Oh My Pi workers on self-hosted DeepSeek V4.1 exploiting PHP2Shell from open directories, with an autonomous payout goal and about 3.3 million Redis records taken.",
+    "environments": ["linux", "web"],
+    "evidence": "campaign"
   },
   "storm-2139-fizzdogg-microsoft-llmjacking-2024-12": {
     "title": "Storm-2139 / FizzDogg Azure OpenAI LLMjacking (Microsoft DCU)",
@@ -394,6 +412,12 @@
     "summary": "For about 53 hours an unauthorised party swapped one Prime Inference deployment for abliterated weights. Capability scores held and refusals collapsed.",
     "environments": ["provider"],
     "evidence": "provider"
+  },
+  "wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11": {
+    "title": "Wiz: ARTEX-Harvester and CyberStrikeAI cloud intrusions",
+    "summary": "Wiz reports the ARTEX-Harvester campaign and a CyberStrikeAI intrusion that used stolen CI and Kubernetes trust to reach cloud secrets, cluster-admin, and AI provider keys.",
+    "environments": ["cloud", "development"],
+    "evidence": "campaign"
   },
   "wormgpt-underground-2023": {
     "title": "WormGPT underground malicious LLM",
