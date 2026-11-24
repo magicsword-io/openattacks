@@ -389,6 +389,12 @@
     "environments": ["cloud"],
     "evidence": "campaign"
   },
+  "wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11": {
+    "title": "Wiz: ARTEX-Harvester and CyberStrikeAI cloud intrusions",
+    "summary": "Wiz reports the ARTEX-Harvester campaign and a CyberStrikeAI intrusion that used stolen CI and Kubernetes trust to reach cloud secrets, cluster-admin, and AI provider keys.",
+    "environments": ["cloud", "development"],
+    "evidence": "campaign"
+  },
   "wormgpt-underground-2023": {
     "title": "WormGPT underground malicious LLM",
     "summary": "An unrestricted LLM sold on dark-web forums for phishing and malware help. Check Point judged it likely real but no better than jailbroken mainstream models.",
