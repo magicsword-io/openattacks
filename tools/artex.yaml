@@ -35,6 +35,7 @@ linked_attacks:
   - crowdstrike-artex-sk-finance-2026-10
   - crowdstrike-china-nexus-vapor-panda-ran-2026-10
   - datadog-artex-aws-cognito-2026-11
+  - dragos-ai-inference-canaries-provider-breaches-2026-11
   - gtig-mandiant-unc7228-other-crews-run-2026-10
   - kimjen-krrk-artex-korean-universities-2026-11
   - microsoft-artex-github-secrets-keyvault-2026-11
