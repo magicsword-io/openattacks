@@ -1,0 +1,17 @@
+{
+  "vuln-exploit": {
+    "profile": "unassessed"
+  },
+  "poem-c2": {
+    "profile": "unassessed"
+  },
+  "deploy-malware": {
+    "profile": "unassessed"
+  },
+  "mining": {
+    "profile": "unassessed"
+  },
+  "expand-botnet": {
+    "profile": "unassessed"
+  }
+}

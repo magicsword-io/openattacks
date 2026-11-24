@@ -31,6 +31,8 @@ OpenAttacks is a community-maintained [MagicSword](https://magicsword.io/) proje
 - **Use the data elsewhere.** The catalog ships as JSON, CSV, Markdown, RSS, and an installable agent skill.
 - **Run bounded exercises.** Selected entries include synthetic, inert labs for observing a behavior without reproducing a live attack.
 
+`/pewpew/`, linked from the bottom of `/regions/` and from a quiet "pew pew" link in the homepage timeline footer (typing `pew` on the homepage outside a text field also opens it), is a deliberately tongue-in-cheek "threat map". It groups entries by every country they reference. `src/lib/country-refs.mjs` derives the references at build time and labels each one by role: `origin` comes from `attribution.country`, `target` comes from a named country in `regions`, and `mentioned` means the country name appears somewhere in the entry text (case-sensitive, with aliases such as DPRK and U.S. normalized, and ambiguous names such as Georgia and Jordan ignored). Solid red arcs connect an origin to a target from the same entry. Dashed cyan arcs connect other countries the same entry references and make no claim. A mentioned country is never a victim location or an attribution. Animation starts paused under `prefers-reduced-motion`.
+
 ## From report to action
 
 An entry preserves the original source and separates reported facts from catalog-authored interpretation. The flow makes the sequence explorable while keeping qualifications, branches, loops, and unknowns visible.
@@ -47,7 +49,7 @@ Defensive material is deliberately labeled as draft guidance. Query-bearing stag
 
 ## Run locally
 
-Requires Node.js **22.22.0 or newer**.
+Requires Node.js **22.23.4 or later in the 22.x series**.
 
 ```sh
 npm ci
@@ -121,7 +123,7 @@ Per-entry JSON and Markdown are available at `/api/attacks/<id>.json`, `/api/att
 Run the checks relevant to your change before opening a pull request:
 
 ```sh
-npm run validate          # schema, detections, simulations, and generated exports
+npm run validate          # schema, detections, and simulations
 npm run test:validation   # record and source-link validation tests
 npm run check             # Astro and TypeScript diagnostics
 npm run build             # production build

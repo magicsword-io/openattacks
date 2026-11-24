@@ -1,0 +1,27 @@
+{
+  "server": {
+    "profile": "windows-shell",
+    "note": "Commands ran under the IIS worker. The 2026 entry vector is unknown.",
+    "reviewed": "2026-11-21"
+  },
+  "implants": {
+    "profile": "windows-dll-sideload",
+    "note": "Witchetty implants include the Avast wsc_proxy hijack and the McAfee mfeann.exe pair. The profile is a DLL-load hunt, not a hash match.",
+    "reviewed": "2026-11-21"
+  },
+  "modules": {
+    "profile": "windows-shell",
+    "note": "Forty-one PowerShell modules under the existing webshell. The shared scaffold is script content, not a process name.",
+    "reviewed": "2026-11-21"
+  },
+  "hunt": {
+    "profile": "credentials",
+    "note": "The modules searched for passwords, keys, and tokens and tested them against exchange APIs. A successful login was not observed.",
+    "reviewed": "2026-11-21"
+  },
+  "exfil": {
+    "profile": "exfil",
+    "note": "Output left as DNS lookups to an oast.pro token. The collector was not visible, and Symantec did not see data theft.",
+    "reviewed": "2026-11-21"
+  }
+}

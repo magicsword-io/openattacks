@@ -89,7 +89,7 @@ test("home and the legacy catalog expose working entries without JavaScript and 
     await page
       .locator("[data-attack-row]:visible")
       .first()
-      .getByRole("link")
+      .locator("a.incident-link")
       .click();
     await expect(
       page.getByRole("heading", { name: "What happened", exact: true }),

@@ -1,0 +1,193 @@
+id: socradar-oh-my-pi-php2shell-2026-11
+name: "SOCRadar: Oh My Pi workers on self-hosted DeepSeek V4.1 exploited PHP2Shell"
+date_reported: 2026-11-18
+date_activity_start: 2026-10-21
+date_activity_end: 2026-11-08
+researcher: SOCRadar Threat Research Unit
+org: SOCRadar
+sources:
+  - url: https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    title: "PHP2Shell Exploited by AI Agents from Day One: Inside a Credential-Harvesting Campaign"
+    publisher: SOCRadar
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "A homemade queue named maq handed each target to a patched Oh My Pi worker run with --auto-approve against two self-hosted DeepSeek V4.1 endpoints. GOAL.md told an agent to keep working until a real payout above $50,000 USDT. SOCRadar says the operation was human-directed and that full autonomy was not reached."
+technique_summary: "SOCRadar Threat Research Unit (published 18 November 2026) describes an unnamed financially motivated operator who had a working PHP2Shell exploit (CVE-2026-109618 and CVE-2026-109619) on 21 October 2026, the day public proofs of concept were released, and aimed it at default PHP/Apache. Open directories exposed the operation: 206.245.153[.]56 was command and control, tool hosting, and loot collection, and 157.180.96[.]7:18082, found on 8 November 2026, was the operator's AI lab. 185.65.134[.]250 appears as an exploit and SSH source. Targeting used Shodan queries for PHP and Apache version banners, from a pool SOCRadar counts at 68,198 hosts. The maq queue dispatched patched Oh My Pi workers with --auto-approve to self-hosted DeepSeek V4.1 endpoints. After a shell, Linux hosts retrieved collect.sh, deep-loot.sh, persist2.sh, and x280.sh from port 8088. Persistence was SSH authorized keys, cron beacons, PHP web shells, a Nextcloud application named Beacon, a Laravel route-cache backdoor, and a localhost-only Dropbear tunnel. GOAL.md told an agent to chase more than $50,000 USDT autonomously until a real payout. SOCRadar says that payout was not confirmed: a large USDC withdrawal stayed pending and encrypted bitcoin was not taken. The completed impact on that track was about 3.3 million user records from an unauthenticated Redis instance. Across both directories the operator attacked 595 IP addresses in 57 countries, and SOCRadar assesses 404 hosts as compromised. The actor is unnamed. SOCRadar's confidence in an initial-access-broker pattern is moderate, and its confidence in the operator's identity is low. This is a different operator from dream-chinese-nexus-operator-claude-code-2026-10."
+initial_access: "PHP2Shell (CVE-2026-109618 and CVE-2026-109619) against exposed PHP/Apache, selected from Shodan."
+ai_tooling_and_models:
+  - "Oh My Pi (https://github.com/can1357/oh-my-pi), patched workers started with --auto-approve"
+  - "DeepSeek V4.1, self-hosted on two endpoints"
+  - maq queue, operator-built, with no public project identified
+other_tooling:
+  - "PHP2Shell (https://github.com/3em0/php2shell, https://github.com/9bie/php2shell-bypass-aslr-exp)"
+  - collect.sh
+  - deep-loot.sh
+  - persist2.sh
+  - x280.sh
+  - Dropbear
+  - Nextcloud Beacon app
+  - Laravel route-cache backdoor
+victims_and_sectors: "Exposed PHP/Apache hosts, including custom PHP applications, Nextcloud, and a small number of payment and other sector systems SOCRadar could identify. Selection followed the software banner, not a named sector."
+regions:
+  - Multiple regions
+region_notes: "SOCRadar counts victim hosts in 57 countries and does not list them here. 206.245.153[.]56, 157.180.96[.]7, and 185.65.134[.]250 are operator infrastructure, not victim locations."
+attribution_or_cluster: "Unnamed. SOCRadar assesses a financially motivated operator in an initial-access-broker pattern, with low confidence in identity. Not the Dream PHP2Shell operator."
+scale_and_metrics: "595 IP addresses attacked in 57 countries and 404 hosts assessed compromised. About 290,000 exfiltrated files (9.5 GB). About 3.3 million user records from an open Redis instance. The GOAL.md payout above $50,000 USDT was not confirmed."
+prevention_angle: "Upgrade exposed PHP to a fixed release, then restart the web server, and still hunt hosts that were exploited before the patch. Block and search for 206.245.153[.]56, 157.180.96[.]7, and 185.65.134[.]250, especially port 8088 and high ports used for reverse shells. Hunt new authorized_keys entries, cron beacons, /tmp/beacon.sh, web shells, a Nextcloud Beacon app, a Laravel route-cache backdoor, and Dropbear listening on localhost. Rotate cloud keys, database credentials, and SSH keys from exposed hosts. Do not treat an agent goal file as proof that a payout occurred."
+related_magicsword_projects: []
+source_notes: "Confirmed AI use is the maq queue, the Oh My Pi workers, the DeepSeek endpoints, and GOAL.md, recovered from the operator's own open directories. SOCRadar says an AI worker also ran the collector on the operator's lab by mistake. The same lab notes mention other attempts, including a React server-component scanner and exposed services. Those are not this PHP2Shell chain. No Sigma, Splunk, or Elastic rule names maq, the Nextcloud Beacon app, the Laravel token, or Dropbear as used here. dream-chinese-nexus-operator-claude-code-2026-10 is a different operator and is linked both ways. Identity and country are unknown. Indicators below are the operator infrastructure and tool hashes SOCRadar published for defense."
+last_reviewed: 2026-11-23
+confidence: high
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed
+  motivation: financially-motivated
+  attributed_by: SOCRadar Threat Research Unit
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Potential PHP2Shell Exploitation Attempt
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/initial_access_potential_php2shell_exploitation_attempt.toml
+    notes: "security-detections-mcp search for PHP2Shell returned this rule. It matches the PHP fatal-error signature Elastic associates with CVE-2026-109618 and CVE-2026-109619 in nginx and Apache error logs. It does not confirm code execution."
+  - name: Cisco Secure Firewall - PHP2Shell Exploitation Attempt
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/network/cisco_secure_firewall___php2shell_exploitation_attempt.yml
+    notes: "security-detections-mcp list_by_cve for CVE-2026-109618 returned this rule. It matches PHP2Shell HTTP on Cisco Secure Firewall. SOCRadar does not say the victims were Cisco appliances. Use it where that sensor sees the exploit traffic."
+  - name: Potential PHP Reverse Shell
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_php_reverse_shell.yml
+    notes: "security-detections-mcp search for PHP and Linux shell returned this rule. It fits PHP spawning a reverse shell after PHP2Shell. It does not encode CVE-2026-109618."
+  - name: Suspicious Download and Execute Pattern via Curl/Wget
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_curl_wget_exec_tmp.yml
+    notes: "security-detections-mcp search for curl and sh returned this Linux rule. SOCRadar says compromised hosts fetched collector and persistence scripts and piped them to a shell."
+  - name: Linux SSH Authorized Keys Modification
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_ssh_authorized_keys_modification.yml
+    notes: "security-detections-mcp search for authorized_keys and list_by_mitre T1098.004 returned this rule. It fits the SSH keys SOCRadar says were written for persistence."
+  - name: Cron Job Created or Modified
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_cron_job_creation.toml
+    notes: "security-detections-mcp list_by_mitre T1053.003 returned this Linux rule. It fits the cron beacons SOCRadar describes. It does not name /tmp/beacon.sh."
+  - name: Suspicious Child Execution via Web Server
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_webserver_suspicious_child_execution.toml
+    notes: "security-detections-mcp list_by_mitre T1505.003 returned this Linux rule. It fits a web-server process spawning a shell or collector after the exploit."
+  - name: Dropbear, Nextcloud Beacon, Laravel backdoor, and maq
+    format: guidance
+    notes: "security-detections-mcp search for Dropbear returned only Unusual SSH Client Banner, which excludes the SSH-2.0-dropbear banner, so that rule does not detect this tunnel. Searches did not return a rule for the Nextcloud Beacon app, the Laravel route-cache token, maq, Oh My Pi --auto-approve, GOAL.md, or the script names collect.sh, deep-loot.sh, persist2.sh, and x280.sh. Hunt the published paths, hashes, and the three operator addresses directly. list_by_cve also returned Cisco PHP2Shell payload and upload signatures; the exploitation-attempt rule above is the one included, and the others are the same sensor family."
+timeline:
+  first_seen: 2026-10-21
+  last_updated: 2026-11-18
+  updates:
+    - date: 2026-10-21
+      source: SOCRadar
+      summary: "Public PHP2Shell proofs of concept appear. SOCRadar says the operator's first exploit script is the same day, and the AI-lab key was created that evening."
+    - date: 2026-11-08
+      source: SOCRadar
+      summary: "Second open directory found on the AI lab at 157.180.96[.]7 port 18082."
+    - date: 2026-11-18
+      source: SOCRadar
+      summary: "SOCRadar publishes the PHP2Shell agent campaign, the maq and Oh My Pi setup, and the Redis record theft."
+iocs:
+  domains:
+    - s3.buckets[.]ninja
+    - fedora-42.servers[.]guru
+  ips:
+    - 206.245.153[.]56
+    - 157.180.96[.]7
+    - 185.65.134[.]250
+  hashes:
+    - 484e92ae0ceaa888459d2ad5260274923c58d8e8db5a5ff244cf7f9f90f3a1da
+    - 84f161021452e58ce65dec9fee14dd77f4968fe54d284c4059c373388a31f594
+    - abaf7a73520ec77853d83ca1cd946a650291457b6303147cd6622fca5b8be39e
+    - 93f8bcb90e608cdac0239d4218f31fb755357b056e862ce8b61df1026536d83d
+    - d01948e930848dd139915f646760e6dba61caf3eec222d5479518c19b5076ad2
+  urls:
+    - hxxp://206.245.153[.]56:8088/tools/collect.sh
+    - hxxp://206.245.153[.]56:8088/tools/deep-loot.sh
+    - hxxp://206.245.153[.]56:8088/tools/persist2.sh
+    - hxxp://206.245.153[.]56:8088/x280.sh
+    - hxxp://157.180.96[.]7:18082/
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "maq dispatched patched Oh My Pi workers against self-hosted DeepSeek V4.1 endpoints, and GOAL.md assigned an autonomous payout goal."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0016
+    rationale: "The operator obtained public PHP2Shell proofs of concept and Oh My Pi, then patched the workers and kept a private queue and exploit fork."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0006
+    rationale: "Targeting was active scanning of internet-facing PHP/Apache via Shodan, then an eligibility queue."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0049
+    rationale: "Initial access was PHP2Shell against public-facing PHP/Apache."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0102
+    rationale: "The workers were tasked to verify stacks, run the exploit, and collect data. SOCRadar describes command generation by those workers, with a human still directing the operation."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0055
+    rationale: "Collectors took cloud keys, application secrets, database dumps, and SSH material. The open Redis instance exposed about 3.3 million user records."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  - id: AML.T0025
+    rationale: "Loot was posted back to the operator's HTTP service on port 8088, which is exfiltration over the command-and-control channel."
+    source_urls:
+      - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+attack_flow:
+  nodes:
+    - id: shodan
+      title: Select PHP/Apache hosts from Shodan
+      description: "The lab scanned Shodan for PHP and Apache version banners and queued eligible targets."
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    - id: maq
+      title: Dispatch Oh My Pi workers
+      description: "maq handed each target to a patched Oh My Pi worker with --auto-approve on self-hosted DeepSeek V4.1. GOAL.md set an autonomous USDT payout goal."
+      kind: ai
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    - id: php2shell
+      title: Exploit PHP2Shell
+      description: "The operator used a working PHP2Shell exploit against default PHP/Apache on the day public proofs of concept were released."
+      kind: access
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    - id: stage-tools
+      title: Pull collector and persistence scripts
+      description: "Compromised hosts retrieved collect.sh, deep-loot.sh, persist2.sh, and x280.sh from port 8088."
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    - id: persist
+      title: Keep access on the host
+      description: "Persistence was SSH keys, cron beacons, PHP web shells, a Nextcloud Beacon app, a Laravel route-cache backdoor, and a localhost Dropbear tunnel."
+      kind: execution
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+    - id: loot
+      title: Steal credentials and Redis records
+      description: "Collectors uploaded secrets and archives to the operator. About 3.3 million user records came from an unauthenticated Redis instance. The USDT goal was not confirmed as a completed theft."
+      kind: impact
+      source_urls:
+        - https://socradar.io/blog/php2shell-ai-agents-credential-harvesting/
+  edges:
+    - source: shodan
+      target: maq
+    - source: maq
+      target: php2shell
+    - source: php2shell
+      target: stage-tools
+    - source: stage-tools
+      target: persist
+    - source: persist
+      target: loot

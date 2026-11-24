@@ -1,0 +1,14 @@
+{
+  "step-1": {
+    "profile": "linux-webshell"
+  },
+  "step-2": {
+    "profile": "credentials"
+  },
+  "step-3": {
+    "profile": "bedrock"
+  },
+  "step-4": {
+    "profile": "cloud"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "step-1": {
+    "profile": "agent-tools"
+  },
+  "step-2": {
+    "profile": "agent-input",
+    "note": "Preserve issue-result provenance and the agent session, then inspect later repository reads and public writes.",
+    "reviewed": "2026-11-04"
+  },
+  "step-3": {
+    "profile": "repository"
+  },
+  "step-4": {
+    "profile": "repository"
+  }
+}

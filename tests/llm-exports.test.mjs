@@ -11,7 +11,7 @@ import {
   freshnessErrors,
   generatedAt,
   monthKey,
-  readCommitted,
+  readOutputs,
 } from "../scripts/build-llm-exports.mjs";
 
 const files = readdirSync(new URL("../attacks/", import.meta.url)).filter((name) =>
@@ -55,8 +55,8 @@ test("staleness check accepts the generator output and rejects drift", () => {
   );
 });
 
-test("committed LLM exports match the generator", () => {
-  assert.deepEqual(freshnessErrors(outputs, readCommitted()), []);
+test("local LLM exports match the generator after the site build", () => {
+  assert.deepEqual(freshnessErrors(outputs, readOutputs()), []);
 });
 
 test("index, bundles, and JSON cover every attack exactly once", () => {
@@ -69,9 +69,25 @@ test("index, bundles, and JSON cover every attack exactly once", () => {
   assert.equal(catalog.generated_at, generatedAt(seeds));
   assert.equal(Object.keys(catalog).join(","), "generated_at,count,attacks");
   assert.ok(!JSON.stringify(catalog).includes("typefully"));
+  assert.ok(guide.startsWith("# OpenAttacks\n\n> "));
   assert.ok(guide.includes(`${seeds.length} reported`));
   assert.ok(full.includes(`${seeds.length} entries`));
-  assert.ok(guide.includes("/api/catalog.json"));
+  assert.ok(guide.indexOf("## Catalog\n") < guide.indexOf("## Attacks\n"));
+  assert.ok(guide.includes("## Optional\n"));
+  for (const path of [
+    "/api/attacks.json",
+    "/patterns/",
+    "/actors/",
+    "/skills/openattacks/SKILL.md",
+    "/downloads/openattacks-skill.zip",
+    "/rss.xml",
+    "/sitemap-index.xml",
+    "/llms-full.txt",
+    "/api/catalog.json",
+  ]) {
+    assert.ok(guide.includes(path), path);
+  }
+  assert.ok(full.includes("/skills/openattacks/SKILL.md"));
   assert.ok(guide.includes("/api/relevance.json"));
   assert.ok(guide.includes("/data/attacks.json"));
 
@@ -138,7 +154,7 @@ test("export schema accepts the generated catalog", () => {
   assert.equal(schema.properties.attacks.items.properties.typefully, undefined);
 });
 
-test("the site build serves the committed export bytes", () => {
+test("the site build serves the generated export bytes", () => {
   const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
   for (const path of [
     "llms.txt",

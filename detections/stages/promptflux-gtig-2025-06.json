@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  },
+  "step-2": {
+    "profile": "model-network"
+  },
+  "step-3": {
+    "profile": "windows-shell",
+    "control": "script-hosts",
+    "scope": "Windows VBScript execution. The analyzed sample's self-update function was commented out; blocking it is not proof of stopping an active self-rewrite chain."
+  },
+  "step-4": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "analysis-review",
+    "note": "Preserve sample hashes and independent behavior labels before the model transformation; this is a research workflow.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "analysis-review"
+  },
+  "step-3": {
+    "profile": "analysis-review"
+  },
+  "step-4": {
+    "profile": "analysis-review",
+    "note": "Compare model/scanner verdicts with known behavior on the evaluated set; this does not establish a separate victim intrusion.",
+    "reviewed": "2026-11-04"
+  }
+}

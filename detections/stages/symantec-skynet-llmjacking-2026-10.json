@@ -1,0 +1,14 @@
+{
+  "hunt-endpoints": {
+    "profile": "unassessed"
+  },
+  "jailbreak": {
+    "profile": "unassessed"
+  },
+  "exploit-frameworks": {
+    "profile": "unassessed"
+  },
+  "deploy-miner": {
+    "profile": "unassessed"
+  }
+}

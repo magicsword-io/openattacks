@@ -1,6 +1,11 @@
 node_modules/
 .cache/
 dist/
+/llms.txt
+/llms-full.txt
+/llms/
+/data/attacks.json
+/data/attacks.schema.json
 .astro/
 .context/
 .DS_Store

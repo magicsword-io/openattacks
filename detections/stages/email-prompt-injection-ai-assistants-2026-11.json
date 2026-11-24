@@ -1,0 +1,17 @@
+{
+  "craft-injection": {
+    "profile": "phishing"
+  },
+  "deliver-email": {
+    "profile": "phishing"
+  },
+  "ai-reads": {
+    "profile": "agent-input"
+  },
+  "execute-forward": {
+    "profile": "agent-tools"
+  },
+  "self-propagate": {
+    "profile": "exfil"
+  }
+}

@@ -21,6 +21,7 @@ const months = slices.months.slice(0, 6);
 const publicBase = new URL(import.meta.env.BASE_URL, Astro.site || Astro.url.origin);
 const publicUrl = (path: string) => new URL(path, publicBase).href;
 const zipUrl = publicUrl("downloads/openattacks-skill.zip");
+const skillUrl = publicUrl("skills/openattacks/SKILL.md");
 const llmsUrl = publicUrl("llms.txt");
 const install = (directory: string) =>
   `curl -fsSL ${zipUrl} -o /tmp/openattacks-skill.zip && mkdir -p ${directory} && unzip -o /tmp/openattacks-skill.zip -d ${directory}`;
@@ -51,7 +52,8 @@ const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only th
     <section id="install" aria-labelledby="install-title">
       <h2 id="install-title">Install the openattacks skill</h2>
       <p>
-        The skill is <a href={`${repo}/blob/main/skills/openattacks/SKILL.md`}><code>skills/openattacks/SKILL.md</code></a>.
+        The published skill is <a href={skillUrl}><code>/skills/openattacks/SKILL.md</code></a>.
+        The repository copy is <a href={`${repo}/blob/main/skills/openattacks/SKILL.md`}><code>skills/openattacks/SKILL.md</code></a>.
         Its <code>name</code> is <code>openattacks</code>, matching the folder.
         The zip contains <code>openattacks/SKILL.md</code> and nothing else.
         After it is installed, ask a question about a reported AI attack. The agent loads the skill when the question matches that description, or you can call it as <code>/openattacks</code> where the product uses slash commands.
@@ -375,7 +377,7 @@ const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only th
       <h3>Structured files</h3>
       <p>
         Upload <a href={href("api/attacks.json")}><code>api/attacks.json</code></a> when the model can run code and you want every field.
-        In a git checkout the same records are <code>data/attacks.json</code>.
+        For a local copy, run <code>npm run llm:build</code> to generate <code>data/attacks.json</code>.
         {" "}<a href={href("api/schema.json")}><code>api/schema.json</code></a> is the field list.
         {" "}<a href={href("llms-full.txt")}><code>llms-full.txt</code></a> remains available for a tool that can hold the entire catalog.
       </p>

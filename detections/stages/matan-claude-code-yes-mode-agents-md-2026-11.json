@@ -1,0 +1,14 @@
+{
+  "plant": {
+    "profile": "agent-input"
+  },
+  "score": {
+    "profile": "agent-input"
+  },
+  "allow": {
+    "profile": "unassessed"
+  },
+  "bypass": {
+    "profile": "credentials"
+  }
+}

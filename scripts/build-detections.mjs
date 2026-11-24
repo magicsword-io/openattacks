@@ -19,6 +19,29 @@ function yaml(file) {
   return document.toJS();
 }
 
+export function readStageMappings(base = root) {
+  const directory = join(base, "detections", "stages");
+  const names = readdirSync(directory)
+    .filter((name) => name.endsWith(".json"))
+    .sort();
+  return Object.fromEntries(
+    names.map((name) => {
+      const file = join(directory, name);
+      let mappings;
+      try {
+        mappings = JSON.parse(readFileSync(file, "utf8"));
+      } catch (error) {
+        throw new Error(`${file}: ${error.message}`, { cause: error });
+      }
+      assert(
+        mappings && typeof mappings === "object" && !Array.isArray(mappings),
+        `${file}: expected stage mappings keyed by flow node ID`,
+      );
+      return [name.slice(0, -".json".length), mappings];
+    }),
+  );
+}
+
 export function buildCatalog(base = root) {
   const profiles = {};
   for (const file of readdirSync(join(base, "detections"))
@@ -132,9 +155,7 @@ export function buildCatalog(base = root) {
     profiles[id] = definition;
   }
   assert(Object.keys(profiles).length, "No detection definitions found");
-  const stages = JSON.parse(
-    readFileSync(join(base, "detections/stages.json"), "utf8"),
-  );
+  const stages = readStageMappings(base);
   const attacks = readdirSync(join(base, "attacks"))
     .filter((f) => f.endsWith(".yaml"))
     .map((f) => yaml(join(base, "attacks", f)));
@@ -148,8 +169,8 @@ export function buildCatalog(base = root) {
       { id: "ai" },
     ];
     assert(
-      stages[attack.id],
-      `${attack.id}: add stage mappings (use an explicit gap if needed)`,
+      Object.hasOwn(stages, attack.id),
+      `${attack.id}: add stage mappings in detections/stages/${attack.id}.json (use an explicit gap if needed)`,
     );
     assert.deepEqual(
       Object.keys(stages[attack.id]).sort(),

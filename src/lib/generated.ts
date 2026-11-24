@@ -4,12 +4,12 @@ import { join } from "node:path";
 export const cors = { "Access-Control-Allow-Origin": "*" };
 const canonicalBase = "https://openattacks.ai/";
 
-/** Read a committed generator output. The site serves these bytes unchanged. */
+/** Read an export prepared by the build or development command. */
 export function generated(path: string) {
   return readFileSync(join(process.cwd(), path), "utf8");
 }
 
-/** Keep committed exports canonical while making alternate deployments self-contained. */
+/** Rewrite canonical links for an alternate deployment. */
 export function generatedForSite(path: string, publicBase: URL) {
   const base = publicBase.href.endsWith("/")
     ? publicBase.href

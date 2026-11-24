@@ -8,6 +8,10 @@ export const GET: APIRoute = ({ site, url }) =>
       new URL(import.meta.env.BASE_URL, site || url.origin),
     ),
     {
-      headers: { "Content-Type": "text/plain; charset=utf-8", ...cors },
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
+        ...cors,
+      },
     },
   );

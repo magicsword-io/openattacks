@@ -1,0 +1,14 @@
+{
+  "install-extension": {
+    "profile": "extension"
+  },
+  "push-prompt": {
+    "profile": "agent-input"
+  },
+  "auto-allow": {
+    "profile": "agent-tools"
+  },
+  "execute-command": {
+    "profile": "unassessed"
+  }
+}

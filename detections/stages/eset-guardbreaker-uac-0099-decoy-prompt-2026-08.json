@@ -1,0 +1,22 @@
+{
+  "vbs-stage": {
+    "profile": "windows-shell",
+    "note": "wscript or cscript running the group's VBS. How this script arrived is not described.",
+    "reviewed": "2026-11-17"
+  },
+  "decoy-comment": {
+    "profile": "analysis-review",
+    "note": "The comment is inert and is meant to make an LLM code scanner refuse. ESET did not test a product. A refusal on a malware sample should start a review.",
+    "reviewed": "2026-11-17"
+  },
+  "loader": {
+    "profile": "payload",
+    "note": "If the script runs, it still downloads MATCHBOIL. The comment does not change that behavior.",
+    "reviewed": "2026-11-17"
+  },
+  "scanner-gap": {
+    "profile": "analysis-review",
+    "note": "DugganUSA's one-day test is independent of ESET and used a synthetic script. One refusal is not a measurement of this incident file.",
+    "reviewed": "2026-11-17"
+  }
+}

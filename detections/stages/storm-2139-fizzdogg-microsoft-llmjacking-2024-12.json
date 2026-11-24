@@ -1,0 +1,15 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  },
+  "step-2": {
+    "profile": "cloud"
+  },
+  "step-3": {
+    "profile": "cloud"
+  },
+  "step-4": {
+    "profile": "cloud"
+  }
+}

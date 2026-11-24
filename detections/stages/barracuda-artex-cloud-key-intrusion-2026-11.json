@@ -1,0 +1,22 @@
+{
+  "vendor-key": {
+    "profile": "identity",
+    "note": "The first calls used a still-valid cloud key issued to a vendor. The GitHub config file is where the key was found, not a commit on a Barracuda repository.",
+    "reviewed": "2026-11-17"
+  },
+  "secret-chain": {
+    "profile": "credentials",
+    "note": "Secret-store reads, infrastructure-as-code state, and Kubernetes secret lists. Instance-metadata credential requests are a separate metadata hunt.",
+    "reviewed": "2026-11-17"
+  },
+  "artex-match": {
+    "profile": "agent-tools",
+    "note": "Barracuda did not recover the tool. Resource names and probe order are a hunt clue, not a tool-call audit record.",
+    "reviewed": "2026-11-17"
+  },
+  "ci-and-mount": {
+    "profile": "privileged-container",
+    "note": "The read-only host filesystem mount is the pod event. A short-lived branch that prints secrets into a build log is a CI event this pod query does not cover.",
+    "reviewed": "2026-11-17"
+  }
+}

@@ -3,9 +3,3 @@ simulations/** text eol=lf
 tests/simulations.test.mjs text eol=lf
 # Generated detection catalogs and query downloads must agree across checkouts.
 detections/** text eol=lf
-# Generated LLM exports are compared byte-for-byte.
-llms.txt text eol=lf linguist-generated
-llms-full.txt text eol=lf linguist-generated
-llms/** text eol=lf linguist-generated
-data/attacks.json text eol=lf linguist-generated
-data/attacks.schema.json text eol=lf linguist-generated

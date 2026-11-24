@@ -1,11 +1,4 @@
 /* Shared MagicSword / LOLSkills palette lives in global.css. */
-/* Match the comfortable 125% browser framing on wide landing-page viewports. */
-@media (min-width: 1680px) {
-  body.catalog-landing {
-    zoom: 1.25;
-  }
-}
-
 .site-header {
   height: 96px;
 }
@@ -275,6 +268,7 @@
   font-size: 15px;
   line-height: 1.85;
   margin-bottom: 14px;
+  overflow-wrap: anywhere;
 }
 .entry-story .text-link {
   font-size: 13px;
