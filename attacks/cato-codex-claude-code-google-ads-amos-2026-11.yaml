@@ -1,0 +1,190 @@
+id: cato-codex-claude-code-google-ads-amos-2026-11
+name: Cato CTRL fake Claude Code and Codex Google Ads deliver an AMOS loader
+date_reported: 2026-11-19
+date_activity_start: 2026-08-14
+researcher: Dr. Guy Waizel, Jakub Osmani
+org: Cato CTRL
+sources:
+  - url: https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+    title: Threat Actors Abuse Suspected Compromised Google Ads Accounts to Target Developers with Fake Tools
+    publisher: Cato Networks
+  - url: https://www.catonetworks.com/blog/cato-ctrl-when-trust-becomes-payload-in-fake-codex-clickfix-campaign/
+    title: "Cato CTRL Insights: When Trust Becomes the Payload in a Fake Codex ClickFix Campaign"
+    publisher: Cato Networks
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_tool_as_lure
+ai_role_secondary: null
+ai_role_detail: "The AI product names are the lure. Cato does not describe the operator using a model. Confirmed for the Claude Code and Codex ads and the shared loader. The attacker does not use AI."
+technique_summary: "Cato CTRL (Dr. Guy Waizel and Jakub Osmani, 19 November 2026) followed sponsored Google results for Claude Code, Codex, and Homebrew. The ads ran under identities tied to real businesses whose products were unrelated to the advertised tools, which Cato reads as suspected compromise or misuse of advertiser accounts. Cato redacts the advertiser names. A separate breach-investigation notice for one company does not establish that its Google Ads account was compromised. A sponsored result for claude code mac download went through a Google /url redirect to parentpreneurx[.]com. The page showed a one-line Terminal install under some conditions and benign content under others, which Cato calls traffic cloaking. The command prints an Apple App Store URL, Base64-decodes a second URL, and pipes a script from vine-96[.]com into zsh. The App Store URL does not authenticate that script. The loader presents itself as update and cache work, rebuilds command names from variables, derives an AES key, decrypts an AES-128-CTR blob, gunzips it, and evals the shell. The decoded stage POSTs in the background to grove-satin[.]com/api/metrics/run?event=pasted with user and BuildID headers, then, without waiting, downloads a payload from vine-96[.]com, writes /tmp/helper, strips extended attributes, marks it executable, and launches it. Cato treats that loader and the event=pasted telemetry as AMOS delivery, citing a SANS chain with the same shape, and does not claim the POST is the final payload's C2. grove-satin[.]com is the telemetry host from Cato's 24 August 2026 Codex ClickFix report (Infrastructure Set 3, recorded in the 17 August notes). The 19 November report adds cross-brand reuse: codex-notes[.]com, cli-desktop[.]com, and claud-tips[.]com share basequill9[.]com; claud-tips[.]com and cli-codex[.]com share stride25[.]com; codex-craft[.]com and codex-desk[.]com share plume-compass[.]com. Cato says those overlaps can be one operator, shared tooling, or a distribution service. Shared Cloudflare addresses, including 188.114.96[.]9 and 188.114.97[.]9, are hosting context only and are not listed here as blocking indicators. Two other chains in the same report are not tied to that cluster. claude-tools[.]com served a DMG and, in a 14 September analysis, a JXA loader that profiled the host, pulled a native payload from kmtxyn[.]com/agent, and launched a counterfeit Finder.app. Homebrew lookalikes homebrexwin[.]com and storageprofiler[.]com share the Google /url pattern and have no recovered payload. nomeibrew[.]com and pirloz[.]com lead to a disk image whose arm64 app is named DayNote. Cato says the shared AES-128-CTR and gzip techniques do not establish a common operator with the Claude and Codex cluster, and the DayNote payload's family is unidentified. The actor is unnamed. The lure brands and the AMOS-associated stealer are financial."
+initial_access: "Sponsored Google results for Claude Code, Codex, and Homebrew, with Google /url redirects and traffic cloaking, then a Terminal command the visitor pastes."
+ai_tooling_and_models:
+  - "Claude Code, impersonated (https://github.com/anthropics/claude-code)"
+  - "Codex, impersonated (https://github.com/openai/codex)"
+  - "Homebrew, impersonated by lookalike ads (https://github.com/Homebrew/brew)"
+other_tooling:
+  - "zsh, curl, Base64, AES-128-CTR, and gunzip in the Claude and Codex loader"
+  - "Atomic macOS Stealer (AMOS) delivery pattern, /tmp/helper and event=pasted"
+  - "JavaScript for Automation on the separate claude-tools[.]com chain"
+  - "DayNote, the name of the analyzed app on the separate nomeibrew and pirloz chain"
+victims_and_sectors: "Developers searching for Claude Code, Codex, or Homebrew. Cato does not name a victim organization. The advertisers whose identities front the ads may themselves be victims."
+regions:
+  - unknown
+region_notes: "Cato does not name a victim country. Advertiser geography and CDN locations are not victim regions."
+attribution_or_cluster: "Unnamed. Cato links part of the Claude and Codex activity by shared domains and the AMOS-style loader. It does not tie the claude-tools JXA chain or the Homebrew and DayNote chains to that cluster."
+scale_and_metrics: "Cato does not publish a victim count. The 19 November post maps multiple lure domains onto shared downstream hosts and retains the 24 August Codex sets."
+prevention_angle: "Install Claude Code, Codex, and Homebrew from the vendor, not from a sponsored result. Alert when Terminal or zsh pipes curl into a shell, when a shell Base64-decodes a URL, and when a new executable appears at /tmp/helper after xattr -c. Treat grove-satin[.]com/api/metrics/run?event=pasted as loader telemetry. Do not block Cloudflare anycast addresses from the historical DNS table."
+related_magicsword_projects: []
+source_notes: "Domains, hashes, the loader sequence, and the cluster split are from the 19 November Cato article. The 24 August article is the Codex ClickFix report that first documents grove-satin[.]com/api/metrics/run?event=pasted, quill-flint[.]com, and the earlier Google Sites sets. Its Mach-O hashes for Infrastructure Sets 1 and 2 are left in that article. Set 3 hashes are repeated below because grove-satin is the link. Advertiser names are redacted in the source and are not reconstructed here. 193.187.151[.]195 and 172.236.51[.]169 are historical DNS associations for nomeibrew[.]com and storageprofiler[.]com, not confirmed payload C2. Cloudflare edge addresses are omitted."
+last_reviewed: 2026-11-23
+iocs:
+  domains:
+    - parentpreneurx[.]com
+    - vine-96[.]com
+    - grove-satin[.]com
+    - basequill9[.]com
+    - stride25[.]com
+    - plume-compass[.]com
+    - sic180[.]com
+    - codex-notes[.]com
+    - cli-desktop[.]com
+    - claud-tips[.]com
+    - cli-codex[.]com
+    - codex-craft[.]com
+    - codex-desk[.]com
+    - swiftsaverfin[.]com
+    - mossmesh17[.]com
+    - bright-links[.]com
+    - aspencore18[.]com
+    - atlas-compass[.]com
+    - quill-flint[.]com
+    - homebrexwin[.]com
+    - storageprofiler[.]com
+    - claude-tools[.]com
+    - kmtxyn[.]com
+    - nomeibrew[.]com
+    - pirloz[.]com
+  ips:
+    - 193.187.151.195
+    - 172.236.51.169
+  hashes:
+    - fcb74c3c5134a97b5bc90b2e0bad67a8e3044f769f844313e21069c7480d97cd
+    - 48db5d715c583b4495ee1e3095f097ed9bc04625e4516e1fa437fcb374fec249
+    - 1f252b86edddda142a69cf9059b67a4aa842f7fd8aedbfdd6937850138e3a63e
+    - 684d4875a60e832c6993bb08bf0ec4fbd7ca89c1a44ba1ab65fac6d9fb202599
+    - 9c3a28c5b8b9ced508786aad723efb8105b9d20f61095b28556c3d89a5c00343
+    - 95d5ae5e87b4eae733655f6fc7bfdeb1efbc618d95375a46f6f8d353b48426dc
+    - 780877f5f10a45a21c919ff3ebf8624ac69561afb287acdce3013648983b5bb7
+    - 36d7659398de3c7e22652835316db5b20549e010c1460038c3bf368a7d00767c
+    - d3dfa772a1f13445016981cdd8b340ede45f35edc3964079dc025974f745befb
+    - 8b102288e25f98666dd2ccfdc26fb37ab17454488e997f496923c3f65983b499
+    - 9732efd486aee9ccf668f263fcdacda9c3e2d78d8d5e82bf8ee11c98500f4431
+  urls:
+    - hxxps://vine-96[.]com/curl/iojaglaf/t1f6kticgr6nt9nplkh[.]dat
+    - hxxps://grove-satin[.]com/api/metrics/run?event=pasted
+    - hxxps://vine-96[.]com/N_8qoQC3gmx9CFmwN9nMJ4QoUZtKZ1ua1ThNulPR4kU/Vert/update
+    - hxxps://kmtxyn[.]com/agent
+    - hxxps://nomeibrew[.]com/api/track.php?get_settings=1
+    - hxxps://pirloz[.]com/FRpC3gIThWre.js
+    - hxxps://cdn.jsdelivr[.]net/gh/daynotest/daynoteupdta@main/autoupd.note
+atlas_techniques:
+  - id: AML.T0073
+    rationale: "Sponsored results and landing pages impersonate Claude Code, Codex, and Homebrew."
+    source_urls:
+      - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+  - id: AML.T0052
+    rationale: "The delivery is a sponsored search ad that leads the visitor to paste a Terminal command. The lure is the AI tool name."
+    source_urls:
+      - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+      - https://www.catonetworks.com/blog/cato-ctrl-when-trust-becomes-payload-in-fake-codex-clickfix-campaign/
+attack_flow:
+  nodes:
+    - id: ads
+      title: Sponsored result under another identity
+      description: "A Google ad for Claude Code, Codex, or Homebrew is shown under an unrelated business identity. The Claude path uses a Google /url redirect and serves the install page only to some visitors."
+      kind: access
+      source_urls:
+        - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+    - id: paste
+      title: Terminal command pulls vine-96
+      description: "parentpreneurx[.]com shows one Terminal line. It prints an App Store URL, Base64-decodes another URL, and pipes a script from vine-96[.]com into zsh."
+      kind: execution
+      source_urls:
+        - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+    - id: loader
+      title: AES loader and grove-satin telemetry
+      description: "The script decrypts AES-128-CTR, gunzips, and evals. It POSTs event=pasted to grove-satin[.]com, writes /tmp/helper, runs xattr -c, and executes the file. grove-satin is the 24 August Codex telemetry host."
+      kind: execution
+      source_urls:
+        - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+        - https://www.catonetworks.com/blog/cato-ctrl-when-trust-becomes-payload-in-fake-codex-clickfix-campaign/
+    - id: amos
+      title: AMOS-associated delivery
+      description: "Cato assesses the loader as AMOS delivery because of the event=pasted request, the update-themed URL, and /tmp/helper. It does not identify the operator or claim every payload in the report is AMOS."
+      kind: impact
+      source_urls:
+        - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+    - id: other
+      title: JXA and DayNote stay separate
+      description: "claude-tools[.]com leads to a JXA loader and a fake Finder.app from kmtxyn[.]com/agent. nomeibrew[.]com and pirloz[.]com lead to a DayNote disk image. Cato does not link either chain to the Claude and Codex cluster."
+      kind: unknown
+      source_urls:
+        - https://www.catonetworks.com/blog/threat-actors-abuse-suspected-compromised-google-ads-accounts-to-target-developers-with-fake-tools/
+  edges:
+    - source: ads
+      target: paste
+    - source: paste
+      target: loader
+    - source: loader
+      target: amos
+    - source: ads
+      target: other
+      label: not linked by Cato
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed
+  motivation: financially-motivated
+  attributed_by: Cato CTRL
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: File Download or Read to Pipe Execution
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/file_download_or_read_to_pipe_execution.yml
+    notes: "Selected from a security-detections-mcp search for curl piped to a shell. The search covers curl, wget, and other downloaders piped to zsh, bash, or sh. That matches the Claude command piping a vine-96[.]com script into zsh. It does not see the AES decrypt inside the retrieved script."
+  - name: Decode Base64 Encoded Text -MacOs
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/macos/process_creation/proc_creation_macos_base64_decode.yml
+    notes: "Selected from a security-detections-mcp search for base64 shell decode. It requires /usr/bin/base64 and the command line to contain -d. macOS base64 often uses -D, which would not match. Cato says the command Base64-decodes a second URL and does not publish the flag."
+  - name: xattr -c and eval of curl do not match the indexed rules
+    format: guidance
+    notes: "security-detections-mcp searches for xattr, curl zsh, and macos curl did not return a rule for this loader's xattr -c. Sigma Gatekeeper Bypass via Xattr and Splunk MacOS Gatekeeper Bypass require com.apple.quarantine. Elastic Quarantine Attrib Removed by Unsigned or Untrusted Process excludes /usr/bin/xattr. Elastic Shell Evaluated Curl Downloaded Content requires eval of a $(curl) substitution, not a pipe into zsh. Sigma JXA In-memory Execution Via OSAScript requires osascript -e, eval, and NSData.dataWithContentsOfURL, which Cato does not publish for the separate claude-tools chain. Also hunt /tmp/helper and hxxps://grove-satin[.]com/api/metrics/run?event=pasted."
+timeline:
+  first_seen: 2026-08-14
+  last_updated: 2026-11-19
+  updates:
+    - date: 2026-08-14
+      source: Cato CTRL
+      summary: "Codex investigation notes record swiftsaverfin[.]com, a TALLY decoy, aspencore18[.]com, and atlas-compass[.]com."
+    - date: 2026-08-17
+      source: Cato CTRL
+      summary: "Infrastructure records include grove-satin[.]com telemetry and quill-flint[.]com payload delivery, later published in the 24 August Codex report."
+    - date: 2026-08-24
+      source: Cato CTRL
+      summary: "Cato publishes the fake Codex ClickFix report. Google Sites lures, event=pasted telemetry, and /tmp/helper overlap AMOS delivery."
+    - date: 2026-09-11
+      source: Cato CTRL
+      summary: "Analysis of the separate DayNote disk image associated with nomeibrew[.]com and pirloz[.]com. Not linked to the Claude and Codex cluster."
+    - date: 2026-09-14
+      source: Cato CTRL
+      summary: "Analysis of the separate claude-tools[.]com JXA chain and kmtxyn[.]com/agent. Not linked to the cluster."
+    - date: 2026-11-06
+      source: Cato CTRL
+      summary: "Cato notifies Cloudflare about codex-notes[.]com and Akamai and Linode. Cloudflare says it restricted the reported URLs and forwarded the report."
+    - date: 2026-11-11
+      source: Cato CTRL
+      summary: "GitHub records the daynotest repository unavailable. jsDelivr records the referenced update resource unavailable."
+    - date: 2026-11-19
+      source: Cato CTRL
+      summary: "Cato publishes the Google Ads follow-up. parentpreneurx[.]com, vine-96[.]com, and grove-satin[.]com connect the Claude loader to the August Codex telemetry. basequill9[.]com, stride25[.]com, and plume-compass[.]com are the additional shared domains."

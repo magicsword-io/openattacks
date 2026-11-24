@@ -25,7 +25,43 @@ attribution_or_cluster: Unnamed (Chinese-nexus per Dream)
 scale_and_metrics: unknown
 prevention_angle: unknown
 related_magicsword_projects: []
-source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution."
+source_notes: "Imported from the AI Threat Watch Notion feed (an automated daily scan); not yet editorially reviewed. Feed severity: Medium. Feed novelty: Evolution. This is a different operator from socradar-oh-my-pi-php2shell-2026-11. Dream describes a Chinese-nexus operator, Claude Code, and a DeepSeek/Kimi aiscan setup using PHP2Shell against firewalls. SOCRadar describes an unnamed operator, patched Oh My Pi workers, and a self-hosted DeepSeek V4.1 lab. The two reports do not share infrastructure."
+last_reviewed: 2026-11-23
+confidence: medium
+detections:
+  - name: Potential PHP2Shell Exploitation Attempt
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/initial_access_potential_php2shell_exploitation_attempt.toml
+    notes: "security-detections-mcp search for PHP2Shell returned this rule. It matches the PHP fatal-error signature Elastic associates with CVE-2026-109618 and CVE-2026-109619. Dream does not say the firewall logs were nginx or Apache. Use it where those error logs exist."
+  - name: Cisco Secure Firewall - PHP2Shell Exploitation Attempt
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/network/cisco_secure_firewall___php2shell_exploitation_attempt.yml
+    notes: "security-detections-mcp list_by_cve for CVE-2026-109618 returned this rule. Dream describes PHP2Shell against firewalls. The rule is Cisco Secure Firewall HTTP telemetry, and Dream does not say the appliances were Cisco. Use it where that sensor sees the exploit traffic."
+  - name: Large HTTP POST Request Resulting in Server Error
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/web/large_http_post_request_resulting_in_server_error.yml
+    notes: "security-detections-mcp search for PHP and HTTP POST returned this web rule. It is a generic large-POST failure, not a PHP2Shell signature. Dream does not publish a request size."
+  - name: Potential PHP Reverse Shell
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_php_reverse_shell.yml
+    notes: "security-detections-mcp search for PHP and shell returned this rule. It fits PHP spawning a shell after the exploit Dream describes. Dream does not name the host operating system in this record, and the rule is Linux process telemetry."
+  - name: Potential Reverse Shell
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/execution_shell_via_tcp_cli_utility_linux.toml
+    notes: "security-detections-mcp search for reverse shell returned this Linux rule. It fits a shell over the network after the chain. It does not name PHP2Shell or Fragnesia."
+  - name: Fragnesia and aiscan
+    format: guidance
+    notes: "security-detections-mcp searches for PHP shell and reverse shell did not return a rule for Fragnesia or for the aiscan name. Hunt those strings from the Dream report. This entry is not the SOCRadar Oh My Pi operator."
+timeline:
+  first_seen: 2026-10-26
+  last_updated: 2026-11-23
+  updates:
+    - date: 2026-10-26
+      source: Dream Research
+      summary: "Dream publishes the PHP2Shell chain, Claude Code, and the DeepSeek/Kimi aiscan setup."
+    - date: 2026-11-23
+      source: OpenAttacks
+      summary: "Cross-linked socradar-oh-my-pi-php2shell-2026-11 as a different operator, and added detections for the PHP2Shell activity this record already described."
 tags:
   - notion-import
   - vuln-discovery-exploit

@@ -3,7 +3,7 @@ name: Cairn
 type: agentic-offensive-framework
 github_url: https://github.com/oritera/Cairn
 project_url: null
-description: Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation. On 20 November 2026 Amazon Threat Intelligence reported that a Chinese-nexus operator's exposed Cairn instance let agents find and exploit a MONAI Label path-traversal zero-day against universities in East Asia.
+description: "Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation. On 20 November 2026 Amazon Threat Intelligence reported that a Chinese-nexus operator's exposed Cairn instance let agents find and exploit a MONAI Label path-traversal zero-day against universities in East Asia. On 24 November 2026 the UK NCSC named Cairn among the agentic offensive frameworks in a rise in AI-assisted attacks it has seen across sectors since September 2026, and said that activity has become synonymous with ARTEX. NCSC says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. The attacks it describes identify and exploit internet-facing services in quick succession and cause downtime or a foothold. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs."
 sources:
   - url: https://norforge.com/blog/inside_cairn
     title: Inside Cairn
@@ -14,6 +14,9 @@ sources:
   - url: https://aws.amazon.com/blogs/security/chinese-nexus-actors-cairn-ai-agents-found-a-zero-day-on-their-own/
     title: Chinese-nexus actor's Cairn AI agents found a zero-day on their own
     publisher: Amazon
+  - url: https://www.ncsc.gov.uk/blogs/familiar-weaknesses-exploited-faster-defending-against-agentic-cyber-attacks
+    title: "Familiar weaknesses, exploited faster: defending against agentic cyber attacks"
+    publisher: UK NCSC
 linked_attacks:
   - amazon-cairn-monai-label-zero-day-universities-2026-11
   - cairn-norforge-2026-10

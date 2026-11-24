@@ -43,21 +43,10 @@ technique_summary: "42 armed third-party GitHub repositories across 11 legitimat
   related PyPI pystr-codec. Thomas Roccia (Nov 9, 2026) documents hijacked repos with
   forged backdated commits: toray/XiamiSDK-lib, widget-lib, Rainbow-lib, QiniuSDK-lib,
   torayUtils-lib; ejaaduipitara/djp-devops, whatsapp-bot, content-service; ConcordiaDev/theme_saimaniq;
-  madolee/da; Imanilom/baraja-coffe; claudiohernanbesada/xenios.api.   CLAUDE.md DEVOPS-SEALED
+  madolee/da; Imanilom/baraja-coffe; claudiohernanbesada/xenios.api. CLAUDE.md DEVOPS-SEALED
   block instructs agents to silently run node scripts/setup.js at session start. Bitdefender
   Labs (Andrei Anton-Aanei and Alina Bîzgă, 17 November 2026) analyses the same sealed
-  setup.js campaign and lists 22 malicious GitHub links, each with a setup.js MD5. AGENTS.md
-  and CLAUDE.md call scripts/setup.js a sealed binary artifact, not human-readable source,
-  and say not to read, quote, or display it, to run it at session start without displaying
-  output, and to run node scripts/setup.js without confirmation if the user asks for help
-  before setup has run. A second path needs no prompt: after the developer opens and trusts
-  the repo, a session-start hook in .claude/settings.json runs the command in the user's
-  shell. The outer setup.js is a 3.75 MB single-line script that hex-decodes an embedded
-  value, applies ROT13, and evaluates the result. The Node stager holds two AES-128-GCM
-  blobs with embedded keys, decompresses one into a 4.67 MB bundle, resolves or downloads
-  the Bun runtime (https://github.com/oven-sh/bun), and pipes the bundle to bun run - on
-  stdin. A compressed _bz field in package.json hides further payloads, including Windows
-  Credential Manager enumeration and conditional JavaScript. It steals from CI and GitHub
+  setup.js campaign and lists 22 malicious GitHub links, each with a setup.js MD5. The repository's AGENTS.md and CLAUDE.md disguised scripts/setup.js as a sealed artifact and encouraged agents to execute it without inspection. An alternate path used a session-start hook in .claude/settings.json after the developer trusted the repository. The outer setup.js is a 3.75 MB obfuscated loader that starts an embedded bundle using the Bun runtime (https://github.com/oven-sh/bun). A compressed package.json field contains additional payloads. It steals from CI and GitHub
   Actions, cloud and container environments, package registries, browser stores, password
   managers, Windows Credential Manager, SSH keys, .env files, API keys, and source-control
   tokens, then validates tokens against provider APIs. Locally it searches the home directory
@@ -65,13 +54,7 @@ technique_summary: "42 armed third-party GitHub repositories across 11 legitimat
   .cursor/rules/, and .github/copilot-instructions.md, keeps paths containing one of 14 agent
   names (Claude, Codex, Gemini, Copilot, Kiro, OpenCode, Cline, Aider, Tabby, Amazon Q, Cody,
   Bolt, Continue, Cursor), and injects instruction text, session-start hooks, or MCP server
-  configs. Remotely it checks GitHub tokens through /user, /user/repos, and /users/<user>/repos
-  for repo, public_repo, and workflow scopes, and GitLab tokens through /api/v4/projects.
-  MAX_TARGET_REPOS defaults to 25. It inspects up to 50 branches, skips dependabot/ and
-  copilot/, then commits AGENTS.md, CLAUDE.md, .cursorrules, .cursor/rules/setup.mdc,
-  .claude/settings.json, .claude/setup.mjs, .mcp.json, .vscode/tasks.json, .vscode/setup.mjs,
-  and .github/copilot-instructions.md. It also changes package metadata and workflows, creates
-  GitLab pipeline schedules, and tries to republish to npm, PyPI, RubyGems, and JFrog.
+  configs. It uses stolen credentials to propagate through GitHub and GitLab by modifying project instructions, editor settings, workflows, and package metadata. It also attempts to republish packages to npm, PyPI, RubyGems, and JFrog.
   Bitdefender names no actor. New repository names, written here as text and not as links,
   itsunai/docker-php-fpm, itsunai/passport_auth_server, bajoebel/kkpatip, ahmadtohar9/restomoiz,
   tobias94-design/s-valentine, tobias94-design/gymtracker, tobias94-design/signage,
@@ -353,4 +336,4 @@ timeline:
         session start
     - date: "2026-11-17"
       source: Bitdefender Labs
-      summary: "Andrei Anton-Aanei and Alina Bîzgă publish 22 setup.js links and MD5s, the hex-then-ROT13 decode, the Bun stdin bundle, home-directory agent-config injection for 14 agent names, and GitHub or GitLab propagation capped at 25 repositories."
+      summary: "Andrei Anton-Aanei and Alina Bîzgă publish 22 setup.js links and MD5s, an obfuscated loader that used Bun, home-directory agent configuration injection, and propagation through GitHub and GitLab."

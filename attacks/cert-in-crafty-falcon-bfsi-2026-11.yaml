@@ -11,6 +11,13 @@ sources:
   - url: https://indianexpress.com/article/technology/tech-news-technology/cert-in-crafty-falcon-ai-driven-hacking-campaign-fintech-10951672/
     title: CERT-In warns of AI-driven hacking campaign targeting Indian fintech sector
     publisher: Indian Express
+  - url: https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0062
+    title: "CERT-In Advisory CIAD-2026-0062: Abuse of Business Payment Workflows and Use of
+      AI-Driven Agentic Offensive Frameworks across Sectors"
+    publisher: CERT-In
+  - url: https://www.medianama.com/2026/11/223-cert-in-agentic-ai-financial-cyberattacks-bfsi/
+    title: CERT-In finds use of agentic AI for financial cyberattacks beyond the BFSI sector
+    publisher: MediaNama
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -31,7 +38,18 @@ technique_summary: "CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) warns of CRAFT
   retargeting during festive windows when transaction volumes are high and security
   teams are reduced. CERT-In notes campaign exploits trust in cloud infrastructure
   and leverages AI agent autonomy to accelerate intrusion timelines from weeks to
-  hours."
+  hours. On 20 November 2026, CERT-In advisory CIAD-2026-0062 widened the unauthorized-payment
+  activity beyond banking, financial services, and insurance. Technology service providers that
+  run government-linked payment workflows, and platforms that pay vendors or partners, were also
+  affected. Attackers altered business records or approval relationships that determine payments,
+  then the normal payment process paid out. The advisory says a transaction can pass ordinary
+  approval checks when the records behind it were changed. Separate threat hunting found AI-driven
+  agentic offensive frameworks used against enterprises, technology and other service providers,
+  government organisations, and academic and research institutions. The advisory does not publish
+  indicators and does not name additional frameworks. MediaNama (23 November 2026) quotes CERT-In
+  Director General Sanjay Bahl that the frameworks were not only misused but also rebranded, with
+  deployments on infrastructure in multiple countries. That rebranding statement is Bahl's comment
+  to MediaNama, not a sentence in the advisory."
 initial_access: Cloud service exploitation, exposed APIs, compromised AWS Lambda functions,
   credential stuffing against fintech portals
 ai_tooling_and_models:
@@ -50,7 +68,11 @@ other_tooling:
   - Custom payment API invocation scripts
   - Log deletion tools
 victims_and_sectors: Indian non-banking financial companies (NBFCs), fintechs, payment
-  aggregators, cryptocurrency exchanges; festive-season targeting (Diwali, year-end)
+  aggregators, and cryptocurrency exchanges, with festive-season targeting. CIAD-2026-0062
+  also names technology service providers that run government-linked payment workflows,
+  platforms that pay vendors or partners, and, for the agentic-framework hunting, enterprises,
+  technology and other service providers, government organisations, and academic and research
+  institutions.
 regions:
   - India
 attribution_or_cluster: "CERT-In: CRAFTY FALCON financially motivated campaign; Indian
@@ -65,13 +87,22 @@ prevention_angle: Monitor for agentic AI framework execution patterns (ARTEX, Pe
   and application logging with tamper protection; segregate staging from production
   environments; implement transaction velocity checks and behavioral analytics; strengthen
   multi-factor authentication; monitor for unusual payment API invocations from non-standard
-  infrastructure; review allow-lists for payment endpoints
+  infrastructure; review allow-lists for payment endpoints. For CIAD-2026-0062, identify
+  provider accounts that can change payment records or approvals and restrict them; reconcile
+  provider-held records against an independent source the same environment cannot change;
+  require independent verification for beneficiary, instruction, and approval changes; separate
+  client environments at technology and payout providers; alert on unusual sequences of record
+  change, approval, and payout even when each step uses an authorised account; report applicable
+  incidents to CERT-In within six hours and unauthorised payments through the National Cyber
+  Crime Reporting Portal or helpline 1930
 related_magicsword_projects: []
-source_notes: CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) official government warning;
-  Indian Express and industry coverage provide context on AI framework usage and festive-window
-  targeting; cross-reference with cairn-norforge-2026-10 entry for Cairn exploitation
-  patterns
-last_reviewed: 2026-11-06
+source_notes: CERT-In Advisory CIAD-2026-0058 (Nov 4, 2026) is the CRAFTY FALCON warning.
+  CIAD-2026-0062 (Nov 20, 2026) widens the payment activity and reports agentic offensive
+  frameworks in other sectors. It publishes no indicators. The word rebranded is Sanjay Bahl's
+  comment to MediaNama on 23 November 2026, not advisory text. Indian Express coverage is of
+  the 4 November advisory. No new framework is added from the 20 November advisory because it
+  does not name one.
+last_reviewed: 2026-11-23
 iocs:
   domains: []
   ips: []
@@ -84,6 +115,20 @@ atlas_techniques:
       through payment API exploitation and fund exfiltration
     source_urls:
       - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
+  - id: AML.T0012
+    rationale: "CIAD-2026-0062 says attackers changed approval relationships and then used the
+      legitimate payment process, and that agentic-framework activity used valid credentials,
+      administrative functions, and trust relationships."
+    source_urls:
+      - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0062
+      - https://www.medianama.com/2026/11/223-cert-in-agentic-ai-financial-cyberattacks-bfsi/
+  - id: AML.T0048
+    rationale: "The 20 November advisory describes unauthorized financial transactions, an external
+      harm, at technology providers and payout platforms as well as in the original financial-sector
+      reports."
+    source_urls:
+      - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0062
+      - https://www.medianama.com/2026/11/223-cert-in-agentic-ai-financial-cyberattacks-bfsi/
 attack_flow:
   nodes:
     - id: initial-recon
@@ -128,6 +173,14 @@ attack_flow:
         - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0058
       title: Comprehensive log deletion
       description: Comprehensive log deletion
+    - id: record-tamper
+      kind: execution
+      source_urls:
+        - https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES02&VLCODE=CIAD-2026-0062
+        - https://www.medianama.com/2026/11/223-cert-in-agentic-ai-financial-cyberattacks-bfsi/
+      title: Tamper with records or approvals
+      description: "CIAD-2026-0062 says attackers altered business records or approval
+        relationships, then the normal payment process paid out."
   edges:
     - source: initial-recon
       target: cloud-pivot
@@ -143,6 +196,10 @@ attack_flow:
       target: log-deletion
     - source: crypto-theft
       target: log-deletion
+    - source: initial-recon
+      target: record-tamper
+    - source: record-tamper
+      target: fund-theft
 category: adversary-use-of-ai
 attribution:
   actor_name: CRAFTY FALCON
@@ -169,9 +226,17 @@ detections:
       payment API invocations from non-standard infrastructure; flag Rs. 1 test transfers
       followed by large transactions; monitor CloudTrail for Lambda configuration changes
       and log deletion attempts
+  - name: Business-record tampering before a legitimate payout
+    format: guidance
+    notes: "security-detections-mcp searches for beneficiary, business record, and payment
+      returned no Sigma, Splunk, or Elastic rule for changing a business record or an approval
+      relationship and then letting the normal payment process pay out. Payment hits were a
+      GitHub payment-method removal, billing-themed phishing mail, and unrelated prompt-filter
+      events. CIAD-2026-0062 publishes no indicators. Compare record changes, approvals, and
+      payouts as a sequence, including steps that each look authorised."
 timeline:
   first_seen: "2026-10-01"
-  last_updated: "2026-11-15"
+  last_updated: "2026-11-23"
   updates:
     - date: "2026-11-04"
       source: CERT-In
@@ -181,3 +246,9 @@ timeline:
     - date: "2026-11-15"
       source: OpenAttacks
       summary: "Tagged ARTEX, Cairn, CyberStrikeAI, and PentAGI from the CERT-In advisory. Category was already adversary-use-of-ai; the detail-page badge was the missing browse annotation, now set to a reported campaign."
+    - date: "2026-11-20"
+      source: CERT-In
+      summary: "CIAD-2026-0062 widens unauthorized payments to technology providers on government-linked payment workflows and to vendor or partner payout platforms. Attackers tampered with business records or approval relationships, then the normal payment process paid out. Threat hunting found agentic offensive frameworks against enterprises, government, and academia. No indicators."
+    - date: "2026-11-23"
+      source: MediaNama
+      summary: "MediaNama quotes CERT-In Director General Sanjay Bahl that the frameworks were misused and rebranded, with deployments in multiple countries. That wording is the interview, not the advisory text."

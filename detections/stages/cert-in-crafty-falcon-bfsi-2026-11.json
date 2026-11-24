@@ -8,6 +8,9 @@
   "api-abuse": {
     "profile": "unassessed"
   },
+  "record-tamper": {
+    "profile": "payment"
+  },
   "test-transfer": {
     "profile": "unassessed"
   },
