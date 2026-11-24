@@ -84,8 +84,13 @@
 }
 .catalog-intro-links {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px 24px;
+}
+.catalog-intro-links .button {
+  color: var(--text);
+  font-size: 13px;
 }
 .home-timeline {
   margin-bottom: 28px;

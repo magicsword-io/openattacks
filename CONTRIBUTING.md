@@ -1,6 +1,6 @@
 # Contributing
 
-The catalog is maintained as one YAML file per entry in `attacks/`. You can [suggest an update on OpenAttacks](https://openattacks.ai/suggest/) or [use the GitHub issue templates](https://github.com/magicsword-io/openattacks/issues/new/choose). Both paths create public issues. For vulnerabilities in OpenAttacks, use [private vulnerability reporting](https://github.com/magicsword-io/openattacks/security/advisories/new).
+The catalog is maintained as one YAML file per entry in `attacks/`. To contribute through a public GitHub issue, start at [Suggest an update](https://openattacks.ai/suggest/). For vulnerabilities in OpenAttacks, use [private vulnerability reporting](https://github.com/magicsword-io/openattacks/security/advisories/new).
 
 1. Copy the template below into `attacks/<id>.yaml`. Use a unique lowercase, hyphenated ID that matches the filename.
 2. Read the original research. Attribute the researcher and organization, link the source of every claim, and explain what role AI played.

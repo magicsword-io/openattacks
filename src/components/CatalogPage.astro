@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Catalog from "./Catalog.astro";
+import Icon from "./Icon.astro";
 import TimelineChart from "./TimelineChart.astro";
 import { getAttacks, href, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
@@ -37,6 +38,12 @@ const attacks = await getAttacks();
           <a class="text-link" href={href("stack/")}>
             Find attacks relevant to my stack
           </a>
+          {showTimeline && (
+            <a class="button" href={href("suggest/")}>
+              <Icon name="plus" size={15} />
+              Suggest an update
+            </a>
+          )}
         </div>
       </div>
     </header>
