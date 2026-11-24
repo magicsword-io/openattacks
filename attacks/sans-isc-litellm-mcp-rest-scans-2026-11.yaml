@@ -1,0 +1,102 @@
+id: sans-isc-litellm-mcp-rest-scans-2026-11
+name: Scans target LiteLLM MCP test endpoints (CVE-2026-42271 and CVE-2026-48710)
+date_reported: 2026-11-16
+researcher: Johannes B. Ullrich (SANS Internet Storm Center); chained impact validated by Horizon3.ai
+org: SANS Internet Storm Center
+sources:
+  - url: https://isc.sans.edu/diary/33522
+    title: "Scans for LiteLLM/Starlette (CVE-2026-42271, CVE-2026-48710)"
+    publisher: SANS Internet Storm Center
+  - url: https://github.com/BerriAI/litellm/security/advisories/GHSA-v4p8-mg3p-g94g
+    title: LiteLLM security advisory for CVE-2026-42271
+    publisher: LiteLLM
+  - url: https://github.com/Kludex/starlette/security/advisories/GHSA-86qp-5c8j-p5mr
+    title: Starlette security advisory for CVE-2026-48710
+    publisher: Starlette
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "The scans targeted the MCP server test feature of the LiteLLM AI gateway."
+technique_summary: "SANS ISC honeypots saw requests targeting LiteLLM MCP test endpoints starting the weekend of Nov 14–15, 2026. The traffic was consistent with a chain that combines a Starlette request handling flaw (CVE-2026-48710) with command execution in vulnerable LiteLLM versions (CVE-2026-42271). The chain can allow unauthenticated code execution with the privileges of the proxy process. The honeypot report documents scanning activity."
+initial_access: "Requests targeted internet-facing LiteLLM proxies and included anomalous Host headers consistent with an authentication bypass attempt."
+ai_tooling_and_models:
+  - "LiteLLM proxy / AI gateway (https://github.com/BerriAI/litellm), versions 1.74.2 through 1.83.6"
+other_tooling:
+  - "Starlette versions before 1.0.1 (CVE-2026-48710)"
+  - "aiohttp-based scanner (User-Agent Python/3.14 aiohttp/3.14.5)"
+victims_and_sectors: "Organizations running internet-facing LiteLLM proxies"
+regions:
+  - unknown
+attribution_or_cluster: "Unattributed scanning observed by SANS ISC honeypots"
+scale_and_metrics: "SANS ISC honeypots started seeing the requests the weekend of Nov 14–15, 2026. The diary does not publish a hit count."
+prevention_angle: "Upgrade LiteLLM to 1.83.7 or later and Starlette to 1.0.1 or later. Restrict access to the MCP test endpoints and allow only expected hostnames at ingress. If compromise is suspected, review child processes spawned by LiteLLM and rotate exposed provider credentials."
+related_magicsword_projects: []
+source_notes: "SANS ISC documents the scan traffic and timing. Horizon3.ai validated the chained impact. The project advisories document affected and fixed versions. This is a different LiteLLM incident from socket-litellm-supply-chain-2026-10."
+last_reviewed: 2026-11-16
+region_notes: "The honeypot diary does not name a target country."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls:
+    - "/mcp-rest/test/tools/list"
+    - "/mcp-rest/test/connection"
+atlas_techniques:
+  - id: AML.T0049
+    rationale: "Observed scans targeted a public-facing AI gateway endpoint."
+    source_urls:
+      - https://isc.sans.edu/diary/33522
+  - id: AML.T0050
+    rationale: "Vulnerable LiteLLM versions can execute a subprocess in the proxy context."
+    source_urls:
+      - https://github.com/BerriAI/litellm/security/advisories/GHSA-v4p8-mg3p-g94g
+  - id: AML.T0055
+    rationale: "Code execution in the proxy process could expose model provider credentials available to it."
+    source_urls:
+      - https://github.com/BerriAI/litellm/security/advisories/GHSA-v4p8-mg3p-g94g
+attack_flow:
+  nodes:
+    - id: badhost
+      title: Attempted access control bypass
+      description: "Honeypot traffic contained anomalous Host headers associated with CVE-2026-48710."
+      kind: access
+      source_urls:
+        - https://isc.sans.edu/diary/33522
+    - id: mcp-test
+      title: LiteLLM MCP test endpoint targeted
+      description: "SANS ISC observed scans of a LiteLLM endpoint used to preview MCP servers."
+      kind: ai
+      source_urls:
+        - https://isc.sans.edu/diary/33522
+    - id: exec
+      title: Potential execution on the proxy host
+      description: "Successful exploitation could allow code to run with the proxy process's privileges."
+      kind: impact
+      source_urls:
+        - https://github.com/BerriAI/litellm/security/advisories/GHSA-v4p8-mg3p-g94g
+  edges:
+    - source: badhost
+      target: mcp-test
+    - source: mcp-test
+      target: exec
+category: attacks-on-ai
+attribution:
+  actor_name: "Unnamed"
+  country: Unknown
+  motivation: unknown
+  attributed_by: "SANS ISC (observation only)"
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: LiteLLM MCP test endpoint abuse
+    format: guidance
+    notes: "Look for requests to /mcp-rest/test/ with Host values rejected by ingress validation or outside the deployment's allowlist. Correlate with unexpected child processes of the LiteLLM proxy."
+timeline:
+  first_seen: "2026-11-14"
+  last_updated: "2026-11-16"
+  updates:
+    - date: "2026-11-16"
+      source: SANS ISC
+      summary: "Honeypots record scans against the LiteLLM MCP test endpoint with anomalous Host headers."
