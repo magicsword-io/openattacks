@@ -73,6 +73,7 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto("/attacks/huntress-plus56-custom-gpt-clickfix-2026-09/");
+    await page.locator("#attack-flow").scrollIntoViewIfNeeded();
     const link = page.locator(
       `${width < 900 ? ".mobile-detection-link" : ".network-detection-link"}[href="#detection-step-3"]`,
     );
