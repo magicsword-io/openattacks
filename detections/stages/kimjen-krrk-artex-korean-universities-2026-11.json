@@ -1,0 +1,20 @@
+{
+  "artex-task": {
+    "profile": "agent-tools"
+  },
+  "file-read": {
+    "profile": "web"
+  },
+  "webshell": {
+    "profile": "linux-webshell"
+  },
+  "univais": {
+    "profile": "credentials"
+  },
+  "deface": {
+    "profile": "impact"
+  },
+  "remote-tools": {
+    "profile": "payload"
+  }
+}
