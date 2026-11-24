@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "provider",
+    "note": "Human target selection is provider/operator-side evidence. Redacted exploit details do not support a guessed endpoint rule.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "provider",
+    "resource": "LOLSkills"
+  },
+  "step-3": {
+    "profile": "web",
+    "resource": "GTFOBins"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

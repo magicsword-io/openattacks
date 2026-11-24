@@ -1,0 +1,183 @@
+id: kimjen-krrk-artex-korean-universities-2026-11
+name: "KimJEN (krrk) used ARTEX against Korean universities via shared Webcash rERP"
+date_reported: 2026-11-18
+date_activity_start: 2026-10-26
+date_activity_end: 2026-11-17
+researcher: S2W TALON
+org: S2W
+sources:
+  - url: https://www.s2w.inc/ko/resources/1168
+    title: "위협 행위자 프로파일링: KimJEN(a.k.a. krrk)의 국내 교육기관 대상 해킹 및 데이터 유출"
+    publisher: S2W
+  - url: https://s2w.inc/en/resources/1168
+    title: "A Threat Actor Targeting South Korean Education: @KimJEN"
+    publisher: S2W
+  - url: https://www.boannews.com/news/articleView.html?idxno=147326
+    title: "28개 대학 연쇄해킹 충격... 아르텍스 활용해 ‘rERP’ 집중 타격했다"
+    publisher: Boannews
+  - url: https://www.yna.co.kr/view/AKR20261120131200017
+    title: "국내 대학 연쇄 해킹에 중국 해킹 커뮤니티 연관 AI 도구 흔적"
+    publisher: Yonhap News
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "S2W assesses KimJEN used the ARTEX agent framework. The leak contains an ARTEX task path, an agent-style report marked as an authorised CTF, and a job log stopped when its budget ran out. KimJEN denies ARTEX and names CyberStrikeAI as a preference; that use is not confirmed."
+technique_summary: "S2W TALON (published 18 November 2026; analysis of public posts and attacker-distributed files through 17 November) profiles KimJEN, also krrk. The persona joined RaidForums on 27 October 2026 and, from 12 November, posted claims of hacking South Korean education institutions and pointed readers to a Telegram channel opened on 26 October. S2W says the channel published claimed stolen data without a sale price. KimJEN says the activity is for fun, claims to be European, and says they can speak Korean. S2W does not assign a country: late-evening activity in Korea time is not treated as proof of residence, some Korean messages look machine-translated, and Chinese-language strings in the leak could be the operator's or could have been produced by a Chinese-language model. Asked about ARTEX, KimJEN denied using it because law enforcement monitors it, and said they prefer CyberStrike. S2W says ac.kr.zip contradicts the denial. It contains the ARTEX task path /home/hd/tools/artex/ARTEX/data/tasks/17/ and task ids i2777 and i2843, consistent with a Linux account named hd. A report in police_go_kr.zip is labelled Engagement: authorised CTF and uses status symbols S2W associates with LLM writeups. A log records a job that stopped when its execution budget ran out. A defacement HTML comment reads Prtseek只用于学习和授权场景 (Prtseek is only for learning and authorized scenarios). S2W describes Prtseek as an ARTEX-based tool associated with a Chinese hacking-community user and says that person is not shown to have carried out this intrusion. Yonhap, citing S2W, reports the same limit. On Webcash rERP, a research-administration system shared by many universities, S2W reconstructs an arbitrary file read that stole the remote-deployment key and web-server configuration, use of that key to install a web shell, and collection of accounts, operating-system details, configuration, and keys. S2W describes this rERP path at about 20 universities. On four universities an unauthenticated UNIVais accounting interface returned login accounts, user records, attachment metadata, bank-account details, and login history. Subdomains were replaced with pages reading Hacked by KRRK after index.html was backed up to index.html.bak_YYYYMMDD. Suspected remote-access files were P-a424e320.exe, copied to C:\\Windows\\Temp on Windows, and /tmp/pa_v2.elf on Linux. Other institutions showed web shells with database dumps, SQL injection, unauthenticated APIs, and database credentials taken from Git, including Tomato System eXCampus and university LMS platforms. KimJEN claimed access to about 100 universities and daily further dumps. S2W says that scale is not confirmed. Boannews reports a separate review by Team D4rkn3ttz of ac.kr.zip: 28 universities in the archive, rERP material in 17 folders, and ARTEX and Prtseek strings in Python code treated as a possibility rather than proof. That review also said the files do not by themselves prove the rERP vendor was breached or that every leaked record is authentic."
+initial_access: "Arbitrary file read on shared Webcash rERP, then the stolen remote-deployment key. Four universities exposed an unauthenticated UNIVais interface. Other paths in the leak include SQL injection, unauthenticated APIs, and database credentials in Git."
+ai_tooling_and_models:
+  - "ARTEX (https://github.com/Hinln/ARTEX)"
+  - "CyberStrikeAI (https://github.com/AIPentest/CyberStrikeAI), KimJEN's stated preference; use is not confirmed in the leak"
+frameworks:
+  - artex
+other_tooling:
+  - Web shell installed with the stolen rERP deployment key
+  - P-a424e320.exe
+  - pa_v2.elf
+  - Prtseek, named only in a defacement comment
+victims_and_sectors: "South Korean universities and education institutions using shared Webcash rERP, UNIVais, Tomato System eXCampus, and university learning-management systems. S2W describes about 20 universities on rERP and four on UNIVais. Boannews, citing Team D4rkn3ttz, lists 28 universities in ac.kr.zip."
+regions:
+  - South Korea
+region_notes: "South Korea is the victim location. KimJEN's claim to be European, Chinese-language artifacts, and Korea-time Telegram activity are not a country attribution and are not victim locations."
+attribution_or_cluster: "KimJEN (krrk). S2W attributes the posts and the leak to that persona and does not assign a country. Team D4rkn3ttz reviewed the same leak separately, as reported by Boannews."
+scale_and_metrics: "S2W: about 20 universities on the rERP path and four on UNIVais, from files posted 12-17 November 2026. The claim of about 100 universities is unverified. Boannews/Team D4rkn3ttz: 28 universities in ac.kr.zip, with rERP material in 17 folders."
+prevention_angle: "With the software vendor, review exposed admin, deployment, and test pages, unauthenticated APIs, and missing patches, then disable functions that are not required. Rotate remote-deployment keys and database accounts. Hunt web shells, P-a424e320.exe, and pa_v2.elf. Review admin logins, remote access, and bulk queries. Share the abused function with other institutions on the same product. Do not treat an authorised-CTF label, a Prtseek comment, or a Hacked by KRRK page as authorization."
+related_magicsword_projects: []
+source_notes: "AI involvement is vendor-asserted and backed by artifacts in the leak S2W analyzed: the ARTEX task path and task ids, the Engagement: authorised CTF report, the budget-stop log, and the Prtseek comment. Team D4rkn3ttz, via Boannews, calls the ARTEX and Prtseek strings a possibility, not proof, so this entry does not raise the confidence above vendor-asserted. CyberStrikeAI is only KimJEN's stated preference and is not a frameworks value. No country is assigned. No network indicators or file hashes were published in these sources. The English S2W page is the same 18 November report as the Korean page."
+last_reviewed: 2026-11-23
+confidence: medium
+category: adversary-use-of-ai
+attribution:
+  actor_name: KimJEN
+  aliases:
+    - krrk
+  motivation: unknown
+  attributed_by: S2W
+  confidence: medium
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Linux Webshell Indicators
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml
+    notes: "security-detections-mcp search for webshell returned this Linux process rule. It fits the web shell S2W says was installed on rERP hosts. It does not match the ARTEX task path or the filenames P-a424e320.exe and pa_v2.elf."
+  - name: Suspicious Process By Web Server Process
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_webshell_susp_process_spawned_from_webserver.yml
+    notes: "security-detections-mcp search for webshell returned this Windows rule. It fits a web server spawning a shell on the Windows hosts where S2W describes the web shell and P-a424e320.exe."
+  - name: Suspicious Child Execution via Web Server
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_webserver_suspicious_child_execution.toml
+    notes: "security-detections-mcp list_by_mitre T1505.003 returned this Linux rule. It fits a web-server child process after the rERP web shell. It is not a match for UNIVais API reads."
+  - name: Windows Process Execution in Temp Dir
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_process_execution_in_temp_dir.yml
+    notes: "security-detections-mcp search for Windows Temp returned this rule. S2W says P-a424e320.exe was copied to C:\\Windows\\Temp and executed. The rule is any execution from Temp, not a hash match."
+  - name: ARTEX task path, CTF pretext, and named files
+    format: guidance
+    notes: "security-detections-mcp searches for webshell, Windows Temp, and defacement did not return a rule for /home/hd/tools/artex/ARTEX/data/tasks/17/, task ids i2777 and i2843, Engagement: authorised CTF, the budget-stop log, the Prtseek comment, P-a424e320.exe, or pa_v2.elf. The defacement hits were Windows wallpaper and icon changes, which do not match a replaced index.html. Hunt those strings directly. UNIVais is an application-specific unauthenticated interface, and no returned rule describes that product."
+timeline:
+  first_seen: 2026-10-26
+  last_updated: 2026-11-20
+  updates:
+    - date: 2026-10-26
+      source: S2W
+      summary: "Telegram channel associated with KimJEN opened. RaidForums account joined the next day."
+    - date: 2026-11-12
+      source: S2W
+      summary: "KimJEN begins posting South Korean education claims and publishing files, including ac.kr.zip."
+    - date: 2026-11-18
+      source: S2W
+      summary: "S2W publishes the KimJEN profile, the rERP and UNIVais paths, and the ARTEX artifacts in the leak."
+    - date: 2026-11-20
+      source: Yonhap News
+      summary: "Yonhap reports S2W's Prtseek comment and states that the associated developer is not shown to have carried out the intrusions. Boannews reports the separate Team D4rkn3ttz review of ac.kr.zip."
+atlas_techniques:
+  - id: AML.T0016
+    rationale: "The leak contains an ARTEX task path. S2W treats that as the operator obtaining and running that offensive framework. CyberStrikeAI is only a stated preference."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://s2w.inc/en/resources/1168
+  - id: AML.T0103
+    rationale: "S2W describes an agent-style report, a task path under ARTEX, and a job that stopped when its budget ran out, which is deployed agent activity rather than a single prompt."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://s2w.inc/en/resources/1168
+  - id: AML.T0054
+    rationale: "The report in the leak is labelled Engagement: authorised CTF, and the defacement comment says Prtseek is only for learning and authorized scenarios. S2W reads those labels as a pretext that presents the intrusion as an authorized exercise."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://s2w.inc/en/resources/1168
+  - id: AML.T0049
+    rationale: "Initial access was an arbitrary file read on public-facing Webcash rERP, followed by a web shell. Four universities exposed an unauthenticated UNIVais interface."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://www.yna.co.kr/view/AKR20261120131200017
+  - id: AML.T0055
+    rationale: "The file read stole the remote-deployment key and web-server configuration. UNIVais returned login accounts and bank-account details. Other paths took database credentials from Git and configuration."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://s2w.inc/en/resources/1168
+  - id: AML.T0102
+    rationale: "S2W describes collection scripts and an agent-produced intrusion report in the same leak as the ARTEX task path, which is consistent with the agent generating commands and collection steps."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+  - id: AML.T0025
+    rationale: "Stolen university records were published through Telegram and RaidForums, which is exfiltration by ordinary cyber means rather than through a model API."
+    source_urls:
+      - https://www.s2w.inc/ko/resources/1168
+      - https://www.boannews.com/news/articleView.html?idxno=147326
+attack_flow:
+  nodes:
+    - id: artex-task
+      title: ARTEX task path and CTF pretext
+      description: "ac.kr.zip contains ARTEX task path /home/hd/tools/artex/ARTEX/data/tasks/17/ and task ids i2777 and i2843. A report is labelled Engagement: authorised CTF, and a job log stops when the budget runs out."
+      kind: ai
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+        - https://s2w.inc/en/resources/1168
+    - id: file-read
+      title: Read rERP files and steal the deploy key
+      description: "An arbitrary file read on shared Webcash rERP stole the remote-deployment authentication key and web-server configuration."
+      kind: access
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+        - https://www.yna.co.kr/view/AKR20261120131200017
+    - id: webshell
+      title: Install a web shell
+      description: "The stolen deployment key authenticated to the server and a web shell was installed for remote commands."
+      kind: execution
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+    - id: univais
+      title: Pull UNIVais logins and bank details
+      description: "On four universities an unauthenticated UNIVais interface returned login accounts, user records, and bank-account details."
+      kind: impact
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+        - https://www.yna.co.kr/view/AKR20261120131200017
+    - id: deface
+      title: Deface subdomains as KRRK
+      description: "University subdomains were replaced with pages reading Hacked by KRRK. A comment in the page names Prtseek and says it is only for learning and authorized scenarios."
+      kind: impact
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+        - https://www.boannews.com/news/articleView.html?idxno=147326
+    - id: remote-tools
+      title: Run suspected remote-access files
+      description: "S2W reports suspected remote-access files P-a424e320.exe, copied to C:\\Windows\\Temp, and /tmp/pa_v2.elf."
+      kind: execution
+      source_urls:
+        - https://www.s2w.inc/ko/resources/1168
+        - https://s2w.inc/en/resources/1168
+  edges:
+    - source: artex-task
+      target: file-read
+    - source: file-read
+      target: webshell
+    - source: webshell
+      target: univais
+    - source: webshell
+      target: deface
+    - source: webshell
+      target: remote-tools

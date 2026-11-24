@@ -1,0 +1,20 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The advisory does not say how the deployment was accessed."
+  },
+  "step-2": {
+    "profile": "provider",
+    "note": "Weight substitution is visible to the provider that serves the endpoint. Customer SIEMs do not see the weight file.",
+    "reviewed": "2026-11-24"
+  },
+  "step-3": {
+    "profile": "unassessed",
+    "note": "The refusal drop is a provider benchmark result. No catalog profile is a refusal-rate canary."
+  },
+  "step-4": {
+    "profile": "provider",
+    "note": "Prompt-handling claims are the provider's own review of its proxy and cluster. Audit Commons says they are not externally verified.",
+    "reviewed": "2026-11-24"
+  }
+}

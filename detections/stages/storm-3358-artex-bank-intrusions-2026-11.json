@@ -1,0 +1,20 @@
+{
+  "recon-scan": {
+    "profile": "unassessed"
+  },
+  "exploit-upload": {
+    "profile": "web"
+  },
+  "deploy-rats": {
+    "profile": "payload"
+  },
+  "web-shells": {
+    "profile": "linux-webshell"
+  },
+  "lateral-movement": {
+    "profile": "unassessed"
+  },
+  "maintain-access": {
+    "profile": "unassessed"
+  }
+}

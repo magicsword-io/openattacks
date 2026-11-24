@@ -1,0 +1,14 @@
+{
+  "plant-prompt": {
+    "profile": "web"
+  },
+  "agent-fetch": {
+    "profile": "agent-input"
+  },
+  "persona": {
+    "profile": "agent-input"
+  },
+  "steer-user": {
+    "profile": "phishing"
+  }
+}

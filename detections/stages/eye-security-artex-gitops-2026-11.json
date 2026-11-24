@@ -1,0 +1,20 @@
+{
+  "upload": {
+    "profile": "linux-webshell"
+  },
+  "secrets": {
+    "profile": "credentials"
+  },
+  "tunnel": {
+    "profile": "unassessed"
+  },
+  "gitops": {
+    "profile": "repository"
+  },
+  "escape": {
+    "profile": "privileged-container"
+  },
+  "runner": {
+    "profile": "repository"
+  }
+}

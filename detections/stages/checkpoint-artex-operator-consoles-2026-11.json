@@ -1,0 +1,17 @@
+{
+  "deploy-artex": {
+    "profile": "agent-tools"
+  },
+  "ios-signing": {
+    "profile": "credentials"
+  },
+  "crypto-payment": {
+    "profile": "payment"
+  },
+  "game-accounts": {
+    "profile": "credentials"
+  },
+  "console-exposure": {
+    "profile": "web"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "validate": {
+    "profile": "identity"
+  },
+  "userdata": {
+    "profile": "cloud"
+  },
+  "ssm": {
+    "profile": "cloud"
+  },
+  "return": {
+    "profile": "identity"
+  }
+}

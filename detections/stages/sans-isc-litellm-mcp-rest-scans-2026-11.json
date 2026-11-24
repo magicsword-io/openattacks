@@ -1,0 +1,11 @@
+{
+  "badhost": {
+    "profile": "web"
+  },
+  "mcp-test": {
+    "profile": "agent-tools"
+  },
+  "exec": {
+    "profile": "unassessed"
+  }
+}

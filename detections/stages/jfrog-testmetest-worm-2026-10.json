@@ -1,0 +1,24 @@
+{
+  "initial-compromise": {
+    "profile": "identity"
+  },
+  "repository-poison": {
+    "profile": "repository"
+  },
+  "npm-distribution": {
+    "profile": "package"
+  },
+  "evasion": {
+    "profile": "unobserved",
+    "note": "The source describes anti-analysis checks inside the payload; no separate stage query is displayed without execution telemetry."
+  },
+  "decrypt-payload": {
+    "profile": "linux-fileless-execution"
+  },
+  "credential-theft": {
+    "profile": "credentials"
+  },
+  "c2": {
+    "profile": "exfil"
+  }
+}

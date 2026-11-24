@@ -1,0 +1,124 @@
+id: prime-intellect-deepseek-v41-flash-abliterated-swap-2026-11
+name: "Prime Intellect: deepseek/deepseek-v4.1-flash endpoint served abliterated weights"
+aliases:
+  - PI-SA-2026-001
+date_reported: "2026-11-19"
+date_activity_start: "2026-11-08"
+date_activity_end: "2026-11-10"
+researcher: unknown
+org: Prime Intellect
+sources:
+  - url: https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+    title: "Notice regarding deepseek/deepseek-v4.1-flash, 8 to 10 November 2026"
+    publisher: Prime Intellect
+  - url: https://auditcommons.org/news/prime-intellect-model-substitution-incident/
+    title: Prime Intellect Says an Unauthorized Party Replaced One DeepSeek Deployment With Weights Modified to Reduce Refusals
+    publisher: Audit Commons
+  - url: https://ctxsec.com/items/prime-intellect-deepseek-v4-1-flash-endpoint-swapped-abliterated-weights-nov-8-10
+    title: "Prime Intellect: an intruder swapped its DeepSeek V4.1 Flash endpoint for an abliterated copy"
+    publisher: ctxsec
+  - url: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash
+    title: DeepSeek-V4.1-Flash
+    publisher: Hugging Face
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: other
+ai_role_secondary: null
+ai_role_detail: "The incident is a substitution of the weights behind a model-serving endpoint. Prime Intellect does not describe the unauthorised party using an AI agent. The affected system is Prime Inference's deepseek/deepseek-v4.1-flash deployment."
+technique_summary: "Prime Intellect security advisory PI-SA-2026-001, published 19 November 2026, says that from 8 November 2026 at 01:24 UTC to 10 November 2026 at 06:35 UTC an unauthorised party replaced a deployment behind the deepseek/deepseek-v4.1-flash endpoint on Prime Inference with publicly available abliterated weights. The advisory defines abliterated as modified to reduce or remove refusal behavior. The chat template, tokenizer, and serving configuration were not changed. The advisory does not name which public abliterated copy was used. The upstream model card is https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash. Prime Intellect's own tests found capability benchmarks unchanged on GPQA Diamond and tau-bench. Refusals fell from 98 of 100 to 1 on JailbreakBench, from 304 of 313 to 2 on StrongREJECT, and from 198 of 240 to 0 on HarmBench. Prime Intellect says it recovered every version of the attacker's proxy and found none that reads or transfers request content. It says it found no evidence that prompts or completions left the serving cluster, that no other models or clusters were reached, and that no keys or customer credentials were affected. It does not say how access was gained or how many customers were affected. Customers whose use depended on refusals were told to review outputs from the window. Audit Commons, published 21 November 2026, counts the window at about 53 hours and says every finding is Prime Intellect's own and is not externally verified. ctxsec repeats the advisory and says traffic through routers that list Prime Intellect as a provider, including OpenRouter, was in scope for anyone served by that endpoint."
+initial_access: "Unknown. Prime Intellect does not say how the unauthorised party reached the deployment."
+ai_tooling_and_models:
+  - "deepseek/deepseek-v4.1-flash on Prime Inference"
+  - "DeepSeek-V4.1-Flash (https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash)"
+  - "Publicly available abliterated weights. The advisory does not name the copy."
+other_tooling: []
+victims_and_sectors: "Prime Intellect says all customers affected by the incident were contacted and does not say how many. Customers that relied on refusals were told to review their outputs. No keys or customer credentials were affected. ctxsec says the affected traffic is whatever that endpoint served during the window, including through routers that list Prime Intellect as a provider."
+regions:
+  - unknown
+region_notes: "The advisory does not name customer countries. Prime Intellect's location is not a victim region."
+attribution_or_cluster: "Unknown unauthorised party. Prime Intellect does not name an actor. Audit Commons notes that the account is self-reported and not externally verified."
+scale_and_metrics: "One deployment, from 8 November 2026 01:24 UTC to 10 November 2026 06:35 UTC. Audit Commons counts about 53 hours. Customer count was not published. Refusal counts are the vendor's benchmark tests, not a count of customer prompts."
+prevention_angle: "Verify model identity and weight hashes for a served deployment, separate from capability benchmarks. Prime Intellect's own tests showed GPQA Diamond and tau-bench unchanged while refusals collapsed. Monitor refusal-rate canaries on production endpoints. Do not treat model refusals as the only control for customers of a third-party inference endpoint. Review outputs from this window when the workload depended on refusals."
+related_magicsword_projects: []
+source_notes: "The window, the weight swap, the unchanged serving config, the benchmark and refusal counts, the proxy review, and the statements about prompts, keys, and credentials are from Prime Intellect advisory PI-SA-2026-001. Audit Commons says it has not verified any of those findings and that the advisory does not say how access was gained or how many customers were affected. ctxsec's OpenRouter sentence is ctxsec's scope note, not a Prime Intellect finding. The Hugging Face page is the model card for the named upstream model. The advisory does not name the abliterated copy."
+last_reviewed: "2026-11-24"
+confidence: medium
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0010
+    rationale: "Prime Intellect says an unauthorised party replaced the weights behind a production inference deployment with a different public copy."
+    source_urls:
+      - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+  - id: AML.T0018
+    rationale: "The served copy was abliterated, which the advisory defines as modified to reduce or remove refusal behavior. Capability benchmarks were unchanged and refusal counts fell."
+    source_urls:
+      - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+      - https://auditcommons.org/news/prime-intellect-model-substitution-incident/
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Access path is not stated
+      description: "Prime Intellect says an unauthorised party changed a deployment and does not say how that party gained access. Audit Commons records the same gap."
+      kind: unknown
+      source_urls:
+        - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+        - https://auditcommons.org/news/prime-intellect-model-substitution-incident/
+    - id: step-2
+      title: Abliterated weights replace the deployment
+      description: "From 8 November 01:24 UTC to 10 November 06:35 UTC, the deepseek/deepseek-v4.1-flash deployment on Prime Inference answered with publicly available abliterated weights. The chat template, tokenizer, and serving config were unchanged. The advisory does not name the copy."
+      kind: ai
+      source_urls:
+        - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+        - https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash
+    - id: step-3
+      title: Refusals fall, capability scores hold
+      description: "Prime Intellect's tests kept GPQA Diamond and tau-bench unchanged. Refusals fell from 98 of 100 to 1 on JailbreakBench, from 304 of 313 to 2 on StrongREJECT, and from 198 of 240 to 0 on HarmBench."
+      kind: impact
+      source_urls:
+        - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+    - id: step-4
+      title: Vendor finds no prompt transfer
+      description: "Prime Intellect says every recovered version of the attacker's proxy neither reads nor transfers request content, and that it found no evidence prompts left the cluster. No keys or customer credentials were affected. The investigation was still ongoing at publication. Audit Commons says this is not externally verified."
+      kind: impact
+      source_urls:
+        - https://www.primeintellect.ai/security/advisories/deepseek-v4-1-flash-model-substitution
+        - https://auditcommons.org/news/prime-intellect-model-substitution-incident/
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-2
+      target: step-4
+category: attacks-on-ai
+attribution:
+  actor_name: unknown
+  motivation: unknown
+  attributed_by: "Prime Intellect (self-reported; Audit Commons notes the advisory is not externally verified)"
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Model integrity and refusal-rate canaries
+    format: guidance
+    notes: "security-detections-mcp searches for safetensors and model weight did not return a rule for a provider replacing weights behind an inference API. The one safetensors hit, Splunk LLM Model File Creation, alerts on Windows Sysmon file creates of .gguf, .safetensors, ggml, and Modelfiles. That is local endpoint file creation, not this serving swap, and the advisory does not describe a customer endpoint writing those files. No indexed Sigma, Splunk, or Elastic rule covers weight-hash verification or a refusal-rate canary. Compare served weight hashes with the pinned model, and alert when a refusal canary collapses while capability benchmarks stay flat."
+timeline:
+  first_seen: "2026-11-08"
+  last_updated: "2026-11-24"
+  updates:
+    - date: "2026-11-08"
+      source: Prime Intellect
+      summary: "The advisory window starts at 01:24 UTC. The unauthorised replacement of the deepseek/deepseek-v4.1-flash deployment is under way."
+    - date: "2026-11-10"
+      source: Prime Intellect
+      summary: "The advisory window ends at 06:35 UTC."
+    - date: "2026-11-19"
+      source: Prime Intellect
+      summary: "PI-SA-2026-001 is published. Affected customers are told to review outputs if they relied on refusals."
+    - date: "2026-11-21"
+      source: Audit Commons
+      summary: "Audit Commons reports the advisory and says the findings are self-reported and not externally verified."

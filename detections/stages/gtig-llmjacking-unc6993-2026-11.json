@@ -1,0 +1,17 @@
+{
+  "initial-access": {
+    "profile": "unassessed"
+  },
+  "lateral-persistence": {
+    "profile": "unassessed"
+  },
+  "llm-abuse": {
+    "profile": "unassessed"
+  },
+  "monetization": {
+    "profile": "unassessed"
+  },
+  "charges": {
+    "profile": "unassessed"
+  }
+}

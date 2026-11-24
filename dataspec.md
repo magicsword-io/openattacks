@@ -11,7 +11,7 @@ There is **no database and no runtime backend**. Everything is plain files in gi
 | Attack records     | `attacks/<id>.yaml`                                                                     | YAML, one file per entry             | Source of truth for each attack                                          | **Yes**                                     |
 | Record schema      | `schema.yaml`                                                                           | JSON Schema 2020-12, written as YAML | Validates every attack file                                              | Change it only to add fields or enum values |
 | Browse card        | `src/data/presentation.json`                                                            | JSON keyed by attack ID              | Curated title, summary, environments and evidence class                  | No, but recommended (there's a fallback)    |
-| Stage defenses     | `detections/stages.json` + `detections/*.yaml`                                          | JSON stage mappings + YAML profiles  | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping    |
+| Stage defenses     | `detections/stages/<attack-id>.json` + `detections/*.yaml`                                          | JSON stage mappings + YAML profiles  | Maps every flow stage to a detection profile or an explicit evidence gap | **Yes**: every flow node needs a mapping    |
 | Stack relevance    | `src/data/applicability.json`                                                           | JSON keyed by attack ID              | Reviewed "does this affect my stack" rules                               | No (the default is `not_assessed`)          |
 | ATLAS reference    | `src/data/atlas-techniques.json`                                                        | JSON                                 | Official MITRE ATLAS technique names and URLs (v5.6.0)                   | Only when new ATLAS IDs are needed          |
 | Simulations        | `simulations/definitions/*.yaml` + `simulations/fixtures/` → `simulations/catalog.json` | YAML in, generated JSON out          | Lab exercises linked to attack stages                                    | No (closed set; see §6)                     |
@@ -35,7 +35,7 @@ src/lib/catalog.ts getAttacks()  ── sorted newest first
    │
    ├── joins src/data/presentation.json    (src/lib/presentation.ts)
    ├── joins src/data/applicability.json   (src/lib/stack-data.ts)
-   ├── maps detections/stages.json through detections/catalog.json
+   ├── maps detections/stages/<attack-id>.json through detections/catalog.json
    │      (src/lib/stage-guidance.ts)
    └── falls back to an auto-generated flow when attack_flow is absent (src/lib/attack-flow.ts)
    ▼
@@ -179,8 +179,8 @@ These cover required fields, types, enums, the `report-date` format (a real cale
 ### 3.4 Test-enforced consistency (`tests/*.test.mjs`, run on the built `dist/`)
 
 - The JSON exports exactly match the public YAML content and leave out `typefully`.
-- Every YAML ID appears in `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, one category bundle, one month bundle, `data/attacks.json`, its entry page, and the per-entry `.json`/`.md` exports. The committed LLM files are produced by `scripts/build-llm-exports.mjs`; CI rejects drift.
-- **No stale annotation keys:** every key in `presentation.json`, `applicability.json` and `detections/stages.json` must be an existing attack ID, and every detection stage key must be an existing flow node ID.
+- Every YAML ID appears in `llms.txt`, `llms-full.txt`, `llms/attacks/<id>.md`, one category bundle, one month bundle, `data/attacks.json`, its entry page, and the per-entry `.json`/`.md` exports. `scripts/build-llm-exports.mjs` produces these files during the site build. CI verifies the published files against the source catalog.
+- **No stale annotation keys:** every key in `presentation.json` and `applicability.json` and every filename stem in `detections/stages/` must be an existing attack ID. Every detection stage key must be an existing flow node ID.
 - Presentation values use valid environment and evidence IDs. `summary` is ≤ 210 characters. `unspecified` cannot be combined with other environments.
 - Applicability rules use real tool/OS IDs, a valid stage, and source URLs from the record. Attacker-side Claude/Gemini use never turns into a product-exposure match.
 
@@ -203,10 +203,10 @@ These files are keyed by attack ID. A YAML record alone is enough to publish an 
 - `evidence`: `campaign`, `vulnerability`, `research`, `concept`, `claim`, `analysis`, `provider`, `finding`, `qualified`, `unclassified`
 - **Fallback:** `title = name`, the summary is a truncated `technique_summary`, `environments = ["unspecified"]`, and `evidence` is `qualified` if `borderline`, otherwise `unclassified`.
 
-### 4.2 `detections/stages.json`: per-stage hunt and defense
+### 4.2 `detections/stages/<attack-id>.json`: per-stage hunt and defense
 
 ```json
-"<attack-id>": {
+{
   "step-3": {
     "profile": "windows-shell",
     "control": "script-hosts",
@@ -284,7 +284,7 @@ These files are keyed by attack ID. A YAML record alone is enough to publish an 
 4. **Add annotations and stage mappings:**
    - `src/data/presentation.json`: title, summary, environments, evidence.
    - `src/data/applicability.json`: `mapped`, `attacker_tool_only` or `not_assessed`.
-   - `detections/stages.json` (**required**): map every flow node to a profile, including explicit `unassessed` or `unobserved` gaps.
+   - `detections/stages/<attack-id>.json` (**required**): map every flow node to a profile, including explicit `unassessed` or `unobserved` gaps.
 5. **Verify:**
    ```bash
    set -o pipefail
@@ -336,7 +336,7 @@ What the importer does not fill, and why:
 - **`researcher`, `initial_access`, `scale_and_metrics`, `prevention_angle`** are `unknown`. The feed doesn't capture them.
 - **`regions`** is `[unknown]`. The feed has no target geography, and actor attribution must never become a victim region.
 - **`confidence` and `last_reviewed`** are left out, because nobody has reviewed the entry yet.
-- **`attack_flow`** is left out, so the site shows the generated summary flow. The importer adds an explicit `unassessed` gap mapping for the generated `entry`, `activity` and `ai` stages in `detections/stages.json`.
+- **`attack_flow`** is left out, so the site shows the generated summary flow. The importer adds an explicit `unassessed` gap mapping for the generated `entry`, `activity` and `ai` stages in `detections/stages/<attack-id>.json`.
 
 Every imported entry is tagged `notion-import`, and its `source_notes` say it hasn't been editorially reviewed. The script never overwrites a file, skips rows whose `URL` is already cited by an entry, and validates every entry before writing it. De-duplication is by URL only, so check for the same story cited through a different link before importing.
 
@@ -368,4 +368,4 @@ The builder (`scripts/build-simulations.mjs`) is deliberately strict:
 | Need a new stack tool                   | `stackTools` in `src/lib/stack-matching.mjs`                                                                                                                          |
 | Need a new platform or sector filter    | the regex lists in `src/lib/catalog.ts`                                                                                                                               |
 | Do a full catalog re-review             | the `reviewed` constant in `src/lib/catalog.ts`                                                                                                                       |
-| Rename or delete an attack or flow node | update `src/data/presentation.json`, `src/data/applicability.json`, `detections/stages.json`, and any simulation `attack_mappings` (stale keys fail validation/tests) |
+| Rename or delete an attack or flow node | update `src/data/presentation.json`, `src/data/applicability.json`, `detections/stages/<attack-id>.json`, and any simulation `attack_mappings` (stale keys fail validation/tests) |

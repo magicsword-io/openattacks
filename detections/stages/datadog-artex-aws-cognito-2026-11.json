@@ -1,0 +1,14 @@
+{
+  "anon-s3": {
+    "profile": "cloud"
+  },
+  "cloudwatch": {
+    "profile": "cloud"
+  },
+  "cognito": {
+    "profile": "identity"
+  },
+  "enumerate": {
+    "profile": "cloud"
+  }
+}

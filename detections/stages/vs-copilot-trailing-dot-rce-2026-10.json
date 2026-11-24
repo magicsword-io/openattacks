@@ -1,0 +1,18 @@
+{
+  "step-1": {
+    "profile": "agent-input",
+    "note": "Record the originating file or MCP response and the consuming session, then correlate with configuration changes and execution.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "mcp-config"
+  },
+  "step-3": {
+    "profile": "mcp-config"
+  },
+  "step-4": {
+    "profile": "windows-install",
+    "control": "unapproved-code",
+    "scope": "The attacker-chosen Windows MCP server / ripgrepPath executable when denied by policy. This does not repair the configuration-name canonicalization bug."
+  }
+}

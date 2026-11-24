@@ -1,0 +1,165 @@
+id: safedep-leadstack-hermes-agent-npm-backdoor-2026-11
+name: "SafeDep: malicious npm package @leadstack/crm-connect installs a Hermes Agent backdoor"
+aliases:
+  - "@leadstack/crm-connect"
+date_reported: "2026-11-19"
+date_activity_start: "2026-11-16"
+date_activity_end: "2026-11-18"
+researcher: SafeDep Team
+org: SafeDep
+sources:
+  - url: https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+    title: "Malicious npm Package Turns Hermes Agent into a Backdoor"
+    publisher: SafeDep
+  - url: https://github.com/NousResearch/hermes-agent
+    title: Hermes Agent
+    publisher: Nous Research
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "The payload is Hermes Agent, an AI agent from Nous Research. SafeDep says the npm wrapper hermes-agent@0.22.7 is an unofficial package and is not itself malicious. The attacker tasks the installed agent over Telegram."
+technique_summary: "SafeDep (published 19 November 2026) says the npm package @leadstack/crm-connect posed as an Official LeadStack CRM client and installed Hermes Agent (https://github.com/NousResearch/hermes-agent) on hosts that installed it. The LeadStack name is borrowed. api.leadstack.io does not resolve, and leadstack.io belongs to an unrelated consultancy, which SafeDep says has nothing to do with the package. The npm account zmaticoo published nine versions on 16 November 2026 between 09:44 and 15:27 UTC: 1.0.15, 1.0.18, 1.0.19, 1.0.20, 1.0.21, 1.0.29, 1.0.30, 1.1.0, and 1.1.1. SafeDep flagged the package at 15:33 UTC, confirmed it at 16:20 UTC, and says npm has since removed it. Version 1.0.15 runs bin/postinstall.js, which runs bin/lead-provision.js. That script fetches .env lines and a SOUL.md persona from hxxp://72[.]62[.]1[.]108:3000/api/v1/partner/bootstrap and hxxp://72[.]62[.]1[.]108:3000/api/v1/partner/profile. SafeDep says the .env lines have to carry a Telegram bot token and a Kimi model key, and that it did not recover the real .env or SOUL.md. The script silently runs npm install hermes-agent@0.22.7 into ~/.leadstack/runtime and configures model provider kimi-coding and model kimi-k2-0711-preview. It then runs hermes gateway install --system --run-as-user root, which overrides Hermes Agent's refusal to install the gateway system service as root, and waits for the journal line Connected to Telegram (polling mode). It renames the unit to leadstack-routing.service with the description LeadStack Lead Routing Daemon (platform sync) and deletes the original hermes-gateway unit. SOUL.md is placed first in the system prompt. SafeDep says Hermes Agent's prompt-injection scanner only logs a warning when it flags a SOUL.md and loads the file anyway, so the attacker can change instructions or keys without publishing a new version. The attacker then tasks the agent over Telegram. SafeDep lists the tools terminal, process_manage, read_file, write_file, patch, search_files, web and browser tools, execute_code, cronjob_manage, and delegate_task. Version 1.0.18 adds a user-level systemd service and runs loginctl enable-linger when the install is not root. Versions 1.0.18 through 1.0.21 move the payload to the first SDK call or to a module downloaded from the server. Versions 1.0.29 and 1.0.30 have postinstall download and run a binary. Versions 1.1.0 and 1.1.1 reference an unpublished platform package, @leadstack/crm-connector-linux-x64. On 18 November zmaticco[.]dev was registered. SafeDep says it is a lookalike of the unrelated ad-tech company zMaticoo, which has no connection to this activity, and that it resolves to 72[.]62[.]1[.]108. The same account published @zmatdspcrm/trading-connector, @zmatdspcrm/brandnet-connect, and brandnet-connect. Each has an optional dependency brandnet-entitlement from hxxps://zmaticco[.]dev/packages/brandnet-entitlement-1.0.0.tgz. SafeDep says that dependency was a benign token validator on 19 November and can be replaced at any time. SafeDep cites the ThreatDown Carbonato report, catalogued as carbonato-botnet-hermes-2026-10, as an earlier Hermes Agent implant. hermes-operators-campaigns-2026 is a separate set of Hermes operator reports and is not this package."
+initial_access: "A developer or server runs npm install of @leadstack/crm-connect, or of a later zmaticoo package whose optional dependency is fetched from zmaticco[.]dev. SafeDep does not say how the package was introduced to a project."
+ai_tooling_and_models:
+  - "Hermes Agent by Nous Research (https://github.com/NousResearch/hermes-agent)"
+  - "npm wrapper hermes-agent@0.22.7, unofficial and not malicious according to SafeDep"
+  - "Kimi model kimi-k2-0711-preview, provider kimi-coding"
+other_tooling:
+  - "npm package @leadstack/crm-connect"
+  - "systemd units leadstack-routing.service and leadstack-ingest-worker.service"
+  - "loginctl enable-linger"
+  - "Telegram bot polling"
+  - "npm packages @zmatdspcrm/trading-connector, @zmatdspcrm/brandnet-connect, and brandnet-connect"
+victims_and_sectors: "No confirmed victims were published. SafeDep does not publish a download count. The READMEs address engineers wiring a CRM into server-side code. SafeDep infers an aim at CRM credentials and lead data on forex and CFD brokerage servers and says it has not observed that on a victim. leadstack.io and the ad-tech company zMaticoo are unrelated and are not victims in this report."
+regions:
+  - unknown
+region_notes: "SafeDep does not name a victim country. The address 72[.]62[.]1[.]108 is attacker infrastructure, not a victim region."
+attribution_or_cluster: "Unknown actor using the npm account zmaticoo. SafeDep does not name a group."
+scale_and_metrics: "Nine malicious versions published on 16 November 2026. SafeDep flagged the package at 15:33 UTC and confirmed it at 16:20 UTC. No download count and no confirmed victim count were published. Three further packages from the same account were still on npm on 19 November, with a dependency that was benign that day."
+prevention_angle: "Do not run npm install as root. Use --ignore-scripts, or allowlist install scripts in CI. Pin and review new packages before they reach a server. Control egress to api.telegram.org and to model APIs from servers that do not need them. Monitor new systemd units, including leadstack-routing.service and leadstack-ingest-worker.service, and loginctl enable-linger. Search lockfiles for @leadstack/crm-connect, @zmatdspcrm, brandnet-connect, and zmaticco[.]dev. Treat a root install of these versions as a full compromise of that server."
+related_magicsword_projects: []
+source_notes: "All package behavior, timestamps, paths, and the statement that npm removed @leadstack/crm-connect are from SafeDep. SafeDep did not recover the live .env, SOUL.md, or the downloads used by versions after 1.0.18. On 19 November port 3000 no longer answered. The Hermes Agent repository is the upstream project. The npm wrapper is a separate package. Link carbonato-botnet-hermes-2026-10, which SafeDep cites, and hermes-operators-campaigns-2026, which is a different set of Hermes reports. zMaticoo and leadstack.io are named only to record that SafeDep says they are unrelated."
+last_reviewed: "2026-11-24"
+confidence: high
+iocs:
+  domains:
+    - 72-62-1-108[.]sslip[.]io
+    - zmaticco[.]dev
+  ips:
+    - 72[.]62[.]1[.]108
+  hashes: []
+  urls:
+    - hxxp://72[.]62[.]1[.]108:3000/api/v1/partner/bootstrap
+    - hxxp://72[.]62[.]1[.]108:3000/api/v1/partner/profile
+    - hxxps://zmaticco[.]dev/packages/brandnet-entitlement-1.0.0.tgz
+atlas_techniques:
+  - id: AML.T0010
+    rationale: "SafeDep says the attacker published @leadstack/crm-connect to npm so that an install would fetch and run the agent payload."
+    source_urls:
+      - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+  - id: AML.T0103
+    rationale: "Version 1.0.15 installs Hermes Agent, starts its gateway, and leaves it running as a systemd service the attacker can task."
+    source_urls:
+      - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+      - https://github.com/NousResearch/hermes-agent
+  - id: AML.T0051
+    rationale: "SafeDep says SOUL.md is placed first in the Hermes Agent system prompt, the prompt-injection scanner only warns, and the file is loaded anyway. The attacker can change that persona from the server."
+    source_urls:
+      - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+  - id: AML.T0102
+    rationale: "SafeDep says a Telegram chat with the installed agent can run terminal, process, file, web, code, schedule, and delegation tools."
+    source_urls:
+      - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Malicious npm package is published
+      description: "zmaticoo publishes nine versions of @leadstack/crm-connect on 16 November 2026. The package describes itself as an Official LeadStack CRM client. SafeDep flags it at 15:33 UTC and confirms it at 16:20 UTC."
+      kind: access
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+    - id: step-2
+      title: Postinstall fetches keys and persona
+      description: "Version 1.0.15 runs bin/postinstall.js and bin/lead-provision.js. Those requests pull .env lines and SOUL.md from the attacker's server. SafeDep did not recover the live files."
+      kind: execution
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+    - id: step-3
+      title: Hermes Agent is installed
+      description: "The script silently installs hermes-agent@0.22.7 under ~/.leadstack/runtime and sets model provider kimi-coding and model kimi-k2-0711-preview. SOUL.md is loaded first in the system prompt."
+      kind: ai
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+        - https://github.com/NousResearch/hermes-agent
+    - id: step-4
+      title: Gateway becomes a systemd service
+      description: "The script runs the gateway install as root, overriding Hermes Agent's refusal, waits for the Telegram polling line, renames the unit to leadstack-routing.service, and deletes the hermes-gateway unit. Version 1.0.18 uses a user service and loginctl enable-linger when not root."
+      kind: execution
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+    - id: step-5
+      title: Attacker tasks the agent
+      description: "SafeDep says the attacker can then task the agent over Telegram, including shell, process, file, web, code, schedule, and delegation tools. No victim session was published."
+      kind: impact
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+    - id: step-6
+      title: Later packages stay swappable
+      description: "Later versions download a module or binary, or reference an unpublished platform package. On 18 November the same account publishes packages whose optional dependency is a tarball on zmaticco[.]dev. That tarball was a benign token validator on 19 November."
+      kind: execution
+      source_urls:
+        - https://safedep.io/blog/malicious-npm-leadstack-crm-connect-hermes-agent-backdoor
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+    - source: step-4
+      target: step-5
+    - source: step-1
+      target: step-6
+      label: later versions
+category: adversary-use-of-ai
+attribution:
+  actor_name: unknown
+  motivation: unknown
+  attributed_by: SafeDep
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Systemd Service Created
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_systemd_service_creation.toml
+    notes: "Selected from a security-detections-mcp list for T1543.002. Linux file events. Creation or rename of a .service file under /etc/systemd/system and the user systemd directories. Version 1.0.15 writes /etc/systemd/system/leadstack-routing.service from node, which is not in the rule's package-manager exclusion list. It does not see loginctl enable-linger."
+  - name: Systemd Service Creation
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/auditd/path/lnx_auditd_systemd_service_creation.yml
+    notes: "Selected from the same T1543.002 search. Linux auditd PATH CREATE under /etc/systemd/system/, /usr/lib/systemd/system/, or a path containing /.config/systemd/user/. Same unit-file create. It does not require the parent to be node or npm."
+  - name: Linux Service File Created In Systemd Directory
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_service_file_created_in_systemd_directory.yml
+    notes: "Selected from a security-detections-mcp search for systemd. Linux file events for a .service file in the system and user systemd directories, including /etc/systemd/system. It does not tie the create to npm."
+  - name: Linux Service Started Or Enabled
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/linux_service_started_or_enabled.yml
+    notes: "Selected from a security-detections-mcp search for systemctl. Linux process events for systemctl or service with start or enable. Version 1.0.15 runs systemctl enable on the renamed unit. The rule does not require a node or npm parent, and it does not match loginctl."
+  - name: node, npm, and loginctl enable-linger
+    format: guidance
+    notes: "security-detections-mcp searches for loginctl and enable-linger returned no rules. No indexed rule matches node or npm spawning systemctl. Elastic Node.js Pre or Post-Install Script Execution requires a node process whose arguments include install or ci and then a child of node. The 1.0.15 postinstall is node bin/postinstall.js, and the nested install is an npm child, so that rule is not a reliable match. Sigma Linux Webshell Indicators matches a node parent spawning a short recon list and does not include systemctl, npm, or loginctl. Hunt node or npm spawning systemctl, and loginctl enable-linger, as a separate check from the service-file rules above."
+timeline:
+  first_seen: "2026-11-16"
+  last_updated: "2026-11-24"
+  updates:
+    - date: "2026-11-16"
+      source: SafeDep
+      summary: "zmaticoo publishes nine versions of @leadstack/crm-connect from 09:44 to 15:27 UTC. SafeDep flags the package at 15:33 UTC and confirms it at 16:20 UTC. SafeDep says npm has since removed it."
+    - date: "2026-11-18"
+      source: SafeDep
+      summary: "zmaticco[.]dev is registered and resolves to 72[.]62[.]1[.]108. zmaticoo publishes three packages that pull brandnet-entitlement from that domain."
+    - date: "2026-11-19"
+      source: SafeDep
+      summary: "SafeDep publishes the report. The optional dependency was a benign token validator that day. Port 3000 no longer answered."
