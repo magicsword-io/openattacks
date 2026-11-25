@@ -1,0 +1,152 @@
+id: jfrog-artex-hugging-face-self-leaking-models-2026-11
+name: "JFrog: an ARTEX task publishes Hugging Face models that leak the operator"
+aliases:
+  - "The Agent That Robbed Itself"
+date_reported: "2026-11-24"
+date_activity_start: "2026-11-24"
+date_activity_end: "2026-11-24"
+researcher: David Cohen
+org: JFrog Security Research
+sources:
+  - url: https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+    title: "The Agent That Robbed Itself: an AI-Driven Hugging Face Malware Campaign Leaks Its Own Operator"
+    publisher: JFrog Security Research
+  - url: https://research.jfrog.com/hf-agent-self-exfil-iocs.csv
+    title: Hugging Face agent self-exfiltration IOCs
+    publisher: JFrog Security Research
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_tool_as_lure
+ai_role_detail: "JFrog assesses with high confidence that the models were created, uploaded, and tested from an ARTEX agent task using gpt-5.4. The human operator is unidentified. The malicious model is an AI supply-chain lure, so ai_tool_as_lure is the secondary role. llm_generated_malware also fits the agent-authored payload."
+technique_summary: 'JFrog Security Research (David Cohen, 24 November 2026) describes a Hugging Face malware campaign whose first victim was the operator. At 02:43:52 UTC a new account, hfusr5488184 (display name Li Wei), was created in the one-member organization probeorg9x7y2 (Probe Org). At 03:05 UTC it published llama-3.2-1b-tuned. Each .bin was about 2.5 KB. A real 1B model is more than 2 GB. Three execution paths share one payload. config.json auto_map sends AutoConfig, AutoModel, and AutoModelForCausalLM to configuration_evil.py, which runs on from_pretrained with trust_remote_code=True before any tensor is read. pytorch_model.bin is a malicious pickle (GLOBAL __builtin__ exec and REDUCE) in the legacy torch format, and pytorch_model_zip.bin is a ZIP copy. The chat template has four Jinja SSTI sandbox escapes that run id, env, and cat /proc/1/environ. The payload reads /proc/1/environ, its own environment, the Kubernetes service-account token and namespace, and runs reconnaissance including nvidia-smi -L. It builds about 16 KB of JSON. Exfiltration base64-encodes that JSON and commits it as loot-<hostname>-<pid>.json into the attacker''s own repository through the Hugging Face Hub commit API (POST /api/models/<repo>/commit/main, NDJSON). The write token is embedded as a base64 literal that starts with aGZf, which decodes to hf_. A local copy is written to /tmp/.loot-<pid>-<hostname>.json and a marker to /tmp/.exec-<hostname>. Fourteen seconds after upload the payload fired on the builder host (loot-28ed718137b2-229339.json). Three seconds later that file was overwritten with {"test":"collector-path","who":"ihfprep2"}. The payload had run from /app/data/tasks/61/ihfprep2. The commit message was add NOEXFIL self-test marker. The leaked environment included ARTEX_LLM_PROVIDER=openai, ARTEX_LLM_MODEL=gpt-5.4, ARTEX_LLM_BASE_URL pointing at vip.aipro[.]love (a third-party API reseller), an ARTEX_PG_DSN for a postgres database named artex, and OPENAI_API_KEY. PID 1, /app/start.sh, starts ./artex listening on port 8787 with a proxy on port 8788. JFrog assesses with high confidence that the models were created, uploaded, and tested from an ARTEX agent task using gpt-5.4. The human operator is unidentified. The container ran as root in Docker. Its DNS search domain was cldbase.us-west-1.rumble.cloud and its clock was Asia/Shanghai. Other concurrent tasks in the leaked process list were task 57, phish_server.py behind a cloudflared quick tunnel, with monitor.sh watching creds.log; task 59, probe loops baselining *.clawi.ai hosts against a production origin IP and residential-proxy tests; and task 61, an SSRF callback anchor (ivisionssrf/anchor_server.py) plus the Hugging Face model prep. Callback receivers listened on ports 8899 and 8898. More than 10 relay.py instances were pinned to residential proxy sessions in the US, CA, DE, GB, and NL. JFrog cannot rule out a red-team or bug-bounty engagement, and says a phishing server, rotating residential proxies, and a disposable Hugging Face identity do not fit authorized work. About 30 minutes later, nine repositories toktest1 through toktest9 probed a tokenizer loader (bad JSON, a schema failure, evil_tok.py with auto_map and trust_remote_code, and 1 MiB of padding), plus an empty lootrepo. JFrog reads that as mapping one specific service that ingests user-supplied Hugging Face repositories. At 08:19 UTC the same account, ID 6b04f9e8746b081f2c411875, was renamed akashdutta1030 (Akash Dutta) and published mistral-7b-utterance and a drop repository named loot. mistral-7b-utterance has no weights. It uses a real Mistral-7B config and auto_map to configuration_evil.py and modeling_evil.py (markers RCE43861 and RCE43861-modeling). The tokenizer is byte-identical to hf-internal-testing/llama-tokenizer. The chat template is again SSTI. The collector now also targets /scratch/models, /workspace, the Hugging Face cache, the Kubernetes CA, and NATS, Postgres, and Redis environment variables. Commands use subprocess.run with a 20-second timeout. Loot goes to loot/<host>-<md5>.json with User-Agent rce and the same write token. The last commit, coldload probe broken config, made config.json invalid. The campaign was 13 repositories. JFrog found no loot files elsewhere on Hugging Face. Both loot drops were empty when the repositories were disabled, so no real victim had reported back. JFrog reported the campaign on 24 November to security@huggingface.co. Hugging Face disabled all 13 repositories the same day. JFrog published YARA rules in hf_commit_exfil.yar. Link wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11 and the other ARTEX entries.'
+initial_access: "A victim would have to load an unreviewed Hugging Face repository. from_pretrained with trust_remote_code=True imports configuration_evil.py before any tensor is read. The pickle and the Jinja chat template are alternate paths to the same payload. No external victim loot was observed."
+ai_tooling_and_models:
+  - "ARTEX. The leaked environment set ARTEX_LLM_PROVIDER=openai, ARTEX_LLM_MODEL=gpt-5.4, and ARTEX_LLM_BASE_URL to the reseller at vip.aipro[.]love."
+  - "Hugging Face Hub repositories used as the model lure, including llama-3.2-1b-tuned and mistral-7b-utterance."
+frameworks:
+  - artex
+other_tooling:
+  - "config.json auto_map to configuration_evil.py, loaded by trust_remote_code=True"
+  - "Malicious pickle in pytorch_model.bin (GLOBAL __builtin__ exec and REDUCE), plus pytorch_model_zip.bin"
+  - "Jinja chat template with four SSTI sandbox escapes"
+  - "Hugging Face Hub commit API, POST /api/models/<repo>/commit/main, as NDJSON"
+  - "cloudflared quick tunnel, phish_server.py, and relay.py on the same agent host"
+victims_and_sectors: "No external victim reported back. Both loot drops were empty when Hugging Face disabled them. The only observed execution was on the operator's own builder."
+regions:
+  - unknown
+region_notes: "JFrog does not name a victim country. The Docker DNS search domain in us-west-1, the Asia/Shanghai clock, and the residential proxy exits (US, CA, DE, GB, NL) are the operator host, not victim locations. Display names on the Hugging Face account are not an origin."
+attribution_or_cluster: "Unidentified operator. JFrog has high confidence the models were created, uploaded, and tested from an ARTEX agent task using gpt-5.4, and does not identify the human. JFrog cannot rule out a red-team or bug-bounty engagement."
+scale_and_metrics: "One Hugging Face account and 13 repositories on 24 November 2026. Activity from account creation at 02:43:52 UTC through the renamed account's publications at 08:19 UTC. Two loot files from the builder, then empty loot drops. No other loot files in JFrog's index of public Hugging Face repositories. Hugging Face disabled all 13 repositories the same day."
+prevention_angle: "Do not use trust_remote_code=True on a repository you have not reviewed. Pin revision= to a commit SHA. Use torch 2.6 or newer so weights_only=True stays on. Render chat templates only in a sandbox. A workload that loads models should be able to download from the Hub and should not be able to commit to it. Flag auto_map repositories that have no weights. Detection signals JFrog names are writes to huggingface.co/api/models/*/commit/main, reads of /proc/1/environ and the service-account token, a base64 literal starting with aGZf, and __globals__, __mro__, __subclasses__, or .popen( in a chat template."
+related_magicsword_projects: []
+source_notes: "The narrative, timestamps, and file markers are from the 24 November 2026 JFrog Security Research post and its IOC CSV. vip.aipro[.]love is the API reseller in ARTEX_LLM_BASE_URL, not a domain JFrog attributes to the operator as attacker-owned infrastructure. The write token and the OpenAI key are not reproduced here. SHA-256 values, in order, are the first model's configuration_evil.py, modeling_evil.py, pytorch_model.bin, and pytorch_model_zip.bin, then evil_tok.py, then the second model's configuration_evil.py and modeling_evil.py. Text indicators are the accounts hfusr5488184 and akashdutta1030 (same account ID 6b04f9e8746b081f2c411875), the organization probeorg9x7y2, and the repositories llama-3.2-1b-tuned, mistral-7b-utterance, toktest1 through toktest9, lootrepo, and loot. JFrog says the phishing server, rotating residential proxies, and the disposable Hugging Face identity do not fit authorized work, and it still cannot rule out a red-team or bug-bounty engagement. Link wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11 and the other entries whose frameworks field is artex."
+last_reviewed: "2026-11-25"
+confidence: high
+iocs:
+  domains:
+    - vip.aipro[.]love
+  ips: []
+  hashes:
+    - ed89685e8c16d0cb6dc218d0972e7a0a9e292f9b98f6b0ef0b2ab340d06d34e3
+    - 79b47fe688932507fa013de36c057846916f586b3893f2fae3fc364cbd5d7c9e
+    - 2bf25c4c3aa1e2efdff4ae9ee7e1434e279115608eb7a176e4e50e874c07c50d
+    - 783f54898ba4b828e14a2e5ab3c50968bca0883b0fc0309c24876c9c7f99e841
+    - b43e7d812ab6541bfce4f85b2a19ba051f1b560b581aa203754e088fe2367961
+    - ceb5816fac7cbd886b096c7f0c0402913488ca0f967b617d3a7e25508032e6a8
+    - b068b5a2ec3a6a13deef686173935330fb2f7fd2b3fb1f34aa2b6e359624de19
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "JFrog says the models were created, uploaded, and tested from an ARTEX agent task. PID 1 on the builder starts ./artex."
+    source_urls:
+      - https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+  - id: AML.T0058
+    rationale: "The account published llama-3.2-1b-tuned, nine tokenizer probes, and mistral-7b-utterance on the Hugging Face Hub. The second model has no weights."
+    source_urls:
+      - https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+  - id: AML.T0011.000
+    rationale: "trust_remote_code loads configuration_evil.py, the .bin files are a malicious pickle, and the chat template is Jinja SSTI."
+    source_urls:
+      - https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+  - id: AML.T0055
+    rationale: "The payload reads the environment, /proc/1/environ, and the Kubernetes service-account token, then commits the JSON to the Hub. The first loot file was the operator's own ARTEX environment, including OPENAI_API_KEY."
+    source_urls:
+      - https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+attack_flow:
+  nodes:
+    - id: publish
+      title: Fake model on a new Hub account
+      description: "At 02:43:52 UTC the account hfusr5488184 (Li Wei) is created in probeorg9x7y2. At 03:05 UTC it publishes llama-3.2-1b-tuned. Each .bin is about 2.5 KB."
+      kind: access
+      source_urls: &jfrog
+        - https://research.jfrog.com/post/the-agent-that-robbed-itself-an-ai-driven-hugging-face-malware-campaign-leaks-its-own-operator/
+    - id: loaders
+      title: Remote code, pickle, and Jinja SSTI
+      description: "auto_map loads configuration_evil.py when trust_remote_code=True, before any tensor is read. pytorch_model.bin is a malicious pickle and pytorch_model_zip.bin is a ZIP copy. Four Jinja SSTI escapes in the chat template run id, env, and cat /proc/1/environ."
+      kind: execution
+      source_urls: *jfrog
+    - id: collect
+      title: Environment, token, and GPU recon
+      description: "The payload reads /proc/1/environ, its own environment, the Kubernetes service-account token and namespace, and runs reconnaissance including nvidia-smi -L. The collected JSON is about 16 KB."
+      kind: execution
+      source_urls: *jfrog
+    - id: commit
+      title: Commit the loot to the same repo
+      description: "Base64 JSON is committed as loot-<hostname>-<pid>.json through POST /api/models/<repo>/commit/main. The write token is a base64 literal starting with aGZf. Local copies go to /tmp/.loot-<pid>-<hostname>.json and /tmp/.exec-<hostname>."
+      kind: impact
+      source_urls: *jfrog
+    - id: selftest
+      title: ARTEX runs the payload on itself
+      description: "Fourteen seconds after upload, loot-28ed718137b2-229339.json appears from the builder. Three seconds later it is overwritten with a collector-path self-test from /app/data/tasks/61/ihfprep2. The commit is add NOEXFIL self-test marker. The environment shows ARTEX listening on port 8787, gpt-5.4, and the reseller at vip.aipro[.]love."
+      kind: ai
+      source_urls: *jfrog
+    - id: retune
+      title: Tokenizer probes, then no weights
+      description: "About 30 minutes later, toktest1 through toktest9 and an empty lootrepo probe a tokenizer loader. At 08:19 UTC the same account is renamed akashdutta1030 and publishes mistral-7b-utterance, which has no weights, plus a loot repository. The last commit makes config.json invalid."
+      kind: execution
+      source_urls: *jfrog
+  edges:
+    - source: publish
+      target: loaders
+    - source: loaders
+      target: collect
+    - source: collect
+      target: commit
+    - source: commit
+      target: selftest
+    - source: selftest
+      target: retune
+category: attacks-on-ai
+attribution:
+  actor_name: "Unidentified operator"
+  country: Unknown
+  motivation: unknown
+  attributed_by: JFrog Security Research
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: Kubernetes Service Account Secret Access
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/credential_access_kubernetes_service_account_secret_access.toml"
+    notes: "Linux process start whose command line contains the Kubernetes serviceaccount path. JFrog says the payload reads that token. A read inside configuration_evil.py that never places the path in argv does not match this rule."
+  - name: JFrog YARA hf_commit_exfil.yar
+    format: guidance
+    url: "https://research.jfrog.com/hf-agent-self-exfil-hf_commit_exfil.yar"
+    notes: "JFrog publishes this file with the report. It is YARA, not a Sigma, Splunk, or Elastic rule. The file defines HF_Model_Loot_Exfil_via_Commit_API and HF_ChatTemplate_Jinja_SSTI. Also hunt Hub commit API writes, reads of /proc/1/environ, a base64 literal starting with aGZf, and __globals__, __mro__, __subclasses__, or .popen( in a chat template. No public Sigma, Splunk, or Elastic rule checked for this entry keys on those Hub or Jinja signals."
+timeline:
+  first_seen: "2026-11-24"
+  last_updated: "2026-11-25"
+  updates:
+    - date: "2026-11-24"
+      source: JFrog Security Research
+      summary: "02:43:52 UTC account hfusr5488184 is created. 03:05 UTC llama-3.2-1b-tuned is published. The payload runs on the builder 14 seconds later."
+    - date: "2026-11-24"
+      source: JFrog Security Research
+      summary: "About 30 minutes later, toktest1 through toktest9 and lootrepo are published. At 08:19 UTC the account is renamed akashdutta1030 and mistral-7b-utterance and loot are published."
+    - date: "2026-11-24"
+      source: JFrog Security Research
+      summary: "JFrog reports the 13 repositories to security@huggingface.co. Hugging Face disables all 13 the same day. Both loot drops are empty."
+linked_tools:
+  - artex

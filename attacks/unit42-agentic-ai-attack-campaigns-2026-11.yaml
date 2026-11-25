@@ -1,0 +1,164 @@
+id: unit42-agentic-ai-attack-campaigns-2026-11
+name: "Unit 42: autonomous agents ran more than 10 intrusions from web shells"
+date_reported: "2026-11-24"
+date_activity_start: "2026-07"
+date_activity_end: "2026-09"
+researcher: Noa Dekel and Tom Fakterman
+org: Unit 42 (Palo Alto Networks)
+sources:
+  - url: https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+    title: Recent Trends and Tactics of Agentic AI Attacks
+    publisher: Unit 42
+  - url: https://reliaquest.com/blog/threat-spotlight-how-ai-agents-turned-one-exposed-endpoint-into-a-server-takeover/
+    title: How AI Agents Turned One Exposed Endpoint into a Server Takeover
+    publisher: ReliaQuest
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "Unit 42 says a human set the objective and provided initial access, and an autonomous agent ran the operation. One campaign's C2 host also served a CyberStrikeAI instance. Unit 42 reports no other model or framework fingerprint."
+technique_summary: "Unit 42 (Noa Dekel and Tom Fakterman, 24 November 2026) says that between July and September 2026 it tracked more than 10 global campaigns in which attackers deployed autonomous AI agents. The sectors were government, logistics, hospitality, manufacturing, agriculture, and education. Every campaign got initial access through web shells deployed via vulnerable web applications. A human set the objective and provided that access. The agent ran the operation. One attack was active for 140 minutes across two days and ran about 800 unique commands. Another 12-day campaign ran more than 8,000 unique commands. The median gap between commands was 23.9 seconds in the human phase and 1.4 seconds once the agent took over. Fingerprints in every campaign included section headers such as ===[Title]=== in shell commands. Chain-of-thought reasoning comments appeared in scripts in more than half of the campaigns. Output was structured and machine-readable. Each session used 40 to 100 unique Base64 payloads, and none of those payloads were identical. In a US hospitality and gaming company, the agent tried IMDSv1, then an IMDSv2 token, enumerated 20 AWS services across 8 regions, targeted payment and financial S3 paths, tested writes, deleted the test files, and read the bucket policy and ACL. Unit 42 says the abuse crossed three major clouds. On multiple operating systems, a Linux PHP web shell led to stolen SMB credentials and then Windows IIS. Within 2 minutes the agent was deploying ASPX web shells over SMB. Over 26 minutes it used more than 40 locations, five web shell variants, and a custom web.config to enable script execution. The agent adapted. It found credentials for an IT vendor's self-managed GitLab on the compromised web server, mapped the vendor with WHOIS, and brute-forced GitLab using real marketing staff names. Unit 42 does not describe a GitLab vulnerability. The agent read NGINX vhost configs, found a dozen sister companies, harvested CSRF tokens, reused credentials, and ran four iterative SQL injection scripts against a parent-company admin panel. scan.sh was followed 21 seconds later by scan2.sh. It showed security awareness. find commands excluded three EDR vendors' paths on six endpoints. The agent checked for 16 security scanners, tried to exfiltrate a security-product directory, and ran strace on the Microsoft Defender for Endpoint daemon wdavdaemon. Unit 42 recovered no compiled backdoor, C2 framework, DLL implant, or shellcode loader. The arsenal was PHP web shells, PowerShell WMI backdoors, and Python credential harvesters. Open source came first. Copy Fail, CVE-2026-31431, was downloaded from GitHub or its site in three cases. Privilege escalation tried a precompiled PwnKit, then CVE-2024-1086, then custom C, then a Python rewrite. charon_lite.c was a network probe. paramiko was used in spray scripts. Attribution leads are thin. C2 address 204.194.54[.]240 appeared in PowerShell download cradles and curl probes, and that host also ran a CyberStrikeAI instance. ReliaQuest's 7 October 2026 report documents the same address as a staging and pre-incident scanning host with a CyberStrikeAI login page and an open directory. One campaign leaked the path /home/kali/exploitmasteryai/targets/warranty/shell5.php. A WMI backdoor appeared in two versions, one with Chinese comments and a newer English-only version. Unit 42 reports no other model or framework fingerprint. Link cl-unk-1211-unit42-2026-10, elastic-cyberstrikeai-aws-cloudtrail-2026-11, and wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11."
+initial_access: "Web shells deployed through vulnerable web applications. Unit 42 says every campaign in the set started that way. The human provided that access. The agent ran the later operation."
+ai_tooling_and_models:
+  - "Autonomous AI agents. Unit 42 does not name the model."
+  - "CyberStrikeAI, on the C2 host 204.194.54[.]240 for one campaign."
+frameworks:
+  - cyberstrikeai
+other_tooling:
+  - "PHP web shells"
+  - "ASPX web shells and a custom web.config"
+  - "PowerShell WMI backdoors"
+  - "Python credential harvesters and a Python rewrite of an exploit"
+  - "Copy Fail (CVE-2026-31431), precompiled PwnKit, CVE-2024-1086, and custom C"
+  - "charon_lite.c and paramiko spray scripts"
+victims_and_sectors: "More than 10 campaigns. Sectors named are government, logistics, hospitality, manufacturing, agriculture, and education. One described victim is a US hospitality and gaming company."
+regions:
+  - United States
+  - Multiple regions
+region_notes: "Unit 42 describes the set as global and names one victim as a US hospitality and gaming company. It does not name other victim countries. Three major clouds are not three countries. Chinese comments in one WMI backdoor are not an origin."
+attribution_or_cluster: "Unknown. Unit 42 describes multiple unnamed operators and does not attribute the set to one actor or country."
+scale_and_metrics: "More than 10 campaigns from July through September 2026. One attack active 140 minutes across two days with about 800 unique commands. One 12-day campaign with more than 8,000 unique commands. Median inter-command gap 23.9 seconds in the human phase and 1.4 seconds after the agent took over. 40 to 100 unique Base64 payloads per session. In the hospitality case, 20 AWS services across 8 regions. On the multi-OS case, more than 40 web shell locations and five variants in 26 minutes."
+prevention_angle: "Patch the web applications that Unit 42 says were the initial-access path in every campaign, and treat a new web shell as the start of an agent-speed operation rather than a single manual session. Alert on command bursts near a 1.4 second gap, shell lines that use ===[Title]=== headers, and large sets of unique Base64 payloads in one session. Block or alert on IMDSv1, unexpected IMDSv2 token use, and S3 policy or ACL reads from a workload that does not administer buckets. Segment SMB so a Linux web shell cannot write ASPX under IIS, and do not leave web.config able to enable script execution. Rate-limit GitLab authentication and do not reuse marketing-staff passwords there. Hunt find commands that skip EDR paths, and strace attached to wdavdaemon."
+related_magicsword_projects: []
+source_notes: "Counts, fingerprints, and the tool list are from the 24 November 2026 Unit 42 post. Unit 42 does not name a model except by tying one C2 host to a CyberStrikeAI instance. ReliaQuest (7 October 2026) is cited only for that address: the report calls 204.194.54[.]240 a staging and pre-incident scanning host and shows a CyberStrikeAI login page and an open directory. Other addresses and tools in the ReliaQuest report are a different incident and are not listed here. The IP is defanged. Link cl-unk-1211-unit42-2026-10, elastic-cyberstrikeai-aws-cloudtrail-2026-11, and wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11."
+last_reviewed: "2026-11-25"
+confidence: medium
+iocs:
+  domains: []
+  ips:
+    - 204.194.54[.]240
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "Unit 42 says attackers deployed autonomous AI agents after a human set the objective and obtained the web shell."
+    source_urls:
+      - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+  - id: AML.T0053
+    rationale: "The agent issued the commands. One case ran about 800 unique commands, and another more than 8,000, with the median gap falling from 23.9 seconds to 1.4 seconds."
+    source_urls:
+      - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+  - id: AML.T0102
+    rationale: "Scripts contained chain-of-thought comments in more than half of the campaigns, and each session used 40 to 100 unique Base64 payloads, none identical."
+    source_urls:
+      - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+  - id: AML.T0075
+    rationale: "In the US hospitality and gaming case the agent tried instance metadata and enumerated 20 AWS services across 8 regions. Unit 42 also reports abuse across three major clouds."
+    source_urls:
+      - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+attack_flow:
+  nodes:
+    - id: shells
+      title: Web shells from vulnerable apps
+      description: "Every campaign in the set started with a web shell on a vulnerable web application. A human set the objective and provided that access."
+      kind: access
+      source_urls: &u42
+        - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+    - id: agent
+      title: The agent runs the operation
+      description: "Once the agent took over, the median gap between commands fell from 23.9 seconds to 1.4 seconds. Commands used ===[Title]=== headers. More than half of the campaigns had chain-of-thought comments in scripts."
+      kind: ai
+      source_urls: *u42
+    - id: cloud
+      title: Metadata, then AWS and S3
+      description: "In a US hospitality and gaming company the agent tried IMDSv1, then an IMDSv2 token, enumerated 20 AWS services across 8 regions, targeted payment and financial S3 paths, tested writes, deleted the test files, and read the bucket policy and ACL."
+      kind: execution
+      source_urls: *u42
+    - id: pivot
+      title: PHP shell to Windows IIS
+      description: "A Linux PHP web shell and stolen SMB credentials led to Windows IIS. Within 2 minutes the agent deployed ASPX web shells over SMB. Over 26 minutes it used more than 40 locations, five variants, and a custom web.config."
+      kind: execution
+      source_urls: *u42
+    - id: adapt
+      title: GitLab, sister sites, and SQL injection
+      description: "Credentials on the web server opened an IT vendor's self-managed GitLab. The agent mapped the vendor with WHOIS and brute-forced real marketing staff names. NGINX vhosts led to a dozen sister companies, CSRF tokens, credential reuse, and four SQL injection scripts. scan2.sh followed scan.sh by 21 seconds."
+      kind: execution
+      source_urls: *u42
+    - id: evade
+      title: EDR paths and wdavdaemon
+      description: "find commands excluded three EDR vendors' paths on six endpoints. The agent checked for 16 security scanners, tried to exfiltrate a security-product directory, and ran strace on wdavdaemon."
+      kind: execution
+      source_urls: *u42
+    - id: c2
+      title: One C2 host runs CyberStrikeAI
+      description: "204.194.54[.]240 was in PowerShell download cradles and curl probes and also hosted CyberStrikeAI. A leaked path was /home/kali/exploitmasteryai/targets/warranty/shell5.php. Unit 42 reports no other framework fingerprint."
+      kind: ai
+      source_urls:
+        - https://unit42.paloaltonetworks.com/autonomous-ai-agent-threat-campaigns/
+        - https://reliaquest.com/blog/threat-spotlight-how-ai-agents-turned-one-exposed-endpoint-into-a-server-takeover/
+  edges:
+    - source: shells
+      target: agent
+    - source: agent
+      target: cloud
+    - source: agent
+      target: pivot
+    - source: agent
+      target: adapt
+    - source: agent
+      target: evade
+    - source: agent
+      target: c2
+      label: one campaign
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unnamed operators"
+  country: Unknown
+  motivation: unknown
+  attributed_by: Unit 42
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Suspicious Command Execution via Web Server
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_webserver_suspicious_command_execution.toml"
+    notes: "Linux. A web-server parent, including php-cgi and php-fpm, starts a shell or reconnaissance command. This matches the PHP web shell when that worker is the parent. It does not cover the later ASPX shells on Windows."
+  - name: "Web Shell Detection: Script Process Child of Common Web Processes"
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_webshell_detection.toml"
+    notes: "Windows. A script host or shell whose parent is w3wp.exe or another listed web process. This matches an ASPX web shell executing under IIS. A copy over SMB that does not spawn from w3wp is not this rule."
+  - name: AWS S3 Rapid Bucket Posture API Calls from a Single Principal
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/aws/discovery_s3_rapid_bucket_posture_api_calls.toml"
+    notes: "AWS CloudTrail. Repeated GetBucketAcl, GetBucketPolicy, and related calls by one principal in a short window. Unit 42 says the agent read the bucket policy and ACL and does not give a count, so the threshold may not have been met."
+  - name: IMDSv1, WMI backdoors, and agent fingerprints
+    format: guidance
+    notes: "No public Sigma, Splunk, or Elastic rule checked for this entry is a specific detector for the ===[Title]=== headers, the 1.4 second command gap, or strace attached to wdavdaemon. The public strace rule that was reviewed requires strace after sshd exits, which is not this case. Unit 42's PowerShell WMI backdoor is not described as a WMI event subscription, so a subscription rule is not cited. Also hunt IMDSv1, an IMDSv2 token request from a process that is not the instance agent, and the defanged address 204.194.54[.]240."
+timeline:
+  first_seen: "2026-07"
+  last_updated: "2026-11-25"
+  updates:
+    - date: "2026-07"
+      source: Unit 42
+      summary: "Unit 42 dates the set of more than 10 campaigns to July through September 2026. It does not name a first day."
+    - date: "2026-09"
+      source: Unit 42
+      summary: "The activity window in the report ends in September 2026. Individual campaign days inside that window are not all named."
+    - date: "2026-10-07"
+      source: ReliaQuest
+      summary: "ReliaQuest documents 204.194.54[.]240 as a staging and pre-incident scanning host with a CyberStrikeAI login page and an open directory."
+    - date: "2026-11-24"
+      source: Unit 42
+      summary: "Unit 42 publishes the campaign set, the speed measurements, and the CyberStrikeAI host."
+linked_tools:
+  - cyberstrikeai

@@ -436,5 +436,23 @@
     "summary": "A malicious agent action could expose a victim's SharePoint token through a connector SSRF flaw, enabling impersonation across affected Microsoft services.",
     "environments": ["agents"],
     "evidence": "vulnerability"
+  },
+  "jfrog-artex-hugging-face-self-leaking-models-2026-11": {
+    "title": "JFrog: ARTEX publishes Hugging Face models that leak the operator",
+    "summary": "An ARTEX task published fake Hugging Face models that steal loader secrets and commit them to the Hub. The first loot file was the operator's own environment.",
+    "environments": ["linux", "development"],
+    "evidence": "campaign"
+  },
+  "unit42-agentic-ai-attack-campaigns-2026-11": {
+    "title": "Unit 42: autonomous agents ran more than 10 intrusions",
+    "summary": "Unit 42 tracked more than 10 campaigns from July to September 2026. Humans planted web shells, and agents ran the rest, including one host that served CyberStrikeAI.",
+    "environments": ["linux", "windows", "cloud", "web"],
+    "evidence": "campaign"
+  },
+  "greynoise-gt13-check-point-management-servers-2026-11": {
+    "title": "GreyNoise GT13: Check Point management server intrusions",
+    "summary": "GreyNoise says GT13 hit Check Point Security Management Servers at 22 organizations from shared VPN exits and a compromised hop. It suspects agentic harnesses and names no model.",
+    "environments": ["linux"],
+    "evidence": "campaign"
   }
 }
