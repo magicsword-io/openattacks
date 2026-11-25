@@ -301,16 +301,23 @@ test("map markers lead to normalized region filters", async ({ page }) => {
   await page.goto("/regions/");
   await expect(page.locator(".world-map")).toBeVisible();
   await page
-    .getByRole("link", { name: "Hong Kong, 1 entry. Filter catalog." })
+    .getByRole("link", { name: "Hong Kong, 2 entries. Filter catalog." })
     .click();
   await expect(
     page.getByRole("combobox", { name: "Filter by region", exact: true }),
   ).toHaveValue("Hong Kong");
-  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(1);
-  await expect(page.locator("[data-attack-row]:visible")).toHaveAttribute(
-    "data-id",
-    "arup-deepfake-video-fraud-2024-01",
-  );
+  const rows = page.locator("[data-attack-row]:visible");
+  await expect(rows).toHaveCount(2);
+  await expect(
+    page.locator(
+      '[data-attack-row][data-id="arup-deepfake-video-fraud-2024-01"]',
+    ),
+  ).toBeVisible();
+  await expect(
+    page.locator(
+      '[data-attack-row][data-id="greynoise-gt13-check-point-management-servers-2026-11"]',
+    ),
+  ).toBeVisible();
 });
 
 test("entry flows render with sources and controls; removed sections stay absent", async ({

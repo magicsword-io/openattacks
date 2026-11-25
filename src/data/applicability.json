@@ -1227,5 +1227,26 @@
         ]
       }
     ]
+  },
+  "jfrog-artex-hugging-face-self-leaking-models-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-25",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX and gpt-5.4 ran on the operator side. The victim condition is loading an unreviewed Hugging Face repository, and no stack tool represents that loader. JFrog saw no external victim loot.",
+    "rules": []
+  },
+  "unit42-agentic-ai-attack-campaigns-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-25",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "The agents and the CyberStrikeAI instance are attacker-side. Unit 42 does not name a victim AI product. Initial access was a web shell on a vulnerable web application.",
+    "rules": []
+  },
+  "greynoise-gt13-check-point-management-servers-2026-11": {
+    "status": "not_assessed",
+    "reviewed": "2026-11-25",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "GreyNoise suspects agentic harnesses and does not name a model or framework. Victims are Check Point Security Management Servers, which are not a stack-tool selection.",
+    "rules": []
   }
 }

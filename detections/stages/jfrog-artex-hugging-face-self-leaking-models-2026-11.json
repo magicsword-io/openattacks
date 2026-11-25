@@ -1,0 +1,32 @@
+{
+  "publish": {
+    "profile": "repository",
+    "note": "A new Hugging Face account published llama-3.2-1b-tuned. The weight files were about 2.5 KB. This is a public model repository, not a private-to-public leak.",
+    "reviewed": "2026-11-25"
+  },
+  "loaders": {
+    "profile": "payload",
+    "note": "trust_remote_code loads configuration_evil.py, the .bin files are a malicious pickle, and the chat template is Jinja SSTI. Confirm which of the three paths actually ran before treating a model download as execution.",
+    "reviewed": "2026-11-25"
+  },
+  "collect": {
+    "profile": "credentials",
+    "note": "The payload reads /proc/1/environ, the process environment, and the Kubernetes service-account token, and it runs nvidia-smi -L. The profile covers secret access, not the GPU command by itself.",
+    "reviewed": "2026-11-25"
+  },
+  "commit": {
+    "profile": "exfil",
+    "note": "Collected JSON is committed to the attacker's own Hub repository with an embedded write token. A model workload that can commit to the Hub is the control boundary JFrog names.",
+    "reviewed": "2026-11-25"
+  },
+  "selftest": {
+    "profile": "agent-tools",
+    "note": "The first loot file came from the ARTEX builder itself. The evidence is the leaked ARTEX environment and ./artex started from PID 1, which is operator telemetry, not a victim tool-call audit.",
+    "reviewed": "2026-11-25"
+  },
+  "retune": {
+    "profile": "package",
+    "note": "toktest1 through toktest9 and the later weightless mistral-7b-utterance change the wrapper. The second model has no weight files, so a scanner that only inspects weights misses it.",
+    "reviewed": "2026-11-25"
+  }
+}
