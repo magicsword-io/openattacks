@@ -16,5 +16,11 @@
     "profile": "windows-shell",
     "control": "script-hosts",
     "scope": "The Windows wscript → PowerShell branch only. This does not cover the separate macOS CloudSyncD branch."
+  },
+  "step-5": {
+    "profile": "agent-tools",
+    "resource": "LOLSkills",
+    "note": "@apexfdn/copilot-mcp returns the operator command as tool text after an HTTP 412. It does not spawn a process. The transcript is the record.",
+    "reviewed": "2026-11-25"
   }
 }

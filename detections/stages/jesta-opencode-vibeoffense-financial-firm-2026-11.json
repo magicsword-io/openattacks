@@ -1,0 +1,27 @@
+{
+  "step-1": {
+    "profile": "web",
+    "note": "The first requests are the desktop Chrome 157 user agent against the front page, which returned 403. Web logs are the record. Jesta does not report a process on the customer's host.",
+    "reviewed": "2026-11-25"
+  },
+  "step-2": {
+    "profile": "web",
+    "note": "Six seconds later the same address uses Chrome's Pixel 10 preset and is refused. The /openapi.json that answered is a Jesta decoy, not the customer's API.",
+    "reviewed": "2026-11-25"
+  },
+  "step-3": {
+    "profile": "web",
+    "note": "One later request for openapi.json carries the OpenCode-User/1.0 client identifier. Jesta had already flagged the session. The model is not named.",
+    "reviewed": "2026-11-25"
+  },
+  "step-4": {
+    "profile": "web",
+    "note": "The key tests and the three submit attempts are HTTP requests from macOS curl and Chrome. The key was a plant. A 200 on that key is the decoy answering.",
+    "reviewed": "2026-11-25"
+  },
+  "step-5": {
+    "profile": "web",
+    "note": "The session ends after 5 minutes 44 seconds. Jesta says nothing real was taken. There is no host execution to join to these requests.",
+    "reviewed": "2026-11-25"
+  }
+}

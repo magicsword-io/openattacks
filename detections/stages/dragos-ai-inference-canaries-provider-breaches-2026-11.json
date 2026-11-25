@@ -26,7 +26,7 @@
   },
   "privacy": {
     "profile": "provider",
-    "note": "URL fetches and a later Feishu post show retained prompts, including zero-data-retention requests. Dragos does not name the lab. The OpenRouter email in the Ars update is a separate notice.",
-    "reviewed": "2026-11-23"
+    "note": "URL fetches and a later Feishu post show retained prompts, including zero-data-retention requests. Dragos does not name the lab. MiniMax says its own security agents opened URLs taken from forwarded requests, including zero-data-retention requests. That statement does not name the three hosting-provider breaches.",
+    "reviewed": "2026-11-25"
   }
 }

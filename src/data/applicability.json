@@ -97,7 +97,7 @@
   },
   "apex-accelerator-ref8801-2026-10": {
     "status": "mapped",
-    "reviewed": "2026-10-23",
+    "reviewed": "2026-11-25",
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
     "stage_id": "step-3",
     "action": "Review newly added MCP servers, CLI bootstrap settings and the provenance of accelerator-supplied npm packages.",
@@ -112,7 +112,8 @@
           "Confirm installation of the accelerator-supplied packages or the rogue configuration; ordinary AI-client use is not the entry point."
         ],
         "source_urls": [
-          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages"
+          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages",
+          "https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026"
         ]
       },
       {
@@ -125,7 +126,8 @@
           "The source describes a specific accelerator / npm package lure; check whether those packages or configurations are present."
         ],
         "source_urls": [
-          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages"
+          "https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages",
+          "https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026"
         ]
       }
     ]
@@ -1248,5 +1250,34 @@
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
     "note": "GreyNoise suspects agentic harnesses and does not name a model or framework. Victims are Check Point Security Management Servers, which are not a stack-tool selection.",
     "rules": []
+  },
+  "jesta-opencode-vibeoffense-financial-firm-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-25",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "OpenCode ran on the operator's Mac. The victim side is a public web API, and the key the agent tested was a Jesta plant.",
+    "rules": []
+  },
+  "radware-github-hidden-ai-directed-text-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-25",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "step-2",
+    "action": "Strip HTML comments and other hidden markup written by outsiders before an issue-triage, CI, or review agent reads the raw item, and do not give that agent secrets or a shell.",
+    "rules": [
+      {
+        "tools": ["github-copilot", "claude-code", "gemini"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "target",
+        "reason": "The paper's attack examples land on project agents, including GitHub Copilot review settings, claude-code-action, and gemini-cli issues.",
+        "conditions": [
+          "An agent reads raw GitHub issue, pull request, comment, or README text, including HTML comments and other markup the rendered page hides."
+        ],
+        "source_urls": [
+          "https://arxiv.org/abs/2611.28763"
+        ]
+      }
+    ]
   }
 }

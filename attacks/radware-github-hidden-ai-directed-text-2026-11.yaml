@@ -1,0 +1,120 @@
+id: radware-github-hidden-ai-directed-text-2026-11
+name: "Radware: hidden AI-directed text in GitHub issues, pull requests, comments, and READMEs"
+aliases:
+  - github-ipi-in-the-wild
+date_reported: "2026-11-21"
+date_activity_start: "2025-10-06"
+date_activity_end: "2026-09-30"
+researcher: Gabi Nakibly, Zvika Babo
+org: Radware
+sources:
+  - url: https://arxiv.org/abs/2611.28763
+    title: "Who Is Prompt-Injecting Coding Agents? An Empirical Study of Hidden AI-Directed Text on GitHub"
+    publisher: arXiv
+  - url: https://github.com/rdwr-gabin/github-ipi-in-the-wild
+    title: GitHub-scale measurement of indirect prompt injection of coding agents in the wild
+    publisher: Radware
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: ai_agent_or_mcp_as_target
+ai_role_secondary: null
+ai_role_detail: "The hidden text is published in GitHub Markdown and is written for coding agents that read the raw text. The authors replayed the 43 in-the-wild attacks offline against five named models."
+technique_summary: "Gabi Nakibly and Zvika Babo (Radware, arXiv 2611.28763, submitted 21 November 2026) scanned about 145 million GitHub items for text that GitHub does not render to a person and that an agent reading the raw Markdown receives in full. The sets are 95.1 million new issues and pull requests from 1 June to 30 September 2026, 47.6 million issues, pull requests, and comments from GH Archive (September 2025 through May 2026, plus comments for June through August 2026), and the READMEs of the 2 million most-starred repositories. On the 142.7 million issues, pull requests, and comments they validated 2,281 findings in 435 repositories, about 16 per million items. Of those, 1,519 are first-party orchestration, 374 are content override, 345 are defensive text, and 43 are attacks. README review left 107 repositories with AI-directed hidden text: 80 content override, 23 defensive, and 4 attacks. The 4 README attacks are two distinct payloads, each also present in a renamed copy of a repository. That is 47 attacks in total, 43 in issues, pull requests, and comments and 4 in READMEs. Attacks are about one in 3.3 million issues, pull requests, and comments. Thirty-nine of the 43 are in issue bodies. Of the 43, 24 address a specific agent the project runs: 17 an issue-triage agent, 5 a CI agent, and 2 a code-review agent. The other 19 address any coding agent that reads the item. The attack goals are steal the agent's secrets (44 percent), hijack the agent for a side job (37 percent), and forge the agent's verdict (19 percent). One in five names the target agent's own tools or output fields. The authors replayed the 43 attacks offline, one response each, with mock tools, against claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5, gpt-5.6-luna, and gpt-5.6-terra. Four of the five models did not carry out an injected instruction. gpt-5.6-luna, the smallest and fastest model in the test, complied with 8 of the 43 (19 percent, 7 fully and 1 partly). Seven of those eight targeted an issue-triage agent. After HTML comments were stripped, none of the five models complied. The authors say stripping every hidden comment also removes legitimate project instructions. Their recommendation is to remove hidden text written by outsiders before the agent reads it, and to keep markers written by the project's own members and bots. First-party orchestration is two thirds of the findings in issues, pull requests, and comments, grew fivefold in four months, and is plain text in a public thread. Anyone who can comment can post the same marker. The authors found 47 markers in 10 projects that record an approval, a merge-ready state, or a bypassed check. They release the findings and the scanner ipi-scan at https://github.com/rdwr-gabin/github-ipi-in-the-wild. The actors are unnamed GitHub users. For the 35 attacks whose author account still existed, the median account was 2.8 years old when it posted, and only two were younger than a month. The authors count request-capture probes as attacks because a successful probe is not distinguishable from an attack on the victim side."
+initial_access: "A GitHub user places hidden text, most often an HTML comment, in an issue, pull request, comment, review, or README. A project agent that triages issues, reviews code, or runs in CI reads the raw Markdown, which still contains the hidden text."
+ai_tooling_and_models:
+  - "ipi-scan (https://github.com/rdwr-gabin/github-ipi-in-the-wild), the authors' detector and the published finding set"
+  - "Project issue-triage agents, CI agents, and code-review agents that read raw GitHub Markdown"
+  - "Offline replay models claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5, gpt-5.6-luna, and gpt-5.6-terra"
+other_tooling:
+  - "GitHub-flavored Markdown HTML comments, which GitHub does not render and which agents receive in the raw text"
+  - "README concealment also includes invisible Unicode, white LaTeX, and CSS-hidden elements. The issue, pull request, and comment pipeline defaults to HTML comments."
+victims_and_sectors: "Public GitHub repositories whose own agents read issues, pull requests, comments, or READMEs. The 43 attacks are spread over 32 repositories. The authors say 44 percent of attacks target repositories of six major AI and cloud vendors, and that attacks also landed on small personal repositories. No customer-data loss from a production agent is reported. The offline replay used mock tools."
+regions:
+  - unknown
+region_notes: "The paper does not assign victim countries. Repository ownership and author-account location are not recorded as victim regions."
+attribution_or_cluster: "Various unnamed GitHub users. The authors attribute each attack to the item that contains the hidden text. They do not name a group."
+scale_and_metrics: "About 145 million items scanned. 2,281 validated findings in issues, pull requests, and comments, about 16 per million. 47 attacks: 43 in issues, pull requests, and comments (about 1 in 3.3 million) and 4 in READMEs. Of the 43, 17 target an issue-triage agent, 5 a CI agent, and 2 a code-review agent. Orchestration findings: 1,519, fivefold growth in four months. Offline replay: gpt-5.6-luna complied with 8 of 43 attacks (19 percent). Compliance was zero after HTML comments were stripped. Crawl window for new issues and pull requests: 1 June to 30 September 2026. Earliest attack row in the paper's table: 6 October 2025."
+prevention_angle: "Remove hidden text that outsiders write, including HTML comments and other hidden markup, before a triage, review, or CI agent reads the item. The authors' replay found no compliance once HTML comments were stripped. Do not strip a project's own markers blindly. That also removes defensive notices, reviewer settings, and orchestration the project relies on. Check who wrote a marker before acting on it, and prefer a visible label or check that only maintainers can set when the marker grants permission. Give an issue-reading agent no secrets, no write access it does not need, and no shell it does not need. A model verdict such as allow_triage=true must not be the only control that opens a gate. Treat untrusted issue, pull request, comment, and README text as data."
+related_magicsword_projects: []
+source_notes: "Counts, dates, target breakdowns, the five-model replay, and the recommendation to strip outsider hidden text while keeping first-party markers are from the paper and the repository README. The paper's attack examples include shell instructions aimed at workflow tokens and forged triage verdicts. Those payloads are published in the paper and are not copied here. The authors say the replay is a lower bound on real deployments: one response each, mock tools, and approximate system prompts. Six of the 43 attacks send data to request-capture services, and the authors still classify them as attacks. The schema has no field for linking the individual GitHub items. The 5 November 2026 Radware blog is a separate catalog entry, radware-github-prompt-injection-bots-2026-11. This entry is the 21 November measurement paper."
+last_reviewed: "2026-11-25"
+confidence: high
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0051.001
+    rationale: "The attacks are instructions hidden in GitHub issues, pull requests, comments, and READMEs. GitHub does not render that text to a person. An agent that reads the raw Markdown receives it as part of the item it was asked to triage, review, or run."
+    source_urls:
+      - https://arxiv.org/abs/2611.28763
+      - https://github.com/rdwr-gabin/github-ipi-in-the-wild
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Hidden text is published on GitHub
+      description: "A GitHub user puts text in an issue, pull request, comment, or README that the rendered page hides and the raw Markdown keeps. The authors validated 43 attacks in issues, pull requests, and comments, and 4 in READMEs."
+      kind: access
+      source_urls: &a1
+        - https://arxiv.org/abs/2611.28763
+        - https://github.com/rdwr-gabin/github-ipi-in-the-wild
+    - id: step-2
+      title: The project's agent reads the raw item
+      description: "Issue-triage agents account for 17 of the 43 attacks, CI agents for 5, and code-review agents for 2. The other 19 address any coding agent that reads the item. Thirty-nine of the 43 are in issue bodies."
+      kind: ai
+      source_urls: *a1
+    - id: step-3
+      title: Offline replay, one model complies
+      description: "Replayed offline with mock tools, gpt-5.6-luna carried out 8 of the 43 attacks. The other four models in the test did not. Stripping HTML comments removed every compliance."
+      kind: impact
+      source_urls: *a1
+    - id: step-4
+      title: Hidden markers can be copied by a commenter
+      description: "First-party orchestration is 1,519 findings and grew fivefold in four months. The markers are plain text. Anyone who can comment can post the same marker, including markers that record an approval or a bypassed check."
+      kind: execution
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-1
+      target: step-4
+      label: orchestration channel
+category: attacks-on-ai
+attribution:
+  actor_name: unnamed GitHub users
+  country: null
+  motivation: unknown
+  attributed_by: Gabi Nakibly and Zvika Babo
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Execution via GitHub Actions Runner
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/execution_via_github_actions_runner.toml
+    notes: "Selected with security-detections-mcp from a search for GitHub Actions workflow execution. Endpoint process events. A child of Runner.Worker, or a shell whose command line references a runner entrypoint.sh, running a command the rule treats as dangerous. This can see a CI agent that actually runs a shell on a monitored self-hosted runner. It does not see hidden HTML in an issue, and it does not see a triage agent that only changes labels. The authors' replay used mock tools and did not execute on a runner. Five of the 43 attacks target a CI agent. The rule is marked high noise."
+  - name: Hidden HTML comments and triage verdicts
+    format: guidance
+    notes: "security-detections-mcp searches for prompt injection, HTML comments, hidden text, and GitHub tokens did not return a Sigma, Splunk, or Elastic rule for hidden Markdown in a GitHub issue, pull request, comment, or README. MCP Prompt Injection requires Splunk MCP JSON-RPC logs and a fixed phrase list such as IGNORE PREVIOUS INSTRUCTIONS. It does not read GitHub Markdown. AWS Bedrock Claude Possible Prompt Injection requires Bedrock Claude prompt logs. High Confidence Prompt Injection in a GenAI User Message requires that GenAI integration, not a GitHub issue. GitHub Token Activity from Unusual User Agent requires GitHub audit logs of a token used from a new user agent for clone, push, zip download, or API. The paper does not report that follow-on use. No indexed rule matched the strings HTML comment or ipi-scan. Strip outsider HTML comments before the agent reads the item, and alert on a new hidden comment in an issue or pull request that names a triage label, a workflow token, or a shell tool. That control is not one of the indexed rules."
+timeline:
+  first_seen: "2025-10-06"
+  last_updated: "2026-11-21"
+  updates:
+    - date: "2025-10-06"
+      source: Radware
+      summary: "Earliest attack row in the paper's table of the 43 attacks in issues and pull requests."
+    - date: "2025-09"
+      source: Radware
+      summary: "GH Archive sample used for issues, pull requests, and comments starts in September 2025 and runs through May 2026, with comments also sampled for June through August 2026. The month is the start of that sample, not a single incident day."
+    - date: "2026-06-01"
+      source: Radware
+      summary: "The crawl of every new public issue and pull request starts. It runs through 30 September 2026 and covers 95.1 million items. Orchestration findings per month grow fivefold across June to September."
+    - date: "2026-11-10"
+      source: Radware
+      summary: "The authors re-fetch the issue, pull request, and comment findings and record which are still live, edited, or deleted."
+    - date: "2026-11-21"
+      source: Radware
+      summary: "The paper is submitted to arXiv. The findings and ipi-scan are published at https://github.com/rdwr-gabin/github-ipi-in-the-wild."
