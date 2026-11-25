@@ -587,14 +587,16 @@ test("homepage shows the dot timeline above the searchable catalog and offers op
   const timeline = await page.locator(".home-timeline").boundingBox();
   const catalog = await page.locator("[data-catalog]").boundingBox();
   expect(timeline!.y + timeline!.height).toBeLessThanOrEqual(catalog!.y);
-  await page
-    .getByRole("link", { name: "Browse the catalog", exact: true })
-    .click();
-  await expect(page).toHaveURL(/#catalog$/);
-  await expect(page.getByRole("searchbox")).toBeInViewport();
-  await page
-    .getByRole("link", { name: "Find attacks relevant to my stack" })
-    .click();
+  const hero = page.locator(".catalog-intro");
+  await expect(
+    hero.getByRole("link", { name: "Browse the catalog", exact: true }),
+  ).toHaveCount(0);
+  const stack = hero.getByRole("link", { name: "Find attacks for my stack" });
+  await expect(stack).toHaveClass("button");
+  await expect(
+    hero.getByRole("link", { name: "Suggest an update" }),
+  ).toHaveClass("button");
+  await stack.click();
   await expect(page).toHaveURL(/\/stack\/$/);
   await page.getByRole("checkbox", { name: "Cursor", exact: true }).check();
   await expect(page.locator("[data-stack-results]")).toBeVisible();
