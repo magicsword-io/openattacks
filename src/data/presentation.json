@@ -472,5 +472,29 @@
     "summary": "GreyNoise says GT13 hit Check Point Security Management Servers at 22 organizations from shared VPN exits and a compromised hop. It suspects agentic harnesses and names no model.",
     "environments": ["linux"],
     "evidence": "campaign"
+  },
+  "microsoft-artex-nation-state-criminal-adoption-2026-11": {
+    "title": "Microsoft: nation-state and criminal actors integrated ARTEX",
+    "summary": "Microsoft says Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon integrated ARTEX. Storm-0940 reached privileged access in under three hours.",
+    "environments": ["windows", "linux", "cloud", "web"],
+    "evidence": "campaign"
+  },
+  "dfir-report-artex-fintech-open-directory-2026-11": {
+    "title": "DFIR Report: ARTEX full-chain logs on fintech",
+    "summary": "The DFIR Report recovered ARTEX logs from an open directory. A full-chain playbook produced 46 findings across dozens of fintech, crypto-payment, and iGaming targets.",
+    "environments": ["web", "cloud"],
+    "evidence": "campaign"
+  },
+  "ncsc-switzerland-first-ai-agent-attacks-2026-11": {
+    "title": "NCSC Switzerland: first confirmed AI-agent attacks",
+    "summary": "NCSC Switzerland says the first AI-agent attacks it has seen compromised every victim, including critical infrastructure. It does not name the agent used in those cases.",
+    "environments": ["web"],
+    "evidence": "campaign"
+  },
+  "aikido-hugging-face-deepsite-phishing-pages-2026-11": {
+    "title": "Aikido: DeepSite published phishing pages on Hugging Face",
+    "summary": "Aikido found 42 phishing pages on Hugging Face Spaces impersonating 28 brands. DeepSite built 29 of them, and 24 commit histories are the attacker's prompts.",
+    "environments": ["web"],
+    "evidence": "campaign"
   }
 }

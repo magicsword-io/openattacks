@@ -1284,5 +1284,33 @@
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
     "note": "GreyNoise suspects agentic harnesses and does not name a model or framework. Victims are Check Point Security Management Servers, which are not a stack-tool selection.",
     "rules": []
+  },
+  "microsoft-artex-nation-state-criminal-adoption-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX is the attacker-side framework. Microsoft does not name a victim AI product. Internet-facing servers, web applications, and cloud tenants are the described conditions, and none of those is a stack-tool selection.",
+    "rules": []
+  },
+  "dfir-report-artex-fintech-open-directory-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX produced the recovered logs. The DFIR Report does not name a victim AI product. The conditions are exposed fintech applications, dumps, and Redis, which are not a stack-tool selection.",
+    "rules": []
+  },
+  "ncsc-switzerland-first-ai-agent-attacks-2026-11": {
+    "status": "not_assessed",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "NCSC confirms attacker-side AI agents and does not name the product used in the Swiss cases. ARTEX and CyberStrikeAI are mentioned only as examples of internet-accessible agents. Victims are unnamed organisations and critical infrastructure, not a stack-tool selection.",
+    "rules": []
+  },
+  "aikido-hugging-face-deepsite-phishing-pages-2026-11": {
+    "status": "not_assessed",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "DeepSite is an attacker-side website builder on Hugging Face. It is not a stack tool. The victim condition is a person submitting credentials to a fake login, and Aikido does not name a victim AI product.",
+    "rules": []
   }
 }

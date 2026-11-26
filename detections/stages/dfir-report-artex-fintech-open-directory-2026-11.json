@@ -1,0 +1,37 @@
+{
+  "logs": {
+    "profile": "agent-tools",
+    "note": "The DFIR Report recovered ARTEX engagement logs from the operator's open directory. Those files are operator artifacts, not a victim agent audit.",
+    "reviewed": "2026-11-26"
+  },
+  "dumps": {
+    "profile": "credentials",
+    "note": "API keys and database passwords were taken from publicly exposed database dumps and backup files.",
+    "reviewed": "2026-11-26"
+  },
+  "traverse": {
+    "profile": "credentials",
+    "note": "Path traversal reached production database credentials and root SSH private keys. The profile covers the credential read, not a confirmed later login.",
+    "reviewed": "2026-11-26"
+  },
+  "redis": {
+    "profile": "web",
+    "note": "Redis was reached through Gopher SSRF and then used for remote code execution. A generic web profile does not encode the Gopher scheme.",
+    "reviewed": "2026-11-26"
+  },
+  "bundles": {
+    "profile": "credentials",
+    "note": "Vite, Angular, and Ember bundles held access passwords, 2FA seeds, and live payment keys.",
+    "reviewed": "2026-11-26"
+  },
+  "idor": {
+    "profile": "web",
+    "note": "IDOR and broken object-level authorization exposed customer PII. The report does not name the application.",
+    "reviewed": "2026-11-26"
+  },
+  "exposed": {
+    "profile": "web",
+    "note": "Exposed Spring Boot Actuator, Prometheus /metrics, and public Swagger. Unauthenticated management endpoints are the condition to check.",
+    "reviewed": "2026-11-26"
+  }
+}
