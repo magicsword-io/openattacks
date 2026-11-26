@@ -473,6 +473,18 @@
     "environments": ["linux"],
     "evidence": "campaign"
   },
+  "jesta-opencode-vibeoffense-financial-firm-2026-11": {
+    "title": "Jesta: OpenCode tested a planted key in under six minutes",
+    "summary": "On 16 November an operator used OpenCode, Chrome 157, and macOS curl from one Mac against a financial firm. Jesta flagged it in 64 seconds. The key was a plant.",
+    "environments": ["macos", "web", "agents"],
+    "evidence": "campaign"
+  },
+  "radware-github-hidden-ai-directed-text-2026-11": {
+    "title": "Radware: hidden text in GitHub aimed at project agents",
+    "summary": "Radware found 47 hidden-text attacks in about 145 million GitHub issues, pull requests, comments, and READMEs. Most aimed at the project's own triage, CI, or review agents.",
+    "environments": ["development", "agents"],
+    "evidence": "research"
+  },
   "microsoft-artex-nation-state-criminal-adoption-2026-11": {
     "title": "Microsoft: nation-state and criminal actors integrated ARTEX",
     "summary": "Microsoft says Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon integrated ARTEX. Storm-0940 reached privileged access in under three hours.",
@@ -496,5 +508,6 @@
     "summary": "Aikido found 42 phishing pages on Hugging Face Spaces impersonating 28 brands. DeepSite built 29 of them, and 24 commit histories are the attacker's prompts.",
     "environments": ["web"],
     "evidence": "campaign"
+
   }
 }

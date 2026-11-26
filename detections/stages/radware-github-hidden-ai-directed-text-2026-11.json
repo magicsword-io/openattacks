@@ -1,0 +1,21 @@
+{
+  "step-1": {
+    "profile": "agent-input",
+    "note": "The hidden text is published in GitHub Markdown. The record is the raw issue, pull request, comment, or README, not the rendered page.",
+    "reviewed": "2026-11-25"
+  },
+  "step-2": {
+    "profile": "agent-input",
+    "note": "A project agent that reads the raw item receives the hidden text. Reading it is not the same as following it. The paper does not publish a production tool log.",
+    "reviewed": "2026-11-25"
+  },
+  "step-3": {
+    "profile": "unobserved",
+    "note": "The replay was offline, one response each, with mock tools. It is not a deployed victim session."
+  },
+  "step-4": {
+    "profile": "agent-input",
+    "note": "The orchestration markers are public comments. A marker that records an approval is still text until a workflow acts on it. The paper does not show that action.",
+    "reviewed": "2026-11-25"
+  }
+}

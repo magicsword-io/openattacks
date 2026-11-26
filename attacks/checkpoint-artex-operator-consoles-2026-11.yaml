@@ -16,6 +16,9 @@ sources:
   - url: https://www.politico.eu/newsletter/brussels-playbook/cyberattack-hits-the-commission/
     title: "Brussels Playbook: Cyberattack hits the Commission"
     publisher: POLITICO
+  - url: https://www.theregister.com/cyber-crime/2026/11/24/european-commission-confirms-personal-data-stolen-in-ai-assisted-cyberattack/5311834
+    title: European Commission confirms personal data stolen in AI-assisted cyberattack
+    publisher: The Register
 magicsword_coverage: []
 borderline: false
 borderline_note: null
@@ -42,13 +45,24 @@ technique_summary: "Check Point (Nov 5, 2026) and CERT-EU (Nov 5, 2026) document
   involved ARTEX. That post does not name the European Commission. On 19 November
   2026, Commission spokesperson Thomas Regnier confirmed on the record an AI-generated
   cyber campaign first detected on 22 October. He did not name the tool or the attackers'
-  motivation. The Record reports no evidence of a data breach affecting Commission
-  staff broadly, no ransom demand he was aware of, and that services were taken offline
-  as a protective measure. POLITICO's 19 November Brussels Playbook, citing an EU
-  official granted anonymity, is the public source that names ARTEX for this incident.
+  motivation. On 19 November he said he was not aware of a ransom demand, and that
+  services were taken offline as a protective measure. POLITICO's 19 November Brussels
+  Playbook, citing an EU official granted anonymity, is the public source that names
+  ARTEX for this incident.
   That official said CERT-EU detected international hackers using ARTEX against the
   Commission. The same Playbook names Sysper, MyPMO, and translation services as
-  disrupted. The Commission confirmation does not adopt that name. The original
+  disrupted. The Commission confirmation does not adopt that name. At a 23 November
+  2026 press briefing, reported by Carly Page in The Register on 24 November, Regnier
+  confirmed that EU Academy was compromised and that names and email addresses of
+  people outside the EU institutions were stolen. The Commission has not said how many
+  users are affected or whether other personal information was taken. It posted a
+  notice on the EU Academy website and did not contact users directly. The notice
+  warns of spearphishing, impersonation, and spam. The European Data Protection
+  Supervisor was notified in phases. EU Academy is offline from 11 November 2026 to
+  14 January 2027. When it returns, users must register again, and previous coursework
+  is not transferred. Regnier confirmed an AI-assisted tool and did not name it. The
+  Register discusses ARTEX as a separate public concern and does not quote the
+  Commission naming it. The original
   Autumn-27 repository was already down in the CERT-EU post. Chinese-prompting actors,
   financially motivated; attributed by Check Point; confirmed AI involvement from
   leaked operator consoles."
@@ -67,7 +81,7 @@ other_tooling:
   - USDT cryptocurrency draining
   - S3 bucket overwrite for supply chain
   - Honor of Kings account token theft
-victims_and_sectors: "iOS signing shops, cryptocurrency payment sites, Honor of Kings account resale servers. On 19 November 2026 the European Commission confirmed an AI-generated cyber campaign, first detected 22 October, that took personnel and translation services offline. POLITICO names Sysper, MyPMO, and translation services. The Commission did not name the tool. The ARTEX name for this incident comes only from CERT-EU via an anonymous official quoted by POLITICO. No evidence of a staff-wide breach and no ransom were reported."
+victims_and_sectors: "iOS signing shops, cryptocurrency payment sites, Honor of Kings account resale servers. On 19 November 2026 the European Commission confirmed an AI-generated cyber campaign, first detected 22 October, that took personnel and translation services offline. POLITICO names Sysper, MyPMO, and translation services. On 23 November 2026 spokesperson Thomas Regnier confirmed that EU Academy was compromised and that names and email addresses of external users were stolen. The Commission has not said how many users are affected. EU Academy is offline from 11 November 2026 to 14 January 2027, and users must re-register. The Commission did not name the tool. The ARTEX name for this incident comes only from CERT-EU via an anonymous official quoted by POLITICO. On 19 November he said he was not aware of a ransom demand."
 regions:
   - Multiple regions
   - Belgium
@@ -84,8 +98,8 @@ prevention_angle: Secure ARTEX deployments against unauthorized access (remove h
   behavioral detection for autonomous agent patterns; block known ARTEX infrastructure
   IPs; detect Chinese-language prompting in logs
 related_magicsword_projects: []
-source_notes: "Check Point blog (Nov 5, 2026) is the campaign and infrastructure source. CERT-EU's 5 November post is a constituency warning and does not name the Commission. The Record (Alexander Martin, 19 November 2026) is the on-the-record confirmation by spokesperson Thomas Regnier. POLITICO Brussels Playbook the same morning, by Gerardo Fortuna, is the piece that names ARTEX, attributed to CERT-EU through an anonymous EU official. Regnier's quoted remarks in that Playbook do not name ARTEX. No new IOCs come from either 19 November piece. POLITICO returns 403 to the source-link checker and is still cited. Other catalog entries that share this tool are linked from the tool page."
-last_reviewed: 2026-11-23
+source_notes: "Check Point blog (Nov 5, 2026) is the campaign and infrastructure source. CERT-EU's 5 November post is a constituency warning and does not name the Commission. The Record (Alexander Martin, 19 November 2026) is the on-the-record confirmation by spokesperson Thomas Regnier that an AI-generated campaign was detected on 22 October. POLITICO Brussels Playbook the same morning, by Gerardo Fortuna, is the piece that names ARTEX, attributed to CERT-EU through an anonymous EU official. Regnier's quoted remarks in that Playbook do not name ARTEX. The Register (Carly Page, 24 November 2026) is the 23 November briefing: EU Academy names and email addresses of external users were stolen, the EDPS was notified in phases, and the platform is offline from 11 November 2026 to 14 January 2027. That article says the Commission confirmed an AI-assisted tool and does not quote the Commission naming one. No new IOCs come from the November Commission pieces. POLITICO returns 403 to the source-link checker and is still cited because The Record and The Register corroborate the Commission statements around it. Other catalog entries that share this tool are linked from the tool page."
+last_reviewed: "2026-11-25"
 iocs:
   domains: []
   ips:
@@ -191,10 +205,10 @@ detections:
       usage in offensive contexts; detect operator model switching after guardrail triggers"
   - name: No new host procedure in the Commission confirmation
     format: guidance
-    notes: "A security-detections-mcp search for ARTEX returned no Sigma, Splunk, or Elastic rule. The 19 November confirmation names systems taken offline and does not publish a host command, file, or network indicator, so no additional rule is cited. The S3 bucket rule remains the indexed match for the Check Point supply-chain path."
+    notes: "A security-detections-mcp search for ARTEX returned no Sigma, Splunk, or Elastic rule. The 23 November briefing confirms stolen names and email addresses from EU Academy and still publishes no host command, file, or network indicator, so no additional rule is cited. The S3 bucket rule remains the indexed match for the Check Point supply-chain path."
 timeline:
   first_seen: "2026-09-01"
-  last_updated: "2026-11-19"
+  last_updated: "2026-11-24"
   updates:
     - date: "2026-11-05"
       source: Check Point
@@ -208,4 +222,10 @@ timeline:
         Autumn-27 repository was down.
     - date: "2026-11-19"
       source: European Commission
-      summary: "Spokesperson Thomas Regnier confirms an AI-generated cyber campaign first detected on 22 October. He does not name the tool, report a staff-wide breach, or report a ransom. POLITICO, citing an anonymous official, says CERT-EU identified ARTEX and names Sysper, MyPMO, and translation services."
+      summary: "Spokesperson Thomas Regnier confirms an AI-generated cyber campaign first detected on 22 October. He does not name the tool. He says he is not aware of a ransom demand. POLITICO, citing an anonymous official, says CERT-EU identified ARTEX and names Sysper, MyPMO, and translation services."
+    - date: "2026-11-23"
+      source: European Commission
+      summary: "At a press briefing, Regnier confirms EU Academy was compromised and that names and email addresses of external users were stolen. The European Data Protection Supervisor was notified in phases. He confirms an AI-assisted tool and does not name it."
+    - date: "2026-11-24"
+      source: The Register
+      summary: "Carly Page reports the 23 November briefing. EU Academy is offline from 11 November 2026 to 14 January 2027. Users must re-register, and previous coursework is not transferred. The Commission posted a website notice instead of contacting users directly."
