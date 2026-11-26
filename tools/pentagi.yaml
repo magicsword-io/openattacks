@@ -3,7 +3,7 @@ name: PentAGI
 type: agentic-offensive-framework
 github_url: https://github.com/vxcontrol/pentagi
 project_url: https://github.com/vxcontrol/pentagi
-description: "AI-powered penetration testing framework that leverages language models to automate security testing and vulnerability discovery. Represents the emerging class of agentic offensive security tools. The public repository https://github.com/vxcontrol/pentagi returned HTTP 200 on 16 November 2026. GTIG did not publish a repository URL. On 16 November 2026 GTIG reported a customized orchestration platform built on the open-source version, used from late August to early October 2026 for reconnaissance and vulnerability scanning against organizations in Asia. On 24 November 2026 the UK NCSC named PentAGI among the agentic offensive frameworks in a rise in AI-assisted attacks it has seen across sectors since September 2026, and said that activity has become synonymous with ARTEX. NCSC says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. The attacks it describes identify and exploit internet-facing services in quick succession and cause downtime or a foothold. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs."
+description: "AI-powered penetration testing framework that leverages language models to automate security testing and vulnerability discovery. Represents the emerging class of agentic offensive security tools. The public repository https://github.com/vxcontrol/pentagi returned HTTP 200 on 16 November 2026. GTIG did not publish a repository URL. On 16 November 2026 GTIG reported a customized orchestration platform built on the open-source version, used from late August to early October 2026 for reconnaissance and vulnerability scanning against organizations in Asia. On 24 November 2026 the UK NCSC named PentAGI among the agentic offensive frameworks in a rise in AI-assisted attacks it has seen across sectors since September 2026, and said that activity has become synonymous with ARTEX. NCSC says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. The attacks it describes identify and exploit internet-facing services in quick succession and cause downtime or a foothold. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs. On 23 November 2026 CSIRT Italia named PentAGI among the tools in mass compromise campaigns it observed in Italy. On 25 November 2026 Shadowserver said exposed PentAGI instances, labeled VXControl on its dashboard, fell from more than 400 on 17 November to below 200, and that two honeypot addresses ran PentAGI, one of them the busiest address in that window. Hunt.io (15 October 2026) tied a PaperCut orchestration host to PentAGI with a self-signed PentAGI CA certificate on port 33333, and said that issuer is shared by many unrelated hosts."
 sources:
   - url: https://github.com/topics/pentest-ai
     title: AI Penetration Testing Tools
@@ -17,8 +17,20 @@ sources:
   - url: https://www.ncsc.gov.uk/blogs/familiar-weaknesses-exploited-faster-defending-against-agentic-cyber-attacks
     title: "Familiar weaknesses, exploited faster: defending against agentic cyber attacks"
     publisher: UK NCSC
+  - url: https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    title: Impiego di agenti di IA in campagne di compromissione automatizzate
+    publisher: CSIRT Italia
+  - url: https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    title: "Agentic AI Attack Frameworks in the Wild: What Our Scans and Honeypots Show"
+    publisher: The Shadowserver Foundation
+  - url: https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+    title: "Inside a PaperCut Attacker's AI Toolkit"
+    publisher: Hunt.io
 linked_attacks:
   - cert-in-crafty-falcon-bfsi-2026-11
   - gtig-mandiant-unc7228-other-crews-run-2026-10
   - keyhunter-llm-key-theft-2026-11
+  - csirt-italia-ai-agent-compromise-campaigns-2026-11
+  - greynoise-papercut-ai-campaign-2026-09
+  - shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
 linked_actors: []

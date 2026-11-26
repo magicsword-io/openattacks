@@ -3,7 +3,7 @@ name: AntiFox
 type: agentic-offensive-framework
 github_url: https://github.com/AntiFox-AI/antifox
 project_url: null
-description: Chinese-language agentic pentest platform forked from ARTEX. It runs multi-agent workflows on TCP 8787 and requires an Anthropic or OpenAI key. Arctic Wolf Labs tied self-hosted consoles on Alibaba Cloud to IIS web-shell activity and AWS secret reads.
+description: "Chinese-language agentic pentest platform forked from ARTEX. It runs multi-agent workflows on TCP 8787 and requires an Anthropic or OpenAI key. Arctic Wolf Labs tied self-hosted consoles on Alibaba Cloud to IIS web-shell activity and AWS secret reads. On 25 November 2026 Shadowserver said AntiFox, forked from ARTEX, was the fastest-growing exposed agentic framework in its scans, from a handful of instances to about 200. Wiz Research the same day said AntiFox, forked from ARTEX v0.1.1, keeps the ARTEX Intent ID and tells the agent to save outputs under an i<id> directory. Those IDs are a harness leak, not an operator name. Shadowserver's honeypot fingerprints named ARTEX Gateway, CyberStrikeAI, Cairn, PentAGI, and RedAmon. AntiFox is an exposure finding in that report, not one of those attacker fingerprints."
 sources:
   - url: https://github.com/AntiFox-AI/antifox
     title: AntiFox
@@ -11,6 +11,13 @@ sources:
   - url: https://github.com/rtkwlf/wolf-tools/blob/main/pack_alerts/202611-antifox-alibaba-hosted-platforms-facilitate-web-cloud-intrusions/README.md
     title: "Arctic Wolf Labs pack alert: AntiFox on Alibaba Cloud"
     publisher: Arctic Wolf Labs
+  - url: https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    title: "Agentic AI Attack Frameworks in the Wild: What Our Scans and Honeypots Show"
+    publisher: The Shadowserver Foundation
+  - url: https://www.wiz.io/blog/agentic-offensive-frameworks-intent-ids-artex-cairn
+    title: "Inside Agentic Offensive Frameworks: Intent IDs"
+    publisher: Wiz Research
 linked_attacks:
   - arctic-wolf-antifox-iis-aws-2026-11
+  - shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
 linked_actors: []

@@ -103,8 +103,14 @@
   },
   "crowdstrike-artex-sk-finance-2026-10": {
     "title": "ARTEX and Claude Code used against South Korean financial firms",
-    "summary": "A likely Chinese-speaking actor used the ARTEX agentic pentest suite and Claude Code against South Korean financial organizations, and asked Claude where to sell the stolen data.",
+    "summary": "A likely Chinese-speaking actor used ARTEX and Claude Code against South Korean banks. Hunt.io tied a Hong Kong jump server to that console, with Claude Code Router and 19 operator-written skills.",
     "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "csirt-italia-ai-agent-compromise-campaigns-2026-11": {
+    "title": "CSIRT Italia: AI agents in mass compromise campaigns",
+    "summary": "CSIRT Italia says unnamed operators used ARTEX, CyberStrikeAI, DeepSeek Harness, and PentAGI in mass compromise campaigns in Italy, including a six-agent layout and a Markdown jailbreak.",
+    "environments": ["web", "agents"],
     "evidence": "campaign"
   },
   "cursor-curxecute-cve-2025-54135": {
@@ -171,6 +177,12 @@
     "title": "GhostAction Stage 2 stealer targeting cloud and AI credentials",
     "summary": "Malicious workflows and a VS Code auto-run task steal AWS, npm, SSH and Claude/Gemini credentials across 94 repos. AI is a credential target here, not the attack operator.",
     "environments": ["development", "cloud"],
+    "evidence": "campaign"
+  },
+  "greynoise-papercut-ai-campaign-2026-09": {
+    "title": "GreyNoise PaperCut campaign, with the attacker's AGENTS.md",
+    "summary": "A likely Russian-speaking actor used Codex and DeepSeek against PaperCut NG/MF. Hunt.io recovered the agent instructions, a second XML-RPC path, and a PentAGI certificate on the orchestration host.",
+    "environments": ["windows", "linux", "web"],
     "evidence": "campaign"
   },
   "gtg-1002-anthropic-claude-code-espionage-2025-11": {
@@ -329,6 +341,12 @@
     "environments": ["development"],
     "evidence": "campaign"
   },
+  "shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11": {
+    "title": "Shadowserver measures exposed agentic attack frameworks",
+    "summary": "Daily scans found about 4,200 exposed agentic attack frameworks on 23 November 2026. Honeypot hosts running them tried relays, credential files, and a handful of known exploits.",
+    "environments": ["web", "agents"],
+    "evidence": "campaign"
+  },
   "shareleak-copilot-studio-cve-2026-21520": {
     "title": "ShareLeak: Copilot Studio SharePoint form prompt injection (CVE-2026-21520)",
     "summary": "Content in SharePoint forms could prompt-inject Copilot Studio agents into leaking SharePoint data. Microsoft patched it on 2026-01-15.",
@@ -415,7 +433,7 @@
   },
   "wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11": {
     "title": "Wiz: ARTEX-Harvester and CyberStrikeAI cloud intrusions",
-    "summary": "Wiz reports the ARTEX-Harvester campaign and a CyberStrikeAI intrusion that used stolen CI and Kubernetes trust to reach cloud secrets, cluster-admin, and AI provider keys.",
+    "summary": "Wiz reports ARTEX-Harvester and a CyberStrikeAI cloud intrusion, and shows how Intent IDs from ARTEX and Cairn leak into cloud logs as a hunting signal.",
     "environments": ["cloud", "development"],
     "evidence": "campaign"
   },
