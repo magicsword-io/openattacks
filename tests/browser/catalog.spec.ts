@@ -18,9 +18,14 @@ test("search, empty state, clear and keyboard shortcut work", async ({
   await page.keyboard.press("/");
   await expect(page.getByRole("searchbox")).toBeFocused();
   await page.getByRole("searchbox").fill("cairn");
+  const cairn = attacks.filter((attack) =>
+    JSON.stringify(attack).toLowerCase().includes("cairn"),
+  );
+  await expect(page.locator("[data-results-count]")).toHaveText(
+    `Found ${cairn.length} entries of ${attacks.length}`,
+  );
   await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
-    attacks.filter((a) => JSON.stringify(a).toLowerCase().includes("cairn"))
-      .length,
+    Math.min(10, cairn.length),
   );
   await page.getByRole("searchbox").fill("nonexistent-attack-xyz");
   await expect(
@@ -298,26 +303,27 @@ test("dot timeline supports highlighting, pausing and reduced motion", async ({
 });
 
 test("map markers lead to normalized region filters", async ({ page }) => {
+  const hongKong = attacks.filter((attack) =>
+    attack.regions.includes("Hong Kong"),
+  );
+  const label = `${hongKong.length} ${hongKong.length === 1 ? "entry" : "entries"}`;
   await page.goto("/regions/");
   await expect(page.locator(".world-map")).toBeVisible();
   await page
-    .getByRole("link", { name: "Hong Kong, 2 entries. Filter catalog." })
+    .getByRole("link", { name: `Hong Kong, ${label}. Filter catalog.` })
     .click();
   await expect(
     page.getByRole("combobox", { name: "Filter by region", exact: true }),
   ).toHaveValue("Hong Kong");
-  const rows = page.locator("[data-attack-row]:visible");
-  await expect(rows).toHaveCount(2);
-  await expect(
-    page.locator(
-      '[data-attack-row][data-id="arup-deepfake-video-fraud-2024-01"]',
-    ),
-  ).toBeVisible();
-  await expect(
-    page.locator(
-      '[data-attack-row][data-id="greynoise-gt13-check-point-management-servers-2026-11"]',
-    ),
-  ).toBeVisible();
+  await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
+    hongKong.length,
+  );
+  const ids = await page
+    .locator("[data-attack-row]:visible")
+    .evaluateAll((rows) =>
+      rows.map((row) => row.getAttribute("data-id")).sort(),
+    );
+  expect(ids).toEqual(hongKong.map((attack) => attack.id).sort());
 });
 
 test("entry flows render with sources and controls; removed sections stay absent", async ({

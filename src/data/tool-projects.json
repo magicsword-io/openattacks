@@ -73,6 +73,16 @@
       ]
     },
     {
+      "name": "Pi coding agent",
+      "url": "https://github.com/earendil-works/pi",
+      "aliases": ["Pi coding agent"],
+      "note": "Open-source coding-agent harness. Wiz read the operator config label pi_glm53 as this harness on a GLM-family model.",
+      "source_urls": [
+        "https://github.com/earendil-works/pi",
+        "https://www.wiz.io/blog/malicious-version-of-microsofts-agent-framework-published-to-pypi"
+      ]
+    },
+    {
       "name": "ChatGPT",
       "url": "https://chatgpt.com/",
       "aliases": ["ChatGPT", "ChatGPT-4"]

@@ -27,6 +27,7 @@ linked_attacks:
   - amazon-cairn-monai-label-zero-day-universities-2026-11
   - cairn-norforge-2026-10
   - cert-in-crafty-falcon-bfsi-2026-11
+  - microsoft-agent-framework-pypi-pth-stealer-2026-11
   - unit42-cairn-cl-sta-1238-2026-11
   - shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
 linked_actors:
