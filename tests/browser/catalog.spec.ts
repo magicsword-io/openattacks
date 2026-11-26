@@ -18,9 +18,14 @@ test("search, empty state, clear and keyboard shortcut work", async ({
   await page.keyboard.press("/");
   await expect(page.getByRole("searchbox")).toBeFocused();
   await page.getByRole("searchbox").fill("cairn");
+  const cairn = attacks.filter((attack) =>
+    JSON.stringify(attack).toLowerCase().includes("cairn"),
+  );
+  await expect(page.locator("[data-results-count]")).toHaveText(
+    `Found ${cairn.length} entries of ${attacks.length}`,
+  );
   await expect(page.locator("[data-attack-row]:visible")).toHaveCount(
-    attacks.filter((a) => JSON.stringify(a).toLowerCase().includes("cairn"))
-      .length,
+    Math.min(10, cairn.length),
   );
   await page.getByRole("searchbox").fill("nonexistent-attack-xyz");
   await expect(
