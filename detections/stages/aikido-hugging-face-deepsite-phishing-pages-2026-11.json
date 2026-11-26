@@ -1,0 +1,27 @@
+{
+  "prompt": {
+    "profile": "agent-tools",
+    "note": "DeepSite generated the page from a prompt. The evidence is the Space tag, badge, and commit messages. That is publisher-side artifact evidence, not a victim agent log.",
+    "reviewed": "2026-11-26"
+  },
+  "space": {
+    "profile": "phishing",
+    "note": "The generated site is published as a Hugging Face Space at a *.hf.space hostname. 29 of 42 pages carry deepsite/deepsite-v3.",
+    "reviewed": "2026-11-26"
+  },
+  "page": {
+    "profile": "phishing",
+    "note": "The pages are fake logins. One Microsoft page posts email, password, phone, and date of birth, then redirects to Outlook. Prompts also ask to hide the page from crawlers.",
+    "reviewed": "2026-11-26"
+  },
+  "steal": {
+    "profile": "exfil",
+    "note": "Credentials, OTPs, and card data went to Telegram bots, Discord webhooks, or form services. The profile covers the outbound post, not a specific bot token.",
+    "reviewed": "2026-11-26"
+  },
+  "down": {
+    "profile": "unassessed",
+    "note": "Aikido reported the pages on 16 October 2026 and says Hugging Face paused or removed all 42 by 29 October 2026. Takedown is not a detection gap on the victim.",
+    "reviewed": "2026-11-26"
+  }
+}

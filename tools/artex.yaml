@@ -38,11 +38,13 @@ linked_attacks:
   - crowdstrike-artex-sk-finance-2026-10
   - crowdstrike-china-nexus-vapor-panda-ran-2026-10
   - datadog-artex-aws-cognito-2026-11
+  - dfir-report-artex-fintech-open-directory-2026-11
   - dragos-ai-inference-canaries-provider-breaches-2026-11
   - gtig-mandiant-unc7228-other-crews-run-2026-10
   - jfrog-artex-hugging-face-self-leaking-models-2026-11
   - kimjen-krrk-artex-korean-universities-2026-11
   - microsoft-artex-github-secrets-keyvault-2026-11
+  - microsoft-artex-nation-state-criminal-adoption-2026-11
   - microsoft-rates-eight-north-korean-actors-2026-10
   - profero-ultra-operator-artex-2026-10
   - seoul-police-self-taught-hacker-used-2026-10

@@ -1,0 +1,32 @@
+{
+  "adopt": {
+    "profile": "agent-tools",
+    "note": "Microsoft says the named actors integrated ARTEX. The framework runs on the attacker side. This is not a victim agent audit log.",
+    "reviewed": "2026-11-26"
+  },
+  "plan": {
+    "profile": "agent-tools",
+    "note": "The planner, worker shell, and reporter are ARTEX roles Microsoft describes. A victim host does not record those roles unless the agent is running there.",
+    "reviewed": "2026-11-26"
+  },
+  "recon": {
+    "profile": "web",
+    "note": "Microsoft describes reconnaissance, credential attacks, and web application exploitation against internet-facing systems. The profile is a web starting point, not a detector for the artex-enrich user agent.",
+    "reviewed": "2026-11-26"
+  },
+  "host": {
+    "profile": "linux-webshell",
+    "note": "php-fpm, httpd/apache2, and Java application servers spawning a shell are the Linux case. w3wp.exe spawning cmd.exe or PowerShell is the Windows case and is covered by the entry's Windows web-shell rule, not by this profile.",
+    "reviewed": "2026-11-26"
+  },
+  "cloud": {
+    "profile": "identity",
+    "note": "Failed sign-ins, added application credentials, and an application self-assigning Global Administrator are identity events. Kerberoasting and DCSync are Windows directory alerts listed alongside them.",
+    "reviewed": "2026-11-26"
+  },
+  "rotate": {
+    "profile": "unassessed",
+    "note": "Microsoft says actors change source IP and user agent when blocked and rotate VPN, proxy, and Tor. No reviewed profile in this catalog is specific to that rotation.",
+    "reviewed": "2026-11-26"
+  }
+}

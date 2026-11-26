@@ -1,0 +1,177 @@
+id: aikido-hugging-face-deepsite-phishing-pages-2026-11
+name: "Aikido: Hugging Face DeepSite used to publish phishing pages"
+date_reported: "2026-11-24"
+date_activity_start: "2025-04-26"
+date_activity_end: "2026-10-29"
+researcher: Hunter Schwartz
+org: Aikido Security
+sources:
+  - url: https://www.aikido.dev/blog/hugging-face-phishing-pages
+    title: Attackers use Hugging Face's AI to host phishing pages
+    publisher: Aikido Security
+  - url: https://hackread.com/hackers-hugging-face-ai-site-builder-fake-microsoft-login-pages/
+    title: Hackers used Hugging Face's AI site builder to create fake Microsoft login pages
+    publisher: Hackread
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "Aikido says attackers prompted DeepSite, Hugging Face's AI website builder, and an open-weight model generated the site, which was published as a Space. The catalog has no llm-generated-content role. attacker_uses_ai_as_operator is the closest value: a person used a generative builder to produce phishing pages. The pages are not described as an agent operating the victim network. llm_generated_malware is not used, because the reported objects are phishing pages rather than malware."
+technique_summary: "Aikido Security (Hunter Schwartz, 24 November 2026, updated 25 November 2026) says Hugging Face Spaces are git repositories served as apps at *.hf.space, and DeepSite, Hugging Face's AI website builder, generates a site from a prompt with an open-weight model and publishes it as a Space. On 16 October 2026 Aikido found 42 phishing and credential-stealing pages on Spaces, impersonating 28 brands: Microsoft 365/SKEMA, Google/Gmail, Roundcube, Zimbra, Orange Mail, ID.me, PayPal, Bank of America, Chase, Coinbase, Scotiabank, CIBC, Coris Bank, Orange Money, SumUp, Instagram, Facebook, Netflix, Discord, Adobe, Roblox, Brawl Stars, and Growtopia, plus a C2 panel and a file grabber. 34 were live and 8 were paused. 29 of the 42 were built with DeepSite. All 29 carry the deepsite/deepsite-v3 tag. 26 link to a DeepSite badge or README (enzostvs-deepsite.hf.space, huggingface.co/deepsite, deepsite.hf.co). They use the default README text. In 24 of the 29, the commit messages are the attacker's prompts. cgfcbftdsf/microsoft-auth-portal, at cgfcbftdsf-microsoft-auth-portal.static.hf[.]space, is a fake Microsoft login that sends email, password, phone, and date of birth to a Telegram bot and then redirects to real Outlook. It was built in 15 commits, 14 of them within 90 minutes on 25 October 2025, with prompts in French. Prompts asked for an Instagram verified phishing page, in Hindi and English, to send data to Telegram, to forward logins along with the user agent and IP, to fix a button that did not send to a Discord webhook, to hide the page from Googlebot, Bingbot, headless browsers, curl, and wget, and to reject the first password attempt. Prompt languages were French, English, Hindi, Portuguese, Indonesian, and Russian. Exfiltration was 25 Telegram bots, 11 Discord webhooks, and 6 form services (submit-form.com, Formspree, and EmailJS). The pages captured OTPs, card details, bank transaction passwords, phone numbers, dates of birth, and IPs. 13 pages were not DeepSite and came from three repeat operators, Account-sign-in, asigmaguy, and ntrsdasda. The oldest page, InstagramPage/look-this, was published on 26 April 2025. 23 pages were older than a year. Aikido reported the pages to Hugging Face on 16 October 2026. All were paused or removed by 29 October 2026. Visitor and victim counts are unknown. Deeba Ahmed (Hackread, 26 November 2026) restates the report. The Hugging Face model-lure case is a different incident: jfrog-artex-hugging-face-self-leaking-models-2026-11."
+initial_access: "A person opens a Hugging Face Space link and submits credentials, and in some cases a one-time code or card data, to a fake login page. Aikido does not describe how the links were delivered."
+ai_tooling_and_models:
+  - "DeepSite, Hugging Face's AI website builder. It generates a site from a prompt with an open-weight model and publishes the result as a Space. Aikido does not name the model."
+  - "Hugging Face Spaces, served at *.hf.space."
+other_tooling:
+  - "25 Telegram bots, 11 Discord webhooks, and 6 form services (submit-form.com, Formspree, and EmailJS)"
+victims_and_sectors: "Aikido does not name victims or a visitor count. The pages impersonate 28 brands across email, banking, payments, social media, and games, plus a C2 panel and a file grabber."
+regions:
+  - unknown
+region_notes: "Aikido does not name victim countries. Brand names and prompt languages are not victim locations. The Space hostnames are attacker pages on Hugging Face, not victim infrastructure."
+attribution_or_cluster: "Multiple unattributed operators. Aikido names three repeat operators on the non-DeepSite pages: Account-sign-in, asigmaguy, and ntrsdasda. It does not attribute a group or a country."
+scale_and_metrics: "42 pages impersonating 28 brands, found 16 October 2026. 34 live and 8 paused. 29 built with DeepSite, 26 with a DeepSite badge or README, and 24 whose commit messages are the prompts. 13 non-DeepSite pages from three operators. Exfiltration: 25 Telegram bots, 11 Discord webhooks, and 6 form services. Oldest page published 26 April 2025. 23 pages older than a year. All paused or removed by 29 October 2026. Visitor and victim counts unknown."
+prevention_angle: "Treat *.hf.space links in email like any other free-hosting domain. Search DNS, proxy, and email logs for the hostnames in this entry. If there is a match, reset the password and revoke sessions. OTP was captured, so MFA alone is not enough. Aikido also says platforms should check, at publish time, static pages that post credentials to Telegram, Discord, or form services."
+related_magicsword_projects: []
+source_notes: "Counts, prompt themes, operator names, and the 42 hostnames are from Hunter Schwartz's Aikido post (24 November 2026, updated 25 November 2026). Hackread (Deeba Ahmed, 26 November 2026) restates it. The domains below are the hostname column of Aikido's indicators table, in that table's order, with the dot before space defanged. DeepSite badge hosts (enzostvs-deepsite.hf.space, huggingface.co/deepsite, deepsite.hf.co) are the builder, not phishing pages, and are not listed as indicators. submit-form.com, Formspree, and EmailJS are named as exfiltration services, not as attacker-owned domains. No Telegram bot tokens or Discord webhook URLs are copied here. Link jfrog-artex-hugging-face-self-leaking-models-2026-11 only as another Hugging Face case. That incident is an ARTEX model lure, not these phishing Spaces, and this entry does not use ARTEX."
+last_reviewed: "2026-11-26"
+confidence: high
+iocs:
+  domains:
+    - account-sign-in-paypal.static.hf[.]space
+    - account-sign-in-of-america.static.hf[.]space
+    - account-sign-in-gmaill.static.hf[.]space
+    - account-sign-in-tocoinb.static.hf[.]space
+    - account-sign-in-chasemathew.static.hf[.]space
+    - account-sign-in-iddme.static.hf[.]space
+    - account-sign-in-recoverycodepage.static.hf[.]space
+    - account-sign-in-facebookcode.static.hf[.]space
+    - cgfcbftdsf-microsoft-auth-portal.static.hf[.]space
+    - dfgfgg-skemavision-sparkles.static.hf[.]space
+    - ffncthyhhdd-skema-security-portal.static.hf[.]space
+    - xx103biz-webmail-watchdog.static.hf[.]space
+    - ntrsdasda-gen-cat.static.hf[.]space
+    - ntrsdasda-into-sana.static.hf[.]space
+    - deloye-hexamail-spyguard.static.hf[.]space
+    - vcdesr456666666666-ok.static.hf[.]space
+    - muhammadri-mailmagic-spoofer.static.hf[.]space
+    - supoooo123-google-login-com.static.hf[.]space
+    - bcccccccccccccccc-vvv.static.hf[.]space
+    - bcccccccccccccccc-vvvcdsfewtwsasd.static.hf[.]space
+    - cdhdjcsd-tt.static.hf[.]space
+    - sofivvvdd-coris.static.hf[.]space
+    - sofivvvdd-hhh.static.hf[.]space
+    - makemoneyonline771-sumup-phishy-paradise.static.hf[.]space
+    - awosemopa-sum.static.hf[.]space
+    - werwersdgsdg23-abtyew.static.hf[.]space
+    - instagrampage-look-this.static.hf[.]space
+    - instagramind-creators.static.hf[.]space
+    - chatyouvideo-creators.static.hf[.]space
+    - loginacess-acessinsta.static.hf[.]space
+    - ihegwd23-undefined.static.hf[.]space
+    - bigggg4-undefined.static.hf[.]space
+    - eduikuigezd-phantomsspace.static.hf[.]space
+    - at2ts-netflix-login.static.hf[.]space
+    - clearestdev-roblox-verification-system-for-applications.static.hf[.]space
+    - jzmf-roblox.static.hf[.]space
+    - berrymax-robux25.static.hf[.]space
+    - asigmaguy-revenge.static.hf[.]space
+    - asigmaguy-hacking.static.hf[.]space
+    - asigmaguy-yes.static.hf[.]space
+    - ane11-digger.static.hf[.]space
+    - bobsl-growtopia-wealth-inspector.static.hf[.]space
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0016.002
+    rationale: "DeepSite generates the site from a prompt with an open-weight model and publishes it as a Space."
+    source_urls:
+      - https://www.aikido.dev/blog/hugging-face-phishing-pages
+  - id: AML.T0065
+    rationale: "In 24 of 29 DeepSite pages, Aikido says the commit messages are the attacker's prompts."
+    source_urls:
+      - https://www.aikido.dev/blog/hugging-face-phishing-pages
+  - id: AML.T0052
+    rationale: "The pages are phishing and credential-theft logins for 28 brands, plus a C2 panel and a file grabber."
+    source_urls:
+      - https://www.aikido.dev/blog/hugging-face-phishing-pages
+  - id: AML.T0025
+    rationale: "Submitted credentials, OTPs, and card data were sent to Telegram bots, Discord webhooks, or form services."
+    source_urls:
+      - https://www.aikido.dev/blog/hugging-face-phishing-pages
+attack_flow:
+  nodes:
+    - id: prompt
+      title: A prompt to DeepSite
+      description: "An attacker prompts DeepSite. An open-weight model generates the site. In 24 of 29 DeepSite pages the commit messages are those prompts, in French, English, Hindi, Portuguese, Indonesian, or Russian."
+      kind: ai
+      source_urls: &aikido
+        - https://www.aikido.dev/blog/hugging-face-phishing-pages
+    - id: space
+      title: Published as a Hugging Face Space
+      description: "The result is a Space, a git repository served at *.hf.space. 29 pages carry deepsite/deepsite-v3. 26 link to the DeepSite badge or README and use the default README text."
+      kind: access
+      source_urls: *aikido
+    - id: page
+      title: Fake login, bots hidden
+      description: "The pages impersonate brand logins. One Microsoft page sends email, password, phone, and date of birth to Telegram and then redirects to Outlook. Prompts also ask to hide the page from crawlers and headless browsers and to reject the first password."
+      kind: execution
+      source_urls: *aikido
+    - id: steal
+      title: Telegram, Discord, or a form service
+      description: "25 Telegram bots, 11 Discord webhooks, and 6 form services received credentials, OTPs, card details, bank transaction passwords, phone numbers, dates of birth, and IPs."
+      kind: impact
+      source_urls: *aikido
+    - id: down
+      title: Reported, then paused or removed
+      description: "Aikido reported the 42 pages to Hugging Face on 16 October 2026. All were paused or removed by 29 October 2026. Visitor counts are unknown."
+      kind: unknown
+      source_urls: *aikido
+  edges:
+    - source: prompt
+      target: space
+    - source: space
+      target: page
+    - source: page
+      target: steal
+    - source: steal
+      target: down
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Multiple unattributed operators"
+  aliases:
+    - Account-sign-in
+    - asigmaguy
+    - ntrsdasda
+  country: Unknown
+  motivation: unknown
+  attributed_by: Aikido Security
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: DeepSite Spaces posting credentials off-platform
+    format: guidance
+    notes: "No public Sigma, Splunk, or Elastic rule checked for this entry detects a Hugging Face Space, a deepsite/deepsite-v3 tag, or a static page posting a password to Telegram, Discord, submit-form.com, Formspree, or EmailJS. Search DNS, proxy, and email logs for the 42 defanged hostnames in this entry. A match is a reason to reset the password and revoke sessions, because Aikido says OTP was captured. The DeepSite badge hosts are the builder, not the phishing pages."
+timeline:
+  first_seen: "2025-04-26"
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2025-04-26"
+      source: Aikido Security
+      summary: "InstagramPage/look-this is published. Aikido calls it the oldest page in the set. 23 pages are older than a year as of the report."
+    - date: "2025-10-25"
+      source: Aikido Security
+      summary: "cgfcbftdsf/microsoft-auth-portal is built in 15 commits, 14 of them within 90 minutes, with French prompts."
+    - date: "2026-10-16"
+      source: Aikido Security
+      summary: "Aikido finds 42 pages, 34 live and 8 paused, and reports them to Hugging Face."
+    - date: "2026-10-29"
+      source: Aikido Security
+      summary: "Hugging Face has paused or removed all 42 pages."
+    - date: "2026-11-24"
+      source: Aikido Security
+      summary: "Hunter Schwartz publishes the write-up. Aikido shows a further update on 25 November 2026."
+    - date: "2026-11-26"
+      source: Hackread
+      summary: "Deeba Ahmed restates the Aikido findings."
+linked_tools: []
