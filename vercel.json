@@ -6,19 +6,19 @@
   "outputDirectory": "dist",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "openattacks.com" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "www.openattacks.com" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "www.openattacks.ai" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true

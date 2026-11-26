@@ -252,9 +252,16 @@
   },
   "crowdstrike-artex-sk-finance-2026-10": {
     "status": "attacker_tool_only",
-    "reviewed": "2026-10-23",
+    "reviewed": "2026-11-26",
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
-    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "note": "The named AI product is used by the attacker. Hunt.io's jump server, Claude Code Router, and operator-written skills are on that attacker's host, not a victim product exposure.",
+    "rules": []
+  },
+  "csirt-italia-ai-agent-compromise-campaigns-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX, CyberStrikeAI, DeepSeek Harness, and PentAGI are the attacker's tools. The bulletin does not name a victim AI product.",
     "rules": []
   },
   "cursor-curxecute-cve-2025-54135": {
@@ -480,6 +487,13 @@
         ]
       }
     ]
+  },
+  "greynoise-papercut-ai-campaign-2026-09": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "Codex, DeepSeek, and the recovered AGENTS.md are the attacker's tools. PaperCut NG/MF is the victim product and is not an AI product in this catalog.",
+    "rules": []
   },
   "gtg-1002-anthropic-claude-code-espionage-2025-11": {
     "status": "attacker_tool_only",
@@ -935,6 +949,28 @@
       }
     ]
   },
+  "shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "secrets",
+    "action": "Look for repeated requests for .env files, Git metadata, and LLM credential paths from hosts that also probe public applications.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "Shadowserver says about one in ten honeypot events from these frameworks requested .env files, Git metadata, or default Jenkins logins, and that the same hosts also probed LLM listing and MCP endpoints and AI coding-assistant credential files.",
+        "conditions": [
+          "A request for an environment or credential file is not by itself evidence of a named framework. Pair it with the other paths Shadowserver describes."
+        ],
+        "source_urls": [
+          "https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/"
+        ]
+      }
+    ]
+  },
   "shareleak-copilot-studio-cve-2026-21520": {
     "status": "mapped",
     "reviewed": "2026-10-23",
@@ -1279,5 +1315,33 @@
         ]
       }
     ]
+  },
+  "microsoft-artex-nation-state-criminal-adoption-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX is the attacker-side framework. Microsoft does not name a victim AI product. Internet-facing servers, web applications, and cloud tenants are the described conditions, and none of those is a stack-tool selection.",
+    "rules": []
+  },
+  "dfir-report-artex-fintech-open-directory-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX produced the recovered logs. The DFIR Report does not name a victim AI product. The conditions are exposed fintech applications, dumps, and Redis, which are not a stack-tool selection.",
+    "rules": []
+  },
+  "ncsc-switzerland-first-ai-agent-attacks-2026-11": {
+    "status": "not_assessed",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "NCSC confirms attacker-side AI agents and does not name the product used in the Swiss cases. ARTEX and CyberStrikeAI are mentioned only as examples of internet-accessible agents. Victims are unnamed organisations and critical infrastructure, not a stack-tool selection.",
+    "rules": []
+  },
+  "aikido-hugging-face-deepsite-phishing-pages-2026-11": {
+    "status": "not_assessed",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "DeepSite is an attacker-side website builder on Hugging Face. It is not a stack tool. The victim condition is a person submitting credentials to a fake login, and Aikido does not name a victim AI product.",
+    "rules": []
   }
 }

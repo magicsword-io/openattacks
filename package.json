@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "^22.22.0"
+    "node": "^22.23.4"
   },
   "scripts": {
     "predev": "npm run llm:build -- --quiet",
@@ -40,7 +40,7 @@
     "@xyflow/react": "^12.12.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "astro": "^7.4.1",
+    "astro": "^7.4.7",
     "d3-geo": "^3.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

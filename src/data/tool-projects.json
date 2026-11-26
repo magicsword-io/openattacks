@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-23",
+  "reviewed_on": "2026-11-26",
   "projects": [
     {
       "name": "Amass",
@@ -25,6 +25,15 @@
       "name": "Amazon Q CLI",
       "url": "https://github.com/aws/amazon-q-developer-cli",
       "aliases": ["Amazon Q CLI"]
+    },
+    {
+      "name": "AntiFox",
+      "url": "https://github.com/AntiFox-AI/antifox",
+      "aliases": ["AntiFox"],
+      "source_urls": [
+        "https://github.com/AntiFox-AI/antifox",
+        "https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/"
+      ]
     },
     {
       "name": "ARTEX",
@@ -85,6 +94,15 @@
       "aliases": ["Claude Code", "Claude Code CLI", "Claude CLI"]
     },
     {
+      "name": "Claude Code Router",
+      "url": "https://github.com/musistudio/claude-code-router",
+      "aliases": ["Claude Code Router"],
+      "source_urls": [
+        "https://github.com/musistudio/claude-code-router",
+        "https://hunt.io/blog/artex-south-korea-bank-infrastructure"
+      ]
+    },
+    {
       "name": "Cobalt Strike",
       "url": "https://www.cobaltstrike.com/",
       "aliases": ["Cobalt Strike"]
@@ -109,6 +127,16 @@
       "name": "DeepSeek projects",
       "url": "https://github.com/deepseek-ai",
       "aliases": ["DeepSeek"]
+    },
+    {
+      "name": "DeepSeek Harness",
+      "url": "https://github.com/deepseek-ai/deepseek-harness",
+      "aliases": ["DeepSeek Harness"],
+      "note": "Official DeepSeek Harness repository. CSIRT Italia describes a Red Team Mode plugin and does not name that plugin's repository, so none is linked.",
+      "source_urls": [
+        "https://github.com/deepseek-ai/deepseek-harness",
+        "https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate"
+      ]
     },
     {
       "name": "dnsrecon",
