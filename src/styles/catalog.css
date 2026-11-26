@@ -75,17 +75,20 @@
   color: var(--text);
   font-weight: 600;
 }
-.catalog-intro-meta .text-link {
-  font-size: 13px;
-  color: var(--accent);
-}
 .meta-separator {
   margin-inline: 9px;
 }
 .catalog-intro-links {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: 8px;
+}
+.catalog-intro-links .button {
+  min-height: 44px;
+  padding-inline: 12px;
+  color: var(--text);
+  font-size: 13px;
 }
 .home-timeline {
   margin-bottom: 28px;
