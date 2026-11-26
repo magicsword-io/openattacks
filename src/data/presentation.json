@@ -103,8 +103,14 @@
   },
   "crowdstrike-artex-sk-finance-2026-10": {
     "title": "ARTEX and Claude Code used against South Korean financial firms",
-    "summary": "A likely Chinese-speaking actor used the ARTEX agentic pentest suite and Claude Code against South Korean financial organizations, and asked Claude where to sell the stolen data.",
+    "summary": "A likely Chinese-speaking actor used ARTEX and Claude Code against South Korean banks. Hunt.io tied a Hong Kong jump server to that console, with Claude Code Router and 19 operator-written skills.",
     "environments": ["unspecified"],
+    "evidence": "campaign"
+  },
+  "csirt-italia-ai-agent-compromise-campaigns-2026-11": {
+    "title": "CSIRT Italia: AI agents in mass compromise campaigns",
+    "summary": "CSIRT Italia says unnamed operators used ARTEX, CyberStrikeAI, DeepSeek Harness, and PentAGI in mass compromise campaigns in Italy, including a six-agent layout and a Markdown jailbreak.",
+    "environments": ["web", "agents"],
     "evidence": "campaign"
   },
   "cursor-curxecute-cve-2025-54135": {
@@ -171,6 +177,12 @@
     "title": "GhostAction Stage 2 stealer targeting cloud and AI credentials",
     "summary": "Malicious workflows and a VS Code auto-run task steal AWS, npm, SSH and Claude/Gemini credentials across 94 repos. AI is a credential target here, not the attack operator.",
     "environments": ["development", "cloud"],
+    "evidence": "campaign"
+  },
+  "greynoise-papercut-ai-campaign-2026-09": {
+    "title": "GreyNoise PaperCut campaign, with the attacker's AGENTS.md",
+    "summary": "A likely Russian-speaking actor used Codex and DeepSeek against PaperCut NG/MF. Hunt.io recovered the agent instructions, a second XML-RPC path, and a PentAGI certificate on the orchestration host.",
+    "environments": ["windows", "linux", "web"],
     "evidence": "campaign"
   },
   "gtg-1002-anthropic-claude-code-espionage-2025-11": {
@@ -329,6 +341,12 @@
     "environments": ["development"],
     "evidence": "campaign"
   },
+  "shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11": {
+    "title": "Shadowserver measures exposed agentic attack frameworks",
+    "summary": "Daily scans found about 4,200 exposed agentic attack frameworks on 23 November 2026. Honeypot hosts running them tried relays, credential files, and a handful of known exploits.",
+    "environments": ["web", "agents"],
+    "evidence": "campaign"
+  },
   "shareleak-copilot-studio-cve-2026-21520": {
     "title": "ShareLeak: Copilot Studio SharePoint form prompt injection (CVE-2026-21520)",
     "summary": "Content in SharePoint forms could prompt-inject Copilot Studio agents into leaking SharePoint data. Microsoft patched it on 2026-01-15.",
@@ -415,7 +433,7 @@
   },
   "wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11": {
     "title": "Wiz: ARTEX-Harvester and CyberStrikeAI cloud intrusions",
-    "summary": "Wiz reports the ARTEX-Harvester campaign and a CyberStrikeAI intrusion that used stolen CI and Kubernetes trust to reach cloud secrets, cluster-admin, and AI provider keys.",
+    "summary": "Wiz reports ARTEX-Harvester and a CyberStrikeAI cloud intrusion, and shows how Intent IDs from ARTEX and Cairn leak into cloud logs as a hunting signal.",
     "environments": ["cloud", "development"],
     "evidence": "campaign"
   },
@@ -436,5 +454,47 @@
     "summary": "A malicious agent action could expose a victim's SharePoint token through a connector SSRF flaw, enabling impersonation across affected Microsoft services.",
     "environments": ["agents"],
     "evidence": "vulnerability"
+  },
+  "jfrog-artex-hugging-face-self-leaking-models-2026-11": {
+    "title": "JFrog: ARTEX publishes Hugging Face models that leak the operator",
+    "summary": "An ARTEX task published fake Hugging Face models that steal loader secrets and commit them to the Hub. The first loot file was the operator's own environment.",
+    "environments": ["linux", "development"],
+    "evidence": "campaign"
+  },
+  "unit42-agentic-ai-attack-campaigns-2026-11": {
+    "title": "Unit 42: autonomous agents ran more than 10 intrusions",
+    "summary": "Unit 42 tracked more than 10 campaigns from July to September 2026. Humans planted web shells, and agents ran the rest, including one host that served CyberStrikeAI.",
+    "environments": ["linux", "windows", "cloud", "web"],
+    "evidence": "campaign"
+  },
+  "greynoise-gt13-check-point-management-servers-2026-11": {
+    "title": "GreyNoise GT13: Check Point management server intrusions",
+    "summary": "GreyNoise says GT13 hit Check Point Security Management Servers at 22 organizations from shared VPN exits and a compromised hop. It suspects agentic harnesses and names no model.",
+    "environments": ["linux"],
+    "evidence": "campaign"
+  },
+  "microsoft-artex-nation-state-criminal-adoption-2026-11": {
+    "title": "Microsoft: nation-state and criminal actors integrated ARTEX",
+    "summary": "Microsoft says Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon integrated ARTEX. Storm-0940 reached privileged access in under three hours.",
+    "environments": ["windows", "linux", "cloud", "web"],
+    "evidence": "campaign"
+  },
+  "dfir-report-artex-fintech-open-directory-2026-11": {
+    "title": "DFIR Report: ARTEX full-chain logs on fintech",
+    "summary": "The DFIR Report recovered ARTEX logs from an open directory. A full-chain playbook produced 46 findings across dozens of fintech, crypto-payment, and iGaming targets.",
+    "environments": ["web", "cloud"],
+    "evidence": "campaign"
+  },
+  "ncsc-switzerland-first-ai-agent-attacks-2026-11": {
+    "title": "NCSC Switzerland: first confirmed AI-agent attacks",
+    "summary": "NCSC Switzerland says the first AI-agent attacks it has seen compromised every victim, including critical infrastructure. It does not name the agent used in those cases.",
+    "environments": ["web"],
+    "evidence": "campaign"
+  },
+  "aikido-hugging-face-deepsite-phishing-pages-2026-11": {
+    "title": "Aikido: DeepSite published phishing pages on Hugging Face",
+    "summary": "Aikido found 42 phishing pages on Hugging Face Spaces impersonating 28 brands. DeepSite built 29 of them, and 24 commit histories are the attacker's prompts.",
+    "environments": ["web"],
+    "evidence": "campaign"
   }
 }

@@ -1,0 +1,131 @@
+id: dfir-report-artex-fintech-open-directory-2026-11
+name: "DFIR Report: ARTEX full-chain logs on fintech from an open directory"
+date_reported: "2026-11-25"
+date_activity_start: null
+date_activity_end: null
+researcher: The DFIR Report
+org: The DFIR Report
+sources:
+  - url: https://x.com/TheDFIRReport/status/2125579155857121643
+    title: "Inside a threat actor's open directory: automated, full-chain attacks on fintech"
+    publisher: The DFIR Report
+  - url: https://infosec.exchange/@TheDFIRReport/117677263296711588
+    title: "Inside a threat actor's open directory: automated, full-chain attacks on fintech"
+    publisher: The DFIR Report
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "The DFIR Report recovered the operator's engagement logs and says ARTEX produced them while running a templated full-chain playbook. The human operator is unidentified. The logs are the evidence that an agent wrote the findings."
+technique_summary: "The DFIR Report (25 November 2026) says that while reviewing an exposed open directory it recovered the operator's own engagement logs, produced by ARTEX running a templated full-chain playbook across dozens of fintech, crypto-payment, and iGaming targets. The logs hold 46 documented findings, each with reproduction steps and in many cases exfiltrated secrets: 11 Critical, 13 High, 16 Medium, and 6 Low. Recurring tradecraft is cloud credentials, including API keys and database passwords, harvested from publicly exposed database dumps and backup files; path traversal escalated to production database credentials and root SSH private keys, which the report treats as full host and lateral compromise; Redis reached via Gopher SSRF and then abused for remote code execution; secrets lifted from front-end JavaScript bundles (Vite, Angular, and Ember), including access passwords, 2FA seeds, and live payment keys; IDOR and broken object-level authorization exposing customer PII at scale; and exposed Spring Boot Actuator, Prometheus /metrics, and public Swagger. Victims are unnamed. The post publishes no indicators. The evidence is the recovered operator artifacts in the open directory. Related entries: microsoft-artex-github-secrets-keyvault-2026-11 and wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11."
+initial_access: "The recovered logs document several paths, not one vector for every target: publicly exposed database dumps and backup files, path traversal, Gopher SSRF to Redis, secrets in front-end bundles, IDOR, and exposed Actuator, metrics, and Swagger."
+ai_tooling_and_models:
+  - "ARTEX. The DFIR Report says the engagement logs were produced by ARTEX. It does not name the model."
+frameworks:
+  - artex
+other_tooling: []
+victims_and_sectors: "Dozens of unnamed fintech, crypto-payment, and iGaming targets. 46 findings: 11 Critical, 13 High, 16 Medium, and 6 Low."
+regions:
+  - unknown
+region_notes: "The DFIR Report does not name victim countries or organisations. Sector labels are not a geography."
+attribution_or_cluster: "Unknown operator. The DFIR Report attributes the logs to an operator running ARTEX and does not name the person, a group, or a country."
+scale_and_metrics: "Dozens of fintech, crypto-payment, and iGaming targets. 46 documented findings with reproduction steps: 11 Critical, 13 High, 16 Medium, and 6 Low. Many findings include exfiltrated secrets. No victim names and no intrusion dates in the post."
+prevention_angle: "Remove public database dumps and backups. Keep secrets out of front-end bundles, and rotate any that were shipped, including 2FA seeds and payment keys. Fix path traversal and object-level authorization. Restrict Spring Boot Actuator, Prometheus /metrics, and public Swagger. Protect Redis and block Gopher and other SSRF to internal services."
+related_magicsword_projects: []
+source_notes: "The finding counts, sectors, and tradecraft are from The DFIR Report's 25 November 2026 posts on X and Mastodon. Both URLs returned HTTP 200 when checked. The post does not name victims, dates of the intrusions, a model, or indicators. The evidence class for this entry is recovered operator artifacts: the engagement logs in the open directory. Link microsoft-artex-github-secrets-keyvault-2026-11 and wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11. This is a separate operator and a separate set of targets from those entries."
+last_reviewed: "2026-11-26"
+confidence: high
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "The DFIR Report says the engagement logs were produced by ARTEX running a templated full-chain playbook."
+    source_urls:
+      - https://x.com/TheDFIRReport/status/2125579155857121643
+      - https://infosec.exchange/@TheDFIRReport/117677263296711588
+  - id: AML.T0053
+    rationale: "The logs document findings with reproduction steps. The report presents them as the output of the ARTEX playbook, not as a hand-written report."
+    source_urls:
+      - https://x.com/TheDFIRReport/status/2125579155857121643
+      - https://infosec.exchange/@TheDFIRReport/117677263296711588
+  - id: AML.T0055
+    rationale: "Findings include API keys and database passwords from public dumps, production database credentials, root SSH private keys, and secrets from front-end bundles, including 2FA seeds and payment keys."
+    source_urls:
+      - https://x.com/TheDFIRReport/status/2125579155857121643
+      - https://infosec.exchange/@TheDFIRReport/117677263296711588
+attack_flow:
+  nodes:
+    - id: logs
+      title: ARTEX logs in an open directory
+      description: "The DFIR Report recovered the operator's ARTEX engagement logs from an exposed open directory. The logs cover a templated full-chain playbook and 46 findings with reproduction steps."
+      kind: ai
+      source_urls: &dfir
+        - https://x.com/TheDFIRReport/status/2125579155857121643
+        - https://infosec.exchange/@TheDFIRReport/117677263296711588
+    - id: dumps
+      title: Secrets in public dumps and backups
+      description: "Cloud credentials, including API keys and database passwords, were harvested from publicly exposed database dumps and backup files."
+      kind: access
+      source_urls: *dfir
+    - id: traverse
+      title: Path traversal to keys and root SSH
+      description: "Path traversal reached production database credentials and root SSH private keys. The report treats that as full host and lateral compromise."
+      kind: execution
+      source_urls: *dfir
+    - id: redis
+      title: Gopher SSRF, then Redis RCE
+      description: "Redis was reached through Gopher SSRF and then abused for remote code execution."
+      kind: execution
+      source_urls: *dfir
+    - id: bundles
+      title: Secrets in front-end bundles
+      description: "Vite, Angular, and Ember bundles held access passwords, 2FA seeds, and live payment keys."
+      kind: execution
+      source_urls: *dfir
+    - id: idor
+      title: IDOR exposes customer PII
+      description: "IDOR and broken object-level authorization exposed customer PII at scale."
+      kind: impact
+      source_urls: *dfir
+    - id: exposed
+      title: Actuator, metrics, and Swagger
+      description: "Exposed Spring Boot Actuator, Prometheus /metrics, and public Swagger recur in the findings."
+      kind: access
+      source_urls: *dfir
+  edges:
+    - source: logs
+      target: dumps
+    - source: logs
+      target: traverse
+    - source: logs
+      target: redis
+    - source: logs
+      target: bundles
+    - source: logs
+      target: idor
+    - source: logs
+      target: exposed
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Unknown operator"
+  country: Unknown
+  motivation: unknown
+  attributed_by: The DFIR Report
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Public dumps, Gopher SSRF, and bundle secrets
+    format: guidance
+    notes: "The DFIR Report publishes no indicators. No public Sigma, Splunk, or Elastic rule checked for this entry is specific to these fintech findings. Hunt exposed database dumps and backups, path traversal that returns credential files or private keys, Gopher SSRF to Redis, secrets in Vite, Angular, or Ember bundles, IDOR on customer objects, and unauthenticated Spring Boot Actuator, Prometheus /metrics, and Swagger."
+timeline:
+  first_seen: null
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-11-25"
+      source: The DFIR Report
+      summary: "The DFIR Report posts the open-directory write-up on X and Mastodon: 46 ARTEX findings across dozens of fintech, crypto-payment, and iGaming targets. Intrusion dates are not given."
+linked_tools:
+  - artex

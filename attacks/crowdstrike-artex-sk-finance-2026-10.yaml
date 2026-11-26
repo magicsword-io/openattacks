@@ -12,73 +12,90 @@ sources:
   - url: https://www.ic3.gov/CSA/2026/261113.csv
     title: FLASH-20261113-001 indicators
     publisher: FBI
+  - url: https://hunt.io/blog/artex-south-korea-bank-infrastructure
+    title: "ARTEX Exposed: Mapping the Infrastructure Behind the South Korean Bank Breaches"
+    publisher: Hunt.io
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
-ai_role_detail: null
-technique_summary: "Likely Chinese-speaking financially motivated actor used open-source Chinese agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via xcai.pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX later went closed-source."
+ai_role_detail: "Hunt.io recovered Claude Code 2.1.221 state on the jump server, routed through Claude Code Router and two local shims, plus 19 operator-written skills."
+technique_summary: "Likely Chinese-speaking financially motivated actor used open-source Chinese agentic pentest suite ARTEX plus Claude Code against South Korean financial orgs. Open directories held Claude session histories, ARTEX configs, Claude memory. ARTEX used DeepSeek v4.1-flash via xcai[.]pro; also GLM-5.3 and Grok 4.6. Actor asked Claude where to sell Korean breach data. ARTEX later went closed-source. Hunt.io (4 November 2026) found a second open directory at 23.248.226[.]250:18099, a Hong Kong jump server it ties to the published ARTEX console 38.244.50[.]120. A .secrets file and .secrets.bak-20260911 set JUMPHOST to that console and hold a Zhipu GLM key, an OpenAI-compatible relay key, and Webshare proxy credentials. Hunt.io does not publish the key values. Three sshpass scripts, local-boot.sh, tunnel-watchdog.sh, and sync-memory.sh, keep reverse SSH tunnels to the console. A .claude.json shows Claude Code 2.1.221 with 510 startups since 4 August 2026. Requests go through Claude Code Router on port 3456 and two local shims. ds-models-shim.py answers /v1/models. xcai-effort-shim.py adds a reasoning_effort field and forwards to direct[.]xcai[.]pro. The same state file lists 19 operator-written Claude Code skills and 147 invocations, covering recon, web-inject, waf-bypass, web-auth, js-api-mining, file-ssrf, payment-logic, attack-variants, apk-internal-hunting, cloud-phone, and others. The payment-logic skill sits next to .secrets-cashin-test-accounts, three JWT accounts Hunt.io says were for IDOR testing. A comment in that file calls them an authorized self-built test dated 12 September 2026. FOFA queries go through a third-party API, and a proxy at 154.201.79[.]246:443 showed 79 exit addresses in a 100-identity sample. These skills are on the attacker's host. They are not a published skill."
 initial_access: "unknown (industry reports: loan inquiry service; employee mobile work-support system)"
 ai_tooling_and_models:
   - ARTEX
   - Claude Code
-  - DeepSeek v4.1-flash via xcai.pro
+  - Claude Code Router
+  - DeepSeek v4.1-flash via xcai[.]pro
   - GLM-5.3
   - Grok 4.6
 frameworks:
   - artex
 other_tooling:
-  - Proxy IPs listed in CrowdStrike IOC table
+  - "sshpass scripts local-boot.sh, tunnel-watchdog.sh, and sync-memory.sh on the jump server"
+  - "Proxy addresses listed in the CrowdStrike and FBI indicator tables"
 victims_and_sectors: South Korean financial organizations (multiple banks per industry reports)
 regions:
   - South Korea
-attribution_or_cluster: "CrowdStrike did not attribute the activity to a named adversary. It assessed with moderate confidence that the actor was likely a Chinese speaker and financially motivated."
-scale_and_metrics: "Active late September through early October 2026. The number of organizations was not confirmed in the 7 October CrowdStrike report. FBI FLASH-20261113-001 says this South Korean financial campaign exfiltrated personal information of approximately 67,000 individuals, citing CrowdStrike, Zscaler, and CERT-EU."
-prevention_angle: Monitor for agentic pentest suites and exposed Claude session dirs; Jose Censys notes on IOCs
+attribution_or_cluster: "CrowdStrike did not attribute the activity to a named adversary. It assessed with moderate confidence that the actor was likely a Chinese speaker and financially motivated. Hunt.io uses the jump-host config to tie 23.248.226[.]250 to the console CrowdStrike and the FBI published."
+scale_and_metrics: "Active late September through early October 2026. The number of organizations was not confirmed in the 7 October CrowdStrike report. FBI FLASH-20261113-001 says this South Korean financial campaign exfiltrated personal information of approximately 67,000 individuals, citing CrowdStrike, Zscaler, and CERT-EU. Hunt.io says seven institutions and about 66,000 to 67,000 individuals, citing CrowdStrike and Genians, and that Claude Code on the jump server recorded 510 startups since 4 August 2026 and 147 skill invocations."
+prevention_angle: "Monitor for agentic pentest suites and exposed Claude session dirs. Hunt.io's link is the jump server's files, not a new victim-side procedure. The key values in .secrets are not repeated here. Hunt.io says the cryptocurrency, Linux exploitation, and mobile-device artifacts on that host are not confirmed as part of the Korean breaches."
 related_magicsword_projects: []
-source_notes: "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign. The approximately 67,000-person figure is from FBI FLASH-20261113-001, which cites the CrowdStrike report, a Zscaler ThreatLabz report, and a CERT-EU report. This entry's 7 October CrowdStrike source did not state that count. The FLASH table, and the same values in the CSV, list 38.244.50.120 as an ARTEX host and open directory for this campaign, sourced to CrowdStrike and Censys, and 101.53.80.20, 205.214.59.31, 124.155.252.63, 154.201.79.246, 23.248.249.90, 23.158.220.98, 103.248.148.84, 203.160.133.172, and 209.209.85.38 as proxy addresses sourced to CrowdStrike. The CSV says these artifacts are not standalone indicators of ARTEX, and the FLASH says addresses can later be reassigned."
+source_notes: "CrowdStrike's report ties the South Korean finance activity to an unnamed actor. Separate reports of ARTEX use by other clusters should not be treated as attribution for this campaign. The approximately 67,000-person figure is from FBI FLASH-20261113-001, which cites the CrowdStrike report, a Zscaler ThreatLabz report, and a CERT-EU report. This entry's 7 October CrowdStrike source did not state that count. The FLASH table, and the same values in the CSV, list 38.244.50[.]120 as an ARTEX host and open directory for this campaign, sourced to CrowdStrike and Censys, and 101.53.80[.]20, 205.214.59[.]31, 124.155.252[.]63, 154.201.79[.]246, 23.248.249[.]90, 23.158.220[.]98, 103.248.148[.]84, 203.160.133[.]172, and 209.209.85[.]38 as proxy addresses sourced to CrowdStrike. The CSV says these artifacts are not standalone indicators of ARTEX, and the FLASH says addresses can later be reassigned. Hunt.io (4 November 2026, no individual byline) adds 23.248.226[.]250 and says it notified a national CERT before publication. It says no personal records from the affected systems appear in its report. The .secrets file is described only. Key values, passwords, and JWTs are not copied. Hunt.io says cryptocurrency, Linux exploitation, and mobile-device artifacts on that host are not confirmed as linked to the Korean breaches. The 19 skill names Hunt.io lists are code-audit, recon, web-inject, hae, cloud-phone, xingjie-cloudphone, hemax-adb, js-api-mining, waf-bypass, web-auth, tg-miniapp, apk-download, oversea-cloudphone, b2-archive, decompile, apk-internal-hunting, attack-variants, file-ssrf, and payment-logic. They are operator-written skills on the attacker's host, not a LOLSkills entry."
 category: adversary-use-of-ai
 attribution:
   actor_name: Unknown threat actor
   country: Unknown
   motivation: financially-motivated
-  attributed_by: CrowdStrike Intelligence
+  attributed_by: "CrowdStrike Intelligence; Hunt.io for the jump-host link"
   confidence: medium
 ai_involvement_confidence: confirmed
 detections:
   - name: ARTEX operator infrastructure is not a victim-side rule
     format: guidance
-    notes: "security-detections-mcp searches for password spray, web shells, and the report's ATT&CK techniques (T1583.003, T1588.007, T1090) returned infrastructure, proxy, and identity rules. A 16 November 2026 search of the new proxy addresses and of personal-information exfiltration also returned no Sigma, Splunk, or Elastic rule that encodes those IPs or the 67,000-person transfer. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command, webshell, or cloud API on the South Korean financial organizations. Hunt exposed Claude session directories and ARTEX consoles, and review the loan-inquiry and mobile work-support services named in the industry reporting CrowdStrike cites."
+    notes: "security-detections-mcp searches on 26 November 2026 for sshpass, Claude Code, pentest intent strings, and the report's earlier ATT&CK techniques returned no Sigma, Splunk, or Elastic rule that encodes this jump server, the skill names, or the proxy addresses. Rules that mention Claude Code are about unsafe permission flags or an instruction file written to a Downloads folder, which is not the recovered .claude.json on the attacker's server. Reverse-SSH rules in the index target a monitored endpoint. Hunt.io found the tunnel scripts on the attacker's jump server, and it does not publish them as a victim procedure, so they are not cited. CrowdStrike describes the actor's own ARTEX and Claude Code servers, not a command or cloud API on the South Korean financial organizations."
 timeline:
-  first_seen: "2026-09"
-  last_updated: "2026-11-16"
+  first_seen: "2026-08-04"
+  last_updated: "2026-11-26"
   updates:
+    - date: "2026-08-04"
+      source: Hunt.io
+      summary: "Hunt.io's .claude.json on the jump server records Claude Code startups since 4 August 2026. That is operator tooling, not the date of the Korean intrusions."
+    - date: "2026-09"
+      source: CrowdStrike Intelligence
+      summary: "CrowdStrike dates the South Korean financial activity to late September through early October 2026."
     - date: "2026-10-07"
       source: CrowdStrike Intelligence
-      summary: "CrowdStrike reports an unnamed, likely Chinese-speaking, financially motivated actor using ARTEX and Claude Code against South Korean financial organizations from late September to early October 2026. A resume prompt listing Maoming, Guangdong cannot be definitively tied to the actor."
+      summary: "CrowdStrike reports an unnamed, likely Chinese-speaking, financially motivated actor using ARTEX and Claude Code against South Korean financial organizations. A resume prompt listing Maoming, Guangdong cannot be definitively tied to the actor."
+    - date: "2026-11-04"
+      source: Hunt.io
+      summary: "Hunt.io publishes the jump server at 23.248.226[.]250, the Claude Code Router path, the 19 skills, and the caveat that cryptocurrency, Linux exploitation, and mobile-device artifacts on that host are not confirmed as part of the Korean breaches."
     - date: "2026-11-15"
       source: OpenAttacks
       summary: "Tagged ARTEX and backfilled actor name, detections, and timeline from the cited CrowdStrike report. Country stays Unknown because the report attributes language and a financial motive, not a country."
     - date: "2026-11-16"
       source: FBI
-      summary: "FLASH-20261113-001 is added. It reports personal information of approximately 67,000 individuals exfiltrated in this campaign, and the CSV contributes 38.244.50.120 plus nine proxy addresses that match the FLASH table for the South Korean financial activity."
+      summary: "FLASH-20261113-001 is added. It reports personal information of approximately 67,000 individuals exfiltrated in this campaign, and the CSV contributes 38.244.50[.]120 plus nine proxy addresses that match the FLASH table for the South Korean financial activity."
 iocs:
-  domains: []
+  domains:
+    - xcai[.]pro
+    - direct[.]xcai[.]pro
   ips:
-    - 38.244.50.120
-    - 101.53.80.20
-    - 205.214.59.31
-    - 124.155.252.63
-    - 154.201.79.246
-    - 23.248.249.90
-    - 23.158.220.98
-    - 103.248.148.84
-    - 203.160.133.172
-    - 209.209.85.38
+    - 38.244.50[.]120
+    - 23.248.226[.]250
+    - 101.53.80[.]20
+    - 205.214.59[.]31
+    - 124.155.252[.]63
+    - 154.201.79[.]246
+    - 23.248.249[.]90
+    - 23.158.220[.]98
+    - 103.248.148[.]84
+    - 203.160.133[.]172
+    - 209.209.85[.]38
   hashes: []
   urls: []
-last_reviewed: "2026-11-16"
+last_reviewed: "2026-11-26"
 attack_flow:
   nodes:
     - id: step-1
@@ -106,6 +123,18 @@ attack_flow:
         remain unconfirmed.
       kind: impact
       source_urls: *a1
+    - id: jump
+      title: Hong Kong jump server
+      description: "Hunt.io ties 23.248.226[.]250:18099 to the console at 38.244.50[.]120 through a .secrets file whose JUMPHOST value is that console, and through three sshpass scripts that keep reverse SSH tunnels. Key values from that file are not included."
+      kind: execution
+      source_urls:
+        - https://hunt.io/blog/artex-south-korea-bank-infrastructure
+    - id: router
+      title: Claude Code Router and 19 skills
+      description: "On that jump server, Claude Code 2.1.221 had started 510 times since 4 August 2026. Traffic went through Claude Code Router and shims to DeepSeek, including direct[.]xcai[.]pro. Nineteen operator-written skills had 147 invocations. Hunt.io does not confirm the cryptocurrency, Linux exploitation, or mobile-device files on the host as part of the Korean breaches."
+      kind: ai
+      source_urls:
+        - https://hunt.io/blog/artex-south-korea-bank-infrastructure
   edges:
     - source: step-1
       target: step-2
@@ -113,8 +142,13 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+    - source: step-2
+      target: jump
+    - source: jump
+      target: router
 region_notes: South Korea describes victim financial organizations. Chinese language concerns actor
-  attribution; Hong Kong refers to infrastructure. Neither is counted as victim geography.
+  attribution. Hong Kong is the jump server Hunt.io describes, and Los Angeles is where Hunt.io
+  places the console address. Neither is a victim country.
 linked_tools:
   - artex
 atlas_techniques:
@@ -123,3 +157,19 @@ atlas_techniques:
       The supplied source explicitly describes generative-model tooling assisting the reported
       activity; this mapping does not establish additional autonomy or victim impact.
     source_urls: *a1
+  - id: AML.T0081
+    rationale: "Hunt.io recovered shims and Claude Code Router config that change which model Claude Code calls, and 19 operator-written skills that package the agent's steps."
+    source_urls:
+      - https://hunt.io/blog/artex-south-korea-bank-infrastructure
+  - id: AML.T0112.000
+    rationale: "The .claude.json Hunt.io recovered is a local Claude Code install, version 2.1.221, on the operator's jump server."
+    source_urls:
+      - https://hunt.io/blog/artex-south-korea-bank-infrastructure
+  - id: AML.T0083
+    rationale: "The jump server's .secrets file holds API keys for the models and relay the agent used. The values are not reproduced."
+    source_urls:
+      - https://hunt.io/blog/artex-south-korea-bank-infrastructure
+  - id: AML.T0008
+    rationale: "Hunt.io presents 23.248.226[.]250 as a jump server acquired for this operation and kept linked to the ARTEX console by reverse SSH tunnels."
+    source_urls:
+      - https://hunt.io/blog/artex-south-korea-bank-infrastructure

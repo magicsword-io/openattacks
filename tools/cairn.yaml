@@ -3,7 +3,7 @@ name: Cairn
 type: agentic-offensive-framework
 github_url: https://github.com/oritera/Cairn
 project_url: null
-description: "Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation. On 20 November 2026 Amazon Threat Intelligence reported that a Chinese-nexus operator's exposed Cairn instance let agents find and exploit a MONAI Label path-traversal zero-day against universities in East Asia. On 24 November 2026 the UK NCSC named Cairn among the agentic offensive frameworks in a rise in AI-assisted attacks it has seen across sectors since September 2026, and said that activity has become synonymous with ARTEX. NCSC says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. The attacks it describes identify and exploit internet-facing services in quick succession and cause downtime or a foothold. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs."
+description: "Open-source AI harness that loops coding agents (Claude Code, DeepSeek) toward intrusion goals such as unauthenticated RCE and uploader shells. Panels ship with no authentication and bind to 0.0.0.0:8000, exposing task text, tooling, and secrets. Observed achieving roughly 10% success rate with ~23 hours to goal against e-commerce and payment sites. On 16 November 2026 GTIG reported Cairn used in intrusion activity against targets including a US aerospace organization. GTIG did not name a cluster or publish indicators for that observation. On 20 November 2026 Amazon Threat Intelligence reported that a Chinese-nexus operator's exposed Cairn instance let agents find and exploit a MONAI Label path-traversal zero-day against universities in East Asia. On 24 November 2026 the UK NCSC named Cairn among the agentic offensive frameworks in a rise in AI-assisted attacks it has seen across sectors since September 2026, and said that activity has become synonymous with ARTEX. NCSC says cheap open models or illegal API resellers plus these frameworks give speed and persistence, not new capability. The attacks it describes identify and exploit internet-facing services in quick succession and cause downtime or a foothold. Prevention from that blog: forgotten websites and legacy equipment, over-privileged credentials, flat or interconnected networks, default credentials or missing authentication, weak passwords, and fast account sign-ups. Detection from that blog: bursts of requests followed by short thinking phases, a wide variety of endpoints and parameters including garbage or example values, increased error rates, and agents rotating through proxies and VPNs. On 25 November 2026 Wiz Research described Cairn Intent IDs as per-project counters formatted i%03d, f%03d, and h%03d, reset for every new project. sapper-v2 uses the same scheme. Wiz says that reset means cross-incident pacing applies to the ARTEX family, not to Cairn. The same day Shadowserver included Cairn among the frameworks fingerprinted on honeypot attacker addresses, five or fewer addresses each."
 sources:
   - url: https://norforge.com/blog/inside_cairn
     title: Inside Cairn
@@ -17,11 +17,18 @@ sources:
   - url: https://www.ncsc.gov.uk/blogs/familiar-weaknesses-exploited-faster-defending-against-agentic-cyber-attacks
     title: "Familiar weaknesses, exploited faster: defending against agentic cyber attacks"
     publisher: UK NCSC
+  - url: https://www.wiz.io/blog/agentic-offensive-frameworks-intent-ids-artex-cairn
+    title: "Inside Agentic Offensive Frameworks: Intent IDs"
+    publisher: Wiz Research
+  - url: https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    title: "Agentic AI Attack Frameworks in the Wild: What Our Scans and Honeypots Show"
+    publisher: The Shadowserver Foundation
 linked_attacks:
   - amazon-cairn-monai-label-zero-day-universities-2026-11
   - cairn-norforge-2026-10
   - cert-in-crafty-falcon-bfsi-2026-11
   - microsoft-agent-framework-pypi-pth-stealer-2026-11
   - unit42-cairn-cl-sta-1238-2026-11
+  - shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
 linked_actors:
   - norforge-aia0001

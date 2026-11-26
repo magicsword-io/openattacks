@@ -49,7 +49,7 @@ Defensive material is deliberately labeled as draft guidance. Query-bearing stag
 
 ## Run locally
 
-Requires Node.js **22.22.0 or newer**.
+Requires Node.js **22.23.4 or later in the 22.x series**.
 
 ```sh
 npm ci

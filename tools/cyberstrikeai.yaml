@@ -3,11 +3,17 @@ name: CyberStrikeAI
 type: ai-pentest-tool
 github_url: https://github.com/AIPentest/CyberStrikeAI
 project_url: null
-description: AI-powered cybersecurity tool focused on automated threat detection and penetration testing capabilities. Leverages machine learning models to assist security operations and vulnerability assessment.
+description: "AI-powered cybersecurity tool focused on automated threat detection and penetration testing capabilities. On 23 November 2026 CSIRT Italia named CyberStrikeAI among the tools in mass compromise campaigns it observed in Italy. On 25 November 2026 Shadowserver counted about 500 exposed CyberStrikeAI instances and included it among the frameworks fingerprinted on honeypot attacker addresses, five or fewer addresses each."
 sources:
   - url: https://github.com/topics/pentest-ai
     title: AI Penetration Testing Tools
     publisher: GitHub
+  - url: https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    title: Impiego di agenti di IA in campagne di compromissione automatizzate
+    publisher: CSIRT Italia
+  - url: https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    title: "Agentic AI Attack Frameworks in the Wild: What Our Scans and Honeypots Show"
+    publisher: The Shadowserver Foundation
 linked_attacks:
   - bossai-12-agent-attack-mesh-2026-11
   - cert-in-crafty-falcon-bfsi-2026-11
@@ -15,5 +21,8 @@ linked_attacks:
   - kaspersky-cyberstrikeai-schools-2026
   - profero-ultra-operator-artex-2026-10
   - trendai-chinese-language-operators-used-cyberstrikeais-2026-10
+  - unit42-agentic-ai-attack-campaigns-2026-11
   - wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11
+  - csirt-italia-ai-agent-compromise-campaigns-2026-11
+  - shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
 linked_actors: []

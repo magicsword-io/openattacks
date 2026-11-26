@@ -1,0 +1,32 @@
+{
+  "hfs": {
+    "profile": "web",
+    "note": "The hop was compromised through Rejetto HFS CVE-2026-61500 by forging an admin cookie from Math.random() sid values. A scan alone is not this stage.",
+    "reviewed": "2026-11-25"
+  },
+  "keys": {
+    "profile": "linux-ssh-persistence",
+    "note": "An SSH key was appended to /root/.ssh/authorized_keys after the HFS middleware hooks ran commands.",
+    "reviewed": "2026-11-25"
+  },
+  "hop": {
+    "profile": "payload",
+    "note": "The ZULT download failed. The actor returned over SSH, stood up an unauthenticated HTTP server, and installed Nmap and Chisel. The profile covers the host activity, not a successful implant.",
+    "reviewed": "2026-11-25"
+  },
+  "sms": {
+    "profile": "impact",
+    "note": "CVE-2026-16232 Run Script tasks copied the firewall database and Internal CA, minted pivot.p12, and unloaded security policies. The profile's file-burst hypothesis is only a starting point for the policy unload.",
+    "reviewed": "2026-11-25"
+  },
+  "preload": {
+    "profile": "persistence",
+    "note": "A failed certificate task's error showed /usr/lib/.libproc.so in /etc/ld.so.preload. GreyNoise calls that a possible implant. The same day-two window added an nftables rule on the hop.",
+    "reviewed": "2026-11-25"
+  },
+  "agents": {
+    "profile": "agent-tools",
+    "note": "GreyNoise suspects separate agentic harnesses and does not name a model or framework. The profile is not confirmation that a victim ran an agent.",
+    "reviewed": "2026-11-25"
+  }
+}
