@@ -1,0 +1,175 @@
+id: shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11
+name: "Shadowserver: exposed agentic attack frameworks and honeypot traffic"
+date_reported: "2026-11-25"
+date_activity_start: "2026-11-09"
+date_activity_end: "2026-11-23"
+researcher: The Shadowserver Foundation
+org: The Shadowserver Foundation
+sources:
+  - url: https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    title: "Agentic AI Attack Frameworks in the Wild: What Our Scans and Honeypots Show"
+    publisher: The Shadowserver Foundation
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: ai_agent_or_mcp_as_target
+ai_role_detail: "Shadowserver fingerprinted honeypot traffic as coming from hosts running agentic attack frameworks, and a smaller set of those addresses probed AI, LLM, and automation services."
+technique_summary: "The Shadowserver Foundation (25 November 2026) now scans daily for 15 exposed agentic attack frameworks: AntiFox, ARTEX Gateway, BugTraceAI, Cairn, CyberStrikeAI, Decepticon, Luanniao (LuaN1ao) Penetration Agent, PentAGI, PentestCode, PentestGPT, RedAmon, ScopeWeaver, Strix, T3MP3ST Dashboard, and Xalgorix. AntiFox and ScopeWeaver are derived from ARTEX. Shadowserver says not every framework is malicious. Some are built for authorized testing, and the scans find exposed instances rather than proving each one is in an intrusion. On 23 November the scans saw about 4,200 exposed instances, up from just under 3,700 the day before. Over that week the count dipped from a peak of 3,850 on 17 November and then rose. On 23 November PentestCode tripled to more than 600 and the week's peak passed 4,300. Nearly half of the instances were in Asia, more than a third in North America, and most of the rest in Europe. ARTEX was about 70 percent of exposed instances on most days. CyberStrikeAI was about 500 and PentestCode about 600. PentAGI, shown on the dashboard as VXControl, fell from more than 400 on 17 November to below 200. AntiFox grew fastest, from a handful to about 200, and by 22 November ARTEX and AntiFox were three-quarters of instances. The other seven frameworks together were fewer than 100. From 9 to 23 November, more than 80 addresses fingerprinted as running these frameworks generated more than 10,000 events on Shadowserver's honeypots. A handful of addresses produced most of the events. Nearly nine in ten of the addresses were fingerprinted as ARTEX Gateway. CyberStrikeAI, Cairn, PentAGI, and RedAmon made up the rest, with five or fewer addresses each. Two addresses ran PentAGI, and one of those was the busiest address observed. The addresses geolocated to more than 20 countries, with activity concentrated in the United States and Hong Kong. Shadowserver says almost all of them were on cloud networks, so that concentration is hosting, not operator location. About six in ten tried to relay traffic. Payment, banking, and crypto services drew more than 40 percent of relay requests, though most of those came from two addresses. Other relay destinations included shops and SSH, MySQL, and CouchDB servers. A smaller number probed n8n, Dify, Flowise, and MLflow, LLM model-listing endpoints, agent and LLM-provider APIs, and Model Context Protocol endpoints. About one in ten looked for credentials, including .env files, sometimes through path traversal, Git metadata, and Jenkins logins with admin/admin. Two tried Telnet passwords. About one in ten sent exploit or injection payloads, most often for Metabase CVE-2023-38646, plus PHPUnit CVE-2017-9841, Cisco IOS XE CVE-2023-20198, and GeoServer CVE-2024-36401. A third of direct requests were general discovery. Most of the rest targeted VPN and virtualization platforms, web and business applications, or CI servers, and each of those categories was driven largely by one or two busy addresses. The most active addresses looked for VPN and remote-access gateways, VMware vSphere, Jenkins, Metabase, and GeoServer. Much of the traffic was automated. At peak, addresses sent dozens of requests in a minute. Most worked in short bursts, and nearly half spent less than an hour in total on the honeypots. A few were active in every hour of the day across several days. User agents were mostly browser-like, and many were spoofed. The rest were curl, python-requests, Go, and aiohttp. Exposure data is in the daily Device Identification report with device_type ai-attack-framework. The public dashboard has country statistics and no addresses. No addresses are on the public page."
+initial_access: "Honeypot events were scans, relay attempts, credential probes, and exploit payloads against Shadowserver sensors. No victim intrusion is described."
+ai_tooling_and_models:
+  - ARTEX
+  - AntiFox
+  - CyberStrikeAI
+  - Cairn
+  - PentAGI
+frameworks:
+  - artex
+  - antifox
+  - cyberstrikeai
+  - cairn
+  - pentagi
+other_tooling:
+  - "Also named in the scan: BugTraceAI, Decepticon, Luanniao (LuaN1ao), PentestCode, PentestGPT, RedAmon, ScopeWeaver, Strix, T3MP3ST Dashboard, and Xalgorix. RedAmon was also among the honeypot fingerprints. This catalog has no tool page for those names."
+victims_and_sectors: "Shadowserver honeypots. Relay attempts named payment, banking, and crypto services, plus shops and database servers. No compromised organization is named."
+regions:
+  - unknown
+region_notes: "Nearly half of the exposed instances were in Asia, more than a third in North America, and most of the rest in Europe. Honeypot source addresses geolocated to more than 20 countries and concentrated in the United States and Hong Kong. Shadowserver says that concentration is cloud hosting, not where operators are. None of those places are recorded here as victim countries."
+attribution_or_cluster: "Many unnamed operators. Shadowserver does not attribute the exposed instances or the honeypot traffic to a named actor."
+scale_and_metrics: "About 4,200 exposed instances on 23 November 2026, and a weekly peak above 4,300 when PentestCode jumped. Honeypots from 9 to 23 November: more than 80 addresses and more than 10,000 events. Nearly nine in ten of those addresses were ARTEX Gateway. About six in ten tried to relay. About one in ten looked for credentials. About one in ten sent exploit payloads."
+prevention_angle: "Shadowserver publishes the exposure data free in its daily Device Identification report, device_type ai-attack-framework, with the framework in device_vendor and device_model. Honeypot events use the same labels. The public dashboard has no addresses. Close exposed agent consoles. The honeypot traffic hunted .env files, Git metadata, default Jenkins logins, and the four CVEs named above. Shadowserver says a few addresses caused most of the events, so a block on one address does not describe the set."
+related_magicsword_projects: []
+source_notes: "Counts, framework names, and the honeypot breakdown are from the 25 November 2026 Shadowserver post. No addresses are published on that page, so none are listed here. AntiFox is included because the scan measured it as the fastest-growing exposed fork. The honeypot fingerprints Shadowserver names are ARTEX Gateway, CyberStrikeAI, Cairn, PentAGI, and RedAmon. RedAmon has no tool page here. Shadowserver says not every exposed instance is malicious, that a handful of addresses produced most honeypot events, and that the payment, banking, and crypto share of relay requests mostly came from two addresses. User-agent and timing details are from the same post."
+last_reviewed: "2026-11-26"
+confidence: high
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed operators
+  country: Unknown
+  motivation: unknown
+  attributed_by: The Shadowserver Foundation
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Source Code Enumeration Detection by Keyword
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/web/webserver_generic/web_source_code_enumeration.yml
+    notes: "Web server logs. A request containing .git/. Matches the Git metadata probes Shadowserver describes for about one in ten of the addresses. It does not cover .env files."
+  - name: Web Server Discovery or Fuzzing Activity
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/reconnaissance_web_server_discovery_or_fuzzing_activity.toml
+    notes: "Web access logs from nginx, Apache, Tomcat, IIS, or Traefik. A burst of GETs from one source that return 404 or 403, which the rule text associates with wordlist probes of paths such as .env and .git. Matches the discovery and credential-file hunting. It will also match benign scanners."
+  - name: Cisco IOS XE Implant Access
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/web/cisco_ios_xe_implant_access.yml
+    notes: "Web logs. A POST to /webui/logoutconfirm.html?logon_hash=*, which Splunk ties to implant access after CVE-2023-20198. Shadowserver says some addresses sent exploits for that CVE. This rule is the implant path, not every exploit request."
+  - name: No public rule for the other named exploits or the relay traffic
+    format: guidance
+    notes: "security-detections-mcp searches on 26 November 2026, and a search of the indexed Sigma, Splunk, and Elastic repositories, found no rule that names Metabase CVE-2023-38646, PHPUnit CVE-2017-9841, or GeoServer CVE-2024-36401. No rule encodes Jenkins admin/admin, the relay destinations, or the framework fingerprints. A Sigma path-traversal rule matches a fixed set of ../etc and similar strings, not the .env requests Shadowserver describes, so it is not cited. Shadowserver publishes no addresses on the public page."
+timeline:
+  first_seen: "2026-11-09"
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-11-09"
+      source: The Shadowserver Foundation
+      summary: "The honeypot window in the 25 November post starts on 9 November. Shadowserver does not date the first day of the exposure scans beyond saying they had recently begun."
+    - date: "2026-11-17"
+      source: The Shadowserver Foundation
+      summary: "Exposed instances peak at 3,850 and then dip. PentAGI is above 400 on this day and later falls below 200."
+    - date: "2026-11-22"
+      source: The Shadowserver Foundation
+      summary: "ARTEX and AntiFox together are about three-quarters of exposed instances. AntiFox has grown from a handful to about 200."
+    - date: "2026-11-23"
+      source: The Shadowserver Foundation
+      summary: "About 4,200 exposed instances. PentestCode triples to more than 600, and the week's peak passes 4,300. The honeypot window ends."
+    - date: "2026-11-25"
+      source: The Shadowserver Foundation
+      summary: "Shadowserver publishes the scan and honeypot write-up. The public dashboard has country statistics and no addresses."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+attack_flow:
+  nodes:
+    - id: datasets
+      title: Two Shadowserver views
+      description: "The 25 November post reports daily exposure scans and, separately, honeypot events from addresses fingerprinted as running the frameworks. Shadowserver does not say the exposed consoles are the same hosts as the honeypot sources."
+      kind: unknown
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: scan
+      title: About 4,200 exposed instances
+      description: "On 23 November the scans saw about 4,200 exposed instances across 15 frameworks. ARTEX was about 70 percent on most days. AntiFox was the fastest-growing fork. Shadowserver says some of these tools are used for authorized testing."
+      kind: access
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: honeypot
+      title: More than 10,000 honeypot events
+      description: "From 9 to 23 November, more than 80 fingerprinted addresses generated more than 10,000 events. Nearly nine in ten of the addresses were ARTEX Gateway. CyberStrikeAI, Cairn, PentAGI, and RedAmon made up the rest."
+      kind: execution
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: relay
+      title: Relay attempts, mostly from two addresses
+      description: "About six in ten addresses tried to relay traffic. Payment, banking, and crypto services drew more than 40 percent of those requests, and most of that share came from two addresses."
+      kind: impact
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: secrets
+      title: Credential files and default logins
+      description: "About one in ten addresses looked for .env files, sometimes through path traversal, Git metadata, or Jenkins logins with admin/admin. Two tried Telnet passwords."
+      kind: execution
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: cve
+      title: Four named exploit payloads
+      description: "About one in ten addresses sent exploit or injection payloads. The most common was Metabase CVE-2023-38646, then PHPUnit CVE-2017-9841, Cisco IOS XE CVE-2023-20198, and GeoServer CVE-2024-36401."
+      kind: execution
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+    - id: ai-probe
+      title: Probes of AI and automation services
+      description: "A smaller number of addresses probed n8n, Dify, Flowise, and MLflow, LLM model-listing endpoints, agent and LLM-provider APIs, Model Context Protocol endpoints, and credential files associated with AI coding assistants."
+      kind: ai
+      source_urls:
+        - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+  edges:
+    - source: datasets
+      target: scan
+    - source: datasets
+      target: honeypot
+    - source: honeypot
+      target: relay
+    - source: honeypot
+      target: secrets
+    - source: honeypot
+      target: cve
+    - source: honeypot
+      target: ai-probe
+atlas_techniques:
+  - id: AML.T0006
+    rationale: "The honeypot traffic includes discovery requests, credential-file probes, and exploit payloads from addresses fingerprinted as running the frameworks."
+    source_urls:
+      - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+  - id: AML.T0049
+    rationale: "About one in ten of the addresses sent exploit payloads, most often for Metabase CVE-2023-38646, PHPUnit CVE-2017-9841, Cisco IOS XE CVE-2023-20198, and GeoServer CVE-2024-36401."
+    source_urls:
+      - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+  - id: AML.T0055
+    rationale: "About one in ten of the addresses looked for .env files, Git metadata, or default Jenkins credentials. Shadowserver notes that a .env file often holds cloud, payment, and LLM API keys."
+    source_urls:
+      - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+  - id: AML.T0103
+    rationale: "Shadowserver fingerprinted the honeypot sources as running ARTEX Gateway, CyberStrikeAI, Cairn, PentAGI, or RedAmon, and it scans for exposed instances of those frameworks."
+    source_urls:
+      - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+  - id: AML.T0008
+    rationale: "Almost all of the honeypot source addresses were on cloud networks. Shadowserver says that reflects where the servers were hosted, not where the operators were."
+    source_urls:
+      - https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/
+linked_tools:
+  - artex
+  - antifox
+  - cyberstrikeai
+  - cairn
+  - pentagi

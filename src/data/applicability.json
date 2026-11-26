@@ -250,9 +250,16 @@
   },
   "crowdstrike-artex-sk-finance-2026-10": {
     "status": "attacker_tool_only",
-    "reviewed": "2026-10-23",
+    "reviewed": "2026-11-26",
     "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
-    "note": "The named AI product is used by the attacker. No reviewed mapping from owning that product to the reported victim conditions is available.",
+    "note": "The named AI product is used by the attacker. Hunt.io's jump server, Claude Code Router, and operator-written skills are on that attacker's host, not a victim product exposure.",
+    "rules": []
+  },
+  "csirt-italia-ai-agent-compromise-campaigns-2026-11": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "ARTEX, CyberStrikeAI, DeepSeek Harness, and PentAGI are the attacker's tools. The bulletin does not name a victim AI product.",
     "rules": []
   },
   "cursor-curxecute-cve-2025-54135": {
@@ -478,6 +485,13 @@
         ]
       }
     ]
+  },
+  "greynoise-papercut-ai-campaign-2026-09": {
+    "status": "attacker_tool_only",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "note": "Codex, DeepSeek, and the recovered AGENTS.md are the attacker's tools. PaperCut NG/MF is the victim product and is not an AI product in this catalog.",
+    "rules": []
   },
   "gtg-1002-anthropic-claude-code-espionage-2025-11": {
     "status": "attacker_tool_only",
@@ -929,6 +943,28 @@
           "https://www.wiz.io/blog/s1ngularitys-aftermath",
           "https://nx.dev/blog/s1ngularity-postmortem",
           "https://snyk.io/blog/weaponizing-ai-coding-agents-for-malware-in-the-nx-malicious-package/"
+        ]
+      }
+    ]
+  },
+  "shadowserver-exposed-ai-attack-frameworks-honeypots-2026-11": {
+    "status": "mapped",
+    "reviewed": "2026-11-26",
+    "review_basis": "Editorial applicability reviewed against the catalog source account; not a scan or independent incident verification.",
+    "stage_id": "secrets",
+    "action": "Look for repeated requests for .env files, Git metadata, and LLM credential paths from hosts that also probe public applications.",
+    "rules": [
+      {
+        "tools": ["ai-api-keys"],
+        "systems": [],
+        "mcp": false,
+        "relationship": "credential",
+        "reason": "Shadowserver says about one in ten honeypot events from these frameworks requested .env files, Git metadata, or default Jenkins logins, and that the same hosts also probed LLM listing and MCP endpoints and AI coding-assistant credential files.",
+        "conditions": [
+          "A request for an environment or credential file is not by itself evidence of a named framework. Pair it with the other paths Shadowserver describes."
+        ],
+        "source_urls": [
+          "https://www.shadowserver.org/news/agentic-ai-attack-frameworks-in-the-wild-what-our-scans-and-honeypots-show/"
         ]
       }
     ]

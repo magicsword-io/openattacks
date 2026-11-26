@@ -1,80 +1,206 @@
 id: greynoise-papercut-ai-campaign-2026-09
-name: GreyNoise PaperCut campaign uses Codex-harness agents with DeepSeek against 395 organizations
-date_reported: 2026-09-09
+name: GreyNoise PaperCut campaign uses Codex and DeepSeek, with the attacker's AGENTS.md recovered
+date_reported: "2026-09-09"
+date_activity_start: "2026-08-31"
+date_activity_end: "2026-09-02"
 researcher: GreyNoise Intelligence
 org: GreyNoise
 sources:
   - url: https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
-    title: "GreyNoise: AI-Orchestrated Campaign Against PaperCut NG/MF"
+    title: "Agents Gone Wild: An AI-Orchestrated Global Campaign Against PaperCut NG/MF"
+    publisher: GreyNoise
+  - url: https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+    title: "Inside a PaperCut Attacker's AI Toolkit: Agent Instructions, Exploit Code, a Second RCE, and Victims Across 45+ Countries"
+    publisher: Hunt.io
 borderline: false
 borderline_note: null
 ai_role: attacker_uses_ai_as_operator
 ai_role_secondary: null
-ai_role_detail: "Adversary deploys autonomous AI agents (Codex-harness + DeepSeek models) to exploit PaperCut print management vulnerabilities and conduct post-exploitation against 395 organizations"
-technique_summary: "Sep 9, 2026: GreyNoise identified campaign exploiting PaperCut NG/MF print management servers (CVE-2023-27350, CVE-2023-27351 path traversal + RCE). Attacker deploys 'Codex-harness' framework with DeepSeek Coder and DeepSeek V3 models. Workflow: (1) Mass scan for exposed PaperCut servers (9191/tcp, 9192/tcp); (2) Exploit CVEs to gain initial RCE; (3) Deploy AI agent with 'post-exploitation', 'credential-harvesting', 'lateral-movement' skills; (4) Agent autonomously enumerates Active Directory, identifies print job logs containing credentials, extracts passwords from print queues; (5) Pivots to fileservers and workstations; (6) Deploys ransomware or sells access. GreyNoise observed 395 organizations compromised Aug-Sep 2026 (healthcare, education, government, finance). Agents generated exploits in real-time adapting to endpoint security. Detection: monitor PaperCut servers for exploitation (CVE-2023-27350, CVE-2023-27351); detect DeepSeek API traffic from print servers; alert on rapid AD enumeration post-PaperCut compromise; review print job logs for credential exposure; monitor lateral movement from print infrastructure."
-initial_access: "Exploitation of PaperCut NG/MF servers via CVE-2023-27350 and CVE-2023-27351 (path traversal + RCE)"
+ai_role_detail: "GreyNoise describes hundreds of agents on the OpenAI Codex harness with a DeepSeek model. Hunt.io recovered the AGENTS.md that instructed that agent, including a jailbreak section and a cap of 25 concurrent subagents."
+technique_summary: "GreyNoise (9 September 2026) says that on 31 August 2026 a likely Russian-speaking actor used 45.142.193[.]132 and AI to develop and run exploits for PaperCut NG/MF CVE-2026-81578 and CVE-2026-82078. PaperCut had disclosed those flaws on 27 August 2026. CVE-2026-81578 is an unauthenticated request that can reach an admin-only Tapestry component. CVE-2026-82078 is unsafe reflection in the JDBC driver loading path. GreyNoise had already been tracking that address since early July 2026 for attacks on other internet-facing products. The actor used the OpenAI Codex harness with a DeepSeek model, not an OpenAI model, plus public offensive tools. GreyNoise reports at least 440 compromised PaperCut instances at 395 organizations in 48 countries, with other victims it could not tie to a named organization. Education was the largest sector in its table. Domain admin was achieved at 12 organizations. The actor went from an empty workspace to first remote code execution on a real victim in under four hours, to first domain admin two hours after that, and then to 11 organizations in 26 seconds once the campaign was running. One United States high school went from initial access to domain admin in seven minutes. Where domain admin was reached, the fastest time was five minutes and the longest was 144 minutes. GreyNoise describes three paths: harvesting LSASS and registry secrets when the PaperCut host was a domain member, noPac where CVE-2021-42278 and CVE-2021-42287 were unpatched, and adding a new account to Domain Admins when PaperCut already ran with that privilege. In all three, the actor used DCSync. The actor tried to skip 28 countries and the agents did not stick to that list. GreyNoise says it is unclear whether the actor was packaging access for others or would steal data or deploy ransomware itself, and that other PaperCut intrusions in the past have led to extortion. Cloudflare's WAF stopped one attempt. Hunt.io (15 October 2026) recovered three open directories on the same host, ports 8000, 18080, and 18081. pupercut/poc/CVE-2026-81578-82078/AGENTS.md is a 19 KB Russian and English system prompt for a Codex agent paired with a DeepSeek model. It tells the agent to assume the bug exists, to switch approach after two failures, and to write a state file about every ten minutes. An underground-mode section frames the work as an authorized training exercise, which Hunt.io describes as a jailbreak, and the file allows up to 25 concurrent subagents. Hunt.io says that cap is the mechanism behind GreyNoise's description of hundreds of agents. Hunt.io also documents a second remote-code path through PaperCut's XML-RPC API, using api.setConfigValue and api.lookUpUserNameByCardNo when the API allowlist is too open or no API token is set. On the host, Hunt.io found chisel with cron persistence for a reverse SOCKS5 tunnel, 2,165 logged exploit attempts of which 13 succeeded and 5 were interactive sessions, 1,005 hosts in the actor's reconnaissance pool across at least 45 countries, and 46 packaged Active Directory domains. A self-signed certificate issued by a PentAGI CA, DNS name pentagi.local, on port 33333, observed from 7 April to 6 July 2026, is what Hunt.io uses to tie the server to PentAGI. Hunt.io says that issuer appears on many unrelated hosts and does not by itself identify this operator's other servers."
+initial_access: "Exploitation of PaperCut NG/MF CVE-2026-81578 and CVE-2026-82078. Hunt.io also documents a second path through the XML-RPC methods api.setConfigValue and api.lookUpUserNameByCardNo when API access controls are weak."
 ai_tooling_and_models:
-  - Codex-harness autonomous agent framework
-  - DeepSeek Coder
-  - DeepSeek V3
+  - "OpenAI Codex harness"
+  - DeepSeek
+  - PentAGI
+frameworks:
+  - pentagi
 other_tooling:
-  - PaperCut NG/MF CVE-2023-27350, CVE-2023-27351 exploits
-  - Active Directory enumeration
-  - Print job credential harvesting
-  - Ransomware (some cases)
-victims_and_sectors: "395 organizations compromised Aug-Sep 2026; healthcare, education, government, finance; print management infrastructure"
+  - chisel
+  - "PaperCut NG/MF CVE-2026-81578 and CVE-2026-82078"
+  - "XML-RPC methods api.setConfigValue and api.lookUpUserNameByCardNo"
+  - "Public offensive tools GreyNoise lists, including Mimikatz, Rubeus, Impacket, NetExec, Certipy, and ligolo-ng. GreyNoise says not all of them were observed in use."
+victims_and_sectors: "GreyNoise: at least 440 PaperCut NG/MF instances at 395 organizations in 48 countries, with education the largest sector in its table, and domain admin at 12 organizations. Hunt.io: the actor's reconnaissance pool listed 1,005 hosts across at least 45 countries, and packaged data covered 46 Active Directory domains. The 1,005 figure is the actor's target list, not a count of compromises."
 regions:
   - Multiple regions
-attribution_or_cluster: "Unknown actor; financially motivated (ransomware, access sales); sophisticated AI agent deployment"
-scale_and_metrics: "395 organizations compromised Aug-Sep 2026 via PaperCut exploitation + AI agent post-exploitation"
-prevention_angle: "Patch PaperCut NG/MF (CVE-2023-27350, CVE-2023-27351); segment print management servers; monitor DeepSeek API traffic from infrastructure hosts; implement least-privilege for print servers; disable print job logging where possible or encrypt logs; detect rapid AD enumeration; use EDR on print servers; monitor lateral movement from print infrastructure"
+region_notes: "GreyNoise publishes a victim table across 48 countries and says the actor tried to avoid 28 countries, including some that still appear in the victim table. Hunt.io places the orchestration host in Amsterdam. That is hosting, not a victim country. The actor's country is not stated. GreyNoise describes the actor as likely Russian-speaking."
+attribution_or_cluster: "GreyNoise: a likely Russian-speaking actor, motive not settled. Hunt.io cites that assessment and adds host artifacts. Hunt.io also cites a Blackpoint Cyber follow-up that this entry does not use, because that write-up was not located."
+scale_and_metrics: "GreyNoise: 440 instances, 395 organizations, 48 countries, domain admin at 12, first real remote code execution in under four hours, 11 organizations in 26 seconds. Hunt.io logs: 2,165 attempts, 13 marked ok, 5 interactive sessions, 1,005 hosts in the recon pool, 46 packaged Active Directory domains, 45 targets with a live reverse SOCKS5 pivot at capture."
+prevention_angle: "Patch PaperCut NG/MF for CVE-2026-81578 and CVE-2026-82078, and restrict the XML-RPC API so it is not reachable with a default or empty token. GreyNoise says a Cloudflare WAF stopped one attempt and that domain admin was not uniform. Hunt.io says detection should follow behavior, including unexpected child processes of the PaperCut server, registry-hive collection, DCSync, and chisel with cron, rather than blocking the PentAGI issuer or this one address. The issuer is shared by many PentAGI installs."
 related_magicsword_projects: []
-source_notes: "GreyNoise Intelligence analysis. Campaign demonstrates AI agent use in mass exploitation and post-compromise automation. Detection: alert on PaperCut CVE exploitation attempts, monitor DeepSeek API traffic (api.deepseek.com) from print servers or unexpected hosts, detect rapid AD queries from print server IPs, review print job logs for credential exposure, monitor lateral movement patterns from print infrastructure to fileservers/workstations."
-last_reviewed: 2026-11-04
+source_notes: "The campaign dates, victim table, and the three domain-admin paths are from the 9 September 2026 GreyNoise article. That article says it summarizes a longer GreyNoise Labs version. CVE-2026-81578 and CVE-2026-82078 are the flaws GreyNoise names. An earlier catalog text cited CVE-2023-27350 and CVE-2023-27351 and stated ransomware deployment. Those claims are not in the GreyNoise article and are withdrawn here. GreyNoise says follow-on theft or ransomware is unclear. Hunt.io's 15 October 2026 post is the source for the open directories, AGENTS.md, the XML-RPC path, the chisel cron setup, the log counts, and the PentAGI certificate. Hunt.io cites Blackpoint Cyber for a tooling follow-up. That follow-up was not found, so it is not a source here. Hunt.io says the PentAGI issuer is common and that filename pivots stayed on 45.142.193[.]132. The address 45.158.196[.]75 is GreyNoise's second execution host. File hashes below are the MD5 values GreyNoise published for collector and ADCS binaries, plus the PentAGI certificate SHA-256 from Hunt.io. No victim addresses are included. chisel is not in LOLBAS or LOLRMM, so it is not listed under related projects. The operator-written AGENTS.md is not a published skill."
+last_reviewed: "2026-11-26"
+confidence: high
+category: adversary-use-of-ai
+attribution:
+  actor_name: Likely Russian-speaking actor
+  country: Unknown
+  motivation: unknown
+  attributed_by: "GreyNoise Intelligence; Hunt.io for the host artifacts"
+  confidence: medium
+ai_involvement_confidence: confirmed
+detections:
+  - name: Suspicious Java Class File Created in PaperCut Server Library
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/initial_access_papercut_java_class_file.toml
+    notes: "File events. A Java .class file created under the PaperCut server library path. Elastic wrote this rule for CVE-2026-82078 chained with CVE-2026-81578, which are the flaws GreyNoise and Hunt.io describe. Legitimate upgrades also write class files there."
+  - name: Suspicious Child Process of PaperCut Server Component
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/initial_access_papercut_suspicious_child_process.toml
+    notes: "Windows process creation. A suspicious child of pc-app.exe or pc-printjob-spooler.exe. Elastic ties the pc-app.exe case to CVE-2026-81578 and CVE-2026-82078. PaperCut Hive's spooler is named in the rule and is not the NG/MF campaign GreyNoise describes."
+  - name: Dumping of Sensitive Hives Via Reg.EXE
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_reg_dumping_sensitive_hives.yml
+    notes: "Windows process creation. reg.exe saving or exporting SAM, SYSTEM, or SECURITY. GreyNoise published hive-save commands for SYSTEM and SECURITY. Hunt.io recovered SECURITY and SYSTEM hives and a collector that calls the backup privileges used for that export."
+  - name: Windows Sensitive Registry Hive Dump Via CommandLine
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_sensitive_registry_hive_dump_via_commandline.yml
+    notes: "Windows process creation. reg.exe save or export of sam, system, or security. Same hive-export behavior as the Sigma rule, for Splunk CIM process data."
+  - name: Windows AD Replication Request Initiated by User Account
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_ad_replication_request_initiated_by_user_account.yml
+    notes: "Windows Security 4662. A user account, not a machine account, requesting directory replication. GreyNoise says DCSync was used on every path where domain admin was achieved. It does not say the requesting account failed the machine-account exclusion in this rule."
+  - name: Active Directory Replication from Non Machine Account - DcSync Indicator
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_ad_replication_non_machine_account.yml
+    notes: "Windows Security 4662. Replication rights requested by an account whose name does not end in $. Same DCSync behavior as the Splunk rule."
+  - name: Potential Protocol Tunneling via Chisel Client
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/linux/command_and_control_linux_chisel_client_activity.toml
+    notes: "Linux process creation. Chisel client flags plus a connection. Hunt.io recovered a chisel binary and scripts that keep a reverse SOCKS5 client running. The rule does not know the campaign's directory or port."
+  - name: Suspicious Cron File Creation
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/linux/file_event/file_event_lnx_susp_cron_file_created.yml
+    notes: "Linux file events. A new file under cron directories. Hunt.io says the chisel deploy script adds cron entries. A crontab line edit that does not create a file in those directories will not match. Administrators create cron files too."
+  - name: Rules that do not match this campaign's published behavior
+    format: guidance
+    notes: "security-detections-mcp on 26 November 2026 returned Splunk's PaperCut NG Remote Web Access Attempt and Windows PaperCut NG Spawn Shell. Both cite the 2023 PaperCut advisory and URI paths or a generic pc-app.exe shell. They are not cited, because GreyNoise and Hunt.io describe CVE-2026-81578 and CVE-2026-82078, and Elastic's 2026 rules name those CVEs. No public rule encodes AGENTS.md, the underground-mode jailbreak, the XML-RPC method names, or the PentAGI certificate. chisel is not in LOLBAS or LOLRMM."
+timeline:
+  first_seen: "2026-07"
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-07"
+      source: GreyNoise Intelligence
+      summary: "GreyNoise says it had been tracking 45.142.193[.]132 since early July 2026 for attacks against other internet-facing products, before the PaperCut work."
+    - date: "2026-04-07"
+      source: Hunt.io
+      summary: "Hunt.io's certificate data shows a PentAGI CA certificate on port 33333 of that host from 7 April to 6 July 2026. Hunt.io says the same issuer is common to many unrelated hosts."
+    - date: "2026-08-27"
+      source: GreyNoise Intelligence
+      summary: "PaperCut discloses CVE-2026-81578 and CVE-2026-82078. GreyNoise dates the actor's PaperCut exploitation to 31 August through 2 September."
+    - date: "2026-08-31"
+      source: GreyNoise Intelligence
+      summary: "The actor builds the exploit, reaches a first real victim in under four hours, and gets domain admin on that victim about two hours later. GreyNoise says the actor tried to exclude 28 countries."
+    - date: "2026-09-01"
+      source: GreyNoise Intelligence
+      summary: "Agents launch the wider campaign. GreyNoise reports 11 organizations in 26 seconds and more than 223 PaperCut systems that day. A Cloudflare WAF stops one attempt."
+    - date: "2026-09-02"
+      source: GreyNoise Intelligence
+      summary: "GreyNoise's last remote code execution of 2 September covers the remainder of the PaperCut systems in its account."
+    - date: "2026-09-09"
+      source: GreyNoise Intelligence
+      summary: "GreyNoise publishes the campaign article, including the 440, 395, and 48 figures and the orchestration address."
+    - date: "2026-10-15"
+      source: Hunt.io
+      summary: "Hunt.io publishes the open directories, AGENTS.md, the XML-RPC path, the chisel cron setup, the log counts, and the PentAGI certificate."
+    - date: "2026-11-26"
+      source: OpenAttacks
+      summary: "The entry is aligned to the GreyNoise CVEs and to the Hunt.io artifacts. The previous CVE-2023-27350 and ransomware claims are removed because they are not in the cited GreyNoise article."
 iocs:
   domains: []
-  ips: []
-  hashes: []
+  ips:
+    - 45.142.193[.]132
+    - 45.158.196[.]75
+  hashes:
+    - 528cd4e69ecfa5191adbcf6ef28667bf
+    - ce870a91e8d27e8f663f0687abc60b04
+    - a6437ac3d6798090a218520985d36a3f
+    - fc92dfafa7aa741c5f2b9cbcf75d1d19
+    - 974decb9ff4c8f9ccb0937c96d513347
+    - 12603f7a89c66717661f4695e2f0d474036e42ee1631b2070aa88d590d1b79c3
   urls: []
-atlas_techniques:
-  - id: AML.T0040
-    rationale: "Attacker deploys autonomous AI agents for post-exploitation following PaperCut vulnerability exploitation"
-    source_urls:
-      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
-  - id: AML.T0016.002
-    rationale: "AI automates credential harvesting and lateral movement"
-    source_urls:
-      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
 attack_flow:
   nodes:
-    - id: scan-exploit
-      title: Mass scan and exploit PaperCut
-      description: "Attacker scans internet for exposed PaperCut NG/MF servers (9191/tcp, 9192/tcp); exploits CVE-2023-27350 and CVE-2023-27351 for path traversal + RCE; gains foothold on print management infrastructure"
-      kind: access
-      source_urls:
-        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
-    - id: deploy-agent
-      title: Deploy Codex-harness AI agent
-      description: "Install Codex-harness framework with DeepSeek Coder and DeepSeek V3 on compromised PaperCut server; agent loads 'post-exploitation', 'credential-harvesting', 'lateral-movement' skills"
+    - id: agents-md
+      title: Codex, DeepSeek, and AGENTS.md
+      description: "GreyNoise says the actor ran hundreds of agents on the OpenAI Codex harness with a DeepSeek model. Hunt.io recovered AGENTS.md, which tells the agent to assume the bug exists, switch approach after two failures, write a status file about every ten minutes, treat the work as an authorized training exercise, and run up to 25 subagents."
       kind: ai
       source_urls:
         - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
-    - id: autonomous-post-exploit
-      title: Automated credential harvesting and lateral movement
-      description: "Agent autonomously enumerates AD, extracts credentials from print job logs (users print docs with passwords visible), identifies fileservers and workstations, pivots laterally, adapts exploits to endpoint security in real-time"
+        - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+    - id: exploit
+      title: PaperCut remote code execution
+      description: "GreyNoise dates exploitation of CVE-2026-81578 and CVE-2026-82078 from 31 August to 2 September 2026. Hunt.io documents the same chain on the open directory and a second path through the XML-RPC methods api.setConfigValue and api.lookUpUserNameByCardNo when API access controls are weak."
+      kind: access
+      source_urls:
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+        - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+    - id: creds
+      title: Hive and LSA collection
+      description: "GreyNoise says a domain-joined PaperCut host led to LSASS and registry-secret harvesting. Hunt.io recovered SYSTEM and SECURITY hives and Windows collectors that export those hives and read LSA secrets. GreyNoise published the hive paths and collector hashes."
       kind: execution
       source_urls:
         - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
-    - id: ransomware-sales
-      title: Ransomware deployment or access sales
-      description: "Deploy ransomware or sell access to other actors; 395 organizations compromised Aug-Sep 2026; print infrastructure pivot enables enterprise-wide compromise"
+        - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+    - id: domain
+      title: Domain admin at 12 organizations
+      description: "GreyNoise says domain admin was achieved at 12 organizations, by pass-the-hash, by noPac where CVE-2021-42278 and CVE-2021-42287 were unpatched, or by adding an account when PaperCut already ran as a domain admin. All three paths used DCSync. GreyNoise does not claim domain admin for the other victims."
       kind: impact
       source_urls:
         - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+    - id: tunnel
+      title: Chisel cron tunnel and a PentAGI certificate
+      description: "Hunt.io recovered chisel, stage and watch scripts, and cron entries that keep a reverse SOCKS5 tunnel back to 45.142.193[.]132. GreyNoise separately published ligolo-ng paths. A PentAGI CA certificate on port 33333, from 7 April to 6 July 2026, is Hunt.io's link to PentAGI. Hunt.io says that issuer is shared too widely to pivot to other hosts."
+      kind: execution
+      source_urls:
+        - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+        - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
   edges:
-    - source: scan-exploit
-      target: deploy-agent
-    - source: deploy-agent
-      target: autonomous-post-exploit
-    - source: autonomous-post-exploit
-      target: ransomware-sales
+    - source: agents-md
+      target: exploit
+    - source: exploit
+      target: creds
+    - source: creds
+      target: domain
+    - source: exploit
+      target: tunnel
+atlas_techniques:
+  - id: AML.T0040
+    rationale: "GreyNoise says the Codex harness called a DeepSeek model. That is model inference from the attacker's orchestration host, not a victim-hosted model."
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+  - id: AML.T0016.002
+    rationale: "GreyNoise says the agents developed and adapted the PaperCut exploits and the post-exploitation kits. Hunt.io's status files record the agent changing targets and tooling between runs."
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+      - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+  - id: AML.T0054
+    rationale: "Hunt.io says the AGENTS.md underground-mode section tells the model to act as a pentesting assistant and frames the work as an authorized training exercise so safety checks are bypassed."
+    source_urls:
+      - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+  - id: AML.T0081
+    rationale: "AGENTS.md is the agent's operating instructions. It sets the retry rule, the status-file cadence, the jailbreak framing, and the subagent cap."
+    source_urls:
+      - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+  - id: AML.T0103
+    rationale: "GreyNoise describes hundreds of agents on the Codex harness. Hunt.io says AGENTS.md runs up to 25 concurrent subagents and calls that the mechanism behind the larger count."
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+      - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+  - id: AML.T0049
+    rationale: "The initial access GreyNoise and Hunt.io describe is exploitation of public PaperCut NG/MF services, CVE-2026-81578 and CVE-2026-82078, plus the XML-RPC path when that API is weakly locked down."
+    source_urls:
+      - https://www.greynoise.io/blog/ai-orchestrated-campaign-against-papercut-ng-mf
+      - https://hunt.io/blog/papercut-attacker-ai-toolkit-exploit-code-second-rce
+linked_tools:
+  - pentagi

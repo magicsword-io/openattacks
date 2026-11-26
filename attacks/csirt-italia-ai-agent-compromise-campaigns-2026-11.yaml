@@ -1,0 +1,162 @@
+id: csirt-italia-ai-agent-compromise-campaigns-2026-11
+name: "CSIRT Italia: AI agents in mass compromise campaigns"
+date_reported: "2026-11-23"
+researcher: CSIRT Italia
+org: Agenzia per la cybersicurezza nazionale
+sources:
+  - url: https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    title: Impiego di agenti di IA in campagne di compromissione automatizzate
+    publisher: CSIRT Italia
+  - url: https://www.bleepingcomputer.com/news/security/italy-and-switzerland-warn-of-autonomous-ai-driven-cyberattacks/
+    title: Italy and Switzerland warn of autonomous AI-driven cyberattacks
+    publisher: BleepingComputer
+  - url: https://www.cybertrends.it/attacchi-informatici-rilevate-campagne-di-compromissione-con-agenti-ia/
+    title: Attacchi informatici, rilevate campagne di compromissione con agenti IA
+    publisher: Cybersecurity Trends
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "CSIRT Italia says the campaigns used ARTEX, CyberStrikeAI, DeepSeek Harness in Red Team Mode, and PentAGI. The DeepSeek Harness write-up is the bulletin's worked example of the jailbreak and the six-agent layout."
+technique_summary: "CSIRT Italia bulletin BL01/261123/CSIRT-ITA, version 2.0, 23 November 2026, says the agency saw mass compromise campaigns in Italy run by autonomous AI agents. The tools it names in those campaigns are ARTEX, CyberStrikeAI, DeepSeek Harness with a Red Team Mode plugin, and PentAGI. For DeepSeek Harness, ACN describes an open-source agent framework pointed at DeepSeek's cloud model. A Markdown system prompt, which ACN calls prompt injection, frames the work as a scored team exercise in a controlled environment so the model accepts requests it would otherwise refuse. The layout ACN describes has six agents: a coordinator that plans and assigns work, plus agents for information gathering, asset reconnaissance and classification, vulnerability finding, exploitation, and penetration and persistence. The operator supplies a subnet and plain-language instructions in a web UI, and can exclude hosts, add constraints, or stop the agents. From that subnet the agents reconnoiter, prefer known vulnerabilities and unauthenticated interfaces, then can set up tunnels and remote-control components and use the compromised host to reach internal systems and networks beyond the original scope. ACN says that in the campaigns it watched, the agents also wrote malicious code in real time to get past endpoint defenses, chained low-impact flaws and misconfigurations, and in directly observed cases compromised a large number of systems within a few hours with agents running in parallel. ACN publishes daily MISP feeds for Artex, CyberStrike, PentAGI, DeepSeek Harness, Redamon, CAIRN, and HexStrike infrastructure, plus YARA rules, open-proxy and Tor exit lists. It tells organizations to prioritize the CVEs listed in the bulletin. BleepingComputer (Bill Toulas, 25 November 2026) reports the bulletin alongside a Swiss NCSC warning about the first AI-agent compromises that center had received. That Swiss notice is separate reporting and is not evidence for the Italian campaigns. Cybersecurity Trends (24 November 2026) restates the bulletin."
+initial_access: "Exploitation of known vulnerabilities and unauthenticated interfaces on exposed systems. ACN does not name the vulnerabilities in the public summary used here, and it points defenders to the CVE list in the bulletin."
+ai_tooling_and_models:
+  - ARTEX
+  - CyberStrikeAI
+  - DeepSeek Harness
+  - PentAGI
+  - DeepSeek
+frameworks:
+  - artex
+  - cyberstrikeai
+  - pentagi
+other_tooling:
+  - "DeepSeek Harness Red Team Mode plugin. ACN does not name the plugin repository."
+  - "Daily MISP feeds, YARA rules, open-proxy lists, and Tor exit lists published by CSIRT Italia"
+victims_and_sectors: "Organizations in Italy with exposed systems. ACN does not name victims, sectors, or a count. It says directly observed cases compromised a large number of systems within a few hours."
+regions:
+  - Italy
+region_notes: "Italy is the country where CSIRT Italia says it saw the campaigns. The actor's country is not stated. BleepingComputer also summarizes a Swiss NCSC warning. Those Swiss victims belong to that separate notice, not to this bulletin."
+attribution_or_cluster: "Unnamed operators. CSIRT Italia does not name a group, a country, or a motive."
+scale_and_metrics: "Bulletin BL01/261123/CSIRT-ITA, version 2.0, dated 23 November 2026. No victim count is published. ACN says some directly observed cases compromised a large number of systems in a few hours, with agents working in parallel and without a human in the loop between steps."
+prevention_angle: "Patch internet-exposed systems and take unpatched ones off the internet until they are updated. Remove management consoles, admin APIs, and CI/CD interfaces from direct exposure. Use least privilege, MFA on interactive access, and short-lived credentials for workloads. Segment exposed hosts and limit their outbound traffic. Watch identity, API, and data-access sequences, because ACN says single events look like normal use. ACN's MISP feeds are daily and each indicator is valid only for the timeframe in its comment. ACN says not every indicator is malicious and that it is not responsible for blocklisting them."
+related_magicsword_projects: []
+source_notes: "The narrative is from bulletin BL01/261123/CSIRT-ITA, version 2.0, 23 November 2026. Indicators of compromise are in the MISP feeds, not on the public bulletin page, so none are copied here. ACN says infrastructure changes quickly, some servers run briefly on known CDNs, and an indicator is valid only for the timeframe in its comment. ACN also says not every indicator is malicious. ACN does not name which Red Team Mode plugin repository was used, so none is linked. The MISP feed list also names Redamon, CAIRN, and HexStrike infrastructure. The bulletin's list of tools used in the campaigns is ARTEX, CyberStrikeAI, DeepSeek Harness in Red Team Mode, and PentAGI. BleepingComputer is the source for the Swiss NCSC summary. There is no Swiss NCSC entry in this catalog to cross-reference. Cybersecurity Trends restates ACN and is not an independent count."
+last_reviewed: "2026-11-26"
+confidence: high
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unnamed operators
+  country: Unknown
+  motivation: unknown
+  attributed_by: CSIRT Italia, Agenzia per la cybersicurezza nazionale
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: Web Server Discovery or Fuzzing Activity
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/reconnaissance_web_server_discovery_or_fuzzing_activity.toml
+    notes: "Web access logs. A burst of GET requests from one source that return 404 or 403. Matches the reconnaissance of exposed applications ACN describes. It does not identify ARTEX, CyberStrikeAI, PentAGI, or DeepSeek Harness."
+  - name: Web or Application Server Spawning a Shell
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/web_or_application_server_spawning_a_shell.yml
+    notes: "Process creation. A shell started by a web or application server process. Matches follow-on execution after an exposed application is compromised. ACN does not publish the process names, so this is a class rule, not a campaign signature."
+  - name: Path Traversal Exploitation Attempts
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/web/webserver_generic/web_path_traversal_exploitation_attempt.yml
+    notes: "Web server logs. A small set of traversal strings in the query. ACN says the agents exploit known vulnerabilities on exposed systems and does not publish the request strings, so this is a class rule for that activity. A hit is not evidence of these campaigns."
+  - name: No public rule for the named frameworks or the MISP indicators
+    format: guidance
+    notes: "security-detections-mcp searches on 26 November 2026 did not return a Sigma, Splunk, or Elastic rule that names ARTEX, CyberStrikeAI, PentAGI, or DeepSeek Harness. The indicators are in daily MISP feeds, not on the public page, so none were searched as IOC tokens. ACN does not name the tunnel software, so tunnel-tool rules are not cited. The real-time code ACN describes has no stable command line in the bulletin."
+timeline:
+  first_seen: null
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-11-23"
+      source: CSIRT Italia
+      summary: "Bulletin BL01/261123/CSIRT-ITA version 2.0 describes mass compromise campaigns in Italy run with ARTEX, CyberStrikeAI, DeepSeek Harness in Red Team Mode, and PentAGI. ACN does not give a start date."
+    - date: "2026-11-24"
+      source: Cybersecurity Trends
+      summary: "Cybersecurity Trends restates the bulletin."
+    - date: "2026-11-25"
+      source: BleepingComputer
+      summary: "Bill Toulas reports the Italian bulletin together with a separate Swiss NCSC warning about the first AI-agent compromises that center had received."
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+attack_flow:
+  nodes:
+    - id: prompt
+      title: Markdown prompt and six agents
+      description: "DeepSeek Harness, as ACN describes it, ships a Markdown system prompt that frames the work as a scored team exercise so the cloud model accepts requests it would refuse. Six agents run under a coordinator: information gathering, asset reconnaissance and classification, vulnerability finding, exploitation, and penetration and persistence."
+      kind: ai
+      source_urls:
+        - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    - id: task
+      title: Operator sets a subnet in the web UI
+      description: "The operator gives a subnet and plain-language instructions in a web UI, and can exclude hosts, add constraints, or stop the agents. ACN also names ARTEX, CyberStrikeAI, and PentAGI as tools used in the campaigns. It does not say every campaign used this DeepSeek Harness layout."
+      kind: access
+      source_urls:
+        - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    - id: exploit
+      title: Known flaws and open interfaces first
+      description: "From the assigned subnet the agents reconnoiter, judge what can be compromised, and prefer known vulnerabilities and interfaces that do not require authentication."
+      kind: execution
+      source_urls:
+        - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    - id: pivot
+      title: Tunnels and scope beyond the subnet
+      description: "After a host is compromised, the system can set up tunnels and remote-control components and use that host to reach internal systems. ACN says the activity can continue into networks the operator did not name."
+      kind: execution
+      source_urls:
+        - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+    - id: adapt
+      title: Code written during the intrusion
+      description: "In the campaigns ACN watched, the agents chained misconfigurations and low-impact flaws and wrote malicious code in real time to get past endpoint defenses. ACN says some directly observed cases compromised a large number of systems within a few hours."
+      kind: impact
+      source_urls:
+        - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  edges:
+    - source: prompt
+      target: task
+    - source: task
+      target: exploit
+    - source: exploit
+      target: pivot
+    - source: pivot
+      target: adapt
+atlas_techniques:
+  - id: AML.T0054
+    rationale: "ACN says the Markdown prompt frames the work as a scored team exercise so DeepSeek's cloud model accepts requests it would otherwise refuse."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0051
+    rationale: "ACN calls that Markdown system prompt prompt injection. It is the operator's instruction to the model, not content planted in a victim system."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0103
+    rationale: "ACN describes a deployed six-agent layout and names ARTEX, CyberStrikeAI, and PentAGI as tools used in the campaigns."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0053
+    rationale: "The agents carry the reconnaissance, vulnerability, exploitation, and persistence steps after the operator supplies a subnet and plain-language instructions."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0006
+    rationale: "From the operator's subnet the agents reconnoiter the assets in scope before they exploit them."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0049
+    rationale: "ACN says the agents prefer known vulnerabilities and unauthenticated interfaces on exposed systems."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+  - id: AML.T0016.002
+    rationale: "ACN says the agents wrote malicious code in real time to get past endpoint defenses."
+    source_urls:
+      - https://www.acn.gov.it/portale/w/impiego-di-agenti-di-ia-in-campagne-di-compromissione-automatizzate
+linked_tools:
+  - artex
+  - cyberstrikeai
+  - pentagi

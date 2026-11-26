@@ -39,6 +39,11 @@
     "note": "Node, IRSA, and Terraform-runner credentials were used from the attacker server for Terraform state, Secrets Manager, and SSM sessions.",
     "reviewed": "2026-11-24"
   },
+  "intent-ids": {
+    "profile": "cloud",
+    "note": "Intent IDs leak into cloud resource and session names. No public rule encodes the iNNNN pattern. Pair the digits with an anchor such as artex- or pentest-.",
+    "reviewed": "2026-11-26"
+  },
   "open-dir": {
     "profile": "credentials",
     "note": "The open directory showed forged identity-provider tokens, SSH private keys, GitHub Actions secrets, Anthropic API keys, and coding-assistant session histories.",
