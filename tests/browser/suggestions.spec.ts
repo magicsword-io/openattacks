@@ -18,11 +18,11 @@ test("the landing hero links to all submission options without JavaScript", asyn
   for (const width of [1440, 360]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto("/");
-    const suggest = page
+    const report = page
       .locator(".catalog-intro")
-      .getByRole("link", { name: "Suggest an update" });
-    await expect(suggest).toBeInViewport();
-    await suggest.click();
+      .getByRole("link", { name: "Report an incident" });
+    await expect(report).toBeInViewport();
+    await report.click();
     await expect(
       page.getByRole("heading", { name: "Suggest an update" }),
     ).toBeVisible();
@@ -94,7 +94,7 @@ test("the correction link prefills the related entry", async ({ page }) => {
   expect(url.searchParams.get("entry")).toBe(incident);
 });
 
-test("the header opens a keyboard-accessible incident report dialog", async ({
+test("the homepage opens a keyboard-accessible incident report dialog", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 360, height: 800 });

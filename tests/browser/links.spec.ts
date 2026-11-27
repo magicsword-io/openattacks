@@ -18,11 +18,9 @@ test("reported tools link to their projects while preserving labels and fork qua
     await expect(link).toHaveAttribute("rel", "noopener noreferrer");
   }
   await expect(
-    tooling
-      .locator(".tool-reported-label")
-      .filter({
-        hasText: "Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek",
-      }),
+    tooling.locator(".tool-reported-label").filter({
+      hasText: "Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek",
+    }),
   ).toHaveText("Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek");
   const artifact = tooling
     .locator("li")
@@ -47,10 +45,12 @@ test("primary utility links stay visible on desktop and mobile", async ({
 }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
-  const prevent = navigation.getByRole("link", {
-    name: "Prevent",
+  const banner = page.getByRole("banner");
+  const prevent = banner.getByRole("link", {
+    name: "Prevent with MagicSword (opens in a new tab)",
     exact: true,
   });
+  const about = navigation.getByRole("link", { name: "About", exact: true });
   const use = navigation.getByRole("link", {
     name: "Use with an LLM",
     exact: true,
@@ -59,10 +59,17 @@ test("primary utility links stay visible on desktop and mobile", async ({
     name: "JSON API",
     exact: true,
   });
-  for (const width of [360, 390, 768, 1440]) {
+  const rss = navigation.getByRole("link", { name: "RSS feed", exact: true });
+  await expect(navigation.getByRole("link", { name: "Prevent" })).toHaveCount(
+    0,
+  );
+  await expect(
+    banner.getByRole("link", { name: "Report an incident" }),
+  ).toHaveCount(0);
+  for (const width of [320, 360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const header = await page.locator(".site-header").boundingBox();
-    for (const link of [use, api, prevent]) {
+    for (const link of [about, use, api, prevent, rss]) {
       await expect(link).toBeVisible();
       const bounds = await link.boundingBox();
       expect(bounds!.x).toBeGreaterThanOrEqual(0);
@@ -76,9 +83,17 @@ test("primary utility links stay visible on desktop and mobile", async ({
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+    if (width < 900) {
+      const action = await prevent.boundingBox();
+      const nav = await navigation.boundingBox();
+      expect(action!.y + action!.height).toBeLessThanOrEqual(nav!.y);
+    }
   }
   await expect(use).toHaveAttribute("href", "/use/");
   await expect(api).toHaveAttribute("href", "/api/attacks.json");
+  await expect(rss).toHaveAttribute("href", "/rss.xml");
+  await expect(prevent).toHaveClass("button button-primary");
+  await expect(prevent).toHaveAttribute("target", "_blank");
   const url = new URL((await prevent.getAttribute("href"))!);
   expect(url.hostname).toBe("www.magicsword.io");
   expect(url.searchParams.get("utm_source")).toBe("openattacks");

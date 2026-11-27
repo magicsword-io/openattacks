@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Catalog from "./Catalog.astro";
+import HeaderActionDialog from "./HeaderActionDialog.astro";
+import IncidentReportForm from "./IncidentReportForm.astro";
 import TimelineChart from "./TimelineChart.astro";
 import { getAttacks, href, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
@@ -33,9 +35,14 @@ const attacks = await getAttacks();
             Find attacks for my stack
           </a>
           {showTimeline && (
-            <a class="button" href={href("suggest/")}>
-              Suggest an update
-            </a>
+            <HeaderActionDialog
+              id="incident-report-dialog"
+              label="Report an incident"
+              title="Report or suggest an update"
+              href={href("suggest/")}
+            >
+              <IncidentReportForm />
+            </HeaderActionDialog>
           )}
         </div>
       </div>
