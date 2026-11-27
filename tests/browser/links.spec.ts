@@ -18,11 +18,9 @@ test("reported tools link to their projects while preserving labels and fork qua
     await expect(link).toHaveAttribute("rel", "noopener noreferrer");
   }
   await expect(
-    tooling
-      .locator(".tool-reported-label")
-      .filter({
-        hasText: "Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek",
-      }),
+    tooling.locator(".tool-reported-label").filter({
+      hasText: "Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek",
+    }),
   ).toHaveText("Claude Code CLI via ANTHROPIC_BASE_URL to DeepSeek");
   const artifact = tooling
     .locator("li")
@@ -47,7 +45,8 @@ test("primary utility links stay visible on desktop and mobile", async ({
 }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
-  const prevent = navigation.getByRole("link", {
+  const banner = page.getByRole("banner");
+  const prevent = banner.getByRole("link", {
     name: "Prevent",
     exact: true,
   });
@@ -59,13 +58,17 @@ test("primary utility links stay visible on desktop and mobile", async ({
     name: "JSON API",
     exact: true,
   });
-  const banner = page.getByRole("banner");
   const rss = banner.getByRole("link", { name: "Follow via RSS" });
-  const report = banner.getByRole("link", { name: "Report an incident" });
+  await expect(navigation.getByRole("link", { name: "Prevent" })).toHaveCount(
+    0,
+  );
+  await expect(
+    banner.getByRole("link", { name: "Report an incident" }),
+  ).toHaveCount(0);
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const header = await page.locator(".site-header").boundingBox();
-    for (const link of [use, api, prevent, rss, report]) {
+    for (const link of [use, api, prevent, rss]) {
       await expect(link).toBeVisible();
       const bounds = await link.boundingBox();
       expect(bounds!.x).toBeGreaterThanOrEqual(0);
@@ -83,6 +86,7 @@ test("primary utility links stay visible on desktop and mobile", async ({
   await expect(use).toHaveAttribute("href", "/use/");
   await expect(api).toHaveAttribute("href", "/api/attacks.json");
   await expect(rss).toHaveAttribute("href", "/rss.xml");
+  await expect(prevent).toHaveClass("button button-primary");
   const url = new URL((await prevent.getAttribute("href"))!);
   expect(url.hostname).toBe("www.magicsword.io");
   expect(url.searchParams.get("utm_source")).toBe("openattacks");

@@ -2,11 +2,9 @@
 import "@fontsource-variable/inter-tight";
 import "@fontsource/ibm-plex-mono/400.css";
 import "../styles/global.css";
-import HeaderActionDialog from "../components/HeaderActionDialog.astro";
 import "../styles/catalog.css";
 import Icon from "../components/Icon.astro";
 import MagicSwordLogo from "../components/MagicSwordLogo.astro";
-import IncidentReportForm from "../components/IncidentReportForm.astro";
 import { href, repo, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
 import { preventionURL } from "../lib/site-links";
@@ -152,14 +150,6 @@ const imageAlt =
             Use with an LLM
           </a>
           <a href={href("api/attacks.json")}>JSON API</a>
-          <a
-            class="nav-prevent"
-            href={preventionURL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Prevent
-          </a>
         </nav>
         <div class="header-actions">
           <a
@@ -176,15 +166,16 @@ const imageAlt =
           <a class="button" href={href("rss.xml")} type="application/rss+xml">
             Follow via RSS
           </a>
-          <HeaderActionDialog
-            id="incident-report-dialog"
-            label="Report an incident"
-            title="Report or suggest an update"
-            href={href("suggest/")}
-            primary
+          <a
+            class="button button-primary"
+            href={preventionURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Prevent with MagicSword"
           >
-            <IncidentReportForm />
-          </HeaderActionDialog>
+            Prevent
+            <Icon name="arrow" size={14} />
+          </a>
           <button
             class="icon-button theme-toggle"
             aria-label="Switch to light mode"

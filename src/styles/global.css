@@ -1754,9 +1754,6 @@ p {
   .header-inner nav a {
     font-size: 11px;
   }
-  .header-inner nav a:last-child {
-    display: none;
-  }
   .header-actions .github-link {
     display: none;
   }
@@ -5642,11 +5639,6 @@ p {
   font-size: 11px;
   line-height: 1.7;
   max-width: 250px;
-}
-.header-inner nav a.nav-prevent {
-  display: flex;
-  gap: 5px;
-  color: var(--green);
 }
 @media (max-width: 680px) {
   .site-header {

@@ -6,13 +6,12 @@ interface Props {
   label: string;
   title?: string;
   href: string;
-  primary?: boolean;
 }
 
-const { id, label, title = label, href, primary = false } = Astro.props;
+const { id, label, title = label, href } = Astro.props;
 ---
 
-<a class:list={["button", { "button-primary": primary }]} href={href} data-open-dialog={id}>
+<a class="button" href={href} data-open-dialog={id}>
   {label}
 </a>
 <dialog id={id} class="header-dialog" aria-labelledby={`${id}-title`}>
@@ -51,6 +50,7 @@ const { id, label, title = label, href, primary = false } = Astro.props;
     padding: clamp(1rem, 4vw, 1.75rem);
     overflow: auto;
     color: var(--text);
+    font-size: 14px;
     background: var(--bg);
     border: 1px solid var(--subtle);
     border-radius: 12px;
@@ -74,43 +74,5 @@ const { id, label, title = label, href, primary = false } = Astro.props;
   .dialog-heading button {
     width: 44px;
     height: 44px;
-  }
-  :global(.site-header:has([data-open-dialog]) .header-actions) {
-    gap: 8px;
-  }
-  :global(.site-header:has([data-open-dialog]) .github-link span) {
-    display: none;
-  }
-  :global(.site-header:has([data-open-dialog]) .header-credit .magicsword-logo img) {
-    width: 160px;
-    height: 56px;
-    object-fit: contain;
-  }
-  @media (min-width: 901px) {
-    :global(.site-header:has([data-open-dialog]) .header-inner nav) {
-      gap: clamp(10px, 1.4vw, 20px);
-    }
-    :global(.site-header:has([data-open-dialog]) .header-inner nav a) {
-      white-space: nowrap;
-    }
-  }
-  @media (max-width: 1250px) {
-    :global(.site-header:has([data-open-dialog]) .header-credit) {
-      display: none;
-    }
-  }
-  @media (max-width: 1000px) {
-    :global(.site-header:has([data-open-dialog]) .header-inner nav .nav-about) {
-      display: none;
-    }
-  }
-  @media (max-width: 650px) {
-    :global(.site-header:has([data-open-dialog]) .header-actions) {
-      grid-column: 1 / -1;
-      grid-row: 3;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      margin: 0 0 0.5rem;
-    }
   }
 </style>

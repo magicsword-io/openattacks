@@ -607,7 +607,7 @@ test("homepage shows the dot timeline above the searchable catalog and offers op
   const stack = hero.getByRole("link", { name: "Find attacks for my stack" });
   await expect(stack).toHaveClass("button");
   await expect(
-    hero.getByRole("link", { name: "Suggest an update" }),
+    hero.getByRole("link", { name: "Report an incident" }),
   ).toHaveClass("button");
   await stack.click();
   await expect(page).toHaveURL(/\/stack\/$/);
