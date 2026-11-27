@@ -140,7 +140,6 @@ const imageAlt =
             Patterns
           </a>
           <a
-            class="nav-about"
             class:list={{ active: active === "about" }}
             href={href("about/")}
           >
@@ -150,6 +149,9 @@ const imageAlt =
             Use with an LLM
           </a>
           <a href={href("api/attacks.json")}>JSON API</a>
+          <a href={href("rss.xml")} type="application/rss+xml" aria-label="RSS feed">
+            RSS
+          </a>
         </nav>
         <div class="header-actions">
           <a
@@ -163,17 +165,13 @@ const imageAlt =
             <span>View on GitHub</span>
           </a>
           <span class="header-divider"></span>
-          <a class="button" href={href("rss.xml")} type="application/rss+xml">
-            Follow via RSS
-          </a>
           <a
             class="button button-primary"
             href={preventionURL}
             target="_blank"
             rel="noopener noreferrer"
-            title="Prevent with MagicSword"
           >
-            Prevent
+            Prevent<span class="sr-only"> with MagicSword (opens in a new tab)</span>
             <Icon name="arrow" size={14} />
           </a>
           <button

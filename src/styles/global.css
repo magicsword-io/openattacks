@@ -5671,9 +5671,6 @@ p {
     font-size: 11px;
     min-height: 44px;
   }
-  .header-inner nav a.nav-about {
-    display: none;
-  }
 }
 
 /* Single-entry simulation preview: scoped to an associated exercise. */
