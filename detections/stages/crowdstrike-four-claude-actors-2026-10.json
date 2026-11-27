@@ -1,0 +1,14 @@
+{
+  "scan-targets": {
+    "profile": "unassessed"
+  },
+  "generate-exploits": {
+    "profile": "unassessed"
+  },
+  "post-exploitation": {
+    "profile": "unassessed"
+  },
+  "exfiltration": {
+    "profile": "unassessed"
+  }
+}

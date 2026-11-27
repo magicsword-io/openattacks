@@ -1,0 +1,27 @@
+{
+  "reports": {
+    "profile": "unassessed",
+    "note": "NCSC says it received reports. The public post has no victim telemetry and no indicators.",
+    "reviewed": "2026-11-26"
+  },
+  "agent": {
+    "profile": "agent-tools",
+    "note": "NCSC says an AI agent assisted and does not name it. ARTEX and CyberStrikeAI are named only in a count of internet-accessible agents. This profile is not evidence either one ran in these cases.",
+    "reviewed": "2026-11-26"
+  },
+  "exploit": {
+    "profile": "web",
+    "note": "The agents used standard or easily guessed passwords and known vulnerabilities on internet-connected systems. NCSC does not name the vulnerabilities.",
+    "reviewed": "2026-11-26"
+  },
+  "adapt": {
+    "profile": "unassessed",
+    "note": "NCSC says the agents switch to other known methods when defenses react. The post does not name the second method.",
+    "reviewed": "2026-11-26"
+  },
+  "owned": {
+    "profile": "impact",
+    "note": "NCSC says every such attack it knows of ended in compromise of the victim's IT systems. It does not describe encryption, data theft, or downtime.",
+    "reviewed": "2026-11-26"
+  }
+}

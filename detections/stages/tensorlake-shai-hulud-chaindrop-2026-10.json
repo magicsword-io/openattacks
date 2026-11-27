@@ -1,0 +1,14 @@
+{
+  "phish-maintainer": {
+    "profile": "phishing"
+  },
+  "publish-malicious": {
+    "profile": "package"
+  },
+  "execute-stealer": {
+    "profile": "package-install-execution"
+  },
+  "exfiltrate": {
+    "profile": "exfil"
+  }
+}

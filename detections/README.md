@@ -1,6 +1,6 @@
 # Stage detection queries
 
-Every attack phase has an explicit entry in `stages.json`, keyed by attack ID and exact flow-node ID. This includes attacks without simulations, unknown steps, provider-side activity and qualified research. The catalog currently contains 111 attacks and 471 phases.
+Each attack has a `stages/<attack-id>.json` file with a mapping for every flow node, keyed by exact node ID. This includes attacks without simulations, unknown steps, provider-side activity and qualified research.
 
 The `*.yaml` files in this directory are the canonical, editable behavior profiles. Each contains its hypothesis, required logs, investigation steps, limits, research search terms, review date and Sigma / KQL / SPL query text. The query origin is `catalog_authored`: these are editorial drafts, not verbatim rules retrieved from an upstream detection index. Profiles are reusable; a stage mapping and its note explain how to apply one to the specific reported behavior. Shared Sigma rule IDs remain stable across the move from the former TypeScript generator.
 
@@ -13,7 +13,7 @@ Profiles reviewed with [Security Detections MCP](https://github.com/MHaggis/Secu
 ## Editing and publishing
 
 1. Edit a profile in this directory, or add one with a unique ID matching its filename. Keep catalog Sigma rules `experimental`. State exactly which logs and field mappings are needed.
-2. Add a `stages.json` mapping for every source flow node. Use an explicit gap when needed. Preserve conditional policy scope and source qualifications. A stage note can narrow a shared profile without claiming that its candidate query implements the entire hypothesis.
+2. Add a mapping for every source flow node to `stages/<attack-id>.json`. Use an explicit gap when needed. Preserve conditional policy scope and source qualifications. A stage note can narrow a shared profile without claiming that its candidate query implements the entire hypothesis.
 3. Run `npm run detections:build` to regenerate `catalog.json`. Do not edit the generated catalog by hand.
 4. Run `npm run validate`, `npm run check`, `npm run build`, `npm test` and the browser checks. Validation rejects missing phases, stale references, unknown profiles, duplicate YAML keys, invented gap queries and catalog drift.
 

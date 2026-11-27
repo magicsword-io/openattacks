@@ -1,0 +1,36 @@
+{
+  "shells": {
+    "profile": "linux-webshell",
+    "note": "Every campaign started with a web shell on a vulnerable web application. The first described shell is PHP on Linux. Later ASPX shells are a different stage.",
+    "reviewed": "2026-11-25"
+  },
+  "agent": {
+    "profile": "agent-tools",
+    "note": "Unit 42 infers an agent from command rate, ===[Title]=== headers, and chain-of-thought comments. Those are on the compromised host, not a victim agent audit log.",
+    "reviewed": "2026-11-25"
+  },
+  "cloud": {
+    "profile": "cloud",
+    "note": "The hospitality case tried IMDSv1, then an IMDSv2 token, enumerated 20 AWS services, and read S3 policy and ACL. Unit 42 also reports activity on three major clouds and does not name the other two.",
+    "reviewed": "2026-11-25"
+  },
+  "pivot": {
+    "profile": "windows-shell",
+    "note": "Stolen SMB credentials led to ASPX web shells on Windows IIS, five variants, and a custom web.config. The Linux PHP shell is the previous stage.",
+    "reviewed": "2026-11-25"
+  },
+  "adapt": {
+    "profile": "web",
+    "note": "The agent brute-forced a vendor GitLab with real staff names, read NGINX vhosts, and ran four SQL injection scripts. Unit 42 does not describe a GitLab vulnerability.",
+    "reviewed": "2026-11-25"
+  },
+  "evade": {
+    "profile": "unassessed",
+    "note": "find commands skipped three EDR vendors' paths, and strace was attached to wdavdaemon. No reviewed profile in this catalog is specific to that pair of checks."
+  },
+  "c2": {
+    "profile": "agent-tools",
+    "note": "CyberStrikeAI was hosted on the campaign C2, which is attacker infrastructure. ReliaQuest shows a login page on the same address. That is not a victim tool-call record.",
+    "reviewed": "2026-11-25"
+  }
+}

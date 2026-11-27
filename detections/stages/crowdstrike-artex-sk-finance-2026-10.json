@@ -1,0 +1,26 @@
+{
+  "step-1": {
+    "profile": "unobserved",
+    "note": "The supplied account leaves this stage unestablished. Obtain a source-backed procedure before proposing a runtime query."
+  },
+  "step-2": {
+    "profile": "provider"
+  },
+  "step-3": {
+    "profile": "web"
+  },
+  "step-4": {
+    "profile": "provider",
+    "note": "The discussion of selling breach data is visible in exposed operator sessions, not inherently in victim endpoint telemetry."
+  },
+  "jump": {
+    "profile": "unassessed",
+    "note": "The reverse SSH scripts and .secrets file are on the attacker's jump server. Hunt.io does not publish them as a victim procedure.",
+    "reviewed": "2026-11-26"
+  },
+  "router": {
+    "profile": "provider",
+    "note": "Claude Code Router, the two local shims, and the 19 operator-written skills are configuration on the attacker's host.",
+    "reviewed": "2026-11-26"
+  }
+}

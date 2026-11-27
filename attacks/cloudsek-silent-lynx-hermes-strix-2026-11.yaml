@@ -1,0 +1,188 @@
+id: cloudsek-silent-lynx-hermes-strix-2026-11
+name: "CloudSEK: Silent Lynx operator ran a Hermes agent named Strix"
+date_reported: 2026-11-11
+date_activity_start: 2026-04
+date_activity_end: 2026-10
+researcher: CloudSEK TRIAD
+org: CloudSEK
+sources:
+  - url: https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+    title: "Off the Rails: Inside an Exposed Silent Lynx Server"
+    publisher: CloudSEK
+  - url: https://therecord.media/kazakhstan-hackers-central-asia
+    title: Kazakhstan-linked hackers used AI agent to spy on Central Asian governments
+    publisher: The Record
+  - url: https://github.com/NousResearch/hermes-agent
+    title: Hermes Agent
+    publisher: Nous Research
+  - url: https://github.com/nicocha30/ligolo-ng
+    title: Ligolo-ng
+    publisher: nicocha30
+  - url: https://github.com/shadow1ng/fscan
+    title: fscan
+    publisher: shadow1ng
+  - url: https://github.com/go-gost/gost
+    title: GOST
+    publisher: go-gost
+  - url: https://github.com/fortra/impacket
+    title: Impacket
+    publisher: Fortra
+  - url: https://github.com/Pennyw0rth/NetExec
+    title: NetExec
+    publisher: Pennyw0rth
+  - url: https://github.com/lgandx/Responder
+    title: Responder
+    publisher: lgandx
+  - url: https://github.com/Kevin-Robertson/Inveigh
+    title: Inveigh
+    publisher: Kevin Robertson
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "CloudSEK recovered the agent's config, persona, memory, conversation database, and Telegram gateway logs on the exposed server. The operator tasked Hermes, branded Strix, in Russian, including from a phone."
+technique_summary: "CloudSEK TRIAD (11 November 2026) found a Debian VPS at 89.125.213[.]123, on Baxet Group, serving an exposed directory. The directory held tooling, victim data, and a .hermes/ tree with agent state, memory, persona, scripts, and logs from April through October 2026. CloudSEK assesses with high confidence that the server belongs to a Silent Lynx operator, from implant code markers and build paths that match published Laplas and Chvost samples, and with medium confidence a Kazakhstan nexus: Russian-language operation, the operator's test traffic from a residential Kazakhtelecom line, and working hours on UTC+5. That matches earlier Cisco Talos (UAT-6275) and Recorded Future (TAG-193) assessments. CloudSEK says the collection priorities are regional intelligence gathering, not a financial motive. The Record (Daryna Antoniuk, 12 November 2026) covers the same report and says the findings do not establish a connection to the Kazakh government. The operator ran much of the work through Hermes, an open-source agent framework, branded Strix. CloudSEK does not publish a repository URL. The public project that matches the described Telegram gateway, cron, delegation, and OpenRouter routing is https://github.com/NousResearch/hermes-agent. The primary model was DeepSeek V4.1 Flash via OpenRouter, with Gemini 2.5 Flash for sub-agents. The agent was configured to permit destructive actions and browser script execution with reduced safeguards. Toolsets were terminal, computer use, browser, cron, delegation, a task board, and Telegram. The persona encouraged operating quietly. The operator tasked it in Russian. The Telegram gateway let the operator send tasks from a phone. CloudSEK says the gateway logs tie inbound commands to one Telegram user, display name Марат, and quotes a 2 October test-shell announcement. The agent analysed recon output, continued collection from a handoff file that described the railway electronic-document login chain, and wrote a report on access to the railway's upstream ISP. In early October it shredded shell histories, vacuumed databases, cleared cron rows, and zeroed login records. Its memory documented attempts to evade secret redaction. Intrusions CloudSEK describes: domain-level access to Tajikistan's national railway from mid-August to at least 10 October 2026, with a Ligolo tunnel and more than 2,000 government documents including defence correspondence, reached through one railway employee's government SSO account; webshell and database access to Uzbekistan's Smart Forestry GeoServer, including database-side execution and scheduled callbacks; Kyrgyzstan implant builds on the server; and Turkmenistan Railways and Ahal administration lures built and tested in October, which CloudSEK treats as an upcoming campaign rather than a confirmed intrusion. The agent's memory also records Armenian government networks filtering the operator and an October 2026 engagement against Pakistan's Ministry of Foreign Affairs and its national telecom provider. Delivery was LNK and archive lures that launch PowerShell, fetch P.ps1 from hxxp://89.125.213[.]123:8080/P.ps1, and open a raw TCP shell. The final shortcut variant uses IEX (DownloadString). An alternate variant attempted to bypass AMSI. Implants are Laplas (srvdriv.exe) and Chvost (ssdpdrv.exe), plus service wrappers. Tools on the server include fscan (https://github.com/shadow1ng/fscan), Ligolo-ng (https://github.com/nicocha30/ligolo-ng), GOST (https://github.com/go-gost/gost), Inveigh (https://github.com/Kevin-Robertson/Inveigh), Responder (https://github.com/lgandx/Responder), NetExec (https://github.com/Pennyw0rth/NetExec), and Impacket (https://github.com/fortra/impacket). Infrastructure includes foreverpeace[.]ru for a NetBird control plane and a Pangolin proxy, and 134.17.14[.]24 as a cron callback whose ownership CloudSEK does not confirm. The operator test host in the logs is DESKTOP-S3MHLFV\\nemo. CloudSEK says the same harness and model family appeared in its earlier Gentlemen affiliate investigation and that those two operators are unrelated."
+initial_access: "LNK, ZIP, password-protected archive, or ISO lures launch hidden PowerShell, which downloads P.ps1 and opens a raw TCP shell. Separate intrusions used a railway employee SSO account and a GeoServer webshell."
+ai_tooling_and_models:
+  - "Hermes Agent, operator brand Strix (https://github.com/NousResearch/hermes-agent)"
+  - "DeepSeek V4.1 Flash via OpenRouter"
+  - "Gemini 2.5 Flash via OpenRouter for sub-agents"
+  - "Hermes Telegram gateway"
+other_tooling:
+  - "Ligolo-ng (https://github.com/nicocha30/ligolo-ng)"
+  - "fscan (https://github.com/shadow1ng/fscan)"
+  - "GOST (https://github.com/go-gost/gost)"
+  - "Inveigh (https://github.com/Kevin-Robertson/Inveigh)"
+  - "Responder (https://github.com/lgandx/Responder)"
+  - "NetExec (https://github.com/Pennyw0rth/NetExec)"
+  - "Impacket (https://github.com/fortra/impacket)"
+  - "Laplas (srvdriv.exe) and Chvost (ssdpdrv.exe)"
+  - "NetBird mesh and Pangolin proxy on foreverpeace[.]ru"
+victims_and_sectors: "Tajikistan national railway and the national electronic document platform, including defence correspondence. Uzbekistan Smart Forestry geospatial platform. Turkmenistan Railways and Ahal administration lures were built and tested. Kyrgyzstan implant builds were on the server. Government and transport."
+regions:
+  - Tajikistan
+  - Uzbekistan
+  - Turkmenistan
+  - Kyrgyzstan
+region_notes: "Tajikistan and Uzbekistan are intrusions CloudSEK describes from the server. Turkmenistan is lures tested in October, not a confirmed compromise. Kyrgyzstan is a per-target implant build on the server. Armenia and Pakistan appear as further targets in the agent memory, not as confirmed intrusions, and are not listed here. Kazakhstan is the assessed operator nexus, not a victim region."
+attribution_or_cluster: "Silent Lynx. CloudSEK cites the vendor names UAT-6275 (Cisco Talos) and TAG-193 (Recorded Future). High confidence the server is a Silent Lynx operator. Medium confidence on the Kazakhstan nexus. The Record also uses the names Cavalry Werewolf and YoroTrooper; CloudSEK's background table describes overlaps with those names, not identity."
+scale_and_metrics: "Directory contents span April to October 2026. Railway domain access from mid-August to at least 10 October 2026. More than 2,000 government documents described. More than a dozen gigabytes on the open directory. No victim-organization count beyond the named networks."
+prevention_angle: "Treat shortcut files and ISO or ZIP lures that launch hidden PowerShell and download a script as initial access. Alert on IEX with DownloadString, on new Ligolo tunnels, and on PostgreSQL COPY FROM PROGRAM. The published hashes, 89.125.213[.]123, foreverpeace[.]ru, and the P.ps1 and decoy.pdf URLs are hunt indicators. An autonomous agent with heredoc and SQL DROP pre-approved, plus a Telegram gateway on an operator server, is not visible in the victim's model logs. Review government SSO accounts that can read documents outside their agency."
+related_magicsword_projects: []
+source_notes: "IPs, URLs, hashes, the Strix configuration table, the Telegram display name, and the DESKTOP-S3MHLFV\\nemo test host are from the CloudSEK article. The Record is a 12 November 2026 recap and adds that the research does not establish a Kazakh government link. Hermes Agent is linked because the public repository matches the Telegram gateway, cron, sub-agents, and OpenRouter use CloudSEK describes. CloudSEK did not publish that URL. Link hermes-operators-campaigns-2026 for other public Hermes-operator reporting. CloudSEK says the same harness and model family appeared in its earlier Gentlemen affiliate investigation and that the two operators are unrelated. inc-gentlemen-ransomware-ai-2026-10 is a separate SOCRadar report about OpenCode, Claude, and Kimi, not that CloudSEK investigation. The old Hermes URL github.com/Hermes-Autonomous-Intelligence/hermes returned HTTP 404 on 18 November 2026 and is not used."
+last_reviewed: 2026-11-18
+iocs:
+  domains:
+    - foreverpeace[.]ru
+  ips:
+    - 89.125.213[.]123
+    - 134.17.14[.]24
+  hashes:
+    - af2822560bc0e44b600eefbe0170d3526e035704b533a806f9d455da6ac30d2c
+    - f26756cabe92842e25d82bee5f65ef9c22c80aec895386b9840b471b42e01463
+    - e6907392677134a1a4ffec14d303471352eee90da09db1991eb47486611f2e0d
+    - 5d8a2df90fa3cf913e2b5764e586ee3405a101294909df091060bd3e3d1a44c1
+    - 19b68e504e1512dc19feef6b1da0f67f876191a937fdcd64ffb965c12d1f0bf0
+    - bf7fe6b518676a3e6d40459ac16b491e62d0e0a222ebb243a44d64ac33aed826
+    - 27dc5628adc666da702c9a33e8f96bb87087ac68a7064f99b91fb76b932aef6e
+    - efc1bbb873e9b691657a66e987b0ea87c454bb16e89126d1a41bcaa9bae9fab1
+    - 368cb250f7b962c551dd721f6f62224a936dd7cffb8e0d92f223d82b991a0e6d
+  urls:
+    - hxxp://89.125.213[.]123:8080/P.ps1
+    - hxxp://89.125.213[.]123:8080/decoy.pdf
+atlas_techniques:
+  - id: AML.T0053
+    rationale: "The operator tasked the Hermes agent, including from Telegram, to analyse recon, continue document collection, and write an access report."
+    source_urls:
+      - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+  - id: AML.T0102
+    rationale: "Destructive actions were allowed without confirmation, and agent memory described attempts to evade secret redaction."
+    source_urls:
+      - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+  - id: AML.T0101
+    rationale: "In early October the agent shredded shell histories, vacuumed databases, cleared cron rows, and zeroed login records."
+    source_urls:
+      - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+  - id: AML.T0016.002
+    rationale: "The primary model was DeepSeek V4.1 Flash and the sub-agent model was Gemini 2.5 Flash, both via OpenRouter."
+    source_urls:
+      - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+  - id: AML.T0052
+    rationale: "LNK and archive lures, including a Turkmenistan Railways decoy and an Ahal administration executable, lead to the PowerShell stage."
+    source_urls:
+      - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+attack_flow:
+  nodes:
+    - id: lure
+      title: LNK and archive lures
+      description: "A PDF-themed shortcut in a ZIP, password-protected archive, or ISO opens a decoy and starts hidden PowerShell. One variant bypasses AMSI first."
+      kind: access
+      source_urls:
+        - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+    - id: powershell
+      title: P.ps1 opens a TCP shell
+      description: "PowerShell downloads P.ps1 from the operator server and runs commands with Invoke-Expression. Laplas and Chvost implants call back over TLS."
+      kind: execution
+      source_urls:
+        - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+    - id: strix
+      title: Hermes agent Strix
+      description: "On the operator server, Strix uses DeepSeek V4.1 Flash and Gemini 2.5 Flash. The operator tasks it in Russian over the Telegram gateway. Destructive commands are pre-approved."
+      kind: ai
+      source_urls:
+        - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+    - id: collect
+      title: Railway, forestry, and cleanup
+      description: "Domain access on the Tajik railway, document collection, and a Smart Forestry webshell. In early October the agent shreds histories and clears logs. The exposed directory remained."
+      kind: impact
+      source_urls:
+        - https://www.cloudsek.com/blog/off-the-rails-inside-an-exposed-silent-lynx-server
+  edges:
+    - source: lure
+      target: powershell
+    - source: powershell
+      target: strix
+    - source: strix
+      target: collect
+category: adversary-use-of-ai
+attribution:
+  actor_name: Silent Lynx
+  aliases:
+    - UAT-6275
+    - TAG-193
+  country: Kazakhstan
+  motivation: unknown
+  attributed_by: CloudSEK TRIAD
+  confidence: high
+ai_involvement_confidence: confirmed
+detections:
+  - name: PowerShell Download and Execution Cradles
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_download_iex.yml"
+    notes: "Windows process creation. Command lines that both download and invoke expression, including IEX and DownloadString. CloudSEK says the final shortcut runs hidden PowerShell with IEX (DownloadString) of P.ps1. A renamed download cmdlet, or a command line that never hits the process-creation log, will not match."
+  - name: Implants, the tunnel, and the operator-side agent
+    format: guidance
+    notes: "Also hunt the published SHA-256 values, connections to 89.125.213[.]123 including port 8080 for P.ps1 and decoy.pdf and the TCP shell, and foreverpeace[.]ru. Strix ran on the operator server. Victim logs do not show the DeepSeek or Gemini calls. No public rule cited here names Laplas, Chvost, or srvdriv.exe."
+timeline:
+  first_seen: "2026-04"
+  last_updated: "2026-11-12"
+  updates:
+    - date: "2026-04"
+      source: CloudSEK
+      summary: "Earliest material on the exposed server, including an earlier Ligolo tunnel and Laplas builds. The directory record runs through October."
+    - date: "2026-08"
+      source: CloudSEK
+      summary: "Domain-level access to the Tajik railway from mid-August. The operator's Telegram session with the agent also dates to mid-August."
+    - date: "2026-10-02"
+      source: CloudSEK
+      summary: "Operator test shell announced to the agent. Kazakhtelecom and Proton VPN logins the same afternoon. Early October cleanup misses the exposed directory."
+    - date: "2026-10-10"
+      source: CloudSEK
+      summary: "Railway access described as lasting at least until 10 October. Turkmenistan lures were built and tested during October."
+    - date: "2026-11-11"
+      source: CloudSEK
+      summary: "CloudSEK publishes the exposed-server report, including the Strix configuration, persona, and Telegram gateway logs."
+    - date: "2026-11-12"
+      source: The Record
+      summary: "The Record covers the CloudSEK findings and says they do not establish a link to the Kazakh government."

@@ -1,0 +1,29 @@
+---
+import IncidentReportForm from "../components/IncidentReportForm.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Suggest an update — OpenAttacks"
+  description="Share an incident lead, catalog suggestion, or correction with OpenAttacks."
+>
+  <div class="container">
+    <article class="suggestion-page">
+      <h1>Suggest an update</h1>
+      <IncidentReportForm prefill />
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .suggestion-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) 0;
+  }
+  h1 {
+    margin: 0 0 0.85rem;
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.05;
+  }
+</style>

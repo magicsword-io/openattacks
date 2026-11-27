@@ -1,0 +1,26 @@
+{
+  "initial-recon": {
+    "profile": "unassessed"
+  },
+  "cloud-pivot": {
+    "profile": "unassessed"
+  },
+  "api-abuse": {
+    "profile": "unassessed"
+  },
+  "record-tamper": {
+    "profile": "payment"
+  },
+  "test-transfer": {
+    "profile": "unassessed"
+  },
+  "fund-theft": {
+    "profile": "unassessed"
+  },
+  "crypto-theft": {
+    "profile": "unassessed"
+  },
+  "log-deletion": {
+    "profile": "unassessed"
+  }
+}

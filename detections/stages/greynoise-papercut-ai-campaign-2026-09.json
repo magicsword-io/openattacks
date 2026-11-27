@@ -1,0 +1,27 @@
+{
+  "agents-md": {
+    "profile": "provider",
+    "note": "AGENTS.md is the attacker's Codex instruction file on the orchestration host, not a file written on a PaperCut server.",
+    "reviewed": "2026-11-26"
+  },
+  "exploit": {
+    "profile": "web",
+    "note": "GreyNoise and Elastic tie the activity to PaperCut NG/MF CVE-2026-81578 and CVE-2026-82078. Hunt.io describes a second path through XML-RPC method names and does not publish a request body.",
+    "reviewed": "2026-11-26"
+  },
+  "creds": {
+    "profile": "windows-credential-dump",
+    "note": "Hunt.io says the host logged registry-hive dumps. The cited rules match reg.exe hive saves on Windows.",
+    "reviewed": "2026-11-26"
+  },
+  "domain": {
+    "profile": "windows-dcsync",
+    "note": "Hunt.io says the same logs include directory-replication requests. The cited rules match replication from a user account.",
+    "reviewed": "2026-11-26"
+  },
+  "tunnel": {
+    "profile": "persistence",
+    "note": "Hunt.io describes chisel plus a cron entry for a reverse SOCKS5 tunnel. The persistence profile covers the scheduled write. A separate Linux rule covers the chisel client.",
+    "reviewed": "2026-11-26"
+  }
+}

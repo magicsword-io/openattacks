@@ -1,0 +1,27 @@
+{
+  "prompt": {
+    "profile": "provider",
+    "note": "The Markdown system prompt is on the operator's DeepSeek Harness setup. A victim-side prompt log would not show it.",
+    "reviewed": "2026-11-26"
+  },
+  "task": {
+    "profile": "unassessed",
+    "note": "The operator gives a subnet and plain-language instructions in the framework's web UI. That UI is the attacker's, not the victim's.",
+    "reviewed": "2026-11-26"
+  },
+  "exploit": {
+    "profile": "web",
+    "note": "ACN says the agents try known vulnerabilities and unauthenticated interfaces first. It does not publish the request paths.",
+    "reviewed": "2026-11-26"
+  },
+  "pivot": {
+    "profile": "unassessed",
+    "note": "ACN says the agents set up tunnels and remote-control components. It does not name the tunnel software, so no persistence profile is assigned.",
+    "reviewed": "2026-11-26"
+  },
+  "adapt": {
+    "profile": "unassessed",
+    "note": "ACN says the agents write malicious code in real time. It does not publish a stable command line.",
+    "reviewed": "2026-11-26"
+  }
+}

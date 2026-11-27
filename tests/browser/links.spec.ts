@@ -59,10 +59,13 @@ test("primary utility links stay visible on desktop and mobile", async ({
     name: "JSON API",
     exact: true,
   });
+  const banner = page.getByRole("banner");
+  const rss = banner.getByRole("link", { name: "Follow via RSS" });
+  const report = banner.getByRole("link", { name: "Report an incident" });
   for (const width of [360, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const header = await page.locator(".site-header").boundingBox();
-    for (const link of [use, api, prevent]) {
+    for (const link of [use, api, prevent, rss, report]) {
       await expect(link).toBeVisible();
       const bounds = await link.boundingBox();
       expect(bounds!.x).toBeGreaterThanOrEqual(0);
@@ -79,6 +82,7 @@ test("primary utility links stay visible on desktop and mobile", async ({
   }
   await expect(use).toHaveAttribute("href", "/use/");
   await expect(api).toHaveAttribute("href", "/api/attacks.json");
+  await expect(rss).toHaveAttribute("href", "/rss.xml");
   const url = new URL((await prevent.getAttribute("href"))!);
   expect(url.hostname).toBe("www.magicsword.io");
   expect(url.searchParams.get("utm_source")).toBe("openattacks");

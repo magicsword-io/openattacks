@@ -1,0 +1,112 @@
+id: ncsc-switzerland-first-ai-agent-attacks-2026-11
+name: "NCSC Switzerland: first confirmed AI-agent attacks on local organisations"
+date_reported: "2026-11-24"
+date_activity_start: null
+date_activity_end: null
+researcher: Swiss National Cyber Security Centre
+org: NCSC (BACS)
+sources:
+  - url: https://www.bacs.admin.ch/en/26-ki-agenten-1-en
+    title: "Cyberattacks involving AI agents: First confirmed cases in Switzerland"
+    publisher: Swiss National Cyber Security Centre (NCSC / BACS)
+  - url: https://securityaffairs.com/204004/hacking/switzerland-confirms-first-ai-agent-cyberattacks-on-local-organisations.html
+    title: Switzerland Confirms First AI-Agent Cyberattacks on Local Organisations
+    publisher: Security Affairs
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "NCSC says the attacks were carried out with the assistance of an AI agent and that this is the first such reporting it has received. It does not name the agent, the model, or a framework for the Swiss cases. ARTEX and CyberStrikeAI appear only in a separate count of internet-accessible agents."
+technique_summary: "The Swiss National Cyber Security Centre (NCSC, now under BACS) said on 24 November 2026 that in recent days it received its first reports of cyberattacks on organisations in Switzerland carried out with the assistance of an AI agent. Various organisations and critical infrastructure operators were affected, across at least two sectors. In all such attacks known to NCSC, use of the AI agent led to successful compromise of the victims' IT systems. The agents exploited standard or easily guessed passwords and known vulnerabilities in software and internet-connected systems. NCSC says they need a fraction of the time a human would take, and that they switch to other known attack methods when defenses react. NCSC's assessment is that the number of internet-accessible AI agents such as ARTEX or CyberStrikeAI has almost doubled since October 2026. That sentence counts exposed agents. It does not say ARTEX or CyberStrikeAI was used in the Swiss cases, and this entry does not claim that. NCSC shares technical indicators with critical infrastructure operators and does not publish them. No public indicators are in the post. Pierluigi Paganini (Security Affairs, 25 November 2026) restates the NCSC account."
+initial_access: "Standard or easily guessed passwords, and known vulnerabilities in software and internet-connected systems. NCSC does not name the vulnerabilities."
+ai_tooling_and_models:
+  - "An AI agent. NCSC does not name the product or the model used in the Swiss cases."
+other_tooling: []
+victims_and_sectors: "Organisations in Switzerland, including critical infrastructure operators, across at least two sectors. NCSC does not name the organisations or the sectors. In every such attack known to NCSC, the victim's IT systems were compromised."
+regions:
+  - Switzerland
+region_notes: "NCSC describes organisations in Switzerland. Switzerland is the victim country. NCSC does not name a second country. The count of internet-accessible agents is not a victim location."
+attribution_or_cluster: "Unknown. NCSC Switzerland confirms the attacks and does not name an operator, a group, or a sponsoring country."
+scale_and_metrics: "First reports NCSC has received of this kind, described as arriving in recent days before 24 November 2026. Various organisations and critical infrastructure operators, at least two sectors, all of the known cases ending in compromise. No victim count. NCSC says internet-accessible agents such as ARTEX or CyberStrikeAI have almost doubled since October 2026. That figure is not a count of the Swiss victims."
+prevention_angle: "Limit exposed systems with geo-blocking and IP allow lists. Install critical updates for internet-accessible systems no later than 24 hours after release. Require MFA or passkeys on all internet-accessible internal resources, including webmail and VPN, without exception. Apply least privilege. Detect deviations in behaviour and data volumes. Run penetration tests regularly."
+related_magicsword_projects: []
+source_notes: "The case description and the recommendations are from the 24 November 2026 NCSC page on bacs.admin.ch. Security Affairs (Pierluigi Paganini, 25 November 2026) restates it. NCSC says it shares technical indicators with critical infrastructure operators. Those indicators are not public, and this entry has none. ARTEX and CyberStrikeAI are named only as examples in the count of internet-accessible agents. They are not recorded as frameworks for these cases. Separate catalog entries cover reported ARTEX and CyberStrikeAI intrusions, including wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11. Do not read this page as one of those intrusions."
+last_reviewed: "2026-11-26"
+confidence: high
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "NCSC says the attacks were carried out with the assistance of an AI agent. It does not name the agent."
+    source_urls:
+      - https://www.bacs.admin.ch/en/26-ki-agenten-1-en
+  - id: AML.T0053
+    rationale: "NCSC says the agents exploited weak passwords and known vulnerabilities, in a fraction of the time a human would take, and changed method when defenses reacted."
+    source_urls:
+      - https://www.bacs.admin.ch/en/26-ki-agenten-1-en
+attack_flow:
+  nodes:
+    - id: reports
+      title: First reports reach NCSC
+      description: "In recent days before 24 November 2026, NCSC received its first reports of AI-agent attacks on organisations in Switzerland, including critical infrastructure, across at least two sectors."
+      kind: access
+      source_urls: &ncsc
+        - https://www.bacs.admin.ch/en/26-ki-agenten-1-en
+    - id: agent
+      title: An unnamed AI agent assists
+      description: "NCSC says an AI agent assisted. It does not name the agent used in these cases. A separate sentence says internet-accessible agents such as ARTEX or CyberStrikeAI have almost doubled since October 2026."
+      kind: ai
+      source_urls: *ncsc
+    - id: exploit
+      title: Weak passwords and known flaws
+      description: "The agents exploited standard or easily guessed passwords and known vulnerabilities in software and internet-connected systems, in a fraction of the time a human would take."
+      kind: execution
+      source_urls: *ncsc
+    - id: adapt
+      title: Switch method when defenses react
+      description: "NCSC says the agents switch to other known attack methods when defenses react."
+      kind: execution
+      source_urls: *ncsc
+    - id: owned
+      title: Every known case was a compromise
+      description: "In all such attacks known to NCSC, use of the AI agent led to successful compromise of the victims' IT systems. Indicators shared with critical infrastructure operators are not public."
+      kind: impact
+      source_urls: *ncsc
+  edges:
+    - source: reports
+      target: agent
+    - source: agent
+      target: exploit
+    - source: exploit
+      target: adapt
+    - source: exploit
+      target: owned
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  country: Unknown
+  motivation: unknown
+  attributed_by: NCSC Switzerland
+  confidence: low
+ai_involvement_confidence: confirmed
+detections:
+  - name: No public indicators for the Swiss cases
+    format: guidance
+    notes: "NCSC shares technical indicators with critical infrastructure operators and does not publish them. No public Sigma, Splunk, or Elastic rule checked for this entry is specific to these cases. The post does not name a vulnerability, a malware family, or a user agent. Hunt weak and standard passwords on internet-facing accounts, exploitation of known vulnerabilities on exposed systems, and a shift to a second known technique after a control fires. Do not treat an internet-accessible ARTEX or CyberStrikeAI console, by itself, as evidence it was used in one of these incidents."
+timeline:
+  first_seen: null
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-10"
+      source: NCSC Switzerland
+      summary: "NCSC's comparison date for internet-accessible AI agents. It says the number, including agents such as ARTEX or CyberStrikeAI, has almost doubled since October 2026. That is not the start date of the Swiss cases."
+    - date: "2026-11-24"
+      source: NCSC Switzerland
+      summary: "NCSC publishes the first confirmed AI-agent attacks on organisations in Switzerland. It says the reports arrived in recent days and does not give a first day."
+    - date: "2026-11-25"
+      source: Security Affairs
+      summary: "Pierluigi Paganini restates the NCSC account."
+linked_tools: []

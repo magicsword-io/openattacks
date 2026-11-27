@@ -1,67 +1,117 @@
 id: huntress-plus56-custom-gpt-clickfix-2026-09
-name: Plus 5.6 Custom GPT ClickFix RAT
-date_reported: 2026-09-28
-researcher: Mark O'Halloran, Jonathan Semon (et al.)
-org: Huntress
+name: Plus 5.6 Custom GPT ClickFix, later tied to the ROMULUS delivery platform
+aliases:
+  - ROMULUS
+  - CNCMachineRMS
+  - IconEdit2Turb
+date_reported: "2026-09-28"
+date_activity_start: "2026-09-25"
+date_activity_end: null
+researcher: "Mark O'Halloran and Jonathan Semon (Huntress); Sai Molige (Forescout Vedere Labs); Sam Decker, Nevan Beal, and Andi Ursry (Blackpoint Cyber); Ravie Lakshmanan (The Hacker News)"
+org: "Huntress; Forescout Vedere Labs; Blackpoint Cyber"
 sources:
   - url: https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+    title: ChatGPT Custom GPTs abused in ClickFix campaign to deliver a RAT
+    publisher: Huntress
+  - url: https://www.forescout.com/blog/romulus-analysis-of-a-new-multi-payload-clickfix-delivery-platform/
+    title: "ROMULUS: Analysis of a New Multi-Payload ClickFix Delivery Platform"
+    publisher: Forescout
+  - url: https://blackpointcyber.com/blog/romulus-cncmachinerms/
+    title: "ROMULUS Campaign: CNCMachineRMS RAT Analysis"
+    publisher: Blackpoint Cyber
+  - url: https://thehackernews.com/2026/11/romulus-clickfix-attacks-deliver-rat.html
+    title: ROMULUS ClickFix Attacks Deliver RAT That Can Spy on Users and Control PCs
+    publisher: The Hacker News
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: null
 ai_role_detail: null
-technique_summary: Attacker Custom GPT 'Plus 5.6' on chatgpt.com (Google Ads)
-  directs users to Google Sites ClickFix; paste runs PowerShell → MSI → DLL
-  sideload via Canon COTFileReadApp.exe / ceiinfolog.dll / rdCore.dll (later
-  Stardock DeElevate64). Dual persistence Run key + scheduled task. Multi-stage
-  obfuscated RAT.
-initial_access: Custom GPT social engineering → ClickFix paste → MSI
+technique_summary: "A Custom GPT named Plus 5.6 sends users to ClickFix. Forescout names the panel ROMULUS. PowerShell starts msiexec and a sideloaded DLL starts CNCMachineRMS."
+initial_access: "Custom GPT social engineering to a ClickFix paste, then PowerShell. The Stardock route runs msiexec on IconEdit2Turb.msi. A separate ROMULUS route downloads a nested 7z from orbitflownetwork[.]lol."
 ai_tooling_and_models:
-  - ChatGPT Custom GPT 'Plus 5.6'
+  - "ChatGPT Custom GPT 'Plus 5.6'"
 other_tooling:
-  - Google Sites / gptverification.com
+  - "ROMULUS ClickFix delivery panel"
+  - "Google Sites / gptverification.com"
   - PowerShell
   - msiexec
-  - Canon CaptureOnTouch sideload
-  - Stardock DeElevate64 sideload
-  - GOMCam follow-on
-victims_and_sectors: 40+ Huntress incidents; 2 confirmed via Custom GPT; ongoing as of 2026-10-14
+  - "Canon CaptureOnTouch sideload"
+  - "Stardock DeElevate64 sideload (IconEdit2Turb.msi, I++u.dll)"
+  - "CNCMachineRMS"
+  - "LegionLoader (also known as CurlyGate, RobotDropper, and Satacom)"
+  - "orbitflownetwork[.]lol"
+  - "smashshape[.]com"
+  - "GOMCam follow-on"
+victims_and_sectors: "40 or more Huntress incidents, two of them confirmed through the Custom GPT, and ongoing as of 14 October 2026 in the original entry. Forescout and Blackpoint do not publish a victim count or sector list. Blackpoint says the activity raises the risk of persistent access for business and MSP environments."
 regions:
   - unknown
-attribution_or_cluster: unknown
-scale_and_metrics: 40+ related incidents; OpenAI took down first GPT
-  ~2026-09-25; replacement appeared 09-27
-prevention_angle: Prevent signed binaries from user folders; HijackLibs entries
-  for ceiinfolog/DeElevator64; hunt COTFileReadApp/DeElevate64 under
-  %LOCALAPPDATA%\Programs\
+region_notes: "Huntress, Forescout, and Blackpoint do not name victim countries. A ROMULUS statistics page had a country breakdown, and Forescout does not publish those countries. Panel hosting locations are not victim regions."
+attribution_or_cluster: "Unknown. Forescout says ROMULUS may be a privately operated panel, a commercial delivery service, an affiliate framework, or software copied between operators. It found no evidence tying the panel to the RomulusLoader Proofpoint reported with Silver Fox. Blackpoint says the CNCMachineRMS overlap with the BabaDeda chain does not establish a shared operator."
+scale_and_metrics: "Huntress: 40 or more related incidents and two confirmed through the Custom GPT. OpenAI took down the first GPT around 25 September 2026, and a replacement appeared on 27 September. Forescout: six ROMULUS panel addresses. No victim total is published for the platform. The LegionLoader carrier is 882,716,672 bytes, about 842 MiB, most of it padding."
+prevention_angle: "Treat Custom GPT links and pasted commands as untrusted. Block PowerShell that downloads an installer and then starts msiexec. Alert on msiexec /i /qn launched by PowerShell, including when the MSI URL is a raw or decimal IP. Prevent signed binaries in user-writable folders from loading unexpected DLLs. Hunt DeElevate64.exe, DeElevator64.dll, and I++u.dll under %LOCALAPPDATA%\\Programs\\Stardock Smart DeElevation Tool\\, and the Run key and scheduled task named Stardock DeElevation Tool. HijackLibs entries for ceiinfolog and DeElevator64 still apply to the Huntress sideload names. Block the published panel addresses and the LegionLoader domains."
 related_magicsword_projects:
   - HijackLibs
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: "Mark O'Halloran, Jonathan Semon, and others (Huntress, 28 September 2026) describe Plus 5.6 on chatgpt.com, promoted with Google Ads, sending users to a Google Sites ClickFix page. The paste runs PowerShell, which retrieves an MSI and starts a DLL sideload. Huntress reported Canon COTFileReadApp.exe with ceiinfolog.dll and rdCore.dll, and later Stardock DeElevate64, plus a Run key and a scheduled task. Sai Molige and Forescout Research - Vedere Labs (15 October 2026) name the panel ROMULUS. The Huntress server 96.62.224[.]81 showed the same login page as five other hosts. ROMULUS serves a PowerShell stager at /s/<token> and a trojanized MSI at /app/<token>. On the Stardock route, PowerShell downloads IconEdit2Turb.msi, posing as the Stardock Smart DeElevation Tool, writes it under %TEMP%, and starts msiexec.exe with /i, /qn, and /norestart. DeElevate64.exe loads a patched DeElevator64.dll that depends on I++u.dll. The published URL is hxxp://86.109.75[.]7/app/19481b28bd67/IconEdit2Turb.msi. Forescout also records the decimal form 1450003207 for 86.109.75[.]7. A separate route, not the Custom GPT lure, reaches orbitflownetwork[.]lol for a nested encrypted 7z holding an inflated executable of about 842 MiB. Forescout identifies that payload as LegionLoader, with C2 smashshape[.]com at /nfront.php and /nback.php. Forescout says the operator is unknown and that ROMULUS may be a private panel, a commercial delivery service, an affiliate framework, or copied software, and that it is not the RomulusLoader Proofpoint reported with Silver Fox. Sam Decker, Nevan Beal, and Andi Ursry (Blackpoint Cyber) assess with high confidence that the RAT is CNCMachineRMS. It supports remote desktop, screen, microphone, and camera capture, file management, reconnaissance, and further payloads, and it resolves its gate over DNS-over-HTTPS. Persistence is a Run key and a scheduled task named Stardock DeElevation Tool. The Hacker News (Ravie Lakshmanan, 20 November 2026) says I++u.dll decodes shellcode that starts CNCMachineRMS and that this is the same RAT the Custom GPT lure delivered. The Custom GPT, ClickFix page, Canon and Stardock sideload names, persistence, the 40 or more incidents, and the two Custom GPT confirmations are from Huntress. The ROMULUS panel, the six addresses, the MSI URL, the Stardock installer metadata, the DeElevator64.dll dependency on I++u.dll, the LegionLoader route, and the operator hypotheses are from Forescout (15 October 2026). The CNCMachineRMS family name, the high-confidence assessment, DNS-over-HTTPS, and the statement that no post-exploitation activity was observed are from Blackpoint. The Hacker News (Ravie Lakshmanan, 20 November 2026) summarizes Blackpoint and says I++u.dll decodes shellcode that starts CNCMachineRMS, and that this is the same RAT the Custom GPT lure delivered. Huntress is the source for AI involvement. The later reports do not describe AI in the payloads. Forescout's Route A sample downloads the MSI and then runs msiexec against the local %TEMP% copy, so a rule that requires the URL to be on the msiexec.exe command line does not cover that sample. No catalog entry is the Proofpoint RomulusLoader report."
+last_reviewed: "2026-11-24"
+confidence: high
+iocs:
+  domains:
+    - orbitflownetwork[.]lol
+    - smashshape[.]com
+  ips:
+    - 96.62.224[.]81
+    - 86.109.75[.]7
+    - 151.240.151[.]223
+    - 23.94.145[.]224
+    - 93.152.224[.]118
+    - 2.27.248[.]127
+  hashes:
+    - 91a22cf3154944897cbcaffc7d20d4596e972d280ee134197d41d8d8eefb0fe2
+    - 3cd1484cc5bf10e22d79784beba58a75d7b126c46efb5e1a85d6aab884447621
+  urls:
+    - hxxp://86.109.75[.]7/app/19481b28bd67/IconEdit2Turb.msi
+atlas_techniques:
+  - id: AML.T0073
+    rationale: "Huntress says an attacker-controlled Custom GPT named Plus 5.6, promoted with ads, is the social-engineering pretext that leads to the ClickFix page."
+    source_urls:
+      - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+  - id: AML.T0052
+    rationale: "Huntress says the Custom GPT directs the user to a ClickFix page whose pasted command starts the payload chain."
+    source_urls:
+      - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
 attack_flow:
   nodes:
     - id: step-1
       title: Custom GPT attracts a user
-      description: Ads promote an attacker-controlled Plus 5.6 GPT hosted on ChatGPT.
+      description: "Ads promote an attacker-controlled Plus 5.6 GPT hosted on ChatGPT. Huntress is the source for this lure."
       kind: access
-      source_urls: &a1
+      source_urls:
         - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
     - id: step-2
       title: Chat directs the user to ClickFix
-      description: The GPT points to a Google Sites page that requests a pasted command.
+      description: "The GPT points to a Google Sites page that asks the user to paste a command. Forescout later ties that delivery server to a ROMULUS panel."
       kind: ai
-      source_urls: *a1
+      source_urls:
+        - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+        - https://www.forescout.com/blog/romulus-analysis-of-a-new-multi-payload-clickfix-delivery-platform/
     - id: step-3
       title: PowerShell launches the payload chain
-      description: The command retrieves an MSI and triggers DLL sideloading.
+      description: "On the Stardock route, PowerShell downloads IconEdit2Turb.msi, posing as the Stardock Smart DeElevation Tool, and starts msiexec.exe with /i, /qn, and /norestart. Forescout's sample installs from %TEMP% after the download. DeElevate64.exe then loads a patched DeElevator64.dll that depends on I++u.dll. The Hacker News, citing Blackpoint, says that DLL decodes shellcode that starts CNCMachineRMS. A separate ROMULUS route, not the Custom GPT lure, fetches a LegionLoader archive from orbitflownetwork[.]lol."
       kind: execution
-      source_urls: *a1
+      source_urls:
+        - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
+        - https://www.forescout.com/blog/romulus-analysis-of-a-new-multi-payload-clickfix-delivery-platform/
+        - https://thehackernews.com/2026/11/romulus-clickfix-attacks-deliver-rat.html
+        - https://blackpointcyber.com/blog/romulus-cncmachinerms/
     - id: step-4
       title: RAT establishes persistence
-      description: The chain adds Run-key and scheduled-task persistence.
+      description: "Blackpoint says CNCMachineRMS supports remote desktop, screen, microphone, and camera capture, file management, reconnaissance, and further payloads, with command and control resolved over DNS-over-HTTPS. Persistence is a Run key and a scheduled task named Stardock DeElevation Tool, the same pattern Huntress documented."
       kind: impact
-      source_urls: *a1
+      source_urls:
+        - https://blackpointcyber.com/blog/romulus-cncmachinerms/
+        - https://www.huntress.com/blog/chatgpt-custom-gpts-clickfix-rat
   edges:
     - source: step-1
       target: step-2
@@ -69,17 +119,48 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
-atlas_techniques:
-  - id: AML.T0073
-    rationale: An AI-branded Custom GPT provides a social-engineering pretext.
-    source_urls: *a1
-  - id: AML.T0052
-    rationale: The GPT directs the user into a ClickFix delivery flow.
-    source_urls: *a1
 category: adversary-use-of-ai
+attribution:
+  actor_name: unknown
+  motivation: unknown
+  attributed_by: "Huntress; Forescout Vedere Labs; Blackpoint Cyber"
+  confidence: low
 ai_involvement_confidence: confirmed
 detections:
-  - name: Review attack-specific indicators
+  - name: Potential Remote Install via MsiExec
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/defense_evasion_msiexec_remote_payload.toml
+    notes: "Selected from a security-detections-mcp search for msiexec. Windows. msiexec.exe with /i or -i, a quiet switch, http or https on its command line, and a parent that includes powershell.exe. This is the remote-URL form. Forescout's published Route A sample downloads the MSI in PowerShell and then runs msiexec against the local %TEMP% copy, so that sample does not put the URL on the msiexec command line and this rule does not cover it."
+  - name: Suspicious Msiexec Quiet Install From Remote Location
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_msiexec_install_remote.yml
+    notes: "Selected from the same search, MITRE T1218.007. Windows process creation. msiexec.exe with an install switch, a quiet switch, and http or a UNC path on the command line. It does not require PowerShell as the parent. The same local-path gap as the Elastic rule applies to Forescout's Route A sample."
+  - name: Windows Run Key Self Registration From User Writable Path
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/windows_run_key_self_registration_from_user_writable_path.yml
+    notes: "Selected from a security-detections-mcp search. Windows Sysmon registry events. A process under C:\\Users, C:\\ProgramData, or C:\\PerfLogs writes its own path into a CurrentVersion Run key. The rule text names ClickFix remote MSI installs and DeElevate64.exe. It detects that Run-key persistence. It does not detect the I++u.dll load."
+  - name: DLL sideload of I++u.dll
     format: guidance
-    notes: Monitor for the techniques described in Plus 5.6 Custom GPT ClickFix RAT.
-      Refer to sources for specific IOCs and TTPs.
+    notes: "No Sigma, Splunk, or Elastic rule in the security-detections-mcp index names I++u.dll, DeElevator64.dll, or DeElevate64.exe image loads. Product-specific sideload rules target other DLLs. Unsigned DLL Side-Loading from a Suspicious Folder does not list %LOCALAPPDATA%\\Programs. Hijacklibs hunts match known Windows library names, and I++u.dll is not one of those names. Hunt image loads of DeElevator64.dll and I++u.dll from %LOCALAPPDATA%\\Programs\\Stardock Smart DeElevation Tool\\, and compare them with the published hashes. Also hunt PowerShell that starts msiexec /i /qn against a file in %TEMP% when the URL was only in the script."
+timeline:
+  first_seen: "2026-09-25"
+  last_updated: "2026-11-24"
+  updates:
+    - date: "2026-09-25"
+      source: Huntress
+      summary: "OpenAI takes down the first Plus 5.6 Custom GPT. Forescout dates the IconEdit2Turb.msi creation timestamp to 25 September 2026."
+    - date: "2026-09-27"
+      source: Huntress
+      summary: "A replacement Custom GPT appears."
+    - date: "2026-09-28"
+      source: Huntress
+      summary: "Huntress publishes the Custom GPT ClickFix campaign and the then-unnamed RAT chain."
+    - date: "2026-10-15"
+      source: Forescout Vedere Labs
+      summary: "Forescout names the ROMULUS panel, the six addresses, the Stardock MSI route, and the separate LegionLoader route."
+    - date: "2026-11-18"
+      source: Blackpoint Cyber
+      summary: "Blackpoint publishes the CNCMachineRMS identification, the DNS-over-HTTPS gate resolution, and the Run-key and scheduled-task persistence."
+    - date: "2026-11-20"
+      source: The Hacker News
+      summary: "The Hacker News reports the Blackpoint findings, including the I++u.dll shellcode step and the statement that this is the same RAT the Custom GPT lure delivered."

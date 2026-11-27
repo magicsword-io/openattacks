@@ -4,25 +4,21 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run check && npm run build && npm test",
   "outputDirectory": "dist",
-  "functions": {
-    "api/incident-alert-digest.js": { "maxDuration": 60 }
-  },
-  "crons": [{ "path": "/api/incident-alert-digest", "schedule": "0 14 * * *" }],
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "openattacks.com" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "www.openattacks.com" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path(.*)",
       "has": [{ "type": "host", "value": "www.openattacks.ai" }],
       "destination": "https://openattacks.ai/:path*",
       "permanent": true

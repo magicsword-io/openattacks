@@ -6,12 +6,11 @@ import HeaderActionDialog from "../components/HeaderActionDialog.astro";
 import "../styles/catalog.css";
 import Icon from "../components/Icon.astro";
 import MagicSwordLogo from "../components/MagicSwordLogo.astro";
+import IncidentReportForm from "../components/IncidentReportForm.astro";
 import { href, repo, formatDate } from "../lib/catalog";
 import { siteUpdated } from "../lib/site-updated";
 import { preventionURL } from "../lib/site-links";
 import { magicswordURL } from "../lib/magicsword-links.mjs";
-import { incidentAlertSignupAvailable } from "../lib/incident-alert-signup";
-import IncidentAlertForm from "../components/IncidentAlertForm.astro";
 interface Props {
   title?: string;
   description?: string;
@@ -20,7 +19,6 @@ interface Props {
   // Omit it to show when the site was last updated.
   lastReviewed?: string | null;
   canonicalPath?: string;
-  analytics?: boolean;
 }
 const {
   title = "OpenAttacks — The open catalog of AI attacks",
@@ -28,7 +26,6 @@ const {
   active = "catalog",
   lastReviewed,
   canonicalPath = Astro.url.pathname,
-  analytics = true,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site || Astro.url.origin);
 const imageURL = new URL(
@@ -44,22 +41,20 @@ const imageAlt =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {analytics && (
-      <>
-        <script
-          is:inline
-          async
-          src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
-        ></script>
-        <script is:inline>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-        </script>
-      </>
-    )}
+    <!-- Google Tag Manager -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtm.js?id=GTM-NLNMJG32"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+    </script>
+    <!-- End Google Tag Manager -->
     <meta name="theme-color" content="#08080a" />
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
@@ -177,17 +172,19 @@ const imageAlt =
             <Icon name="github" size={18} />
             <span>View on GitHub</span>
           </a>
-          {incidentAlertSignupAvailable && (
-            <HeaderActionDialog
-              id="incident-alert-dialog"
-              label="Get alerts"
-              title="Get incident alerts"
-              href={href("alerts/")}
-            >
-              <IncidentAlertForm id="header-alert-email" />
-            </HeaderActionDialog>
-          )}
           <span class="header-divider"></span>
+          <a class="button" href={href("rss.xml")} type="application/rss+xml">
+            Follow via RSS
+          </a>
+          <HeaderActionDialog
+            id="incident-report-dialog"
+            label="Report an incident"
+            title="Report or suggest an update"
+            href={href("suggest/")}
+            primary
+          >
+            <IncidentReportForm />
+          </HeaderActionDialog>
           <button
             class="icon-button theme-toggle"
             aria-label="Switch to light mode"
@@ -218,6 +215,7 @@ const imageAlt =
         <div class="footer-links">
           <a href={href("stack/")}>Find my stack</a>
           <a href={href("about/")}>About the project</a>
+          <a href={href("suggest/")}>Suggest an update</a>
           <a
             href={`${repo}/blob/main/CONTRIBUTING.md`}
             target="_blank"
@@ -229,9 +227,6 @@ const imageAlt =
           <a href={href("use/")}>Use with an LLM</a>
           <a href={href("api/attacks.json")}>JSON API</a>
           <a href={href("rss.xml")}>RSS</a>
-          {incidentAlertSignupAvailable && (
-            <a href={href("alerts/")}>Get incident alerts</a>
-          )}
           <a href={href("pewpew/")}>Pew Pew Map</a>
         </div>
       </div>

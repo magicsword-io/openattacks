@@ -1,0 +1,213 @@
+---
+import { repo } from "../lib/catalog";
+import { incidentReportAction } from "../lib/incident-report";
+
+interface Props {
+  prefill?: boolean;
+}
+const { prefill = false } = Astro.props;
+const issues = `${repo}/issues`;
+---
+
+{incidentReportAction ? (
+  <form
+    class="incident-report"
+    method="post"
+    action={incidentReportAction}
+    data-prefill={prefill}
+  >
+    <p class="guidance">
+      Share publicly documented information. Reports go to the OpenAttacks
+      team through Formspree.
+    </p>
+    <fieldset>
+      <legend>What would you like to send?</legend>
+      <div class="report-types">
+        <label>
+          <input type="radio" name="type" value="incident" checked /> New incident
+        </label>
+        <label>
+          <input type="radio" name="type" value="change" /> Suggestion or correction
+        </label>
+      </div>
+    </fieldset>
+    <label class="field" data-related-entry>
+      <span>Related OpenAttacks entry <small>(optional)</small></span>
+      <input name="incident" placeholder="Entry URL or ID" maxlength="2048" />
+    </label>
+    <label class="field">
+      <span>Details</span>
+      <textarea name="message" rows="4" required maxlength="4000"></textarea>
+    </label>
+    <label class="field">
+      <span>Public source URL <small>(optional)</small></span>
+      <input
+        name="source"
+        type="url"
+        placeholder="https://"
+        pattern="https?://.*"
+        maxlength="2048"
+      />
+    </label>
+    <label class="field">
+      <span>Reply email <small>(optional)</small></span>
+      <input name="email" type="email" autocomplete="email" maxlength="254" />
+    </label>
+    <div hidden>
+      <input name="_gotcha" tabindex="-1" autocomplete="off" />
+    </div>
+    <button class="button button-primary" type="submit">Send report</button>
+    <p class="report-status" role="status" tabindex="-1"></p>
+  </form>
+) : (
+  <div class="github-options">
+    <p>Use GitHub to submit a public issue.</p>
+    <ul>
+      <li>
+        <a class="text-link" href={`${issues}/new?template=submit-attack.yml`}>
+          Submit an attack
+        </a>
+      </li>
+      <li>
+        <a class="text-link" href={`${issues}/new?template=correction.yml`}>
+          Correct an entry
+        </a>
+      </li>
+      <li>
+        <a class="text-link" href={`${issues}/new?${new URLSearchParams({ title: "Catalog suggestion: " })}`}>
+          Suggest a catalog improvement
+        </a>
+      </li>
+    </ul>
+  </div>
+)}
+<p class="report-links">
+  <a class="text-link" href={issues}>Browse public issues</a>
+  <a class="text-link" href={`${repo}/security/advisories/new`}>
+    Report an OpenAttacks vulnerability privately
+  </a>
+</p>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>(".incident-report")) {
+    const incident = form.querySelector<HTMLInputElement>('[name="incident"]')!;
+    const relatedEntry = form.querySelector<HTMLElement>("[data-related-entry]")!;
+    const change = form.querySelector<HTMLInputElement>('[value="change"]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    const status = form.querySelector<HTMLElement>(".report-status")!;
+    const dialog = form.closest("dialog");
+
+    const updateRelatedEntry = () => {
+      relatedEntry.hidden = !change.checked;
+      incident.disabled = !change.checked;
+    };
+    if (form.dataset.prefill === "true") {
+      const query = new URLSearchParams(location.search);
+      if (query.get("type") === "change") {
+        form.querySelector<HTMLInputElement>('[value="incident"]')!.defaultChecked = false;
+        change.defaultChecked = change.checked = true;
+        incident.defaultValue = incident.value = (query.get("incident") ?? "").slice(0, 2048);
+      }
+    }
+    updateRelatedEntry();
+    form.addEventListener("change", updateRelatedEntry);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (submit.disabled) return;
+      submit.disabled = true;
+      status.textContent = "Sending report…";
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(15000),
+        });
+        if (!response.ok) throw new Error("Report submission failed");
+        form.reset();
+        updateRelatedEntry();
+        status.textContent = "Report received. Thank you for contributing.";
+      } catch {
+        status.textContent = "We couldn’t confirm receipt. Your draft is still here.";
+      } finally {
+        submit.disabled = false;
+        if (!dialog || dialog.open) status.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  p {
+    margin: 0 0 0.9rem;
+  }
+  .guidance, small {
+    color: var(--muted);
+  }
+  fieldset {
+    min-inline-size: 0;
+    border: 0;
+    margin: 0 0 0.9rem;
+    padding: 0;
+  }
+  legend, .field > span {
+    font-weight: 650;
+  }
+  .report-types, .report-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+  .report-types label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 38px;
+  }
+  input[type="radio"] {
+    accent-color: var(--accent);
+  }
+  .field {
+    display: grid;
+    gap: 0.3rem;
+    margin-bottom: 0.85rem;
+  }
+  .field[hidden] {
+    display: none;
+  }
+  .field :is(input, textarea) {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--subtle);
+    border-radius: 6px;
+    color: var(--text);
+    background: var(--panel);
+    font: inherit;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+  }
+  .incident-report button {
+    min-height: 44px;
+    font-size: 13px;
+  }
+  .report-status, .report-links {
+    margin: 0.85rem 0 0;
+  }
+  .report-status:empty {
+    display: none;
+  }
+  .text-link {
+    font-size: inherit;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  .github-options ul {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+</style>

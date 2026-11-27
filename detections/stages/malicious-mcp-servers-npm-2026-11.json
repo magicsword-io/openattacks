@@ -1,0 +1,17 @@
+{
+  "publish": {
+    "profile": "package"
+  },
+  "install": {
+    "profile": "package-install-execution"
+  },
+  "probe": {
+    "profile": "credentials"
+  },
+  "exfil-files": {
+    "profile": "exfil"
+  },
+  "exfil-header": {
+    "profile": "exfil"
+  }
+}

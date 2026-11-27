@@ -4,6 +4,7 @@ import AttackRelevance from "../../components/AttackRelevance.astro";
 import AttackActions from "../../components/AttackActions.astro";
 import { attackFlow } from "../../lib/attack-flow";
 import { stageGuidance } from "../../lib/stage-guidance";
+import { incidentReportAction } from "../../lib/incident-report";
 import { simulationsFor } from "../../lib/simulation-preview.mjs";
 import Icon from "../../components/Icon.astro";
 import FrameworkBadges from "../../components/FrameworkBadges.astro";
@@ -32,6 +33,13 @@ export async function getStaticPaths() {
   }));
 }
 const { attack } = Astro.props as { attack: Attack };
+const correctionUrl = incidentReportAction
+  ? href(`suggest/?${new URLSearchParams({ type: "change", incident: attack.id })}`)
+  : `${repo}/issues/new?${new URLSearchParams({
+      template: "correction.yml",
+      title: `Correction: ${attack.name}`,
+      entry: attack.id,
+    })}`;
 const toolNames = Object.fromEntries(
   (await getCollection("tools")).map((tool) => [tool.id, tool.data.name]),
 );
@@ -547,9 +555,9 @@ const iocCount = Object.values(attack.iocs || {}).reduce(
             Edit on GitHub
           </a>
           <a
-            href={`${repo}/issues/new?template=correction.yml&title=${encodeURIComponent(`Correction: ${attack.name}`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={correctionUrl}
+            target={incidentReportAction ? undefined : "_blank"}
+            rel={incidentReportAction ? undefined : "noopener noreferrer"}
           >
             Suggest a correction
           </a>

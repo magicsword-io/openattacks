@@ -1,0 +1,22 @@
+{
+  "steal": {
+    "profile": "windows-credential-dump",
+    "note": "Browser, mail, and wallet collection plus a headless Chrome launch. The sample then deletes itself.",
+    "reviewed": "2026-11-19"
+  },
+  "bundle": {
+    "profile": "credentials",
+    "note": "Stolen sessions enrich the bundle. The lookup sites are third-party services.",
+    "reviewed": "2026-11-19"
+  },
+  "rank": {
+    "profile": "model-network",
+    "note": "A non-browser process posts the bundle to the public OpenRouter API and falls through three models.",
+    "reviewed": "2026-11-19"
+  },
+  "deliver": {
+    "profile": "exfil",
+    "note": "The appraisal is written to local reports and zips. Talos names Telegram as the customer channel and no operator server.",
+    "reviewed": "2026-11-19"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "shodan": {
+    "profile": "web"
+  },
+  "maq": {
+    "profile": "agent-tools"
+  },
+  "php2shell": {
+    "profile": "web"
+  },
+  "stage-tools": {
+    "profile": "linux-fileless-execution"
+  },
+  "persist": {
+    "profile": "linux-ssh-persistence"
+  },
+  "loot": {
+    "profile": "exfil"
+  }
+}

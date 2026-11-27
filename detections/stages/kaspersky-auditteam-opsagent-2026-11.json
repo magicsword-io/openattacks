@@ -1,0 +1,20 @@
+{
+  "loaders": {
+    "profile": "windows-shell",
+    "note": "C and .NET loaders inject into msiexec.exe. The initial access vector is not described.",
+    "reviewed": "2026-11-18"
+  },
+  "implant": {
+    "profile": "unassessed",
+    "note": "C2 can be read from a public GitHub repository. No stage query names the dead-drop repo or the CloudFront hosts."
+  },
+  "llm-patterns": {
+    "profile": "unobserved",
+    "note": "Kaspersky infers LLM-assisted development from code patterns. That judgment is not a runtime event on the victim."
+  },
+  "killer": {
+    "profile": "impact",
+    "note": "kvcore.sys is not in the public vulnerable-driver name list checked for this entry. The cryptor impact is file encryption plus the consulting-fee note.",
+    "reviewed": "2026-11-18"
+  }
+}

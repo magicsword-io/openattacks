@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "payment"
+  },
+  "step-2": {
+    "profile": "unassessed",
+    "note": "This stage is included for completeness; a query needs a reviewed link between the described behavior and logs available to the observing party."
+  },
+  "step-3": {
+    "profile": "payment"
+  },
+  "step-4": {
+    "profile": "payment",
+    "note": "Payment and approval records can support investigation of the loss; they do not prove that media was synthetic.",
+    "reviewed": "2026-11-04"
+  }
+}

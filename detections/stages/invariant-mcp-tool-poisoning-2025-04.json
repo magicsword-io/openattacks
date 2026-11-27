@@ -1,0 +1,17 @@
+{
+  "step-1": {
+    "profile": "mcp-config",
+    "note": "Compare newly connected server origins and configuration with the approved inventory; later tool-description changes need agent audit.",
+    "reviewed": "2026-11-04"
+  },
+  "step-2": {
+    "profile": "agent-tools",
+    "resource": "LOLSkills"
+  },
+  "step-3": {
+    "profile": "credentials"
+  },
+  "step-4": {
+    "profile": "exfil"
+  }
+}

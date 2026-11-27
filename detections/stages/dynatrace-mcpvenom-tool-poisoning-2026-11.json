@@ -1,0 +1,14 @@
+{
+  "install": {
+    "profile": "agent-tools"
+  },
+  "describe": {
+    "profile": "agent-input"
+  },
+  "post": {
+    "profile": "exfil"
+  },
+  "canary": {
+    "profile": "exfil"
+  }
+}

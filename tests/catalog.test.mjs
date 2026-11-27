@@ -5,6 +5,7 @@ import { parse } from "yaml";
 import { entryErrors, frameworkLinkErrors } from "../src/lib/schema.mjs";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import { readStageMappings } from "../scripts/build-detections.mjs";
 
 const files = readdirSync(new URL("../attacks/", import.meta.url)).filter(
   (name) => name.endsWith(".yaml"),
@@ -242,6 +243,29 @@ test("robots.txt allows crawlers and the sitemap lists canonical pages", () => {
   assert.ok(locs.includes("https://openattacks.ai/"));
   assert.ok(locs.includes("https://openattacks.ai/about/"));
   assert.ok(locs.some((loc) => loc.includes("/attacks/")));
+  const sitemapIndex = readFileSync(
+    new URL("../dist/sitemap-index.xml", import.meta.url),
+    "utf8",
+  );
+  assert.match(
+    sitemapIndex,
+    /<loc>https:\/\/openattacks\.ai\/sitemap-0\.xml<\/loc>/,
+  );
+  assert.equal(sitemap.includes("www.openattacks.ai"), false);
+  assert.equal(sitemapIndex.includes("www.openattacks.ai"), false);
+  for (const [file, canonical] of [
+    ["index.html", "https://openattacks.ai/"],
+    ["about/index.html", "https://openattacks.ai/about/"],
+  ]) {
+    const html = readFileSync(
+      new URL(`../dist/${file}`, import.meta.url),
+      "utf8",
+    );
+    const href = canonical.replaceAll(".", "\\.");
+    assert.match(html, new RegExp(`rel="canonical"[^>]*href="${href}"`));
+    assert.match(html, new RegExp(`property="og:url"[^>]*content="${href}"`));
+    assert.equal(html.includes("www.openattacks.ai"), false, file);
+  }
 });
 
 test("build includes one page per entry, CSV and sitemap", () => {
@@ -370,12 +394,7 @@ test("geography excludes actor and infrastructure labels; ATLAS mappings use off
 });
 
 test("stage defense annotations resolve to real attacks and nodes; exports preserve evidence and scope", () => {
-  const annotations = JSON.parse(
-    readFileSync(
-      new URL("../detections/stages.json", import.meta.url),
-      "utf8",
-    ),
-  );
+  const annotations = readStageMappings();
   const packs = JSON.parse(
     readFileSync(new URL("../dist/api/defenses.json", import.meta.url), "utf8"),
   );

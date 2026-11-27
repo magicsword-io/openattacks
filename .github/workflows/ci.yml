@@ -20,12 +20,10 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "22.22.2"
+          node-version: "22.23.4"
           cache: npm
       - run: npm ci
       - run: npm run format:data:check
-      - name: Check generated LLM exports are current
-        run: npm run llm:check
       - run: npm run validate
       - run: npm run test:validation
       - run: npm run check
@@ -57,7 +55,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "22.22.2"
+          node-version: "22.23.4"
           cache: npm
       - run: npm ci
       - name: Check published links in added or modified attack entries

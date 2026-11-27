@@ -1,0 +1,194 @@
+id: microsoft-artex-nation-state-criminal-adoption-2026-11
+name: "Microsoft: nation-state and criminal actors integrated ARTEX"
+date_reported: "2026-11-25"
+date_activity_start: "2026-07"
+date_activity_end: null
+researcher: Microsoft Threat Intelligence
+org: Microsoft
+sources:
+  - url: https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+    title: What defenders need to know about ARTEX, the agentic AI framework threat actors abuse
+    publisher: Microsoft Threat Intelligence
+  - url: https://therecord.media/microsoft-china-salt-typhoon-using-artex-ai-tool
+    title: "Microsoft: China's Salt Typhoon hackers are using Artex"
+    publisher: The Record
+  - url: https://www.infosecurity-magazine.com/news/chinese-north-korea-artex/
+    title: Chinese, North Korean Hackers Adopt ARTEX AI Offensive Framework
+    publisher: Infosecurity Magazine
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "Microsoft says state-sponsored and financially motivated actors integrated ARTEX and used it as the operator for reconnaissance, credential attacks, and exploitation. The human operators are the named actors. ARTEX can call any LLM, including frontier, open-weight, or abliterated models."
+technique_summary: "Microsoft Threat Intelligence (25 November 2026) says that since ARTEX was released in July 2026, threat actors have abused it to speed up network reconnaissance, credential attacks, and web application exploitation. Microsoft previously reported ARTEX campaigns that searched public repositories for exposed secrets, enabled supply-chain compromise, and scanned internet-facing systems. Depending on configuration and defenses, ARTEX can go from reconnaissance to persistent privileged access in a matter of minutes. In multiple ARTEX-driven Storm-0940 intrusions, privileged access came less than three hours after initial targeting. Microsoft names Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon as having integrated ARTEX, and describes that set as state-sponsored and financially motivated. ARTEX (AI 自主渗透测试系统) is a Go backend that coordinates multiple LLM agents, with an embedded Next.js web UI and PostgreSQL. GitHub user Autumn-27 published it in July 2026 with a Chinese-language interface. The original developer removed the source in October 2026. Forks continue in other languages. In November 2026, China-based ThreatBook (微步在线) claimed ownership and began offering commercial ARTEX Pro, plus CyberStrikeAI Enterprise Edition. Microsoft describes a goals model, a planner agent that issues intents from a knowledge graph, worker agents that run those intents with a real shell, and a reporter agent that documents findings with reproduction steps and a proof of concept. Any LLM can be used, including frontier, open-weight, or abliterated models. An optional model pool fails over across providers and keys, with a priority order and a cooldown, so activity is not constrained by any single provider's safety controls or telemetry. Built-in tools are nmap, nc, telnet, whois, dig, curl, wget, Playwright with Chromium, node, python3, git, ripgrep, and jq. Actors add sqlmap, hydra, medusa, ncrack, nuclei, nikto, gobuster, ffuf, msfconsole, john, and hashcat. Network signals are bursts of machine-speed activity and retries, a large anomalous volume from one source, and the user agents artex-enrich/* (a short GET to each newly discovered asset to read the page title, with no redirects) and norma/* (the agents' built-in web-fetch tool). Actors change source IP and user agent when blocked, and they rotate VPN, proxy, and Tor. After access, agents use certutil, curl, wget, and netcat to launch web shells, install RATs, or persist. Web server processes (w3wp.exe, php-fpm, httpd/apache2, and Java application servers) spawn sh, bash, cmd.exe, or PowerShell. New .php, .jsp, .jspx, .asp, .aspx, and .ashx files appear in web or upload directories, including files a database server wrote after its log path was pointed at a web directory. Several short-lived web shells use incrementing names. Agents rapidly read /etc/shadow, .env files, configs, private keys, and cloud credential files. They open reverse shells and use curl to rotating webhook[.]site URLs to deliver scripts and return output. Two or three attack chains run at once, and attempts resume after containment. In cloud tenants Microsoft lists Graph reconnaissance, added application credentials, an application self-assigning Global Administrator (Storm-0940), Kerberoasting, and DCSync alerts. One Storm-0940 campaign produced more than 151,000 failed sign-ins, peaking at 2,900 failures per minute. In Microsoft testing, honeypots, decoys, tarpits, and fake wins reduced the attack traffic that reached real assets. Microsoft lists ATT&CK techniques T1021, T1213.006, T1530, T1090, T1102.002, T1078.004, T1199, T1098.001, T1098.003, T1110.003, and T1087.004. CyberStrikeAI Enterprise Edition is a separate product ThreatBook began offering. This entry does not treat it as the framework in the intrusions above. Related entries: microsoft-artex-github-secrets-keyvault-2026-11, storm-0940-used-artex-agentic-ai-2026-10, storm-3358-artex-bank-intrusions-2026-11, crowdstrike-artex-sk-finance-2026-10, wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11, and microsoft-rates-eight-north-korean-actors-2026-10."
+initial_access: "Internet-facing systems, credential attacks, and web application exploitation. Microsoft says the path from reconnaissance to persistent privileged access can take minutes, and that privileged access in multiple Storm-0940 intrusions came less than three hours after initial targeting. The post does not name one exploit for every intrusion."
+ai_tooling_and_models:
+  - "ARTEX. A Go backend coordinates multiple LLM agents, with an embedded Next.js web UI and PostgreSQL. Any LLM, including frontier, open-weight, or abliterated models. An optional model pool fails over across providers and keys."
+  - "ARTEX Pro, the commercial offering ThreatBook said it began selling in November 2026 after claiming ownership."
+frameworks:
+  - artex
+other_tooling:
+  - "Built in: nmap, nc, telnet, whois, dig, curl, wget, Playwright with Chromium, node, python3, git, ripgrep, and jq"
+  - "Added by actors: sqlmap, hydra, medusa, ncrack, nuclei, nikto, gobuster, ffuf, msfconsole, john, and hashcat"
+  - "certutil, curl, wget, and netcat, used after access to launch web shells, install RATs, or persist"
+victims_and_sectors: "Microsoft does not name the victim organisations in this post. It describes internet-facing systems, web applications, and cloud tenants, including Storm-0940 intrusions."
+regions:
+  - unknown
+region_notes: "This post does not name victim countries. China-based describes ThreatBook, the company that claimed ARTEX in November 2026. It is not a victim location. Actor names and the secondary headlines are not victim locations."
+attribution_or_cluster: "Microsoft Threat Intelligence names Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon as having integrated ARTEX. Microsoft describes the set as state-sponsored and financially motivated. This entry does not collapse those actors into one cluster or one country."
+scale_and_metrics: "Abuse reported since the July 2026 release. Privileged access in a matter of minutes where configuration and defenses allow it, and in less than three hours in multiple Storm-0940 intrusions. One Storm-0940 campaign: more than 151,000 failed sign-ins, peaking at 2,900 failures per minute. Six named actors. No victim count in this post."
+prevention_angle: "Microsoft's steps are to inventory and fix internet-facing exposure, run a WAF in prevention mode with rate limiting, map attack paths, run blocking endpoint protection on every internet-facing server including Linux, restrict outbound connections from web servers, use Conditional Access for users and workload identities, use banned passwords and smart lockout, keep application secrets out of code and rotate leaked ones, govern application registration and consent, and enable automatic attack disruption. On servers, block LOLBins such as certutil, and prevent web server processes from spawning shells or download tools with application control. Microsoft also says honeypots, decoys, tarpits, and fake wins reduced attack traffic that reached real assets in its testing."
+related_magicsword_projects: []
+source_notes: "The architecture, actor names, signals, and prevention steps are from the 25 November 2026 Microsoft Threat Intelligence post. Jonathan Greig (The Record, 25 November 2026) and James Coker (Infosecurity Magazine, 26 November 2026) restate that reporting. Microsoft publishes user-agent prefixes artex-enrich/* and norma/* and no IP addresses. The IOC object has no user-agent field, so those prefixes are recorded in the guidance detection. webhook[.]site is defanged. CyberStrikeAI Enterprise Edition is named only as a product ThreatBook began offering, not as the framework used in these intrusions. Link microsoft-artex-github-secrets-keyvault-2026-11, storm-0940-used-artex-agentic-ai-2026-10, storm-3358-artex-bank-intrusions-2026-11, crowdstrike-artex-sk-finance-2026-10, wiz-artex-harvester-cyberstrikeai-cloud-intrusions-2026-11, and microsoft-rates-eight-north-korean-actors-2026-10."
+last_reviewed: "2026-11-26"
+confidence: high
+iocs:
+  domains: []
+  ips: []
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "Microsoft says the named actors integrated ARTEX, a multi-agent framework, and used it from reconnaissance through exploitation."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0053
+    rationale: "Worker agents run planner intents with a real shell. Built-in tools include a shell-side set, and actors add further tools."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0102
+    rationale: "A planner issues intents from a knowledge graph, and a reporter documents findings with reproduction steps and a proof of concept."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0006
+    rationale: "Microsoft says ARTEX is abused to accelerate network reconnaissance and scanning of internet-facing systems. Built-in tools include nmap."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0055
+    rationale: "After access, agents rapidly read /etc/shadow, .env files, configs, private keys, and cloud credential files. Microsoft also points back to earlier secret-hunting campaigns."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0072
+    rationale: "Microsoft says the agents open reverse shells and use curl against rotating webhook[.]site URLs to deliver scripts and return output."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+  - id: AML.T0075
+    rationale: "Microsoft lists Graph reconnaissance, added application credentials, and an application self-assigning Global Administrator in Storm-0940 activity."
+    source_urls:
+      - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+attack_flow:
+  nodes:
+    - id: adopt
+      title: Named actors integrate ARTEX
+      description: "Since the July 2026 release, Microsoft says Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon have integrated ARTEX. Autumn-27 published the Go, Next.js, and PostgreSQL project. The source was removed in October 2026. In November 2026 ThreatBook claimed ownership and offered ARTEX Pro."
+      kind: ai
+      source_urls: &msft
+        - https://www.microsoft.com/en-us/security/blog/2026/11/25/what-defenders-need-to-know-artex-agentic-ai-framework-threat-actors-abuse/
+    - id: plan
+      title: Planner intents, then a real shell
+      description: "A goals model feeds a planner that issues intents from a knowledge graph. Worker agents run them with a real shell. A reporter writes findings, reproduction steps, and a proof of concept. A model pool can fail over across providers and keys."
+      kind: ai
+      source_urls: *msft
+    - id: recon
+      title: Recon, credentials, and web apps
+      description: "Microsoft says ARTEX is used to speed up network reconnaissance, credential attacks, and web application exploitation, including scans of internet-facing systems. Privileged access can follow in minutes, and did so in less than three hours in multiple Storm-0940 intrusions."
+      kind: execution
+      source_urls: *msft
+    - id: host
+      title: Web shells and server child processes
+      description: "Agents use certutil, curl, wget, and netcat to launch web shells, install RATs, or persist. w3wp.exe, php-fpm, httpd/apache2, and Java application servers spawn sh, bash, cmd.exe, or PowerShell. New web scripts appear, including files written after a database log path was pointed at a web directory."
+      kind: execution
+      source_urls: *msft
+    - id: cloud
+      title: Cloud identity and directory attacks
+      description: "Microsoft lists Graph reconnaissance, added application credentials, an application self-assigning Global Administrator, Kerberoasting, and DCSync. One Storm-0940 campaign produced more than 151,000 failed sign-ins, peaking at 2,900 a minute."
+      kind: impact
+      source_urls: *msft
+    - id: rotate
+      title: New IP and user agent when blocked
+      description: "Operators change source IP and user agent when blocked, and rotate VPN, proxy, and Tor. Two or three chains run at once, and attempts resume after containment. User agents include artex-enrich/* and norma/*."
+      kind: execution
+      source_urls: *msft
+  edges:
+    - source: adopt
+      target: plan
+    - source: plan
+      target: recon
+    - source: recon
+      target: host
+    - source: host
+      target: cloud
+    - source: recon
+      target: rotate
+      label: when blocked
+category: adversary-use-of-ai
+attribution:
+  actor_name: "Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon"
+  aliases:
+    - Storm-0940
+    - Storm-3358
+    - Onyx Sleet
+    - Pearl Sleet
+    - Crystal Typhoon
+    - Salt Typhoon
+  country: Unknown
+  motivation: null
+  attributed_by: Microsoft Threat Intelligence
+  confidence: high
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: Suspicious Command Execution via Web Server
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/persistence_webserver_suspicious_command_execution.toml"
+    notes: "Linux. A web-server parent starts a shell or reconnaissance command. Microsoft says php-fpm, httpd/apache2, and Java application servers spawn sh or bash. A shell that is not a child of the web worker does not match."
+  - name: "Web Shell Detection: Script Process Child of Common Web Processes"
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/windows/persistence_webshell_detection.toml"
+    notes: "Windows. A script host or shell whose parent is w3wp.exe or another listed web process. Microsoft names w3wp.exe spawning cmd.exe or PowerShell. A file drop that does not spawn from the web process is not this rule."
+  - name: Suspicious Download Via Certutil.EXE
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_certutil_download.yml"
+    notes: "Windows process creation for certutil download behavior. Microsoft says agents use certutil, with curl, wget, and netcat, to launch web shells, install RATs, or persist. Certutil use that is not a download does not match this rule."
+  - name: Active Directory Replication from Non Machine Account
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_ad_replication_non_machine_account.yml"
+    notes: "Windows Security 4662 replication from a non-machine account. Microsoft lists DCSync alerts. It does not publish the account or the GUID, so this rule may not be the alert Microsoft listed."
+  - name: Kerberoasting Activity - Initial Query
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/builtin/security/win_security_kerberoasting_activity.yml"
+    notes: "Windows Kerberos query associated with Kerberoasting. Microsoft lists Kerberoasting alerts and does not publish the ticket events, so this rule may not be the alert Microsoft listed."
+  - name: Azure AD Identity Protection Password Spray
+    format: sigma
+    url: "https://github.com/SigmaHQ/sigma/blob/master/rules/cloud/azure/identity_protection/azure_identity_protection_password_spray.yml"
+    notes: "Azure Identity Protection password spray. Microsoft describes one Storm-0940 campaign with more than 151,000 failed sign-ins, peaking at 2,900 a minute, and lists T1110.003. The post does not say those failures were Identity Protection events."
+  - name: Entra ID Application Credential Modified
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/integrations/azure/persistence_entra_id_application_credential_modification.toml"
+    notes: "Azure audit change to an application credential. Microsoft says actors add application credentials. An application self-assigning Global Administrator is a different alert and is not this rule."
+  - name: ARTEX user agents, shadow reads, and Microsoft-only alerts
+    format: guidance
+    notes: "No public Sigma, Splunk, or Elastic rule checked for this entry keys on the user agents artex-enrich/* or norma/*, on a short title-only GET with no redirects, or on curl to rotating webhook[.]site URLs. Microsoft publishes no IP addresses. Also hunt rapid reads of /etc/shadow, .env files, private keys, and cloud credential files, new .php/.jsp/.jspx/.asp/.aspx/.ashx files in web or upload directories, several short-lived shells with incrementing names, and an application self-assigning Global Administrator. Those Microsoft alerts are not cited as Sigma, Splunk, or Elastic rules."
+timeline:
+  first_seen: "2026-07"
+  last_updated: "2026-11-26"
+  updates:
+    - date: "2026-07"
+      source: Microsoft Threat Intelligence
+      summary: "GitHub user Autumn-27 publishes ARTEX. Microsoft dates abuse of the framework to the period since that release."
+    - date: "2026-10"
+      source: Microsoft Threat Intelligence
+      summary: "The original developer removes the ARTEX source. Forks continue in other languages."
+    - date: "2026-11"
+      source: Microsoft Threat Intelligence
+      summary: "ThreatBook claims ownership and begins offering ARTEX Pro and CyberStrikeAI Enterprise Edition."
+    - date: "2026-11-25"
+      source: Microsoft Threat Intelligence
+      summary: "Microsoft publishes the defender guide naming Storm-0940, Storm-3358, Onyx Sleet, Pearl Sleet, Crystal Typhoon, and Salt Typhoon, and the host, network, and cloud signals."
+    - date: "2026-11-25"
+      source: The Record
+      summary: "Jonathan Greig reports Microsoft's account, including Salt Typhoon use of ARTEX."
+    - date: "2026-11-26"
+      source: Infosecurity Magazine
+      summary: "James Coker reports the same Microsoft actor list."
+linked_tools:
+  - artex

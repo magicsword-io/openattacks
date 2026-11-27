@@ -377,7 +377,7 @@ const chatPrompt = `Read ${llmsUrl} first. It is a slim index. Then open only th
       <h3>Structured files</h3>
       <p>
         Upload <a href={href("api/attacks.json")}><code>api/attacks.json</code></a> when the model can run code and you want every field.
-        In a git checkout the same records are <code>data/attacks.json</code>.
+        For a local copy, run <code>npm run llm:build</code> to generate <code>data/attacks.json</code>.
         {" "}<a href={href("api/schema.json")}><code>api/schema.json</code></a> is the field list.
         {" "}<a href={href("llms-full.txt")}><code>llms-full.txt</code></a> remains available for a tool that can hold the entire catalog.
       </p>

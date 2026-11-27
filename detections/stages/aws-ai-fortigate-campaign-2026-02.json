@@ -1,0 +1,14 @@
+{
+  "exploit": {
+    "profile": "unassessed"
+  },
+  "ai-triage": {
+    "profile": "unassessed"
+  },
+  "lateral": {
+    "profile": "unassessed"
+  },
+  "compromise": {
+    "profile": "unassessed"
+  }
+}

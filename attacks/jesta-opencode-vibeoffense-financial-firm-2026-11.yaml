@@ -1,0 +1,128 @@
+id: jesta-opencode-vibeoffense-financial-firm-2026-11
+name: "Jesta: OpenCode, Chrome, and macOS curl against a financial firm (VibeOffense)"
+aliases:
+  - VibeOffense
+date_reported: "2026-11-24"
+date_activity_start: "2026-11-16"
+date_activity_end: "2026-11-16"
+researcher: Lior Finkelshtein
+org: Jesta
+sources:
+  - url: https://jesta.ai/blog/vibeoffense
+    title: "We stopped an AI attack in seconds: the VibeOffense case"
+    publisher: Jesta
+  - url: https://www.theregister.com/security/2026/11/24/an-ai-coding-agent-a-browser-and-a-mac-tool-found-a-financial-firms-access-key-in-under-6-minutes/5311922
+    title: An AI coding agent, a browser, and a Mac tool found a financial firm's access key in under 6 minutes
+    publisher: The Register
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_secondary: null
+ai_role_detail: "Jesta identified OpenCode from one web-fetch request that sent the client name OpenCode-User/1.0. Jesta does not know the model. Jesta says the browser may have been the agent or a person working beside it."
+technique_summary: "Lior Finkelshtein (Jesta, 24 November 2026) and Jessica Lyons (The Register, 24 November 2026) describe one session against a live system of an unnamed major financial-services firm that is a Jesta customer. On 16 November 2026 at 4:24:57 a.m. ET, a single IPv6 address in Bucharest, on a DIGI Romania business line (AS8708), requested the front page with Chrome 157 on a Mac. The site refused it. Six seconds later the same address presented Chrome's built-in Pixel 10 mobile preset and was refused again. It then asked for an API description and was refused. Five seconds later it requested /openapi.json on a second address. That address was a Jesta decoy, and it answered. Thirteen seconds later the client followed a link that exists only inside that document. At 4:26:01 a.m. ET, 64 seconds after the first request, Jesta marked the visitor as an AI agent and opened a case. From that point the customer system was no longer what the client was touching. Everything after the flag was content Jesta had set up, including the access key the client found. At 4:27:07 a.m. ET one request fetched the API document again with user agent Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OpenCode-User/1.0; +https://opencode.ai. Jesta says that string is OpenCode's web-fetch tool, that it is written into OpenCode's code, and that Jesta had already flagged the session 66 seconds before this request. Jesta does not know which model was connected. The same address also used the desktop Chrome 157 user agent, the Pixel 10 preset of that browser, and curl/8.7.1, the curl that ships with macOS 15 and later. Chrome 157 came out on 3 November 2026. No other tooling was installed. Jesta says a key seen in the browser appeared in a curl request about two minutes later, and a second key seen first on the command line appeared in the browser about a minute after that. Jesta says it cannot tell whether the browser was driven by the agent or by a person clicking while the agent used the terminal. With the planted key, the client switched to curl. It sent four session messages in 13 seconds, then tested the key three ways in under 10 seconds: the planted key, no key, and a made-up key of the same length, deadbeefdeadbeefdeadbeef. The fake key was sent in the same second as the request with no key. Each try had a read of the API document between it. The planted key was accepted by the decoy. The other two were refused. About a minute later the client returned to the browser and made three submit attempts. The first built a path with two slashes and received 404. Six seconds later it sent that same path from the phone preset and received 404. Fourteen seconds later it corrected the path and used GET on an endpoint that only accepts submissions, and received 405. That last request was at 4:30:41 a.m. ET, 5 minutes and 44 seconds after the first request. The address has not returned. Jesta says nothing real was taken, the customer's system refused the first request, and none of the threat feeds it checked knew the address. Jesta and the customer reported the case to law enforcement. OpenCode is https://github.com/anomalyco/opencode. This is not opencode-mcp-oauth-rce-2026-10. That entry is a vulnerability in how OpenCode opened an MCP OAuth URL. This entry is an operator pointing OpenCode at a customer's site."
+initial_access: "An operator pointed OpenCode at a live system of a Jesta financial-services customer. The front page and the API description refused the client. A Jesta decoy at /openapi.json answered, and the client followed a link that exists only in that document."
+ai_tooling_and_models:
+  - "OpenCode (https://github.com/anomalyco/opencode). Web-fetch user agent OpenCode-User/1.0. The model is unknown."
+  - "Chrome 157 on macOS, then the same Chrome with the built-in Pixel 10 mobile preset"
+  - "curl/8.7.1, the curl shipped with macOS 15 and later"
+other_tooling:
+  - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  - "Mozilla/5.0 (Linux; Android 16; Pixel 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36"
+  - "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OpenCode-User/1.0; +https://opencode.ai"
+  - "curl/8.7.1"
+victims_and_sectors: "One unnamed major financial-services firm, a Jesta customer. Jesta says the firm's real system refused the first request, later traffic was on a decoy, and nothing real was taken."
+regions:
+  - unknown
+region_notes: "Jesta does not name the customer or a victim country. Bucharest, DIGI Romania, and AS8708 are the source of the traffic, not a victim region."
+attribution_or_cluster: "Unnamed operator. Jesta attributes the session to its own logs and does not name a person or a group."
+scale_and_metrics: "One source address, one session, 5 minutes and 44 seconds, from 4:24:57 a.m. ET to 4:30:41 a.m. ET on 16 November 2026. Jesta flagged it 64 seconds in. Three clients from that address. Three key variations in under 10 seconds. Three submit attempts. No return visit. No stolen customer data."
+prevention_angle: "A blocklist of known addresses would not have seen this source. Jesta says it was absent from the threat feeds the customer had. Watch web logs for OpenCode-User/1.0, for Chrome 157 switching to the Pixel 10 preset from the same source, and for curl/8.7.1 from that source in the same few minutes. Treat a client that follows a link present only inside an API document, and a burst that tries a presented key, no key, and a same-length fake key, as an agent session. A decoy or honeytoken API document is what let Jesta classify this one. Older OpenCode builds send a Chrome 143 user agent instead of OpenCode-User/1.0, so the client name is not required for the behavioral checks."
+related_magicsword_projects: []
+source_notes: "The timestamps, user agents, status codes, the 64-second flag, the 66 seconds before the OpenCode user agent, the planted key, the decoy /openapi.json, the masked source address, and the statement that nothing real was taken are from Jesta. The Register reports the same session and says Jesta and the customer disclosed it to law enforcement. The Register's article calls the operator a Romanian hacker because the address is in Bucharest. Jesta does not name the person and does not state a nationality. The schema has no related-attack field. opencode-mcp-oauth-rce-2026-10 is a different case: a vulnerability in opening an MCP OAuth URL, not this operator pointing OpenCode at a customer site. Customer names, hosts, and the body of the decoy are redacted in the sources and are not reconstructed here."
+last_reviewed: "2026-11-25"
+confidence: medium
+iocs:
+  domains: []
+  ips:
+    - "2a02[:]2f0f[:]930b[:]X[:]X[:]X[:]X[:]X"
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0053
+    rationale: "Jesta says the operator used OpenCode, which drove a browser and the macOS curl as tools against the customer system. One request carried OpenCode's own web-fetch client name."
+    source_urls:
+      - https://jesta.ai/blog/vibeoffense
+      - https://www.theregister.com/security/2026/11/24/an-ai-coding-agent-a-browser-and-a-mac-tool-found-a-financial-firms-access-key-in-under-6-minutes/5311922
+  - id: AML.T0095
+    rationale: "The client requested the front page, an API description, and a decoy /openapi.json, then followed a link that exists only inside that document."
+    source_urls:
+      - https://jesta.ai/blog/vibeoffense
+  - id: AML.T0098
+    rationale: "After reading the decoy API document, the client used curl to test a planted key, then the same request with no key and with a made-up key of the same length. The key was a Jesta plant. Nothing real was taken."
+    source_urls:
+      - https://jesta.ai/blog/vibeoffense
+      - https://www.theregister.com/security/2026/11/24/an-ai-coding-agent-a-browser-and-a-mac-tool-found-a-financial-firms-access-key-in-under-6-minutes/5311922
+attack_flow:
+  nodes:
+    - id: step-1
+      title: Front page refuses Chrome on a Mac
+      description: "At 4:24:57 a.m. ET on 16 November 2026, one IPv6 address in Bucharest requests the front page with Chrome 157 on a Mac. The customer system returns 403."
+      kind: access
+      source_urls: &a1
+        - https://jesta.ai/blog/vibeoffense
+        - https://www.theregister.com/security/2026/11/24/an-ai-coding-agent-a-browser-and-a-mac-tool-found-a-financial-firms-access-key-in-under-6-minutes/5311922
+    - id: step-2
+      title: A decoy API document answers
+      description: "The same Chrome switches to the Pixel 10 mobile preset and is refused. The API description is refused. /openapi.json on a second address answers. That address is a Jesta decoy."
+      kind: access
+      source_urls: *a1
+    - id: step-3
+      title: Jesta flags an AI agent
+      description: "The client follows a link that exists only in the API document. At 4:26:01 a.m. ET, 64 seconds in, Jesta marks the visitor as an AI agent. A later request sends the OpenCode-User/1.0 user agent. The model is unknown."
+      kind: ai
+      source_urls: *a1
+    - id: step-4
+      title: curl tests a planted key three ways
+      description: "curl/8.7.1 sends four session messages in 13 seconds, then within 10 seconds tries the planted key, no key, and a same-length fake key. The decoy accepts the planted key and refuses the other two."
+      kind: execution
+      source_urls: *a1
+    - id: step-5
+      title: Three submit attempts, then it stops
+      description: "The client makes three submit attempts. Two use a path with a double slash and get 404. The third fixes the path and uses GET on a submit-only endpoint and gets 405. The last request is at 5 minutes 44 seconds. Nothing real is taken."
+      kind: impact
+      source_urls: *a1
+  edges:
+    - source: step-1
+      target: step-2
+    - source: step-2
+      target: step-3
+    - source: step-3
+      target: step-4
+    - source: step-4
+      target: step-5
+category: adversary-use-of-ai
+attribution:
+  actor_name: unknown
+  country: null
+  motivation: unknown
+  attributed_by: "Jesta (its own logs)"
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: OpenCode client name, Pixel 10 preset switch, and key variation
+    format: guidance
+    notes: "security-detections-mcp searches for OpenCode, openapi, user-agent, curl, and macOS curl returned no Sigma, Splunk, or Elastic rule that matches this session. Web Server Suspicious User Agent Requests matches a fixed scanner list (nikto, sqlmap, gobuster, and similar) and does not include OpenCode-User/1.0, Chrome/157.0.0.0, or curl/8.7.1. HTTP Scripting Tool User Agent and HTTP Malware User Agent depend on Splunk lookups of known tool and malware user agents. Those lookups are not published as a match for OpenCode-User/1.0, and this entry does not treat them as coverage. Shell Evaluated Curl Downloaded Content on macOS requires a shell -c command that evals curl output. This session's curl sent API requests. It did not eval a download. Suspicious Curl from macOS Application requires curl spawned from an application in /Applications toward a raw IP. Jesta's curl/8.7.1 is the system curl on the operator's Mac, seen in the customer's web log, and the destinations were redacted. GenAI CLI Started with Unsafe Permission Bypass matches an opencode process only when it is started with --dangerously-skip-permissions. Jesta does not report that flag. The customer's evidence is the web log. Hunt one source that, within minutes, sends the desktop Chrome 157 user agent, then Mozilla/5.0 (Linux; Android 16; Pixel 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36, then curl/8.7.1, or that sends Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OpenCode-User/1.0; +https://opencode.ai. Older OpenCode versions send a Chrome 143 user agent instead. Also hunt a client that follows a URL present only in an API document, and a burst that retries one request with the presented key, with no key, and with a same-length fake key such as deadbeefdeadbeefdeadbeef."
+timeline:
+  first_seen: "2026-11-16"
+  last_updated: "2026-11-24"
+  updates:
+    - date: "2026-11-03"
+      source: Jesta
+      summary: "Chrome 157 is released. The session on 16 November uses that version, less than two weeks later."
+    - date: "2026-11-16"
+      source: Jesta
+      summary: "From 4:24:57 a.m. ET to 4:30:41 a.m. ET one Bucharest address uses Chrome 157, the Pixel 10 preset, OpenCode's web-fetch client, and curl/8.7.1. Jesta flags it at 4:26:01 a.m. ET. The key it tests is a plant. Nothing real is taken. The address does not return."
+    - date: "2026-11-24"
+      source: Jesta
+      summary: "Lior Finkelshtein publishes the VibeOffense write-up. The Register publishes Jessica Lyons's account the same day. Jesta and the customer have reported the case to law enforcement."

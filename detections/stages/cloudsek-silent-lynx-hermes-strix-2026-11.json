@@ -1,0 +1,21 @@
+{
+  "lure": {
+    "profile": "phishing",
+    "note": "LNK, ZIP, and ISO lures. The PowerShell cradle is covered on the next stage.",
+    "reviewed": "2026-11-18"
+  },
+  "powershell": {
+    "profile": "windows-shell",
+    "control": "script-hosts",
+    "scope": "The Windows script host that runs the downloaded P.ps1. A signed or allowlisted PowerShell path can still run this stage.",
+    "note": "Sigma download-and-execute cradle matches IEX (DownloadString) when the command line is logged."
+  },
+  "strix": {
+    "profile": "unobserved",
+    "note": "Strix ran on the operator server. Victim telemetry does not show the DeepSeek or Gemini calls."
+  },
+  "collect": {
+    "profile": "credentials",
+    "note": "Document collection and credential dumps are described at a high level. No query names the railway or forestry hosts."
+  }
+}

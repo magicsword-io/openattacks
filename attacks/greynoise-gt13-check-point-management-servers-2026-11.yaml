@@ -1,0 +1,179 @@
+id: greynoise-gt13-check-point-management-servers-2026-11
+name: "GreyNoise GT13: intrusions against Check Point Security Management Servers"
+aliases:
+  - GT13
+date_reported: "2026-11-23"
+date_activity_start: "2026-10-02"
+date_activity_end: "2026-11-02"
+researcher: Steve Miller
+org: GreyNoise
+sources:
+  - url: https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign
+    title: "99 IPs but a C2 ain't one: An Active Intrusion Campaign Against Check Point Security Management Servers"
+    publisher: GreyNoise
+  - url: https://www.securityweek.com/check-point-security-management-servers-hacked-in-ai-assisted-campaign/
+    title: Check Point Security Management Servers Hacked in AI-Assisted Campaign
+    publisher: SecurityWeek
+  - url: https://securityaffairs.com/203946/hacking/gt13-ai-assisted-hackers-target-22-organizations-through-check-point-servers.html
+    title: GT13 AI-assisted hackers target 22 organizations through Check Point servers
+    publisher: Security Affairs
+  - url: https://thehackernews.com/2026/11/hackers-compromise-24-check-point.html
+    title: Hackers compromise Check Point Security Management Servers
+    publisher: The Hacker News
+magicsword_coverage: []
+borderline: false
+borderline_note: null
+ai_role: attacker_uses_ai_as_operator
+ai_role_detail: "GreyNoise suspects a mature AI-enabled offensive apparatus with separate agentic harnesses for weaponizing, scanning, and auto-exploiting. It also observed hands-on-keyboard activity and does not name a model or framework."
+technique_summary: "GreyNoise (Steve Miller, 23 November 2026) tracks GreyNoise Threat 13 (GT13), confirmed attack activity from 17 October to 2 November 2026 against Check Point Security Management Servers at least 22 organizations. Victims had assets in the United Kingdom, Ireland, France, the Netherlands, Greece, Germany, Austria, Bulgaria, Poland, India, Thailand, Vietnam, South Korea, Hong Kong, China, Australia, and the United States. Sectors included financial services, energy, government, transportation, mining, engineering, and manufacturing. GreyNoise makes no attribution, motive, or country assessment. It observed the activity on GreyNoise Global Observation Grid sensors. The actor used 99 IP addresses, all ExpressVPN egress (AS206092) or compromised victim Check Point devices, across more than 1,400 sessions, more than 800 command lines, and more than 1,200 files. On 2 October at 13:17 UTC an automated pipeline exploited Rejetto HFS CVE-2026-61500. It collected Math.random() sid values from loginSrp1, rebuilt V8 PRNG state, recovered the cookie signing key, and forged an admin cookie. The cookie setting allow_session_ip_change was true. On 5 October, HFS middleware hooks ran commands, and an SSH key was appended to /root/.ssh/authorized_keys. On 8 October a check-in ran uname -a, df -h / piped to tail -1, and whoami. On 19 October the actor tried to pull a Linux implant named ZULT through HFS server_code from data-zt.newpayapp[.]com. The download failed. Troubleshooting used ps, curl, and network configuration. The actor returned the next day over SSH. GreyNoise suggests a multi-agent architecture problem. On 20 October, /root/exfil/srv_post2_<redacted>.py was an unauthenticated HTTP server on the hop. The first upload was a route scan from a compromised Check Point management server. The actor installed Nmap and Chisel. Victim A's host ran a Chisel client. Over that tunnel, exploit.py for CVE-2026-16232, a SmartConsole authentication bypass to Run Script adapted from the Metasploit module, launched more than 100 management tasks. Those tasks copied the firewall database and the Internal CA, minted a pivot.p12 certificate, and unloaded security policies, which disabled the firewall. spray_portal.py, comb.py, ssh_comb.py, and ssh_spray.py used default, weak, and victim-themed credentials. pull_<id>.py led to exploit_socks.py and then exploit.py, which stole credentials, Internal CA files, and firewall configuration from a second device through the first. The actor probed NetScaler, Ivanti, vCenter, Exchange, Oracle TNS, and domain controllers, with exploits for CVE-2020-1472, CVE-2023-4966, CVE-2024-21893, CVE-2021-26855, CVE-2021-34473, CVE-2021-21972, and CVE-2023-34048. GreyNoise also lists CVE-2025-5777, CVE-2026-41089, and CVE-2026-98432. At least 30 Python scripts were used, with Nmap, Chisel, Impacket, and Paramiko. On 26 October at 02:17 UTC a bulk certificate task to 24 compromised Check Point management servers, Victim A and 21 others, was issued from elsewhere in the actor infrastructure. Results were copied with scp to /root/exfil/pc_<ip>.txt. All of them failed. One error showed /usr/lib/.libproc.so in /etc/ld.so.preload, which GreyNoise treats as a possible implant. On 2 November at 02:28 UTC the hop checked itself for CVE-2026-98432 and then installed an nftables rule that drops IPv4 packets with IP options, which GreyNoise reads as protection from other actors. GreyNoise saw no hands-on-keyboard activity from about 17:00 to 00:19 UTC and none in the 05:00 UTC hour, and it puts little weight on that gap. newpayapp[.]com was registered on 13 March 2026. The registrant state was Hai Phong and the country code was VN, which GreyNoise calls a possible coincidence. GreyNoise suspects a mature AI-enabled offensive apparatus with separate agentic harnesses for weaponizing, scanning, and auto-exploiting. It says the campaign is likely ongoing. The Hacker News reports Check Point's Sergey Shykevich saying this was not a new vulnerability, that CVE-2026-16232 is patched, and that customers should apply updates and hardening. The GreyNoise post says it is a summary of a longer Labs write-up. The page does not publish a separate Labs URL. Link greynoise-papercut-ai-campaign-2026-09."
+initial_access: "Rejetto HFS CVE-2026-61500 on the hop, by forging an admin cookie from Math.random() sid values. Check Point management servers were then reached with CVE-2026-16232, a SmartConsole authentication bypass to Run Script, adapted from the Metasploit module. Check Point says CVE-2026-16232 is a patched issue, not a new vulnerability."
+ai_tooling_and_models:
+  - "No named model. GreyNoise suspects separate agentic harnesses for weaponizing, scanning, and auto-exploiting."
+other_tooling:
+  - "Rejetto HFS CVE-2026-61500 and Check Point CVE-2026-16232 via an adapted Metasploit module"
+  - "Nmap, Chisel, Impacket, and Paramiko"
+  - "Python scripts, including spray_portal.py, comb.py, ssh_comb.py, ssh_spray.py, pull scripts, exploit_socks.py, and exploit.py"
+  - "Linux implant ZULT, which failed to download"
+victims_and_sectors: "At least 22 organizations and 24 Check Point Security Management Servers. Sectors include financial services, energy, government, transportation, mining, engineering, and manufacturing."
+regions:
+  - Australia
+  - Austria
+  - Bulgaria
+  - China
+  - France
+  - Germany
+  - Greece
+  - Hong Kong
+  - India
+  - Ireland
+  - Netherlands
+  - Poland
+  - South Korea
+  - Thailand
+  - United Kingdom
+  - United States
+  - Vietnam
+region_notes: "GreyNoise lists these as places where victims had assets, not as one headquarters and not as an origin. It makes no nation-of-origin assessment. The newpayapp registrant state Hai Phong and country code VN are called a possible coincidence and are not an attribution."
+attribution_or_cluster: "Unknown. GreyNoise tracks the activity as GT13 and does not attribute a group, motive, or country."
+scale_and_metrics: "Confirmed Check Point attack activity from 17 October to 2 November 2026, with the HFS hop activity starting 2 October. At least 22 organizations and 24 management servers. 99 IP addresses, more than 1,400 sessions, more than 800 command lines, and more than 1,200 files. More than 100 management tasks on Victim A. At least 30 Python scripts. GreyNoise says the campaign is likely ongoing."
+prevention_angle: "Patch CVE-2026-16232 and Rejetto HFS CVE-2026-61500. Restrict Check Point management access using Check Point's hardening guidance. If a management server was exposed, rotate the Internal CA, certificates, and admin credentials. Check /etc/ld.so.preload on management servers. Alert on unexpected Run Script tasks, policy unloads, and new certificates. Block outbound connections from management servers. The ExpressVPN addresses are shared exits and are not sufficient on their own."
+related_magicsword_projects: []
+source_notes: "The timeline, counts, and indicators are from the 23 November 2026 GreyNoise post. That post says it summarizes a longer GreyNoise Labs version. Its Read the full report control does not link to a public Labs URL, so none is cited. SecurityWeek, Security Affairs, and The Hacker News restate the campaign. The Hacker News is the source for Check Point's Sergey Shykevich saying CVE-2026-16232 is patched and is not a new vulnerability. The IP addresses below are a subset of the ExpressVPN exits in the GreyNoise post. The full list is in that post. They are shared VPN exits. HASSH eeca2460550b9ded084ecf2f70a75356 is a common OpenSSH 10 hash and is only useful combined with other GT13 behavior. User agents were Mozilla/5.0 (X11; Linux x86_64) research and Mozilla/5.0 research. No victim addresses are included. Link greynoise-papercut-ai-campaign-2026-09."
+last_reviewed: "2026-11-25"
+confidence: low
+iocs:
+  domains:
+    - newpayapp[.]com
+    - data-zt.newpayapp[.]com
+    - api-zt.newpayapp[.]com
+    - 2ev5.newpayapp[.]com
+  ips:
+    - 45.92.229[.]9
+    - 45.92.229[.]10
+    - 173.239.211[.]240
+    - 216.73.161[.]130
+    - 216.73.160[.]129
+  hashes: []
+  urls: []
+atlas_techniques:
+  - id: AML.T0103
+    rationale: "GreyNoise suspects separate agentic harnesses for weaponizing, scanning, and auto-exploiting. It does not name a model or framework, and it also saw hands-on-keyboard activity."
+    source_urls:
+      - https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign
+  - id: AML.T0053
+    rationale: "GreyNoise describes the 2 October HFS compromise as an automated pipeline and suggests a multi-agent problem when the ZULT download failed and the actor returned over SSH the next day."
+    source_urls:
+      - https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign
+attack_flow:
+  nodes:
+    - id: hfs
+      title: Forge an HFS admin cookie
+      description: "On 2 October at 13:17 UTC an automated pipeline exploited Rejetto HFS CVE-2026-61500. It collected Math.random() sid values from loginSrp1, rebuilt the V8 PRNG, and forged an admin cookie with allow_session_ip_change set."
+      kind: access
+      source_urls: &gn
+        - https://www.greynoise.io/blog/check-point-security-management-servers-intrusion-campaign
+    - id: keys
+      title: SSH key on the hop
+      description: "On 5 October, HFS middleware hooks ran commands and an SSH key was appended to /root/.ssh/authorized_keys. On 8 October the check-in was uname -a, df -h, and whoami."
+      kind: execution
+      source_urls: *gn
+    - id: hop
+      title: Chisel, Nmap, and a failed ZULT pull
+      description: "On 19 October a pull of the Linux implant ZULT from data-zt.newpayapp[.]com failed. The actor returned the next day over SSH. On 20 October an unauthenticated HTTP server on the hop received a route scan from a Check Point management server. Nmap and Chisel were installed."
+      kind: execution
+      source_urls: *gn
+    - id: sms
+      title: Run Script unloads the firewall
+      description: "Victim A ran a Chisel client. exploit.py for CVE-2026-16232 launched more than 100 management tasks, copied the firewall database and Internal CA, minted pivot.p12, and unloaded security policies. Further scripts stole credentials and configuration from a second device through the first."
+      kind: impact
+      source_urls: *gn
+    - id: preload
+      title: Failed cert task shows ld.so.preload
+      description: "On 26 October a bulk certificate task to 24 management servers failed. One error showed /usr/lib/.libproc.so in /etc/ld.so.preload. On 2 November the hop checked itself for CVE-2026-98432 and dropped IPv4 packets that carry IP options."
+      kind: impact
+      source_urls: *gn
+    - id: agents
+      title: Suspected agent harnesses
+      description: "GreyNoise suspects separate agentic harnesses for weaponizing, scanning, and auto-exploiting. It does not name a model. It puts little weight on the hours with no hands-on-keyboard activity, and it says the campaign is likely ongoing."
+      kind: ai
+      source_urls: *gn
+  edges:
+    - source: agents
+      target: hfs
+      label: suspected
+    - source: hfs
+      target: keys
+    - source: keys
+      target: hop
+    - source: hop
+      target: sms
+    - source: sms
+      target: preload
+category: adversary-use-of-ai
+attribution:
+  actor_name: Unknown
+  aliases:
+    - GT13
+  country: Unknown
+  motivation: unknown
+  attributed_by: GreyNoise
+  confidence: low
+ai_involvement_confidence: vendor-asserted
+detections:
+  - name: SSH Authorized Keys File Activity
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/cross-platform/persistence_ssh_authorized_keys_modification.toml"
+    notes: "File change or creation whose name is authorized_keys or authorized_keys2. GreyNoise says an SSH key was appended to /root/.ssh/authorized_keys on the hop. The rule does not know whether that key is GT13."
+  - name: Modification of Dynamic Linker Preload Shared Object
+    format: elastic
+    url: "https://github.com/elastic/detection-rules/blob/main/rules/linux/privilege_escalation_ld_preload_shared_object_modif.toml"
+    notes: "Linux file modification of /etc/ld.so.preload. GreyNoise saw /usr/lib/.libproc.so in that file via an error string from a failed certificate task. The error string alone is not the file event this rule requires."
+  - name: Check Point Run Script, HFS cookie forge, and shared VPN exits
+    format: guidance
+    notes: "No public Sigma, Splunk, or Elastic rule checked for this entry detects a forged Rejetto HFS admin cookie, a Check Point SmartConsole Run Script task, a policy unload, or a new Internal CA certificate. The 99 addresses are ExpressVPN exits or compromised Check Point devices. The five addresses in this entry are examples from the GreyNoise post, and a shared VPN exit is not sufficient on its own. HASSH eeca2460550b9ded084ecf2f70a75356 is a common OpenSSH 10 hash."
+timeline:
+  first_seen: "2026-10-02"
+  last_updated: "2026-11-25"
+  updates:
+    - date: "2026-03-13"
+      source: GreyNoise
+      summary: "newpayapp[.]com is registered. GreyNoise notes registrant state Hai Phong and country code VN as a possible coincidence, not an origin."
+    - date: "2026-10-02"
+      source: GreyNoise
+      summary: "13:17 UTC the HFS CVE-2026-61500 pipeline forges an admin cookie. 5 October an SSH key is added. 8 October is the uname check-in."
+    - date: "2026-10-17"
+      source: GreyNoise
+      summary: "GreyNoise dates confirmed attack activity against Check Point Security Management Servers from 17 October to 2 November 2026."
+    - date: "2026-10-19"
+      source: GreyNoise
+      summary: "The ZULT download from data-zt.newpayapp[.]com fails. The actor returns over SSH the next day, installs Nmap and Chisel, and runs CVE-2026-16232 against Victim A."
+    - date: "2026-10-26"
+      source: GreyNoise
+      summary: "02:17 UTC a bulk certificate task to 24 management servers fails. One error shows /usr/lib/.libproc.so in /etc/ld.so.preload."
+    - date: "2026-11-02"
+      source: GreyNoise
+      summary: "02:28 UTC the hop checks CVE-2026-98432 and installs an nftables rule dropping IPv4 packets with IP options. GreyNoise says the campaign is likely ongoing."
+    - date: "2026-11-23"
+      source: GreyNoise
+      summary: "GreyNoise publishes the GT13 summary. The Hacker News carries Check Point's statement that CVE-2026-16232 is patched and is not a new vulnerability."
+linked_tools: []

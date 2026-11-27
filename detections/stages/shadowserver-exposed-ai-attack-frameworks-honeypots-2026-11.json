@@ -1,0 +1,37 @@
+{
+  "datasets": {
+    "profile": "unassessed",
+    "note": "Shadowserver's device_type=ai-attack-framework reports are a defender feed, not a victim procedure.",
+    "reviewed": "2026-11-26"
+  },
+  "scan": {
+    "profile": "unassessed",
+    "note": "The exposed instances are the operators' own framework consoles. Scanning for them is Shadowserver's measurement, not a victim detection.",
+    "reviewed": "2026-11-26"
+  },
+  "honeypot": {
+    "profile": "web",
+    "note": "Honeypot events include web requests. Shadowserver does not publish the request log.",
+    "reviewed": "2026-11-26"
+  },
+  "relay": {
+    "profile": "unassessed",
+    "note": "About six in ten events tried to relay traffic. Shadowserver does not name a proxy product or a command line.",
+    "reviewed": "2026-11-26"
+  },
+  "secrets": {
+    "profile": "credentials",
+    "note": "About one in ten events requested .env files, Git metadata, or a default Jenkins login.",
+    "reviewed": "2026-11-26"
+  },
+  "cve": {
+    "profile": "web",
+    "note": "About one in ten events sent exploits. The public page names Metabase, PHPUnit, Cisco IOS XE, and GeoServer CVEs and does not include the request bodies.",
+    "reviewed": "2026-11-26"
+  },
+  "ai-probe": {
+    "profile": "unassessed",
+    "note": "Probes of n8n, Dify, Flowise, MLflow, LLM listing endpoints, MCP endpoints, and AI coding-assistant credential files are described without a stable path list.",
+    "reviewed": "2026-11-26"
+  }
+}

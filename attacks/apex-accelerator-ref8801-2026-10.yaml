@@ -1,75 +1,129 @@
 id: apex-accelerator-ref8801-2026-10
 name: Apex Accelerator / REF8801
 date_reported: 2026-10-12
+date_activity_start: "2026-07"
+date_activity_end: "2026-11-24"
 researcher: Jia Yu Chan, Daniel Stepanic
 org: Elastic Security Labs
 sources:
   - url: https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+    title: Auditing the auditor, unmasking Apex Accelerator
+    publisher: Elastic Security Labs
+  - url: https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026
+    title: Apex Accelerator's npm tools rerouted AI agent traffic and dropped CloudSyncD and a Telegram stealer (REF8801)
+    publisher: Corgea
+  - url: https://github.com/advisories/GHSA-pg98-9cmp-wcf5
+    title: Malware in @apexacc/cli
+    publisher: GitHub Advisory Database
+  - url: https://github.com/advisories/GHSA-r68v-jq2f-qcf8
+    title: Malware in @apexscore/cli
+    publisher: GitHub Advisory Database
+  - url: https://github.com/advisories/GHSA-8q2p-w9w5-552h
+    title: Malware in @apexfdn/copilot-mcp
+    publisher: GitHub Advisory Database
+  - url: https://github.com/can1357/oh-my-pi
+    title: Oh My Pi
+    publisher: GitHub
 magicsword_coverage: []
 borderline: false
 borderline_note: null
 ai_role: ai_tool_as_lure
 ai_role_secondary: ai_infra_as_c2
-ai_role_detail: null
-technique_summary: "Fake Web3 accelerator hands founders free Claude/Gemini
-  credits and npm packages (@apexacc/cli, @apexacc/audit). CLI is Oh My Pi with
-  backdoored bootstrap: OPENROUTER_BASE_URL to attacker LLM proxy, rogue MCP in
-  ~/.apex/agent/mcp.json, yolo approvals. Audit MCP returns fabricated findings
-  and registers into Claude Desktop/Cursor/Windsurf. Windows chain:
-  wscript→PowerShell→stealer; macOS CloudSyncD."
-initial_access: Social engineering via fake accelerator / free AI credits; npm
-  install of @apexacc/cli or @apexacc/audit
+ai_role_detail: "The CLI is a repackaged Oh My Pi coding agent (https://github.com/can1357/oh-my-pi). The audit MCP returns fabricated findings. @apexfdn/copilot-mcp does not spawn a process. It turns an HTTP 412 from the operator API into tool text that tells the agent to run a command."
+technique_summary: "Elastic Security Labs (Jia Yu Chan and Daniel Stepanic, 12 October 2026) tracks a fake Web3 accelerator as REF8801. It offered founders free Claude and Gemini credits and the npm packages @apexacc/cli and @apexacc/audit, published by the npm user apexaccelerator. The CLI presents as Apex Copilot. Elastic compared Apex Copilot 1.6.1 with Oh My Pi 16.3.6 (https://github.com/can1357/oh-my-pi) and found 1,351 of 1,363 files under packages/coding-agent/src byte-identical. The changes in apex-bootstrap.ts set OPENROUTER_BASE_URL to the operator proxy, write a remote MCP server into ~/.apex/agent/mcp.json, and set tool approvals to yolo. The audit package registers a fabricated 18-tool MCP server into Claude Desktop, Cursor, and Windsurf, and every handler Elastic inspected returned canned output. On Windows the command path is wscript to PowerShell to a stealer. On macOS it is CloudSyncD. Corgea (24 November 2026) keeps those two packages and adds the rest of the lineage. @apexacc/cli had 122 versions, 1.1.8 on 9 August 2026 through 1.6.2 on 27 September 2026. npm replaced them with a 0.0.1-security placeholder on 10 November 2026 at 22:36 UTC under GHSA-pg98-9cmp-wcf5. @apexscore/cli had 33 versions, 1.0.59 on 30 July 2026 through 1.1.1 on 9 August 2026, and was replaced on 24 November 2026 at 17:35 UTC under GHSA-r68v-jq2f-qcf8. @apexfdn/copilot-mcp, versions 0.1.0 through 0.11.6, was replaced on 24 November 2026 at 17:41 UTC under GHSA-8q2p-w9w5-552h. @apexacc/audit was removed from the registry by 15 October 2026. @apexfdn/apex, versions 1.0.1 through 1.0.32, is a 0.0.1-security placeholder as of 21 July 2026. @copilot-mcp/apex, versions 1.0.0 through 1.0.22, was removed. Corgea read the @apexacc/cli 1.6.2 tarball. It has no install hook. Running apex or npx @apexacc/cli launches apex.cjs, which downloads a native binary from GitHub releases with no hash check and runs it. On Windows the launcher asks for UAC, adds a Defender exclusion for the .apex directory, and sets VerifiedAndReputablePolicyState to 0. The verify request to the operator returns a command. On macOS a Rust helper sends it and the captured command pipes a remote script into a shell, which drops CloudSyncD. On Windows the JavaScript bootstrap writes the command to a PowerShell script and a VBScript in the temp directory and starts wscript so PowerShell runs with ExecutionPolicy Bypass and no window. Corgea says @apexfdn/copilot-mcp spawns no process. In the 0.11.6 tarball, an HTTP 412 whose error is verify_required becomes tool output that tells the agent to run the command from the response, then retry. An agent with shell access and loose approvals runs that command. @apexscore/cli's launcher exits 0 when it sees an AI-agent environment variable or an MCP flag, which Corgea describes as a sandbox check. A fresh npm install of these names no longer returns the malware. A machine that already ran the CLI keeps the cached binary under ~/.apex/bin, and an MCP client that registered the server keeps that entry. Elastic found Russian-language comments in older commits. Corgea says those comments are not a nationality."
+initial_access: "A founder installs a package from the fake accelerator, or runs npx @apexacc/cli, npx @apexscore/cli, or the apex command. The audit package and @apexfdn/copilot-mcp are separate npm installs that register an MCP server."
 ai_tooling_and_models:
-  - Oh My Pi (repackaged as Apex Copilot)
-  - Attacker LLM proxy arena.apexaccs.org/api/llm/v1
-  - Attacker MCP arena.apexaccs.org/api/copilot/mcp
-  - Fabricated 18-tool Apex Audit MCP
-  - Targets Claude Desktop, Cursor, Windsurf configs
+  - "Oh My Pi 16.3.6 (https://github.com/can1357/oh-my-pi), repackaged as Apex Copilot"
+  - "Attacker LLM proxy at arena.apexaccs[.]org/api/llm/v1, labeled OpenRouter in the UI"
+  - "Attacker MCP at arena.apexaccs[.]org/api/copilot/mcp"
+  - "Fabricated 18-tool Apex Audit MCP, registered into Claude Desktop, Cursor, and Windsurf"
+  - "@apexfdn/copilot-mcp, which returns operator shell commands as tool text"
 other_tooling:
-  - wscript.exe
-  - PowerShell
-  - UACME ComputerDefaults bypass
-  - Go AMSI/ETW patcher
-  - CloudSyncD (macOS)
-  - Telegram exfil
-  - bludness.exe / exegis.exe
-victims_and_sectors: Cryptocurrency / Web3 founders and startups
+  - "npm packages @apexacc/cli, @apexacc/audit, @apexscore/cli, @apexfdn/apex, @apexfdn/copilot-mcp, and @copilot-mcp/apex"
+  - "wscript.exe, PowerShell, a Defender exclusion, and Smart App Control disabled by setting VerifiedAndReputablePolicyState to 0"
+  - "UACME ComputerDefaults-style bypass, Go AMSI/ETW patcher, bludness.exe, exegis.exe"
+  - "CloudSyncD on macOS"
+  - "Telegram exfil of the Windows stealer archive"
+victims_and_sectors: "Cryptocurrency and Web3 founders and startups who installed the accelerator's npm packages or registered its MCP servers, and the developer machines where those packages ran. Corgea says a fresh install no longer pulls the malware. Hosts that already ran it are still in scope."
 regions:
   - Multiple regions
-attribution_or_cluster: Elastic REF8801; Russian comments in history but nationality not established
-scale_and_metrics: unknown
-prevention_angle: Block apexaccs.org / apexfdn.xyz / payload domains; audit MCP
-  configs and OPENROUTER_BASE_URL; rotate AI keys; prevent wscript (Windows
-  stealer chain depends on it)
+attribution_or_cluster: "Elastic REF8801, a fake Web3 accelerator. Corgea extends the package list and the 24 November 2026 takedown. Nationality is not established. Russian-language comments in old commits are not a nationality."
+scale_and_metrics: "@apexacc/cli had 122 versions and was replaced on 10 November 2026. @apexscore/cli had 33 versions and @apexfdn/copilot-mcp versions 0.1.0 through 0.11.6 were replaced on 24 November 2026. @apexacc/audit was already removed by 15 October 2026. No victim count was published."
+prevention_angle: "Block apexaccs[.]org, apexfdn[.]xyz, ccmihr[.]com, 0auth-chromium[.]com, ehegisnightmare[.]icu, arenapex[.]cloud, cloudmain365duo[.]top, fdn4apex[.]com, router-apex[.]com, and apex-arena-router[.]com, including the arena, vrf, token, and verify hostnames named below. Search lockfiles, the npm cache, and global installs for @apexacc/cli, @apexacc/audit, @apexscore/cli, @apexfdn/apex, @apexfdn/copilot-mcp, and @copilot-mcp/apex. Remove ~/.apex, ~/.apex-audit, cached binaries under ~/.apex/bin, and Apex MCP entries from Claude, Cursor, and Windsurf configs. On macOS remove ~/.local/share/cloudsync and ~/.config/cloudsync and change the account password. On Windows remove a Defender exclusion for .apex, restore Smart App Control, and rebuild the host if exegis.exe or updater_loader.exe ran. Rotate LLM keys, browser sessions, wallet seeds, SSH keys, and cloud credentials the agent could have read. A registry placeholder does not clean a machine that already ran the CLI. The Windows stealer chain depends on wscript."
 related_magicsword_projects:
   - LOLSkills
-source_notes: null
-last_reviewed: 2026-10-20
+source_notes: "Package behavior for @apexacc/cli and @apexacc/audit, the Oh My Pi comparison, the yolo approvals, the fabricated audit tools, and the Windows and macOS payload branches are from Elastic. The version counts, the 10 November and 24 November placeholder times, the GHSA ids, the 412 verify_required path, the @apexscore/cli sandbox check, the tarball hashes, and the statement that Russian-language comments are not attribution are from Corgea. GitHub's malware advisories confirm the package names and say any installed copy should be treated as a compromise. They list affected versions as >= 0 and no patched version. The version ranges in this entry are Corgea's. Hashes, in the order named in the prose: 7ca5e3908dd8721d0cf6af2488f0825c0d91a5e0b7c8529ef830141a4a3ba31f is the @apexacc/cli 1.6.2 tarball. 4029192a44ee738deba9aa53b57550075cb8fd170a63f0636dea5452256f2175 is apex.cjs from that tarball. 3fce1efd911a008e4cf71d95dc4a63ceeb206d5bfaf6e75020b6b2e03b508d28 is the @apexscore/cli 1.1.1 tarball. 985829083f3937df6c82419216f7697afae0caac8efca6257a756066fe2c0abb is apex-windows-x64.exe. 42a760b15fea7c9af718ee45386c1c3ea1bec9e30c95d16c287bcc8b2efdc72e is apex-darwin-arm64. 127ae4cad80b6605157ca2a1feada8a235e16aacc5d2119337a98115a4e13274 is apex-verify-darwin. 5ee7145061f05779f7f6f9b72e216713d17d53e183a92f408bfbbc44f2bfb95d is apex-audit-windows-x64.exe. 20f0a401676292d4ae34932e61f34afa97bcfc47ee517cda2afeb7222264a193 is apex-audit-darwin-arm64. a50cdb508d13884630945a98eea0615b866d938eb0a16c5d958e6c8c181a6df8 is apex-audit-verify-darwin. 68f5a00eafa8ecebf5d93328e0fec23b24d6f91808c8384db002946a13656c71 is the CloudSyncD installer. ee8cd9aba420f1b26b5d43e5bcdd6025a277b4946bb5daf76ab45c0e5f7ecd0b is exegis.exe. ed5cb4af1d2cb067b8d23783ebf05d70278728462ba4f1bf29da0a3a41efc35e is enc_loader.exe. The binary hashes are the ones Elastic published and Corgea reprinted."
+last_reviewed: "2026-11-25"
+confidence: high
+iocs:
+  domains:
+    - apexaccs[.]org
+    - arena.apexaccs[.]org
+    - vrf.apexaccs[.]org
+    - token.apexaccs[.]org
+    - apexfdn[.]xyz
+    - arena.apexfdn[.]xyz
+    - verify.apexfdn[.]xyz
+    - ccmihr[.]com
+    - 0auth-chromium[.]com
+    - ehegisnightmare[.]icu
+    - arenapex[.]cloud
+    - cloudmain365duo[.]top
+    - fdn4apex[.]com
+    - main.router-apex[.]com
+    - update.apex-arena-router[.]com
+  ips: []
+  hashes:
+    - 7ca5e3908dd8721d0cf6af2488f0825c0d91a5e0b7c8529ef830141a4a3ba31f
+    - 4029192a44ee738deba9aa53b57550075cb8fd170a63f0636dea5452256f2175
+    - 3fce1efd911a008e4cf71d95dc4a63ceeb206d5bfaf6e75020b6b2e03b508d28
+    - 985829083f3937df6c82419216f7697afae0caac8efca6257a756066fe2c0abb
+    - 42a760b15fea7c9af718ee45386c1c3ea1bec9e30c95d16c287bcc8b2efdc72e
+    - 127ae4cad80b6605157ca2a1feada8a235e16aacc5d2119337a98115a4e13274
+    - 5ee7145061f05779f7f6f9b72e216713d17d53e183a92f408bfbbc44f2bfb95d
+    - 20f0a401676292d4ae34932e61f34afa97bcfc47ee517cda2afeb7222264a193
+    - a50cdb508d13884630945a98eea0615b866d938eb0a16c5d958e6c8c181a6df8
+    - 68f5a00eafa8ecebf5d93328e0fec23b24d6f91808c8384db002946a13656c71
+    - ee8cd9aba420f1b26b5d43e5bcdd6025a277b4946bb5daf76ab45c0e5f7ecd0b
+    - ed5cb4af1d2cb067b8d23783ebf05d70278728462ba4f1bf29da0a3a41efc35e
+  urls:
+    - hxxps://arena.apexaccs[.]org/api/llm/v1
+    - hxxps://arena.apexaccs[.]org/api/copilot/mcp
+    - hxxps://vrf.apexaccs[.]org/api/v1/vrf
+    - hxxps://verify.apexfdn[.]xyz/macos/installer/terminal/interactive/bash
+    - hxxps://ccmihr[.]com/macos/jquery.js
+    - hxxps://main.router-apex[.]com/updater.sh
 attack_flow:
   nodes:
     - id: step-1
-      title: Fake accelerator recruits founders
-      description: Free AI credits entice Web3 founders to install npm packages.
+      title: Fake accelerator publishes npm packages
+      description: "The operator publishes @apexacc/cli and @apexacc/audit, then the earlier and later names @apexfdn/apex, @copilot-mcp/apex, @apexscore/cli, and @apexfdn/copilot-mcp. Free AI credits are the lure. npm has replaced the last of these with security placeholders or removed them."
       kind: access
       source_urls: &a1
         - https://www.elastic.co/security-labs/threat-command/apex-accelerator-malicious-npm-packages
+        - https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026
     - id: step-2
       title: Bootstrap changes agent settings
-      description: The packages introduce an attacker LLM proxy, rogue MCP
-        configuration and permissive approvals.
+      description: "Running the CLI sets the model base URL to the operator proxy, writes a remote MCP server, and sets yolo approvals. The binary is cached under ~/.apex/bin even after the registry placeholder."
       kind: execution
       source_urls: *a1
     - id: step-3
       title: Rogue tools influence the agent
-      description: The audit MCP fabricates findings and registers with desktop coding
-        agents.
+      description: "The audit MCP returns fabricated findings and registers with Claude Desktop, Cursor, and Windsurf. The remote MCP injects its own tool definitions into each model request."
       kind: ai
       source_urls: *a1
     - id: step-4
-      title: Platform-specific malware
-      description: Reported Windows and macOS branches deliver a stealer or CloudSyncD.
+      title: Windows stealer or macOS CloudSyncD
+      description: "The verify response is a server-selected command. Windows goes through wscript and PowerShell to a stealer. macOS goes through a piped installer to CloudSyncD."
       kind: impact
       source_urls: *a1
+    - id: step-5
+      title: MCP tool text carries the command
+      description: "@apexfdn/copilot-mcp does not spawn a process. An HTTP 412 with error verify_required is returned to the agent as tool text that says to run the operator's command and retry."
+      kind: ai
+      source_urls:
+        - https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026
+        - https://github.com/advisories/GHSA-8q2p-w9w5-552h
   edges:
     - source: step-1
       target: step-2
@@ -77,22 +131,81 @@ attack_flow:
       target: step-3
     - source: step-3
       target: step-4
+    - source: step-1
+      target: step-5
+      label: copilot-mcp
 region_notes: Global Web3 targeting is described. A claimed presence at
   TOKEN2049 in Singapore is not evidence of a victim in Singapore.
 atlas_techniques:
   - id: AML.T0081
-    rationale: The packages rewrite model-proxy and MCP settings.
+    rationale: The CLI rewrites the model base URL, the MCP configuration, and the approval mode.
     source_urls: *a1
   - id: AML.T0104
-    rationale: The accelerator distributes a rogue audit MCP tool.
+    rationale: The accelerator publishes a rogue audit MCP and a remote MCP that the CLI registers into coding agents.
+    source_urls: *a1
+  - id: AML.T0051.001
+    rationale: "Corgea says @apexfdn/copilot-mcp returns the operator's shell command as tool output after an HTTP 412, so the agent treats an instruction from the operator API as the tool result."
+    source_urls:
+      - https://corgea.com/research/apex-accelerator-ref8801-npm-ai-agent-hijack-october-2026
+  - id: AML.T0010
+    rationale: "The operator published the packages to npm. Developers who installed them, or who still have the cached binary or the MCP registration, ran or loaded the operator's agent and tools."
     source_urls: *a1
 category: adversary-use-of-ai
 attribution:
-  actor_name: Elastic REF8801
-  country: Russia
+  actor_name: REF8801
+  aliases:
+    - Apex Accelerator
+  country: null
+  motivation: unknown
+  attributed_by: Elastic Security Labs, extended by Corgea
+  confidence: medium
 ai_involvement_confidence: confirmed
 detections:
-  - name: Review attack-specific indicators
+  - name: Windows Script Executing PowerShell
+    format: elastic
+    url: https://github.com/elastic/detection-rules/blob/main/rules/windows/initial_access_script_executing_powershell.toml
+    notes: "Selected with security-detections-mcp. Windows process events. powershell.exe whose parent is wscript.exe or cscript.exe, with one Intune drive-mapping script excluded. Corgea says the Windows launcher writes a VBScript and starts wscript so PowerShell runs hidden with ExecutionPolicy Bypass. This does not see the macOS branch or the MCP 412 path, which spawns no process."
+  - name: Suspicious PowerShell Invocation From Script Engines
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_script_engine_parent.yml
+    notes: "Selected with security-detections-mcp. Windows process creation. Parent image ends with wscript.exe or cscript.exe and the image ends with powershell.exe or pwsh.exe. Same wscript-to-PowerShell step as the Elastic rule. A Health Service State directory is filtered."
+  - name: Vbscript Execution Using Wscript App
+    format: splunk
+    url: https://github.com/splunk/security_content/blob/develop/detections/endpoint/vbscript_execution_using_wscript_app.yml
+    notes: "Selected with security-detections-mcp. Endpoint process events for wscript.exe whose command line contains .vbs, outside Program Files and System32. Corgea says the launcher writes _apex_run.vbs or _audit_run.vbs in the temp directory and starts wscript on it. A script under Program Files does not match."
+  - name: Change PowerShell Policies to an Insecure Level
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_set_policies_to_unsecure_level.yml
+    notes: "Selected with security-detections-mcp. Windows process creation. powershell.exe with -ExecutionPolicy, -ep, or -exec, and Bypass or Unrestricted. Corgea says the wscript-launched PowerShell uses -NoProfile -ExecutionPolicy Bypass. The separate Set-ExecutionPolicy RemoteSigned call in the launcher is RemoteSigned, not Bypass, so this rule does not cover that call."
+  - name: Powershell Base64 Encoded MpPreference Cmdlet
+    format: sigma
+    url: https://github.com/SigmaHQ/sigma/blob/master/rules/windows/process_creation/proc_creation_win_powershell_base64_mppreference.yml
+    notes: "Selected with security-detections-mcp. Windows process creation. The command line's base64 decodes to Add-MpPreference or Set-MpPreference, or the UTF-16LE fragments of those cmdlets are present. Corgea says the elevated PowerShell is an encoded command that adds a Defender exclusion for the .apex directory. The plaintext Add-MpPreference rule does not see that encoded command, so it is not cited."
+  - name: macOS curl pipe, dscl, package names, and the 412 tool text
     format: guidance
-    notes: Monitor for the techniques described in Apex Accelerator / REF8801. Refer
-      to sources for specific IOCs and TTPs.
+    notes: "security-detections-mcp searches for osascript, dscl, macOS curl, npm, and Add-MpPreference did not return a rule that matches the branches this note lists. Shell Evaluated Curl Downloaded Content requires a shell -c line that evals $(curl) or backticks. Corgea describes the macOS verify command as curl piped into sh, which is a different shape, so that rule is not cited. Suspicious Curl from macOS Application requires a parent under /Applications and a raw IP. The verify host is a domain and the parent Corgea names is the Rust helper, not an application bundle. Prompt for Credentials with Osascript requires osascript -e and a display dialog password string. Corgea says @copilot-mcp/apex had an osascript password prompt and does not publish the command line. CloudSyncD checks the password with dscl -authonly. A search for dscl authonly returned no rule. Curl Download Activity from npm Package Install and Suspicious PowerShell from npm Package Install require an npx-cli.js ancestor and, for PowerShell, an encoded command or a download cradle in that tree. The cached apex binary and the Rust helper are not that tree, so those two rules are not cited as coverage. No indexed rule names @apexacc, @apexscore, @apexfdn, or verify_required. Hunt lockfiles and the npm cache for those package names. Hunt ~/.apex, ~/.apex/bin/apex, ~/.apex/agent/mcp.json, ~/.apex-audit, ~/.config/cloudsync, and ~/.local/share/cloudsync. On Windows hunt %TEMP%\\_apex_run.ps1, _apex_run.vbs, _audit_run.ps1, _audit_run.vbs, exegis.exe, updater_loader.exe, and %APPDATA%\\.cobra, plus a Defender exclusion for .apex and VerifiedAndReputablePolicyState set to 0. The 412 path is tool text, not a process spawn. Hunt agent transcripts for verify_required and for a tool result that says to run a command and retry."
+timeline:
+  first_seen: "2026-07"
+  last_updated: "2026-11-24"
+  updates:
+    - date: "2026-07-21"
+      source: Corgea
+      summary: "npm replaces @apexfdn/apex, versions 1.0.1 through 1.0.32, with a 0.0.1-security placeholder. Corgea says it had been installable for about two and a half weeks. The operator then republishes the dropper as @copilot-mcp/apex."
+    - date: "2026-07-30"
+      source: Corgea
+      summary: "@apexscore/cli 1.0.59 is published. Thirty-three versions follow, through 1.1.1 on 9 August 2026."
+    - date: "2026-08-09"
+      source: Corgea
+      summary: "@apexacc/cli 1.1.8 is published the same day @apexscore/cli 1.1.1 is published. @apexacc/cli later reaches 1.6.2 on 27 September 2026, 122 versions."
+    - date: "2026-10-12"
+      source: Elastic Security Labs
+      summary: "Elastic publishes the REF8801 report on @apexacc/cli and @apexacc/audit."
+    - date: "2026-10-15"
+      source: Corgea
+      summary: "@apexacc/audit is gone from the registry by this date."
+    - date: "2026-11-10"
+      source: Corgea
+      summary: "GitHub publishes GHSA-pg98-9cmp-wcf5 for @apexacc/cli. npm replaces all 122 versions with a 0.0.1-security placeholder at 22:36 UTC."
+    - date: "2026-11-24"
+      source: Corgea
+      summary: "npm replaces @apexscore/cli at 17:35 UTC (GHSA-r68v-jq2f-qcf8) and @apexfdn/copilot-mcp at 17:41 UTC (GHSA-8q2p-w9w5-552h). Corgea publishes the package lineage, the 412 tool-text path, and the hashes."

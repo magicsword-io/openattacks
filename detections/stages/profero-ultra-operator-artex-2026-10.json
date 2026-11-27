@@ -1,0 +1,17 @@
+{
+  "agents": {
+    "profile": "agent-tools"
+  },
+  "proxy": {
+    "profile": "web"
+  },
+  "exploit": {
+    "profile": "web"
+  },
+  "canary": {
+    "profile": "agent-input"
+  },
+  "exfil": {
+    "profile": "exfil"
+  }
+}
